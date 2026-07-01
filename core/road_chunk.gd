@@ -6,19 +6,15 @@ extends Node3D
 @export var level_data: RoadChunkData
 @export var height_unit: float = 0.5
 
-var current_asphalt_level: Image
-func load_asphalt() -> void:
-	current_asphalt_level = level_data.asphalt_quantity_texture.get_image()
-	update_materials()
-
+#region Asphalt modifiers
 func set_asphalt_to_empty() -> void:
-	current_asphalt_level = Image.create_empty(map_resolution.x, map_resolution.y, false, Image.FORMAT_RF)
+	var current_asphalt_level: Image = Image.create_empty(map_resolution.x, map_resolution.y, false, Image.FORMAT_RF)
 	current_asphalt_level.convert(Image.FORMAT_RF)
 	level_data.asphalt_quantity_texture = ImageTexture.create_from_image(current_asphalt_level)
 	update_materials()
 
 func randomize_asphalt(noise: Noise, level: float = 0.2, distribution: float = 0.1) -> void:
-	current_asphalt_level = Image.create_empty(map_resolution.x, map_resolution.y, false, Image.FORMAT_RF)
+	var current_asphalt_level: Image = Image.create_empty(map_resolution.x, map_resolution.y, false, Image.FORMAT_RF)
 	for x in map_resolution.x: for y in map_resolution.y:
 		var value: int = int(
 			clamp(level + (noise.get_noise_2d(x, y) - 0.5) * 2.0 * distribution, 0., 1.)
@@ -29,11 +25,18 @@ func randomize_asphalt(noise: Noise, level: float = 0.2, distribution: float = 0
 	level_data.asphalt_quantity_texture = ImageTexture.create_from_image(current_asphalt_level)
 	update_materials()
 
-#TODO: useless function
-func load_terrain(set_height_unit: float = 0.) -> void:
-	if 0. != set_height_unit: height_unit = set_height_unit
-	update_level_physics()
-	update_materials()
+func update_asphalt() -> void:
+	if scan_in_progress(): return
+	%AsphaltTransformer.material.set_shader_parameter("asphalt_delta", %AsphaltUpdaterViewport.get_texture())
+	await RenderingServer.frame_post_draw
+	(func():
+		await RenderingServer.frame_post_draw
+		level_data.asphalt_quantity_texture = ImageTexture.create_from_image(%AsphaltTransformerViewport.get_texture().get_image())
+		update_materials()
+		update_level_physics()
+	).call_deferred()
+
+#endregion Asphalt modifiers
 
 func get_size() -> Vector3: return Vector3($Ground.mesh.size.x, height_unit, $Ground.mesh.size.y)
 
@@ -48,16 +51,9 @@ func get_deviation_from_target() -> float:
 	return difference_image.get_pixel(0,0).get_luminance()
 
 func snap_to_reference(amount: float) -> void:
-	if not %AsphaltPhysicsViewport or not %AsphaltPhysics or not %AsphaltUpdater: return
-	%AsphaltUpdater.material.set_shader_parameter("input_reference", %AsphaltPhysicsViewport.get_texture())
-	%AsphaltUpdater.material.set_shader_parameter("set_to_reference", amount)
-
-func update_asphalt(overwrite_level_data: bool = false) -> void:
-	if scan_in_progress(): return
-	current_asphalt_level = %AsphaltUpdaterViewport.get_texture().get_image()
-	if overwrite_level_data: 
-		level_data.asphalt_quantity_texture = ImageTexture.create_from_image(current_asphalt_level)
-	update_materials()
+	if not %AsphaltPhysicsViewport or not %AsphaltTransformer: return
+	%AsphaltTransformer.material.set_shader_parameter("target_height", level_data.target_height_texture)
+	%AsphaltTransformer.material.set_shader_parameter("set_to_reference", amount)
 
 func set_crazify_amount(amount: float):
 	$Ground.get_active_material(0).set_shader_parameter("crazify_amount", amount)
@@ -130,24 +126,29 @@ const PHYSICS_SCALE_FOR_HEIGHT: float = 2. / (32. / 512.) ## Eplained below:
 ## Asphalt resolution(512x512) is double of the terrain resolution, so the resulting shape is double the size of the displayed map
 ## Additionally, the ground mesh is of size 32x32. and the physics mesh needs to be scaled down to it from its resolution(512x512) 
 func update_level_physics() -> void:
-	await RenderingServer.frame_post_draw
-	var physics_material: Image = %AsphaltPhysicsViewport.get_texture().get_image()
-	physics_material.decompress()
-	physics_material.convert(Image.FORMAT_RF)
-	$GroundPhysicsFake/Shape.shape.update_map_data_from_image(physics_material, 0., height_unit * PHYSICS_SCALE_FOR_HEIGHT)
+	(func():
+		await RenderingServer.frame_post_draw
+		var physics_material: Image = %AsphaltPhysicsViewport.get_texture().get_image()
+		physics_material.decompress()
+		physics_material.convert(Image.FORMAT_RF)
+		$GroundPhysicsFake/Shape.shape.update_map_data_from_image(physics_material, 0., height_unit * PHYSICS_SCALE_FOR_HEIGHT)
+	).call_deferred()
 
+#TODO: when morph to reference is not 0, and updater delta is also not zero there must be some kind of fight for the result?!
 func update_materials() -> void:
-	level_data.asphalt_quantity_texture = ImageTexture.create_from_image(current_asphalt_level)
-	%AsphaltUpdater.material.set_shader_parameter("terrain", level_data.terrain_heightmap)
-	%AsphaltUpdater.material.set_shader_parameter("asphalt", level_data.asphalt_quantity_texture)
-	#TODO: Maybe this should be used?
-	#%AsphaltUpdater.material.set_shader_parameter("asphalt_filter", level_data.asphalt_filter_image)
-	%AsphaltUpdater.material.set_shader_parameter("target_height", level_data.target_height_texture)
-
 	%AsphaltChecker.material.set_shader_parameter("terrain", level_data.terrain_heightmap)
 	%AsphaltChecker.material.set_shader_parameter("asphalt", level_data.asphalt_quantity_texture)
 	%AsphaltChecker.material.set_shader_parameter("asphalt_filter", level_data.asphalt_filter_image)
+	%AsphaltChecker.material.set_shader_parameter("target_height", level_data.target_height_texture)
+	
+	%AsphaltUpdater.material.set_shader_parameter("terrain", level_data.terrain_heightmap)
+	%AsphaltUpdater.material.set_shader_parameter("asphalt", level_data.asphalt_quantity_texture)
+	%AsphaltUpdater.material.set_shader_parameter("asphalt_filter", level_data.asphalt_filter_image)
 	%AsphaltUpdater.material.set_shader_parameter("target_height", level_data.target_height_texture)
+
+	%AsphaltTransformer.material.set_shader_parameter("terrain", level_data.terrain_heightmap)
+	%AsphaltTransformer.material.set_shader_parameter("asphalt", level_data.asphalt_quantity_texture)
+	%AsphaltTransformer.material.set_shader_parameter("target_height", level_data.target_height_texture)
 
 	%AsphaltPhysics.material.set_shader_parameter("terrain", level_data.terrain_heightmap)
 	%AsphaltPhysics.material.set_shader_parameter("asphalt", level_data.asphalt_quantity_texture)

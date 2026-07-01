@@ -3,6 +3,7 @@ shader_type canvas_item;
 uniform bool using_roller = true;
 uniform sampler2D terrain;
 uniform sampler2D asphalt; // Basically asphalt quantity
+uniform sampler2D asphalt_filter; // where is asphalt
 uniform sampler2D target_height; // the reference height set by the level
 uniform float effect_radius = 0.01; // Shovel for asphalt alpha
 uniform float set_to_reference = 0.; // Set to some arbitrary value to "snap" asphalt to given reference

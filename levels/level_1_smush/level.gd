@@ -3,7 +3,7 @@ extends Node3D
 @export_range(0., 0.9) var roller_strength: float = 0.15
 
 func _ready() -> void:
-	$RoadChunk.load_asphalt()
+	$RoadChunk.update_materials()
 
 var elapsed_time: float = 0.
 func _process(delta: float) -> void:

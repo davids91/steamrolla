@@ -7,7 +7,6 @@ extends Node3D
 		level_data = v
 		if not %RoadChunk: return
 		%RoadChunk.level_data = load(v)
-		%RoadChunk.load_terrain()
 		%RoadChunk.update_materials()
 
 static func _asphalt_quantity_tex_path(base_dir: String)-> String:
@@ -19,7 +18,6 @@ static func _asphalt_quantity_tex_path(base_dir: String)-> String:
 		var asphalt_image_path: String = _asphalt_quantity_tex_path(level_data.get_base_dir())
 		if not %RoadChunk.level_data.asphalt_quantity_texture and FileAccess.file_exists(asphalt_image_path):
 			%RoadChunk.level_data.asphalt_quantity_texture = load(asphalt_image_path)
-		%RoadChunk.load_asphalt()
 		%RoadChunk.update_materials()
 
 @export var save_level_data: bool = false:
@@ -37,8 +35,7 @@ static func _asphalt_quantity_tex_path(base_dir: String)-> String:
 	set(v):
 		height_unit = v
 		if Engine.is_editor_hint():
-			%RoadChunk.load_terrain(height_unit)
-			%RoadChunk.load_asphalt()
+			%RoadChunk.height_unit = height_unit
 			%RoadChunk.update_materials()
 
 @export var call_update_materials: bool = false:
@@ -47,30 +44,26 @@ static func _asphalt_quantity_tex_path(base_dir: String)-> String:
 @export var call_update_physics: bool = false:
 	set(_v): %RoadChunk.update_level_physics()
 
+@export var update_asphalt: bool = false:
+	set(_v):
+		%RoadChunk.update_asphalt()
+		%RoadChunk.update_level_physics()
+
 @export var empty_asphalt_image: bool = false:
 	set(_v):
 		%RoadChunk.set_asphalt_to_empty()
+		%RoadChunk.update_level_physics()
 
 @export var regenerate_asphalt_image: bool = false:
 	set(_v):
 		noise.seed = randi()
 		%RoadChunk.randomize_asphalt(noise, starting_asphalt_level_normalized)
-
-@export var reload_asphalt_image: bool = false:
-	set(_v): %RoadChunk.load_asphalt()
-
-@export var generate_terrain_heightmap: bool = false:
-	set(_v):
-		%RoadChunk.load_terrain(height_unit)
+		%RoadChunk.update_level_physics()
 
 @export_range(0., 1.) var reference_asphalt_height: float = starting_asphalt_level_normalized
 @export var set_asphalt_to_reference_height: bool = false:
 	set(_v):
 		%RoadChunk.randomize_asphalt(noise, reference_asphalt_height, 0.)
-
-@export var update_asphalt: bool = false:
-	set(_v):
-		%RoadChunk.update_asphalt()
 
 @export var take_current_asphalt_state_as_target: bool = false:
 	set(_v):
@@ -199,7 +192,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _ready() -> void:
 	$RoadChunk.use_roller(false)
 	%RoadChunk.set_update_brush_radius(draw_radius)
-	%RoadChunk.load_asphalt()
+	%RoadChunk.update_materials()
 
 const asphalt_removal_delay_sec: float = 0.25
 const smoothing_click_length_needed_sec: float = 0.25
@@ -296,6 +289,6 @@ func _physics_process(_delta: float) -> void:
 			)
 			$Compactor.look_at(roller_delta_pos)
 			$Compactor.global_position = last_smoothed_position
-			%RoadChunk.update_asphalt(false)
+			%RoadChunk.update_asphalt()
 		else: shoveling_asphalt = false
 	was_smoothing = smoothing
