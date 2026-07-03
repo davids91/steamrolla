@@ -1,13 +1,21 @@
 extends Node3D
 
+signal driver_intention_changed(forward: bool)
+
 @export var opacity: float = 0.4:
 	set(v):
 		opacity = v
 		if $Skin: $Skin.get_active_material(0).albedo_color.a = opacity
 
+var is_reversing: bool = false
+var is_moving_forward: bool = false
 var movement_intent: Vector2
 func _unhandled_input(_event: InputEvent) -> void:
 	movement_intent = Input.get_vector("ui_right", "ui_left", "ui_down", "ui_up")
+	if is_reversing != (movement_intent.y < 0.) or is_moving_forward != (movement_intent.y > 0.):
+		driver_intention_changed.emit(movement_intent.y < 0.)
+	is_reversing = (movement_intent.y < 0.)
+	is_moving_forward = (movement_intent.y > 0.)
 
 @export var speed: float = 1.
 @export var steering_angle: float = 1.

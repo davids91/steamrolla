@@ -64,10 +64,14 @@ func set_update_brush_radius(amount: float) -> void:
 func set_update_brush_center(center: Vector2) -> void:
 	%AsphaltUpdater.material.set_shader_parameter("roller_center", center)
 
+func set_update_brush_strength(strength: float) -> void:
+	%AsphaltUpdater.material.set_shader_parameter("effect_strength", strength)
+
 func set_roller_brush(center: Vector2, angle: float, strength: float = 1.) -> void:
 	%AsphaltUpdater.material.set_shader_parameter("roller_angle", angle)
 	%AsphaltUpdater.material.set_shader_parameter("roller_center", center)
-	if -1. < strength: %AsphaltUpdater.material.set_shader_parameter("effect_strength", strength)
+	if -1. < strength:
+		%AsphaltUpdater.material.set_shader_parameter("effect_strength", strength)
 
 func set_highlight(amount: float) -> void :
 	$Ground.get_active_material(0).set_shader_parameter("hightlight_strength", amount)
@@ -114,7 +118,6 @@ func initiate_scan(level_scan_duration_sec: float = 0.75, level_scan_range: floa
 	)
 
 #region Update functions
-#TODO: Effect strength parameter in updater to be set to zero when shoveling!
 #TODO: use ViewportTexture instead of manually setting it with ...Viewport.get_texture()
 func update_asphalt() -> void:
 	if scan_in_progress(): return
@@ -145,7 +148,6 @@ func update_level_physics() -> void:
 		$GroundPhysicsFake/Shape.shape.update_map_data_from_image(physics_material, 0., height_unit * PHYSICS_SCALE_FOR_HEIGHT)
 	).call_deferred()
 
-#TODO: when morph to reference is not 0, and updater delta is also not zero there must be some kind of fight for the result?!
 func update_materials() -> void:
 	%AsphaltChecker.material.set_shader_parameter("terrain", level_data.terrain_heightmap)
 	%AsphaltChecker.material.set_shader_parameter("asphalt", level_data.asphalt_quantity_texture)
@@ -200,7 +202,7 @@ func _initialize(data: RoadChunkData, data_path: String = "") -> void:
 
 	# Initial update for materials and physics
 	update_materials()
-	update_level_physics()	
+	update_level_physics()
 
 func initialize(data_path: String) -> void: 
 	level_data = ResourceLoader.load(data_path)

@@ -50,67 +50,67 @@ void fragment() {
 			//}
 		//}
 	//} else
-	if (CONTROL_EPSILON < effect_strength) {
-		if (VALUE_EPSILON < abs(asphalt_delta)){ // Shoveling
-			float distance_from_center = length(UV - roller_center);
-			float _asphalt_delta = asphalt_delta * smoothstep(effect_radius, 0., distance_from_center);
-			if(abs(_asphalt_delta) > VALUE_EPSILON){
-				asphalt_delta_output = _asphalt_delta;
-			}
-		}else if(!using_roller){ // Manually compacting
-			if(length(UV - roller_center) < effect_radius){
-				float avg_value = 0.;
-				float sample_count = 0.;
-				//TODO: read in LOD instead of calculating avg
-				for(float x = UV.x - effect_radius; x < UV.x + effect_radius; x += (effect_radius / 5.)) {
-					for(float y = UV.y - effect_radius; y < UV.y + effect_radius; y += (effect_radius / 5.)) {
-						avg_value += texture(asphalt, vec2(x,y)).r;
-						sample_count += 1.;
-					}
+	if (VALUE_EPSILON < abs(asphalt_delta)){ // Shoveling
+		float distance_from_center = length(UV - roller_center);
+		float _asphalt_delta = asphalt_delta * smoothstep(effect_radius, 0., distance_from_center);
+		if(abs(_asphalt_delta) > VALUE_EPSILON){
+			asphalt_delta_output = _asphalt_delta;
+		}
+	}else if(CONTROL_EPSILON < effect_strength && !using_roller){ // Manually compacting
+		if(length(UV - roller_center) < effect_radius){
+			float avg_value = 0.;
+			float sample_count = 0.;
+			//TODO: read in LOD instead of calculating avg
+			for(float x = UV.x - effect_radius; x < UV.x + effect_radius; x += (effect_radius / 5.)) {
+				for(float y = UV.y - effect_radius; y < UV.y + effect_radius; y += (effect_radius / 5.)) {
+					avg_value += texture(asphalt, vec2(x,y)).r;
+					sample_count += 1.;
 				}
-				avg_value /= sample_count;
-				asphalt_delta_output = (avg_value - texture(asphalt, UV).r);
 			}
-		}else if( // Roller
+			avg_value /= sample_count;
+			asphalt_delta_output = (avg_value - texture(asphalt, UV).r);
+		}
+	}else if( // Roller
+		CONTROL_EPSILON < effect_strength
+		&& (
 			point_in_triangle(roller_bl, roller_tl, roller_tr, UV)
 			|| point_in_triangle(roller_bl, roller_tr, roller_br, UV)
-		) {
-			// Convert to a coordinate system where origin is roller_center
-			//TODO: +++ Logic to query the asphalt level at the start of the rolling
-			float min_asphalt_level = texture(asphalt, UV).r * (1. - effect_strength);
-			//vec2 pos_to_center = UV - roller_center; 
+		)
+	) {
+		// Convert to a coordinate system where origin is roller_center
+		//TODO: +++ Logic to query the asphalt level at the start of the rolling
+		float min_asphalt_level = texture(asphalt, UV).r * (1. - effect_strength);
+		//vec2 pos_to_center = UV - roller_center; 
 //
-			//// Is this really needed?
-			////// Angle between the 2 directions
-			////// https://github.com/godotengine/godot/blob/master/core/math/vector2.cpp#L90
-			////float angle_to_pos = atan(
-				////// cross product
-				////// https://github.com/godotengine/godot/blob/master/core/math/vector2.cpp#L102
-				////(pos_to_center.x * roller_direction.y - pos_to_center.y * roller_direction.x),
-				////dot(pos_to_center, roller_direction)
-			////);
+		//// Is this really needed?
+		////// Angle between the 2 directions
+		////// https://github.com/godotengine/godot/blob/master/core/math/vector2.cpp#L90
+		////float angle_to_pos = atan(
+			////// cross product
+			////// https://github.com/godotengine/godot/blob/master/core/math/vector2.cpp#L102
+			////(pos_to_center.x * roller_direction.y - pos_to_center.y * roller_direction.x),
+			////dot(pos_to_center, roller_direction)
+		////);
 //
-			//vec2 pos_projected_to_roller_center = (
-				////TODO: Based on https://en.wikipedia.org/wiki/Vector_projection
-				//vec2(0.)
-			//);
+		//vec2 pos_projected_to_roller_center = (
+			////TODO: Based on https://en.wikipedia.org/wiki/Vector_projection
+			//vec2(0.)
+		//);
 //
-			//float size_diff_to_pos = sqrt( //TODO: verify!!
-				//pow((roller_center - UV), 2.) - pow((UV - pos_projected_to_roller_center), 2.)
-			//);
-			////TODO: This determines the start of the rectangle in direction by: x = size/2 - size_diff_to_pos
-			// End: +++ Logic to query the asphalt level at the start of the rolling
+		//float size_diff_to_pos = sqrt( //TODO: verify!!
+			//pow((roller_center - UV), 2.) - pow((UV - pos_projected_to_roller_center), 2.)
+		//);
+		////TODO: This determines the start of the rectangle in direction by: x = size/2 - size_diff_to_pos
+		// End: +++ Logic to query the asphalt level at the start of the rolling
 
-
-			float pixel_radius = 0.002; // 1. / 512. because asphalt quantity texture is of resolution 512x512
-			//// TODO: Add the sum of the fraction of the values opposite to the direction of the roller for a radius
-			//// TODO: Add the values after the edge of the actual roller
-			// calculate the asphalt being moved forward to the direction of the rolling to the next pixel
-			asphalt_delta_output -=  (texture(asphalt, UV).r - min_asphalt_level) * effect_strength;
-			// calcualte the asphalt being moved into this pixel from a neighbouring pixel opposite of the rolling direction
-			asphalt_delta_output += (texture(asphalt, UV - roller_direction * pixel_radius).r - min_asphalt_level) * effect_strength * 1.001;
-			// TODO: push asphalt overflow to the nearest compatible neighbour, not only in the roller direction
-		}
+		float pixel_radius = 0.002; // 1. / 512. because asphalt quantity texture is of resolution 512x512
+		//// TODO: Add the sum of the fraction of the values opposite to the direction of the roller for a radius
+		//// TODO: Add the values after the edge of the actual roller
+		// calculate the asphalt being moved forward to the direction of the rolling to the next pixel
+		asphalt_delta_output -=  (texture(asphalt, UV).r - min_asphalt_level) * effect_strength;
+		// calcualte the asphalt being moved into this pixel from a neighbouring pixel opposite of the rolling direction
+		asphalt_delta_output += (texture(asphalt, UV - roller_direction * pixel_radius).r - min_asphalt_level) * effect_strength * 1.001;
+		// TODO: push asphalt overflow to the nearest compatible neighbour, not only in the roller direction
 	}
 	
 	// asphalt delta to be relative to 0.5

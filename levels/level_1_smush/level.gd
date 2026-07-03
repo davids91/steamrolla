@@ -16,6 +16,7 @@ func _process(delta: float) -> void:
 		+ flat_chunk_size * 0.5
 	) / flat_chunk_size
 	var roller_angle = -$Roller.rotation.y + PI / 2.
+	if $Roller.is_reversing: roller_angle -= PI
 	$RoadChunk.set_roller_brush(texture_coordinates, roller_angle, roller_strength)
 	$RoadChunk.update_asphalt()
 

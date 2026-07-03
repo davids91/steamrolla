@@ -144,7 +144,6 @@ var smoothing: bool = false:
 		smoothing = v
 
 @export var accepted_deviation: float = 0.001
-@export var asphalt_snap_to_target_speed: float = 0.05
 var won_game: bool = false
 var asphalt_delta: float = 0.
 var shoveling_asphalt: bool = false
@@ -177,7 +176,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			asphalt_delta = -asphalt_removal
 			$ShovelSound.play()
 			shoveling_asphalt = true
-		if not event.pressed: 
+		if not event.pressed:
 			dragging = false
 			smoothing = false
 
@@ -185,6 +184,7 @@ func _ready() -> void:
 	$RoadChunk.use_roller(false)
 	%RoadChunk.set_update_brush_radius(draw_radius)
 	%RoadChunk.initialize(level_data)
+	$Compactor.set_color(Color.TRANSPARENT)
 
 const asphalt_removal_delay_sec: float = 0.25
 const smoothing_click_length_needed_sec: float = 0.25
@@ -192,11 +192,11 @@ var time_left_for_smoothing_click_sec: float = smoothing_click_length_needed_sec
 var time_to_remove_asphalt_sec: float = asphalt_removal_delay_sec
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 		time_left_for_smoothing_click_sec -= delta
 	else: time_left_for_smoothing_click_sec = smoothing_click_length_needed_sec
 	smoothing = 0. >= time_left_for_smoothing_click_sec
-	
+
 	# Handle Asphalt addition/removal
 	if 0. != asphalt_delta:
 		if 0. > asphalt_delta and time_to_remove_asphalt_sec > 0.:
@@ -262,27 +262,30 @@ func _physics_process(_delta: float) -> void:
 					shovel_icon_duration_sec
 				)
 				shoveling_asphalt = false
-				return
-			if not was_smoothing: last_smoothed_position = raycast_result.position
-			else: last_smoothed_position = lerp(last_smoothed_position, raycast_result.position, smush_responsiveness)
-			if 2.5 > (last_smoothed_position- $consty.global_position).length(): $consty.smoosh()
-			elif $consty.is_being_smooshed(): $consty.unsmoosh()
-			var flat_chunk_size: Vector2 = Vector2(%RoadChunk.get_size().x, %RoadChunk.get_size().z)
-			var texture_coordinates: Vector2 = (
-				Vector2(last_smoothed_position.x, last_smoothed_position.z)
-				 - Vector2(%RoadChunk.global_position.x, %RoadChunk.global_position.z)
-				+ flat_chunk_size * 0.5
-			) / flat_chunk_size
+			if 0. < abs(asphalt_delta):
+				%RoadChunk.set_update_brush_strength(0.)
+			else:
+				if not was_smoothing: last_smoothed_position = raycast_result.position
+				else: last_smoothed_position = lerp(last_smoothed_position, raycast_result.position, smush_responsiveness)
+				if 2.5 > (last_smoothed_position- $consty.global_position).length(): $consty.smoosh()
+				elif $consty.is_being_smooshed(): $consty.unsmoosh()
+				var flat_chunk_size: Vector2 = Vector2(%RoadChunk.get_size().x, %RoadChunk.get_size().z)
+				var texture_coordinates: Vector2 = (
+					Vector2(last_smoothed_position.x, last_smoothed_position.z)
+					 - Vector2(%RoadChunk.global_position.x, %RoadChunk.global_position.z)
+					+ flat_chunk_size * 0.5
+				) / flat_chunk_size
 
-			# Set roller position and udpate brush
-			var roller_delta_pos: Vector3 = last_smoothed_position - $Compactor.global_position
-			%RoadChunk.set_roller_brush(
-				texture_coordinates,
-				Vector2(roller_delta_pos.x, roller_delta_pos.z).angle(),
-				compacting_strength
-			)
-			$Compactor.look_at(roller_delta_pos)
-			$Compactor.global_position = last_smoothed_position
-		else: shoveling_asphalt = false
+				#TODO: Move roller angle calculation to the player controller
+				# Set roller position and udpate brush
+				var roller_delta_pos: Vector3 = last_smoothed_position - $Compactor.global_position
+				%RoadChunk.set_roller_brush(
+					texture_coordinates,
+					Vector2(roller_delta_pos.x, roller_delta_pos.z).angle(),
+					compacting_strength
+				)
+				$Compactor.look_at(roller_delta_pos)
+				$Compactor.global_position = last_smoothed_position
+	shoveling_asphalt = false
 	was_smoothing = smoothing
 	%RoadChunk.update_asphalt()
