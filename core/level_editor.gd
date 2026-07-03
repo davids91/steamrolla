@@ -6,11 +6,19 @@ extends Node3D
 	set(v):
 		level_data = v
 		if not %RoadChunk: return
-		%RoadChunk.initialize(level_data)
+		%RoadChunk.level_data = load(v)
+		%RoadChunk.update_materials()
+
+static func _asphalt_quantity_tex_path(base_dir: String)-> String:
+	return base_dir + "/asphalt_quantity.png"
 
 @export var load_level_data: bool = false:
 	set(_v): # Fill up %RoadChunk with data
-		%RoadChunk.initialize(level_data)
+		%RoadChunk.level_data = ResourceLoader.load(level_data)
+		var asphalt_image_path: String = _asphalt_quantity_tex_path(level_data.get_base_dir())
+		if not %RoadChunk.level_data.asphalt_quantity_texture and FileAccess.file_exists(asphalt_image_path):
+			%RoadChunk.level_data.asphalt_quantity_texture = load(asphalt_image_path)
+		%RoadChunk.update_materials()
 
 @export var save_level_data: bool = false:
 	set(_v):
@@ -26,7 +34,7 @@ extends Node3D
 @export var height_unit: float = 0.5:
 	set(v):
 		height_unit = v
-		if %RoadChunk:
+		if Engine.is_editor_hint():
 			%RoadChunk.height_unit = height_unit
 			%RoadChunk.update_materials()
 
@@ -63,11 +71,10 @@ extends Node3D
 
 @export var max_snap_value: float = 0.6
 @export var snap_time_sec: float = 0.6
-@export var snap_easing: float = 1.0
 @export var start_snapping_to_ref: bool = false:
 	set(_v): _snap_asphalt_to_reference()
 
-@export_range(0., 10.) var snap_to_reference: float = false:
+@export_range(0., 1.) var snap_to_reference: float = false:
 	set(v):
 		snap_to_reference = v
 		%RoadChunk.snap_to_reference(v)
@@ -132,7 +139,8 @@ func _have_road_paint_appear(animation_length: float = 0.7) -> void:
 
 func _snap_asphalt_to_reference() -> void:
 	var snap: Tween = create_tween() # snap_to_reference setter includes logic for shader updates
-	snap.tween_method(func(w: float): snap_to_reference = ease(w, snap_easing), 0., max_snap_value, snap_time_sec)
+	snap.tween_method(func(w: float): snap_to_reference = w, 0., max_snap_value, snap_time_sec).set_ease(Tween.EASE_IN)
+	snap.tween_method(func(w: float): snap_to_reference = w, max_snap_value, 0.0, snap_time_sec).set_ease(Tween.EASE_OUT)
 	snap.tween_callback(func(): snap_to_reference = 0.)
 
 var dragging: bool = false
@@ -184,14 +192,13 @@ func _unhandled_input(event: InputEvent) -> void:
 func _ready() -> void:
 	$RoadChunk.use_roller(false)
 	%RoadChunk.set_update_brush_radius(draw_radius)
-	%RoadChunk.initialize(level_data)
+	%RoadChunk.update_materials()
 
 const asphalt_removal_delay_sec: float = 0.25
 const smoothing_click_length_needed_sec: float = 0.25
 var time_left_for_smoothing_click_sec: float = smoothing_click_length_needed_sec
 var time_to_remove_asphalt_sec: float = asphalt_removal_delay_sec
 func _process(delta: float) -> void:
-	if Engine.is_editor_hint(): return
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		time_left_for_smoothing_click_sec -= delta
 	else: time_left_for_smoothing_click_sec = smoothing_click_length_needed_sec
@@ -220,7 +227,6 @@ func _process(delta: float) -> void:
 @export var shovel_icon_fill_travel_y: Curve
 var was_smoothing: bool = smoothing
 func _physics_process(_delta: float) -> void:
-	if Engine.is_editor_hint(): return
 	if smoothing or dragging or 0. != asphalt_delta:
 		var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
 		var mouse_screen_position: Vector2 = get_viewport().get_mouse_position()
@@ -283,6 +289,6 @@ func _physics_process(_delta: float) -> void:
 			)
 			$Compactor.look_at(roller_delta_pos)
 			$Compactor.global_position = last_smoothed_position
+			%RoadChunk.update_asphalt()
 		else: shoveling_asphalt = false
 	was_smoothing = smoothing
-	%RoadChunk.update_asphalt()
