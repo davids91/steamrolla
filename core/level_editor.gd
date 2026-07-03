@@ -98,13 +98,13 @@ var crazify_tween: Tween
 	set(v):
 		crazify_scale = v
 		if not %RoadChunk: return
-		%RoadChunk.set_crazify_scale(crazify_amount)
+		%RoadChunk.set_crazify_scale(crazify_scale)
 
 @export var crazify_speed: float = 0:
 	set(v):
 		crazify_speed = v
 		if not %RoadChunk: return
-		%RoadChunk.set_crazify_speed(crazify_amount)
+		%RoadChunk.set_crazify_speed(crazify_speed)
 
 @export var level_scan_duration_sec: float = 1.3
 @export var level_scan_range: float = 0.25
@@ -265,6 +265,7 @@ func _physics_process(_delta: float) -> void:
 			if 0. < abs(asphalt_delta):
 				%RoadChunk.set_update_brush_strength(0.)
 			else:
+				%RoadChunk.set_update_brush_amount(0.)
 				if not was_smoothing: last_smoothed_position = raycast_result.position
 				else: last_smoothed_position = lerp(last_smoothed_position, raycast_result.position, smush_responsiveness)
 				if 2.5 > (last_smoothed_position- $consty.global_position).length(): $consty.smoosh()
