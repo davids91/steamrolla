@@ -6,7 +6,10 @@ extends Node3D
 @export var level_data: RoadChunkData
 @export var height_unit: float = 0.5
 
-#region Asphalt modifiers
+@export var load_data: bool: 
+	set(v): _initialize(level_data)
+
+#region Asphalt setters
 func set_asphalt_to_empty() -> void:
 	var current_asphalt_level: Image = Image.create_empty(map_resolution.x, map_resolution.y, false, Image.FORMAT_RF)
 	current_asphalt_level.convert(Image.FORMAT_RF)
@@ -24,19 +27,7 @@ func randomize_asphalt(noise: Noise, level: float = 0.2, distribution: float = 0
 	current_asphalt_level.convert(Image.FORMAT_RF)
 	level_data.asphalt_quantity_texture = ImageTexture.create_from_image(current_asphalt_level)
 	update_materials()
-
-func update_asphalt() -> void:
-	if scan_in_progress(): return
-	%AsphaltTransformer.material.set_shader_parameter("asphalt_delta", %AsphaltUpdaterViewport.get_texture())
-	await RenderingServer.frame_post_draw
-	(func():
-		await RenderingServer.frame_post_draw
-		level_data.asphalt_quantity_texture = ImageTexture.create_from_image(%AsphaltTransformerViewport.get_texture().get_image())
-		update_materials()
-		update_level_physics()
-	).call_deferred()
-
-#endregion Asphalt modifiers
+#endregion Asphalt setters
 
 func get_size() -> Vector3: return Vector3($Ground.mesh.size.x, height_unit, $Ground.mesh.size.y)
 
@@ -122,6 +113,26 @@ func initiate_scan(level_scan_duration_sec: float = 0.75, level_scan_range: floa
 		run_when_finished.call()
 	)
 
+#region Update functions
+#TODO: Effect strength parameter in updater to be set to zero when shoveling!
+#TODO: use ViewportTexture instead of manually setting it with ...Viewport.get_texture()
+func update_asphalt() -> void:
+	if scan_in_progress(): return
+	ImageTexture.create_from_image(%AsphaltTransformerViewport.get_texture().get_image())
+	%AsphaltTransformer.material.set_shader_parameter("asphalt_delta", %AsphaltUpdaterViewport.get_texture())
+	%AsphaltPhysics.material.set_shader_parameter("asphalt_delta", %AsphaltUpdaterViewport.get_texture())
+	(func():
+		await RenderingServer.frame_post_draw
+		level_data.asphalt_quantity_texture = ImageTexture.create_from_image(%AsphaltTransformerViewport.get_texture().get_image())
+		%AsphaltPhysics.material.set_shader_parameter(
+			"asphalt_meta", 
+			ImageTexture.create_from_image(%AsphaltPhysicsViewport.get_texture().get_image())
+		)
+		update_materials()
+		update_level_physics()
+	).call_deferred()
+
+
 const PHYSICS_SCALE_FOR_HEIGHT: float = 2. / (32. / 512.) ## Eplained below:
 ## Asphalt resolution(512x512) is double of the terrain resolution, so the resulting shape is double the size of the displayed map
 ## Additionally, the ground mesh is of size 32x32. and the physics mesh needs to be scaled down to it from its resolution(512x512) 
@@ -162,3 +173,40 @@ func update_materials() -> void:
 	mat.set_shader_parameter("terrain_heightmap", level_data.terrain_heightmap)
 	mat.set_shader_parameter("terrain_normalmap", level_data.terrain_normalmap)
 	mat.set_shader_parameter("road_colormap", level_data.terrain_albedo_image)
+
+static func _asphalt_quantity_tex_path(base_dir: String)-> String:
+	return base_dir + "/asphalt_quantity.png"
+
+static func _asphalt_physics_tex_path(base_dir: String)-> String:
+	return base_dir + "/asphalt_physics.png"
+
+func _initialize(data: RoadChunkData, data_path: String = "") -> void:
+	# Fallback for asphalt quantity image
+	var asphalt_image_path: String = _asphalt_quantity_tex_path(data_path.get_base_dir())
+	if not data.asphalt_quantity_texture and FileAccess.file_exists(asphalt_image_path):
+		level_data.asphalt_quantity_texture = load(asphalt_image_path)
+	
+	# Handle asphalt physics starting values
+	var no_asphalt_delta_image: Image = Image.create(512,512, false, Image.FORMAT_RGBF)
+	no_asphalt_delta_image.fill(Color.from_rgba8(128,128,128,255))
+	%AsphaltPhysics.material.set_shader_parameter(
+		"asphalt_delta", ImageTexture.create_from_image(no_asphalt_delta_image)
+	)
+	if not level_data.asphalt_physics_texture:
+		var physics_image_path: String = _asphalt_physics_tex_path(data_path.get_base_dir())
+		if FileAccess.file_exists(physics_image_path): level_data.asphalt_physics_texture = load(physics_image_path)
+		else: level_data.asphalt_physics_texture = ImageTexture.create_from_image(Image.create_empty(512,512, false, Image.FORMAT_RGBF))
+	%AsphaltPhysics.material.set_shader_parameter("asphalt_meta", level_data.asphalt_physics_texture)
+
+	# Initial update for materials and physics
+	update_materials()
+	update_level_physics()	
+
+func initialize(data_path: String) -> void: 
+	level_data = ResourceLoader.load(data_path)
+	_initialize(level_data, data_path)
+
+#endregion Update functions
+
+func _ready() -> void:
+	update_materials()
