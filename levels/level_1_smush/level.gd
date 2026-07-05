@@ -16,7 +16,7 @@ func _process(delta: float) -> void:
 	) / flat_chunk_size
 	var roller_angle = -$Roller.rotation.y + PI / 2.
 	if $Roller.is_reversing: roller_angle -= PI
-	$RoadChunk.set_roller_brush(texture_coordinates, roller_angle, roller_strength)
+	$RoadChunk.set_roller_brush(texture_coordinates, roller_angle, roller_strength * roller_strength_from_movement)
 	$RoadChunk.update_asphalt()
 
 @export var level_scan_duration_sec: float = 0.7
@@ -50,3 +50,7 @@ func _have_road_paint_appear(animation_length: float = 0.7) -> void:
 			$RoadPaint.mesh.size.y = road_paint_animation_curve.sample(w) * 32.25,
 		0., 1., animation_length
 	).set_ease(Tween.EASE_IN_OUT)
+
+var roller_strength_from_movement: float = 0.
+func _on_roller_driver_intention_changed(is_moving: bool, _forward: bool) -> void:
+	roller_strength_from_movement = 1. if is_moving else 0.
