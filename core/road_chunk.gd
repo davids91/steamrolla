@@ -2,6 +2,13 @@
 class_name RoadChunk
 extends Node3D
 
+
+var physics_needs_update: bool = false
+var time_since_last_update: float = 0.0
+@export_category("Physics") 
+@export_range(0.01, 1.0, 0.01) var physics_update_interval: float = 0.2
+
+@export_category("General")
 @export var map_resolution: Vector2i = Vector2(512,512)
 @export var level_data: RoadChunkData
 @export var height_unit: float = 0.5
@@ -132,7 +139,7 @@ func update_asphalt() -> void:
 			ImageTexture.create_from_image(%AsphaltPhysicsViewport.get_texture().get_image())
 		)
 		update_materials()
-		update_level_physics()
+		physics_needs_update = true
 	).call_deferred()
 
 
@@ -212,3 +219,11 @@ func initialize(data_path: String) -> void:
 
 func _ready() -> void:
 	update_materials()
+
+func _process(delta: float) -> void:
+	if not physics_needs_update: return
+	time_since_last_update += delta
+	if time_since_last_update >= physics_update_interval:
+		update_level_physics()
+		physics_needs_update = false
+		time_since_last_update = 0.0
