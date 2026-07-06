@@ -28,16 +28,17 @@ func _on_check_btn_button_down() -> void:
 		%RoadChunk.initiate_scan(level_scan_duration_sec, level_scan_range, func():
 			var deviation: float = %RoadChunk.get_deviation_from_target()
 			print(abs(deviation - 0.5)) #DEBUG: To see what would be the acepted level of deviation
-			#if(1. > accepted_deviation):
-			if true:
+			if(1. > accepted_deviation):
 				var winning_animation: Tween = create_tween()
 				create_tween().tween_method(
 					func(w: float): %RoadChunk.snap_to_reference(w), 0., 0.15, 0.55
 				).set_ease(Tween.EASE_IN_OUT).finished.connect(func(): %RoadChunk.snap_to_reference(0.))
+				winning_animation.tween_callback(func(): $SuccessLevel.play())
 				winning_animation.tween_method(func(w: float): %RoadChunk.set_highlight(sin(w)), 0., PI, 1.3)
 				winning_animation.tween_method(func(w: float): %RoadChunk.set_highlight(sin(w)), 0., PI, 0.15)
 				winning_animation.tween_method(func(w: float): %RoadChunk.set_highlight(sin(w)), 0., PI, 0.15)
 				winning_animation.tween_callback(_have_road_paint_appear)
+			else: $BotchLevel.play()
 		)
 
 @export var road_paint_animation_curve: Curve
