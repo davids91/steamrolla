@@ -3,28 +3,10 @@
 [ext_resource type="Script" uid="uid://kpioyx2nil4v" path="res://core/roller_controller.gd" id="1_vq81g"]
 [ext_resource type="PackedScene" uid="uid://cw8sj3nlo8tjc" path="res://source_assets/models/roller/roller.fbx" id="2_vq81g"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vq81g"]
-sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-
-[sub_resource type="Sky" id="Sky_qrjta"]
-sky_material = SubResource("ProceduralSkyMaterial_vq81g")
-
-[sub_resource type="Environment" id="Environment_b7bnf"]
-background_mode = 2
-sky = SubResource("Sky_qrjta")
-
 [node name="Roller" type="Node3D" unique_id=1510864838]
 script = ExtResource("1_vq81g")
 opacity = 0.1
 speed = 0.05
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1869730338]
-transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
-shadow_enabled = true
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=471258495]
-environment = SubResource("Environment_b7bnf")
 
 [node name="roller" parent="." unique_id=1495978508 instance=ExtResource("2_vq81g")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
