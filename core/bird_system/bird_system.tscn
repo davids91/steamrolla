@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://de4tloiofpaf"]
+
+[ext_resource type="Script" uid="uid://qstf2bf1kb30" path="res://core/bird_system/bird_system.gd" id="1_2u2y3"]
+
+[node name="BirdSystem" type="Node" unique_id=1774926656 groups=["BirdSystem"]]
+script = ExtResource("1_2u2y3")
+
+[node name="FlockingPoints" type="Node3D" parent="." unique_id=1140147995]
+unique_name_in_owner = true
+
+[node name="Birds" type="Node3D" parent="." unique_id=59354225]
+unique_name_in_owner = true
