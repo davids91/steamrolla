@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://kpioyx2nil4v" path="res://core/roller_controller.gd" id="1_vq81g"]
 [ext_resource type="PackedScene" uid="uid://cw8sj3nlo8tjc" path="res://source_assets/models/roller/roller.fbx" id="2_vq81g"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_c7bb5"]
+size = Vector3(3.6660156, 4.4519043, 6.8864746)
+
 [node name="Roller" type="Node3D" unique_id=1510864838]
 script = ExtResource("1_vq81g")
 opacity = 0.1
@@ -13,3 +16,9 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 1
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=7538168]
 transform = Transform3D(-1, 3.492186e-15, -8.742277e-08, -1.300614e-08, 0.9888714, 0.14877297, 8.644987e-08, 0.14877295, -0.9888714, 0, 5.5335317, -5.0100365)
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1575235035]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1931688132]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0897217, -2.072876)
+shape = SubResource("BoxShape3D_c7bb5")
