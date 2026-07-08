@@ -143,13 +143,13 @@ func update_asphalt() -> void:
 	).call_deferred()
 
 
-const PHYSICS_SCALE_FOR_HEIGHT: float = 2. / (32. / 512.) ## Eplained below:
+const PHYSICS_SCALE_FOR_HEIGHT: float = 2. / (32. / 64.) ## Eplained below:
 ## Asphalt resolution(512x512) is double of the terrain resolution, so the resulting shape is double the size of the displayed map
 ## Additionally, the ground mesh is of size 32x32. and the physics mesh needs to be scaled down to it from its resolution(512x512) 
 func update_level_physics() -> void:
 	(func():
 		await RenderingServer.frame_post_draw
-		var physics_material: Image = %AsphaltPhysicsViewport.get_texture().get_image()
+		var physics_material: Image = %MiniAsphaltPhysicsViewport.get_texture().get_image()
 		physics_material.decompress()
 		physics_material.convert(Image.FORMAT_RF)
 		$GroundPhysicsFake/Shape.shape.update_map_data_from_image(physics_material, 0., height_unit * PHYSICS_SCALE_FOR_HEIGHT)
