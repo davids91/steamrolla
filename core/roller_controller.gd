@@ -33,7 +33,7 @@ func _process(delta: float) -> void:
 	if debug: camera_3d.make_current()
 
 	movement_intent = Input.get_vector(&"move_left", &"move_right", &"move_forward", &"move_backwards")
-	direction = (transform.basis * Vector3(movement_intent.x, 0, movement_intent.y).normalized())
+	direction = Vector3(movement_intent.x, 0, movement_intent.y).normalized()
 
 	_handle_turning(delta)
 
