@@ -8,6 +8,10 @@ class_name BirdData
 @export var run_speed: float = 2.0
 @export var fly_speed: float = 10.0
 @export var rotation_speed: float = 1
+@export var loiter_slowness: float = 100
+@export_range(0.0, 2.0, 0.1) var lotier_jump_height: float = 0.1
+@export var _loiter_max_dist : = 2
+
 
 @export_category("Behaviour")
  # If the velocity of incoming object exceeds it - fly even if not in flyaway radius

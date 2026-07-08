@@ -2,6 +2,8 @@
 extends Node3D
 class_name ABird
 
+@export var debug = false
+
 const BIRD_REACTABLE_GROUP_NAME: String = "BirdReactable"
 
 var bird_system: BirdSystem
@@ -30,36 +32,39 @@ func change_state(new_state):
 #region internal memory
 var _active_threat: Node3D = null
 var _fly_direction: = Vector3.ZERO
+var _is_loitering: = true
+var _spawn_pos: Vector3 = Vector3.ZERO
 #endregion
 
 var velocity := Vector3.ZERO
 var is_flying := false
 var _floor_detector: RayCast3D
 
+
 # Is called from BirdSystem with custom tick rate
 func think(delta: float) -> void:
-	print("Current state is: ", current_state)
+	if debug:
+		print("%s's: Current state is: %d" % [name, current_state])
 	_asses_threat()
 	_make_decision()
 
 
 func _create_floor_raycast() -> void:
 	_floor_detector = RayCast3D.new()
-	_floor_detector.target_position = Vector3(0.0, 1.0 ,0.0)
+	_floor_detector.target_position = Vector3(0.0, 2.0 ,0.0)
 	add_child(_floor_detector)
 
-func _snap_to_ground() -> void:
+func _snap_to_ground() -> Vector3:
 	_floor_detector.force_raycast_update()
 	if _floor_detector.is_colliding():
 		var ground_pos = _floor_detector.get_collision_point()
 		global_position.y = ground_pos.y
-
+	return global_position
 func _ready() -> void:
 	bird_system = get_tree().get_first_node_in_group("BirdSystem")
-	assert(bird_system != null, "CRITICAL: Can't find the Bird System on " + name)	
-	
-	assert(caution_area != null, "CRITICAL: Caution Area not assigned on " + name)
-	assert(flyaway_area != null, "CRITICAL: Flyaway Area not assigned on " + name)
+	if bird_system == null: printerr("CRITICAL: Can't find the Bird System on " + name)	
+	if caution_area == null: printerr("CRITICAL: Caution Area not assigned on " + name)
+	if flyaway_area == null: printerr("CRITICAL: Flyaway Area not assigned on " + name)
 	
 	caution_area.body_entered.connect(_on_caution_entered)
 	caution_area.body_exited.connect(_on_caution_exited)
@@ -69,9 +74,10 @@ func _ready() -> void:
 	caution_area.area_exited.connect(_on_caution_exited)
 	flyaway_area.area_entered.connect(_on_flyaway_entered)
 	
-	
 	_create_floor_raycast()
 	_snap_to_ground()
+	
+	_spawn_pos = global_position
 	
 	bird_system.register(self)
 	
