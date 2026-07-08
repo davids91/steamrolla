@@ -1,5 +1,5 @@
 @abstract
-extends CharacterBody3D
+extends Node3D
 class_name ABird
 
 const BIRD_REACTABLE_GROUP_NAME: String = "BirdReactable"
@@ -29,10 +29,12 @@ func change_state(new_state):
 
 #region internal memory
 var _active_threat: Node3D = null
-var _fly_direction: Vector3 = Vector3.ZERO
-var _away: Vector3 = Vector3.ZERO
-var _to_rotate_to: Quaternion
+var _fly_direction: = Vector3.ZERO
 #endregion
+
+var velocity := Vector3.ZERO
+var is_flying := false
+var _floor_detector: RayCast3D
 
 # Is called from BirdSystem with custom tick rate
 func think(delta: float) -> void:
@@ -41,6 +43,16 @@ func think(delta: float) -> void:
 	_make_decision()
 
 
+func _create_floor_raycast() -> void:
+	_floor_detector = RayCast3D.new()
+	_floor_detector.target_position = Vector3(0.0, 1.0 ,0.0)
+	add_child(_floor_detector)
+
+func _snap_to_ground() -> void:
+	_floor_detector.force_raycast_update()
+	if _floor_detector.is_colliding():
+		var ground_pos = _floor_detector.get_collision_point()
+		global_position.y = ground_pos.y
 
 func _ready() -> void:
 	bird_system = get_tree().get_first_node_in_group("BirdSystem")
@@ -57,13 +69,30 @@ func _ready() -> void:
 	caution_area.area_exited.connect(_on_caution_exited)
 	flyaway_area.area_entered.connect(_on_flyaway_entered)
 	
+	
+	_create_floor_raycast()
+	_snap_to_ground()
+	
 	bird_system.register(self)
 	
 
-func _physics_process(delta: float) -> void:
-	if _to_rotate_to.is_normalized():
-		quaternion = quaternion.slerp(_to_rotate_to, bird_data.rotation_speed * delta)
-	move_and_slide()
+func _process(delta: float) -> void:
+	if velocity.length() == 0.0:
+		if _active_threat:
+			var direction = global_position.direction_to(_active_threat.global_position)
+			var target_basis := Basis.looking_at(direction)
+			global_basis = global_basis.slerp(target_basis, bird_data.rotation_speed - exp(-3.0 * delta))
+	elif velocity.length()>0.1:
+		var direction_to: Vector3 = global_rotation
+		if _active_threat: direction_to =_active_threat.global_position
+		var direction = -global_position.direction_to(direction_to)
+		var target_basis := Basis.looking_at(direction)
+		global_basis = global_basis.slerp(target_basis, bird_data.rotation_speed - exp(-3.0 * delta))
+		
+		global_position += velocity * delta
+		_fly_direction = global_position + velocity
+		_fly_direction.y = global_position.y
+		
 	
 func _exit_tree() -> void:
 	bird_system.unregister(self)
