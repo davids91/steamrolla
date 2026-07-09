@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_5rkye")
+name = "Pigeon"
 run_speed = 0.5
 fly_speed = 6.0
 loiter_slowness = 1.0
