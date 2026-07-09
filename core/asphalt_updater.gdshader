@@ -50,9 +50,9 @@ void fragment() {
 			//}
 		//}
 	//} else
-	if (VALUE_EPSILON < abs(asphalt_delta)){ // Shoveling
+	if (VALUE_EPSILON < abs(asphalt_delta)){ // Shoveling // Bombing
 		float distance_from_center = length(UV - roller_center);
-		float _asphalt_delta = asphalt_delta * smoothstep(effect_radius, 0., distance_from_center);
+		float _asphalt_delta = asphalt_delta * (1.0 - smoothstep(0.0, effect_radius, distance_from_center)); // smoothstep(a, b, x) has undefined hardware behavior if a > b.
 		if(abs(_asphalt_delta) > VALUE_EPSILON){
 			asphalt_delta_output = _asphalt_delta;
 		}
