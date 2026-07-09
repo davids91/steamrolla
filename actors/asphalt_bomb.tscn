@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://dvjbw1y8j3rrf"]
+
+[ext_resource type="Script" uid="uid://dc6waktk7yn5s" path="res://core/asphalt_bomb/asphalt_bomb.gd" id="1_odkbx"]
+[ext_resource type="PackedScene" uid="uid://7s03ocm3dcqq" path="res://actors/asphalt_bomb_vfx.tscn" id="2_uxt2m"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_c7bb5"]
+
+[node name="AsphaltBomb" type="Node3D" unique_id=287669892]
+script = ExtResource("1_odkbx")
+explosion_vfx_scene = ExtResource("2_uxt2m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1929492565]
+mesh = SubResource("BoxMesh_c7bb5")
