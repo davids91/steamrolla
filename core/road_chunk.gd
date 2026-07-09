@@ -242,7 +242,6 @@ func _on_asphalt_bomb_explode(explosion_pos: Vector3, explode_radius: float, amo
 #endregion Bomb Explode
 
 func _ready() -> void:
-	connect("request_update", update_asphalt)
 	update_materials()
 
 func _process(delta: float) -> void:
