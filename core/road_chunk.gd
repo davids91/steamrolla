@@ -162,7 +162,7 @@ func update_asphalt() -> void:
 const PHYSICS_SCALE_FOR_HEIGHT: float = 2. / (32. / 64.) ## Eplained below:
 ## Asphalt resolution(512x512) is double of the terrain resolution, so the resulting shape is double the size of the displayed map
 ## Additionally, the ground mesh is of size 32x32. and the physics mesh needs to be scaled down to it from its resolution(512x512) 
-func update_level_physics() -> void:
+func update_physics() -> void:
 	(func():
 		await RenderingServer.frame_post_draw
 		var physics_material: Image = %MiniAsphaltPhysicsViewport.get_texture().get_image()
@@ -214,9 +214,7 @@ func _initialize(data: RoadChunkData, data_path: String = "") -> void:
 	# Handle asphalt physics starting values
 	var no_asphalt_delta_image: Image = Image.create(512,512, false, Image.FORMAT_RGBF)
 	no_asphalt_delta_image.fill(Color.from_rgba8(128,128,128,255))
-	%AsphaltPhysics.material.set_shader_parameter(
-		"asphalt_delta", ImageTexture.create_from_image(no_asphalt_delta_image)
-	)
+	%AsphaltPhysics.material.set_shader_parameter("asphalt_delta", ImageTexture.create_from_image(no_asphalt_delta_image))
 	if not level_data.asphalt_physics_texture:
 		var physics_image_path: String = _asphalt_physics_tex_path(data_path.get_base_dir())
 		if FileAccess.file_exists(physics_image_path): level_data.asphalt_physics_texture = load(physics_image_path)
@@ -225,7 +223,7 @@ func _initialize(data: RoadChunkData, data_path: String = "") -> void:
 
 	# Initial update for materials and physics
 	update_materials()
-	update_level_physics()
+	update_physics()
 
 func initialize(data_path: String) -> void: 
 	level_data = ResourceLoader.load(data_path)
@@ -237,11 +235,12 @@ var asphalt_filter_cache: Image
 func _ready() -> void:
 	update_materials()
 	asphalt_filter_cache = level_data.asphalt_filter_image.get_image()
+	update_physics()
 
 func _process(delta: float) -> void:
-	if not physics_needs_update: return
 	time_since_last_update += delta
+	if not physics_needs_update: return
 	if time_since_last_update >= physics_update_interval:
-		update_level_physics()
+		update_physics()
 		physics_needs_update = false
 		time_since_last_update = 0.0

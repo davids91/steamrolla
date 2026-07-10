@@ -34,23 +34,23 @@ extends Node3D
 	set(_v): %RoadChunk.update_materials()
 
 @export var call_update_physics: bool = false:
-	set(_v): %RoadChunk.update_level_physics()
+	set(_v): %RoadChunk.update_physics()
 
 @export var update_asphalt: bool = false:
 	set(_v):
 		%RoadChunk.update_asphalt()
-		%RoadChunk.update_level_physics()
+		%RoadChunk.update_physics()
 
 @export var empty_asphalt_image: bool = false:
 	set(_v):
 		%RoadChunk.set_asphalt_to_empty()
-		%RoadChunk.update_level_physics()
+		%RoadChunk.update_physics()
 
 @export var regenerate_asphalt_image: bool = false:
 	set(_v):
 		noise.seed = randi()
 		%RoadChunk.randomize_asphalt(noise, starting_asphalt_level_normalized)
-		%RoadChunk.update_level_physics()
+		%RoadChunk.update_physics()
 
 @export_range(0., 1.) var reference_asphalt_height: float = starting_asphalt_level_normalized
 @export var set_asphalt_to_reference_height: bool = false:
