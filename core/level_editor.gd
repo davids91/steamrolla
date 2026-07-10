@@ -270,18 +270,12 @@ func _physics_process(_delta: float) -> void:
 				else: last_smoothed_position = lerp(last_smoothed_position, raycast_result.position, smush_responsiveness)
 				if 2.5 > (last_smoothed_position- $consty.global_position).length(): $consty.smoosh()
 				elif $consty.is_being_smooshed(): $consty.unsmoosh()
-				var flat_chunk_size: Vector2 = Vector2(%RoadChunk.get_size().x, %RoadChunk.get_size().z)
-				var texture_coordinates: Vector2 = (
-					Vector2(last_smoothed_position.x, last_smoothed_position.z)
-					 - Vector2(%RoadChunk.global_position.x, %RoadChunk.global_position.z)
-					+ flat_chunk_size * 0.5
-				) / flat_chunk_size
 
 				#TODO: Move roller angle calculation to the player controller
 				# Set roller position and udpate brush
 				var roller_delta_pos: Vector3 = last_smoothed_position - $Compactor.global_position
 				%RoadChunk.set_roller_brush(
-					texture_coordinates,
+					%RoadChunk.get_tex_position_from(last_smoothed_position),
 					Vector2(roller_delta_pos.x, roller_delta_pos.z).angle(),
 					compacting_strength
 				)

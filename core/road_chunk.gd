@@ -34,25 +34,36 @@ func randomize_asphalt(noise: Noise, level: float = 0.2, distribution: float = 0
 	current_asphalt_level.convert(Image.FORMAT_RF)
 	level_data.asphalt_quantity_texture = ImageTexture.create_from_image(current_asphalt_level)
 	update_materials()
-#endregion Asphalt setters
-
-func get_size() -> Vector3: return Vector3($Ground.mesh.size.x, height_unit, $Ground.mesh.size.y)
 
 func set_target() -> void:
 	var target_image: Image = %AsphaltPhysicsViewport.get_texture().get_image()
 	level_data.target_height_texture = ImageTexture.create_from_image(target_image)
 	$Ground.get_active_material(0).set_shader_parameter("level_tool_reference", level_data.target_height_texture)
 
-func get_deviation_from_target() -> float:
-	var difference_image: Image = %AsphaltCheckerViewport.get_texture().get_image()
-	difference_image.resize(1,1, Image.INTERPOLATE_LANCZOS)
-	return difference_image.get_pixel(0,0).get_luminance()
-
 func snap_to_reference(amount: float) -> void:
 	if not %AsphaltPhysicsViewport or not %AsphaltTransformer: return
 	%AsphaltTransformer.material.set_shader_parameter("target_height", level_data.target_height_texture)
 	%AsphaltTransformer.material.set_shader_parameter("set_to_reference", amount)
 
+#endregion Asphalt setters
+
+func get_size() -> Vector3: return Vector3($Ground.mesh.size.x, height_unit, $Ground.mesh.size.y)
+
+func get_tex_position_from(pos: Vector3) -> Vector2:
+	var flat_chunk_size: Vector2 = Vector2($Ground.mesh.size.x, $Ground.mesh.size.y)
+	return (
+		Vector2(pos.x, pos.z) - Vector2(global_position.x, global_position.z) + flat_chunk_size * 0.5
+	) / flat_chunk_size
+
+func is_on_asphalt(pos: Vector3) -> bool:
+	return 0.5 < asphalt_filter_cache.get_pixelv(get_tex_position_from(pos)).get_luminance()
+
+func get_deviation_from_target() -> float:
+	var difference_image: Image = %AsphaltCheckerViewport.get_texture().get_image()
+	difference_image.resize(1,1, Image.INTERPOLATE_LANCZOS)
+	return difference_image.get_pixel(0,0).get_luminance()
+
+#region update brushes
 func set_crazify_amount(amount: float):
 	$Ground.get_active_material(0).set_shader_parameter("crazify_amount", amount)
 
@@ -80,11 +91,16 @@ func set_roller_brush(center: Vector2, angle: float, strength: float = 1.) -> vo
 	if -1. < strength:
 		%AsphaltUpdater.material.set_shader_parameter("effect_strength", strength)
 
+func set_roller_size(size: Vector2) -> void:
+	%AsphaltUpdater.material.set_shader_parameter("roller_size", size)
+
 func set_highlight(amount: float) -> void :
 	$Ground.get_active_material(0).set_shader_parameter("hightlight_strength", amount)
 
 func use_roller(should_use: bool) -> void:
 	%AsphaltUpdater.material.set_shader_parameter("using_roller", should_use)
+
+#endregion update brushes
 
 var scan_tween: Tween
 func scan_in_progress() -> bool: return scan_tween != null
@@ -217,8 +233,10 @@ func initialize(data_path: String) -> void:
 
 #endregion Update functions
 
+var asphalt_filter_cache: Image
 func _ready() -> void:
 	update_materials()
+	asphalt_filter_cache = level_data.asphalt_filter_image.get_image()
 
 func _process(delta: float) -> void:
 	if not physics_needs_update: return

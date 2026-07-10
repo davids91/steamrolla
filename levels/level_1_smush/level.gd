@@ -3,6 +3,7 @@ extends Node3D
 @export_range(0., 0.9) var roller_strength: float = 0.15
 
 func _ready() -> void:
+	$RoadChunk.set_roller_size($Roller.normalized_roller_size)
 	$RoadChunk.update_materials()
 
 var elapsed_time: float = 0.
