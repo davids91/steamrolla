@@ -36,7 +36,7 @@ func _process(delta: float) -> void:
 	direction = Vector3(movement_intent.x, 0, movement_intent.y).normalized()
 
 	_handle_turning(delta)
-	_handle_movement(delta, movement_intent) 
+	_handle_movement(delta) 
 	
 	if is_reversing != (movement_intent.y < 0.0) or is_moving != (movement_intent.length() > 0.0):
 		driver_intention_changed.emit(0.0 != movement_intent.length(), movement_intent.y < 0.0)
@@ -56,9 +56,9 @@ func _physics_process(_delta: float) -> void:
 		global_position = raycast_result.position
 
 
-func _handle_movement(delta: float, movement: Vector2) -> void:
-	if abs(movement.y) > 0:
-		global_position += basis.z * speed * -movement.y * delta
+func _handle_movement(delta: float) -> void:
+	if abs(movement_intent.y) > 0:
+		global_position += basis.z * speed * -movement_intent.y * delta
 
 
 func _handle_turning(delta: float) -> void:
