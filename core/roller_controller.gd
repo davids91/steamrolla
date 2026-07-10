@@ -1,4 +1,4 @@
-class_name RollerController extends Node3D
+class_name RollerController extends CrewMember
 
 
 signal driver_intention_changed(is_moving: bool, forward: bool)
