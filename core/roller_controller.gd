@@ -12,10 +12,10 @@ signal driver_intention_changed(is_moving: bool, forward: bool)
 		if $Skin: $Skin.get_active_material(0).albedo_color.a = opacity
 
 @export_category("Locomotion")
-@export var speed: float = 1.0
+@export var speed: float = 5.0
 @export var steering_angle: float = 1.0
 @export var steering_epsilon: float = 0.001
-@export var turning_speed: float = 1.0
+@export var turning_speed: float = 0.25
 
 var is_reversing: bool = false
 var is_moving: bool = false
@@ -36,9 +36,7 @@ func _process(delta: float) -> void:
 	direction = Vector3(movement_intent.x, 0, movement_intent.y).normalized()
 
 	_handle_turning(delta)
-
-	if abs(movement_intent.y) > 0:
-		global_position += basis.z * speed * -movement_intent.y
+	_handle_movement(delta, movement_intent) 
 	
 	if is_reversing != (movement_intent.y < 0.0) or is_moving != (movement_intent.length() > 0.0):
 		driver_intention_changed.emit(0.0 != movement_intent.length(), movement_intent.y < 0.0)
@@ -46,16 +44,6 @@ func _process(delta: float) -> void:
 	# Takes a Vector2 and use it in 3D space
 	is_reversing = direction.z > 0.0
 	is_moving = direction.z != 0.0
-
-
-# func _unhandled_input(_event: InputEvent) -> void:
-# 	if is_reversing != (movement_intent.y < 0.0) or is_moving != (movement_intent.length() > 0.0):
-# 		driver_intention_changed.emit(0.0 != movement_intent.length(), movement_intent.y < 0.0)
-	
-# 	# is_reversing = (movement_intent.y < 0.)
-# 	# Takes a Vector2 and use it in 3D space
-# 	is_reversing = direction.z > 0.0
-# 	is_moving = (movement_intent.length() > 0.0)
 
 
 func _physics_process(_delta: float) -> void:
@@ -66,7 +54,12 @@ func _physics_process(_delta: float) -> void:
 
 	if "position" in raycast_result:
 		global_position = raycast_result.position
-	
+
+
+func _handle_movement(delta: float, movement: Vector2) -> void:
+	if abs(movement.y) > 0:
+		global_position += basis.z * speed * -movement.y * delta
+
 
 func _handle_turning(delta: float) -> void:
 	if Input.is_action_pressed(&"move_left") and direction.z < -0.1:

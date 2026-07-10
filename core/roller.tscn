@@ -8,9 +8,8 @@ size = Vector3(3.6660156, 4.4519043, 6.8864746)
 
 [node name="Roller" type="Node3D" unique_id=1510864838]
 script = ExtResource("1_vq81g")
-opacity = 0.1
-speed = 0.05
-turning_speed = 0.5
+speed = 5.0
+turning_speed = 0.25
 
 [node name="roller" parent="." unique_id=1495978508 instance=ExtResource("2_vq81g")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 1.047107, 0)
