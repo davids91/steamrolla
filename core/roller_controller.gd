@@ -5,11 +5,11 @@ signal driver_intention_changed(is_moving: bool, forward: bool)
 
 @export var debug: bool
 
-@export_category("Opacity")
-@export var opacity: float = 0.4:
-	set(v):
-		opacity = v
-		if $Skin: $Skin.get_active_material(0).albedo_color.a = opacity
+# @export_category("Opacity")
+# @export var opacity: float = 0.4:
+# 	set(v):
+# 		opacity = v
+# 		if $Skin: $Skin.get_active_material(0).albedo_color.a = opacity
 
 @export_category("Locomotion")
 @export var speed: float = 5.0
@@ -26,7 +26,7 @@ var direction: Vector3
 
 
 func _process(delta: float) -> void:
-	if Input.is_action_pressed(&"debug"):
+	if Input.is_action_just_pressed(&"debug"):
 		debug = !debug
 
 	# Making the camera current for testing
@@ -62,15 +62,5 @@ func _handle_movement(delta: float) -> void:
 
 
 func _handle_turning(delta: float) -> void:
-	if Input.is_action_pressed(&"move_left") and direction.z < -0.1:
-		if abs(movement_intent.x) > steering_epsilon:
-			rotate(Vector3.UP, -(steering_angle * movement_intent.x * turning_speed) * delta)
-	if Input.is_action_pressed(&"move_right") and direction.z < -0.1:
-		if abs(movement_intent.x) > steering_epsilon:
-			rotate(Vector3.UP, -(steering_angle * movement_intent.x * turning_speed) * delta)
-	if Input.is_action_pressed(&"move_left") and direction.z > 0.1:
-		if abs(movement_intent.x) > steering_epsilon:
-			rotate(Vector3.UP, (steering_angle * movement_intent.x * turning_speed) * delta)
-	if Input.is_action_pressed(&"move_right") and direction.z > 0.1:
-		if abs(movement_intent.x) > steering_epsilon:
-			rotate(Vector3.UP, (steering_angle * movement_intent.x * turning_speed) * delta)
+	if abs(movement_intent.x) <= steering_epsilon or abs(direction.z) <= 0.1: return
+	rotate(Vector3.UP, signf(direction.z) * steering_angle * movement_intent.x * turning_speed * delta)
