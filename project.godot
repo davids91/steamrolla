@@ -19,6 +19,10 @@ config/icon="uid://destece58mcou"
 
 enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/jigglebones/plugin.cfg")
 
+[global_group]
+
+BombActivator=""
+
 [input]
 
 move_left={
