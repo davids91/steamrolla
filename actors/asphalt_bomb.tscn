@@ -2,12 +2,20 @@
 
 [ext_resource type="Script" uid="uid://dc6waktk7yn5s" path="res://core/asphalt_bomb/asphalt_bomb.gd" id="1_odkbx"]
 [ext_resource type="PackedScene" uid="uid://7s03ocm3dcqq" path="res://actors/asphalt_bomb_vfx.tscn" id="2_uxt2m"]
+[ext_resource type="PackedScene" uid="uid://qg7shhxakb6c" path="res://source_assets/models/asphalt_bomb/asphalt_bomb.fbx" id="3_e1om7"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_c7bb5"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_c7bb5"]
+radius = 8.0
 
 [node name="AsphaltBomb" type="Node3D" unique_id=287669892]
 script = ExtResource("1_odkbx")
 explosion_vfx_scene = ExtResource("2_uxt2m")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1929492565]
-mesh = SubResource("BoxMesh_c7bb5")
+[node name="Area3D" type="Area3D" parent="." unique_id=380600013]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=835020736]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0904806, 0)
+shape = SubResource("SphereShape3D_c7bb5")
+
+[node name="asphalt_bomb" parent="." unique_id=965572390 instance=ExtResource("3_e1om7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3700535, 0)
