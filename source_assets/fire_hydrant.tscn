@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://cnarqk06h326x"]
+
+[ext_resource type="PackedScene" uid="uid://d22ami84juxxw" path="res://source_assets/models/fire_hydrant/fire_hydrant.fbx" id="1_jop2m"]
+
+[node name="FireHydrant" type="Node3D" unique_id=2124233241]
+
+[node name="fire_hydrant" parent="." unique_id=1933406828 instance=ExtResource("1_jop2m")]
