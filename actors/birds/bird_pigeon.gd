@@ -33,11 +33,6 @@ func _on_flyaway_entered(body: Node3D):
 func _asses_threat():
 	if not _active_threat: return
 	if global_position.distance_squared_to(_active_threat.global_position) > bird_data.tolerable_distance_for_threat: return
-	var threat_speed: float = _active_threat.velocity.length()
-	if threat_speed < bird_data.tolerable_velocity:
-		change_state(State.RUNNING)
-	else:
-		change_state(State.FLYING)
 	
 func _make_decision():
 	match current_state:

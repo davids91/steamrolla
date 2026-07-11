@@ -10,7 +10,9 @@ var bird_system: BirdSystem
 
 @export var bird_data: BirdData
 
-enum State {ONGROUND, RUNNING, FLYING} 
+signal despawn
+
+enum State {ONGROUND, RUNNING, FLYING}
 @export var current_state: State
 
 @export var caution_area: Area3D
@@ -62,25 +64,25 @@ func _snap_to_ground() -> Vector3:
 	return global_position
 func _ready() -> void:
 	bird_system = get_tree().get_first_node_in_group("BirdSystem")
-	if bird_system == null: printerr("CRITICAL: Can't find the Bird System on " + name)	
+	if bird_system == null: printerr("CRITICAL: Can't find the Bird System on " + name)
 	if caution_area == null: printerr("CRITICAL: Caution Area not assigned on " + name)
 	if flyaway_area == null: printerr("CRITICAL: Flyaway Area not assigned on " + name)
-	
+
 	caution_area.body_entered.connect(_on_caution_entered)
 	caution_area.body_exited.connect(_on_caution_exited)
 	flyaway_area.body_entered.connect(_on_flyaway_entered)
-	
+
 	caution_area.area_entered.connect(_on_caution_entered)
 	caution_area.area_exited.connect(_on_caution_exited)
 	flyaway_area.area_entered.connect(_on_flyaway_entered)
-	
+
 	_create_floor_raycast()
 	_snap_to_ground()
-	
+
 	_spawn_pos = global_position
-	
+
 	bird_system.register(self)
-	
+
 
 func _process(delta: float) -> void:
 	if velocity.length() == 0.0:
@@ -94,11 +96,12 @@ func _process(delta: float) -> void:
 		var direction = -global_position.direction_to(direction_to)
 		var target_basis := Basis.looking_at(direction)
 		global_basis = global_basis.slerp(target_basis, bird_data.rotation_speed - exp(-3.0 * delta))
-		
+
 		global_position += velocity * delta
 		_fly_direction = global_position + velocity
 		_fly_direction.y = global_position.y
-		
-	
+
+
 func _exit_tree() -> void:
 	bird_system.unregister(self)
+	despawn.emit()
