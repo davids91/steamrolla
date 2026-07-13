@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://de4tloiofpaf"]
+
+[ext_resource type="Script" uid="uid://qstf2bf1kb30" path="res://core/bird_system/bird_system.gd" id="1_2u2y3"]
+[ext_resource type="Script" uid="uid://cfaqn54i3wecl" path="res://core/bird_system/bird_data.gd" id="2_gpal2"]
+[ext_resource type="Resource" uid="uid://dlx0hu6ikosc7" path="res://actors/birds/bird_pigeon.tres" id="3_gk4qw"]
+[ext_resource type="PackedScene" uid="uid://dk5kgpcfff4qu" path="res://actors/birds/bird_pigeon.tscn" id="4_3orlh"]
+[ext_resource type="Resource" uid="uid://bagacfbcb1gka" path="res://actors/birds/bird_crow.tres" id="5_3orlh"]
+[ext_resource type="PackedScene" uid="uid://crcupi01yu6od" path="res://actors/birds/bird_crow.tscn" id="6_uwmfq"]
+
+[node name="BirdSystem" type="Node" unique_id=1774926656 groups=["BirdSystem"]]
+script = ExtResource("1_2u2y3")
+bird_type = Dictionary[ExtResource("2_gpal2"), PackedScene]({
+ExtResource("3_gk4qw"): ExtResource("4_3orlh"),
+ExtResource("5_3orlh"): ExtResource("6_uwmfq")
+})
+
+[node name="FlockingPoints" type="Node3D" parent="." unique_id=1140147995]
+unique_name_in_owner = true
+
+[node name="Birds" type="Node3D" parent="." unique_id=59354225]
+unique_name_in_owner = true

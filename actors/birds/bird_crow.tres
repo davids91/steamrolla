@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BirdData" format=3 uid="uid://bagacfbcb1gka"]
+
+[ext_resource type="Script" uid="uid://cfaqn54i3wecl" path="res://core/bird_system/bird_data.gd" id="1_jmbcj"]
+
+[resource]
+script = ExtResource("1_jmbcj")
+name = "Crow"
+walk_speed = 2.0
+run_speed = 0.5
+rotation_speed = 2.0
+loiter_slowness = 0.8
+lotier_jump_height = 0.2
+min_brain_delay = 1.0
+max_brain_delay = 2.0
