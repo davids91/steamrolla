@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="BirdData" format=3 uid="uid://dlx0hu6ikosc7"]
+
+[ext_resource type="Script" uid="uid://cfaqn54i3wecl" path="res://core/bird_system/bird_data.gd" id="1_5rkye"]
+
+[resource]
+script = ExtResource("1_5rkye")
+name = "Pigeon"
+run_speed = 0.5
+fly_speed = 6.0
+loiter_slowness = 1.0
+lotier_jump_height = 0.0
+min_brain_delay = 1.0
+max_brain_delay = 2.0

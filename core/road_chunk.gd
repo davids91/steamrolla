@@ -2,7 +2,6 @@
 class_name RoadChunk
 extends Node3D
 
-
 var physics_needs_update: bool = false
 var time_since_last_update: float = 0.0
 @export_category("Physics") 
@@ -230,6 +229,30 @@ func initialize(data_path: String) -> void:
 	_initialize(level_data, data_path)
 
 #endregion Update functions
+#region Bomb Explode
+func _on_asphalt_bomb_explode(explosion_pos: Vector3, explode_radius: float, amount_of_asphalt_to_add: float):
+	var local_pos = to_local(explosion_pos)
+	
+	var mesh_size = $Ground.mesh.size
+	
+	var uv_x = (local_pos.x / mesh_size.x) + 0.5
+	var uv_y = (local_pos.y / mesh_size.y) + 0.5
+	var center_uv = Vector2(uv_x, uv_y)
+	
+	if uv_x < 0.0 or uv_x > 1.0 or uv_y < 0.0 or uv_y > 1.0:
+		return
+		
+	use_roller(false)
+	
+	set_update_brush_center(center_uv)
+	set_update_brush_radius(explode_radius)
+	set_update_brush_amount(amount_of_asphalt_to_add)
+	
+	update_asphalt()
+	
+	await get_tree().process_frame
+	set_update_brush_amount(0.0)
+#endregion Bomb Explode
 
 var asphalt_filter_cache: Image
 func _ready() -> void:
