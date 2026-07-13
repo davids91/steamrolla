@@ -72,7 +72,7 @@ mesh = SubResource("ArrayMesh_qrjta")
 [node name="Camera3D" type="Camera3D" parent="." unique_id=7538168]
 transform = Transform3D(-1, -6.0527704e-17, -8.742276e-08, -3.493784e-08, 0.91667116, 0.39964238, 8.013792e-08, 0.39964238, -0.91667116, 0, 6.5418806, -8.381689)
 
-[node name="BodyRepresentation" type="Area3D" parent="." unique_id=1575235035]
+[node name="BodyRepresentation" type="Area3D" parent="." unique_id=1575235035 groups=["BirdReactable", "BombActivator"]]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BodyRepresentation" unique_id=1931688132]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0897217, -2.072876)
