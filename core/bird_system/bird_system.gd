@@ -30,14 +30,15 @@ func spawn_new_birds():
 			return
 		var bird_instance: Node3D = scene_to_spawn.instantiate()
 
-		var flocking_point:Marker3D = flocking_points[randi_range(0,len(flocking_points)-1)]
-		var flocking_point_position = flocking_point.global_position
-		bird_instance.global_position = Vector3(
-			randf_range(flocking_point_position.x, spawn_radius_from_flocking_point),
-			flocking_point_position.y,
-			randf_range(flocking_point_position.z, spawn_radius_from_flocking_point),
-			
-			)
+		if len(flocking_points) > 0:
+			var flocking_point:Marker3D = flocking_points[randi_range(0,len(flocking_points)-1)]
+			var flocking_point_position = flocking_point.global_position
+			bird_instance.global_position = Vector3(
+				randf_range(flocking_point_position.x, spawn_radius_from_flocking_point),
+				flocking_point_position.y,
+				randf_range(flocking_point_position.z, spawn_radius_from_flocking_point),
+				
+				)
 		
 		birds_node.add_child.call_deferred(bird_instance)
 		_setup_new_bird(bird_instance)
