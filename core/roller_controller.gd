@@ -32,13 +32,13 @@ var current_transparency: float = 1.
 
 var is_on_asphalt: bool = false
 var was_on_asphalt: bool = is_on_asphalt
+var connected_chunk: RoadChunkBody
 func _on_asphalt_detector_body_entered(body: Node3D) -> void:
-	if body.has_method("is_on_asphalt"): # and body.is_on_asphalt(global_position):
-		is_on_asphalt = true
+	if not connected_chunk or body is RoadChunkBody:
+		connected_chunk = body as RoadChunkBody
 
 func _on_asphalt_detector_body_exited(body: Node3D) -> void:
-	if body.has_method("is_on_asphalt") and not body.is_on_asphalt(global_position):
-		is_on_asphalt = false
+	if body == connected_chunk: connected_chunk = null
 
 func _process(delta: float) -> void:
 	target_transparency = 1.
@@ -57,13 +57,15 @@ func _process(delta: float) -> void:
 	if is_reversing != (direction.z > 0.0) or is_moving != (direction.z != 0.0):
 		driver_intention_changed.emit(direction.z != 0.0, direction.z > 0.0)
 
+	if connected_chunk: is_on_asphalt = connected_chunk.is_on_asphalt(global_position)
 	if(
 		is_reversing != (direction.z > 0.0) or is_moving != (direction.z != 0.0)
 		or was_on_asphalt != is_on_asphalt
 	):
-		var sound_should_be_playing: bool = direction.z != 0.0 and is_on_asphalt
+		var sound_should_be_playing: bool = (direction.z != 0.0) and is_on_asphalt
 		if sound_should_be_playing: # Play from a random time within the length of the audio stream if not already playing
-			if not $SqueezeSound.playing: $SqueezeSound.play(randf() * 1.89)
+			if not $SqueezeSound.playing:
+				$SqueezeSound.play(randf() * 1.89)
 		else: $SqueezeSound.stop()
 
 	# Takes a Vector2 and use it in 3D space
@@ -90,7 +92,6 @@ func _physics_process(_delta: float) -> void:
 func _handle_movement(delta: float) -> void:
 	if abs(movement_intent.y) > 0 and 0 == front_blocking_object_count:
 		global_position += basis.z * speed * -movement_intent.y * delta
-
 
 func _handle_turning(delta: float) -> void:
 	if(

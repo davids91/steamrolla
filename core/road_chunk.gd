@@ -54,8 +54,13 @@ func get_tex_position_from(pos: Vector3) -> Vector2:
 		Vector2(pos.x, pos.z) - Vector2(global_position.x, global_position.z) + flat_chunk_size * 0.5
 	) / flat_chunk_size
 
-func is_on_asphalt(pos: Vector3) -> bool:
-	return 0.5 < asphalt_filter_cache.get_pixelv(get_tex_position_from(pos)).get_luminance()
+func is_on_asphalt(global_pos: Vector3) -> bool:
+	var normalized_pos: Vector2 = get_tex_position_from(global_pos)
+	%AsphaltFilterPreview/PositionMarker.position = normalized_pos * %AsphaltFilterPreview.size
+	if normalized_pos.x >= 1. or normalized_pos.y >= 1.: return false
+	normalized_pos.x *= asphalt_filter_cache.get_width()
+	normalized_pos.y *= asphalt_filter_cache.get_height()
+	return 0.5 < asphalt_filter_cache.get_pixelv(normalized_pos).get_luminance()
 
 func get_deviation_from_target() -> float:
 	var difference_image: Image = %AsphaltCheckerViewport.get_texture().get_image()
@@ -258,6 +263,7 @@ var asphalt_filter_cache: Image
 func _ready() -> void:
 	update_materials()
 	asphalt_filter_cache = level_data.asphalt_filter_image.get_image()
+	asphalt_filter_cache.decompress()
 	update_physics()
 
 func _process(delta: float) -> void:

@@ -59,6 +59,11 @@ size = Vector3(0.13275337, 0.4393921, 2.415619)
 [sub_resource type="BoxShape3D" id="BoxShape3D_b7bnf"]
 size = Vector3(0.11291695, 0.4393921, 2.40802)
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_qrjta"]
+random_pitch = 1.1553527
+streams_count = 1
+stream_0/stream = ExtResource("3_qrjta")
+
 [node name="Roller" type="Node3D" unique_id=1510864838]
 script = ExtResource("1_vq81g")
 
@@ -107,6 +112,7 @@ shape = SubResource("BoxShape3D_qrjta")
 
 [node name="SqueezeSound" type="AudioStreamPlayer3D" parent="." unique_id=654457156]
 unique_name_in_owner = true
-stream = ExtResource("3_qrjta")
+stream = SubResource("AudioStreamRandomizer_qrjta")
+volume_db = -7.5
 
 [connection signal="body_entered" from="AsphaltDetector" to="." method="_on_asphalt_detector_body_entered"]
