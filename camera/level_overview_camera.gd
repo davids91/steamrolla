@@ -1,44 +1,28 @@
-extends Camera3D
+class_name OrbitCamera3D extends Node3D
 
-@export var move_speed_factor: float = 5.0
-@export var mouse_sensitivity: float = 0.005
+@export var distance: float = 5.0
 
-var is_rotating: bool = false
+@export var panning_speed: float = 0.01
+@export var orbit_speed: float = 0.005
+@export var zoom_speed: float = 0.5
 
-func _process(delta: float) -> void:
-	var horizonal_move_dir = Input.get_axis("move_left", "move_right")
-	var veritcal_move_dir = Input.get_axis("move_backwards", "move_forward")
-	
-	match horizonal_move_dir:
-		# when rotating horizontal becomes the z axis so updating the x pos has no effect?
-		-1.0:
-			position.x += -move_speed_factor * delta * transform.basis.x.x
-		1.0:
-			position.x += move_speed_factor * delta * transform.basis.x.x
-			
-	match veritcal_move_dir:
-		-1.0:
-			position.y += -move_speed_factor * delta * transform.basis.y.y
-		1.0: 
-			position.y += move_speed_factor * delta * transform.basis.y.y
-		
-	print(transform.basis)
+@onready var camera_3d: Camera3D = %Camera3D
 
 func _unhandled_input(event: InputEvent) -> void:
-	if (event is InputEventMouseButton
-	and event.is_pressed()
-	and event.button_index == MOUSE_BUTTON_LEFT):
-		is_rotating = true
-		
-	if (event is InputEventMouseButton
-	and event.is_released()
-	and event.button_index == MOUSE_BUTTON_LEFT):
-		is_rotating = false
-		
-	if event is InputEventMouseMotion and is_rotating:
-		var offset: Vector2 = event.screen_relative * mouse_sensitivity
+	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		var offset: Vector2 = event.screen_relative * orbit_speed
 		_rotate_camera_by(offset)
-
+		
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			camera_3d.position.z += zoom_speed
+		elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			camera_3d.position.z -= zoom_speed
+			
+	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
+		var offset := Vector3(-event.relative.x * panning_speed, event.relative.y * panning_speed, 0)
+		translate_object_local(offset)
+		
 func _rotate_camera_by(offset: Vector2) -> void:
 	rotation.y -= offset.x
 	rotation.x -= offset.y

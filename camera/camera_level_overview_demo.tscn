@@ -15,8 +15,8 @@ sky = SubResource("Sky_0ik68")
 
 [node name="CameraLevelOverviewDemo" type="Node3D" unique_id=1525047395]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=726133364]
-transform = Transform3D(-0.8660254, -0.4330128, 0.24999997, 0, 0.49999988, 0.8660255, -0.50000006, 0.75000006, -0.4330126, 0, 0, 0)
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=890246023]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
 shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=926915450]
@@ -26,6 +26,14 @@ environment = SubResource("Environment_l7t80")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.256958, 0)
 size = Vector3(10, 0.5, 10)
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=1187692974]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8036258, 2.3112626)
+[node name="OrbitCamera" type="Node3D" parent="." unique_id=1740784332]
 script = ExtResource("1_0ik68")
+
+[node name="Pitch" type="Marker3D" parent="OrbitCamera" unique_id=1841262030]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Camera3D" type="Camera3D" parent="OrbitCamera/Pitch" unique_id=1187692974]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+
+[node name="Target" type="Marker3D" parent="OrbitCamera" unique_id=1781347138]
