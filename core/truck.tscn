@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://60fcimpaiimu"]
+
+[ext_resource type="PackedScene" uid="uid://c1htt3yyafkfi" path="res://source_assets/models/truck/truck.fbx" id="1_ilgpt"]
+
+[node name="Truck" type="Node3D" unique_id=649462306]
+
+[node name="truck" parent="." unique_id=1920071602 instance=ExtResource("1_ilgpt")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
