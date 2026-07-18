@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://141sflnfe6qw"
-path.s3tc="res://.godot/imported/please_end_me_do_not_keep_height.png-f2a19aa01df8b0a440bbc183707e2bcb.s3tc.ctex"
+uid="uid://5xc8158i1q0f"
+path.s3tc="res://.godot/imported/asphalt_attributes.png-f399c54c394869747ecb17712df700dc.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://levels/test_level/please_end_me_do_not_keep_height.png"
-dest_files=["res://.godot/imported/please_end_me_do_not_keep_height.png-f2a19aa01df8b0a440bbc183707e2bcb.s3tc.ctex"]
+source_file="res://levels/level_1_smush/asphalt_attributes.png"
+dest_files=["res://.godot/imported/asphalt_attributes.png-f399c54c394869747ecb17712df700dc.s3tc.ctex"]
 
 [params]
 

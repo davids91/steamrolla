@@ -2,7 +2,7 @@
 extends Node3D
 
 #region editor helper functionality
-@export_file("*.res") var level_data: String:
+@export_file_path("*.res") var level_data: String:
 	set(v):
 		level_data = v
 		if not %RoadChunk: return
@@ -15,14 +15,15 @@ extends Node3D
 @export var save_level_data: bool = false:
 	set(_v):
 		if not Engine.is_editor_hint() or not %RoadChunk: return
-		var asphalt_image_path = level_data.get_base_dir() + "/"
-		%RoadChunk.current_asphalt_level.save_png(asphalt_image_path)
-		EditorInterface.get_resource_filesystem().scan() # This makes itch export crash
-		%RoadChunk.level_data.asphalt_quantity_texture = ResourceLoader.load(asphalt_image_path)
+		var asphalt_state_path: String = RoadChunk.asphalt_state_tex_path(level_data.get_base_dir())
+		%RoadChunk.asphalt_state.get_image().save_png(asphalt_state_path)
+		EditorInterface.get_resource_filesystem().scan() #TechDebt: This makes itch export crash
+		%RoadChunk.level_data.start_asphalt_state = load(asphalt_state_path)
 		get_tree().create_timer(1.).timeout.connect(func():ResourceSaver.save(%RoadChunk.level_data, level_data))
 
 @export var noise: FastNoiseLite = FastNoiseLite.new()
 @export var starting_asphalt_level_normalized: float = 0.2
+@export var starting_asphalt_distribution_normalized: float = 0.05
 @export var height_unit: float = 0.5:
 	set(v):
 		height_unit = v
@@ -49,7 +50,8 @@ extends Node3D
 @export var regenerate_asphalt_image: bool = false:
 	set(_v):
 		noise.seed = randi()
-		%RoadChunk.randomize_asphalt(noise, starting_asphalt_level_normalized)
+		%RoadChunk.randomize_asphalt(noise, starting_asphalt_level_normalized, starting_asphalt_distribution_normalized)
+		%RoadChunk.level_data.start_asphalt_state = %RoadChunk.asphalt_state
 		%RoadChunk.update_physics()
 
 @export_range(0., 1.) var reference_asphalt_height: float = starting_asphalt_level_normalized
@@ -271,7 +273,6 @@ func _physics_process(_delta: float) -> void:
 				if 2.5 > (last_smoothed_position- $consty.global_position).length(): $consty.smoosh()
 				elif $consty.is_being_smooshed(): $consty.unsmoosh()
 
-				#TODO: Move roller angle calculation to the player controller
 				# Set roller position and udpate brush
 				var roller_delta_pos: Vector3 = last_smoothed_position - $Compactor.global_position
 				%RoadChunk.set_roller_brush(

@@ -1,10 +1,26 @@
 class_name RoadChunkData
 extends Resource
 
-@export var terrain_heightmap: Texture ## Normalized data of how high is the terrain on this level
+@export_category("terrain")
+@export var terrain_heightmap: Texture
 @export var terrain_normalmap: Texture
 @export var terrain_albedo_image: Texture
-@export var asphalt_filter_image: Texture
-@export var asphalt_quantity_texture: Texture ## Normalized data of how high is the starting asphalt on this level
-@export var asphalt_physics_texture: Texture ## Contains starting asphalt metadata
-@export var target_height_texture: Texture ## Includes both the terrain and asphalt heights normalized
+
+@export_category("asphalt")
+## Data about the attributes of the asphalt
+## Red channel: asphalt presence
+## Green channel: asphalt editability
+## Blue channel: asphalt(?) fluidity(is asphalt actually water)
+@export var asphalt_attributes: Texture
+
+## Data about the starting asphalt quantity on the level
+## Red channel: Normalized asphalt quantity
+## Green channel: Normalized asphalt temperature
+## Blue channel: unused
+@export var start_asphalt_state: Texture
+
+## Data about the target asphalt quantity on the level
+## Red channel: target asphalt quantity
+## Green channel: unused
+## Blue channel: unused
+@export var target_asphalt_state: Texture

@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cuvqulf3mtpxy"
-path.s3tc="res://.godot/imported/asphalt_quantity.png-24556301f3537cdeb63f7e4a6c549265.s3tc.ctex"
+uid="uid://sbrlm1mm40vm"
+path.s3tc="res://.godot/imported/asphalt_attributes.png-c3ff5b84d7f3420d204fead542fea226.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://levels/test_level/asphalt_quantity.png"
-dest_files=["res://.godot/imported/asphalt_quantity.png-24556301f3537cdeb63f7e4a6c549265.s3tc.ctex"]
+source_file="res://levels/test_level/asphalt_attributes.png"
+dest_files=["res://.godot/imported/asphalt_attributes.png-c3ff5b84d7f3420d204fead542fea226.s3tc.ctex"]
 
 [params]
 

@@ -4,7 +4,7 @@ uniform sampler2D road_colormap;
 uniform sampler2D asphalt_texture;
 uniform sampler2D asphalt_normals;
 uniform sampler2D asphalt_quantity;
-uniform sampler2D asphalt_filter;
+uniform sampler2D asphalt_attributes; /// r: presence, g: editability, b: fluidityuniform sampler2D terrain_normalmap;
 uniform sampler2D terrain_normalmap;
 uniform sampler2D terrain_heightmap;
 uniform sampler2D level_tool_reference;
@@ -32,12 +32,12 @@ void vertex() {
 	// Add asphalt and terrain heights to the height of the current vertex
 	VERTEX.y += (
 		abs(texture(asphalt_quantity, UV).r)
-		* height_unit * texture(asphalt_filter, UV).r
+		* height_unit * texture(asphalt_attributes, UV).r
 	);
 	VERTEX.y += abs(texture(terrain_heightmap, UV).r) * height_unit;
 	VERTEX.y += (
 		(sin(UV.x / crazify_scale + TIME * crazify_speed) + cos(UV.y / crazify_scale + TIME * crazify_speed))
-		* crazify_amount * texture(asphalt_filter, UV).r
+		* crazify_amount * texture(asphalt_attributes, UV).r
 	);
 
 	// Do not set mesh height from samples from the other side of the level ( texture sampling wrap-around )
@@ -58,19 +58,19 @@ vec3 normal_from_heightmap(sampler2D heightmap, vec2 uv, float gradient_delta){
 
 void fragment() {
 	vec3 normal_vec = normal_from_heightmap(terrain_heightmap, UV, normal_calculation_range);
-	float asphalt_enabled = texture(asphalt_filter, UV).r;
-	float asphalt_in_pixel = texture(asphalt_quantity, UV).r * asphalt_enabled;
+	float asphalt_presence = texture(asphalt_attributes, UV).r;
+	float asphalt_in_pixel = texture(asphalt_quantity, UV).r * asphalt_presence;
 
 	// Update normalmap from terrain normal map
 	normal_vec = mix(
 		normal_vec, texture(terrain_normalmap, UV).xyz,
-		terrain_normal_strength * min((1.51 - asphalt_enabled), 1.) * (1. -  asphalt_enabled)
+		terrain_normal_strength * min((1.51 - asphalt_presence), 1.) * (1. -  asphalt_presence)
 	);
 
 	// Update normal map based on asphalt bumpyness
 	normal_vec += (
 		normal_from_heightmap(asphalt_quantity, UV, normal_calculation_range)
-		* asphalt_enabled * asphalt_highlight
+		* asphalt_presence * asphalt_highlight
 	);
 
 	// Decide terrain color
@@ -82,7 +82,7 @@ void fragment() {
 	NORMAL_MAP = normal_vec;
 
 	// Mix in highlight color
-	ALBEDO = mix(ALBEDO, highlight_color, hightlight_strength * asphalt_enabled);
+	ALBEDO = mix(ALBEDO, highlight_color, hightlight_strength * asphalt_presence);
 
 	// update output for level tool color
 	float level_tool_height_diff = clamp(abs(road_level - level_tool_height), 0., 1.);

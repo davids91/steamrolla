@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cef66shp1etpa"
-path="res://.godot/imported/roller.blend-4c9cb7157596001a999697cd9d06e99d.scn"
+uid="uid://c1wxt2p2wk6xr"
+path="res://.godot/imported/vehicles.blend-9db01caa2cdfed38a3db742c1ef650b4.scn"
 
 [deps]
 
-source_file="res://source_assets/models/roller/roller.blend"
-dest_files=["res://.godot/imported/roller.blend-4c9cb7157596001a999697cd9d06e99d.scn"]
+source_file="res://source_assets/models/vehicles.blend"
+dest_files=["res://.godot/imported/vehicles.blend-9db01caa2cdfed38a3db742c1ef650b4.scn"]
 
 [params]
 
@@ -46,7 +46,7 @@ blender/nodes/punctual_lights=true
 blender/nodes/cameras=true
 blender/nodes/custom_properties=true
 blender/nodes/modifiers=1
-blender/meshes/vertex_colors=2
+blender/meshes/vertex_colors=1
 blender/meshes/uvs=true
 blender/meshes/normals=true
 blender/meshes/export_geometry_nodes_instances=false
@@ -60,4 +60,4 @@ blender/animation/limit_playback=true
 blender/animation/always_sample=true
 blender/animation/group_tracks=true
 gltf/naming_version=2
-gltf/texture_map_mode=0
+gltf/texture_map_mode=1
