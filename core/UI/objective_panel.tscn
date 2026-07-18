@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://bnbkf3tkjckrq"]
+
+[ext_resource type="Script" uid="uid://fb6jwtwvjdej" path="res://core/UI/objective_panel.gd" id="1_yfeup"]
+[ext_resource type="Texture2D" uid="uid://cflmqsk3y2rl2" path="res://textures/button_normal.png" id="3_u8e25"]
+[ext_resource type="Texture2D" uid="uid://dur2eroxjhq2h" path="res://textures/button_down.png" id="4_bjnmv"]
+[ext_resource type="Texture2D" uid="uid://ddkux4nkqkl0d" path="res://textures/laser_icon.png" id="5_qsu52"]
+[ext_resource type="AudioStream" uid="uid://dvs77bs0xyv2i" path="res://audio/button_press.wav" id="6_bjnmv"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_8jg5c"]
+random_pitch = 1.0883054
+streams_count = 1
+stream_0/stream = ExtResource("6_bjnmv")
+
+[node name="ObjectivePanel" type="MarginContainer" unique_id=1956998029]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+script = ExtResource("1_yfeup")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=501877562]
+layout_mode = 2
+
+[node name="CheckBtn" type="TextureButton" parent="HBoxContainer" unique_id=1180050793]
+layout_mode = 2
+texture_normal = ExtResource("3_u8e25")
+texture_pressed = ExtResource("4_bjnmv")
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/CheckBtn" unique_id=1212835322]
+layout_mode = 0
+offset_right = 129.0
+offset_bottom = 124.0
+texture = ExtResource("5_qsu52")
+expand_mode = 3
+
+[node name="ObjectivePanel" type="Panel" parent="HBoxContainer" unique_id=1462847364]
+custom_minimum_size = Vector2(300, 200)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/ObjectivePanel" unique_id=330441138]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="ObjectiveList" type="VBoxContainer" parent="HBoxContainer/ObjectivePanel/MarginContainer" unique_id=33802371]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ObjectiveButtonSound" type="AudioStreamPlayer" parent="." unique_id=1626320519]
+stream = SubResource("AudioStreamRandomizer_8jg5c")
+
+[connection signal="pressed" from="HBoxContainer/CheckBtn" to="." method="_on_check_btn_pressed"]

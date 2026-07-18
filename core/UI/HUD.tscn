@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://chrk1hugag81m"]
+
+[ext_resource type="Script" uid="uid://dqycmm121dtol" path="res://core/UI/hud.gd" id="1_ygh00"]
+[ext_resource type="Texture2D" uid="uid://dwjms5mdx3iof" path="res://textures/speech_bubble.png" id="4_k5p64"]
+[ext_resource type="PackedScene" uid="uid://bnbkf3tkjckrq" path="res://core/UI/objective_panel.tscn" id="5_ie7id"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ej2ga"]
+font_size = 35
+
+[node name="HUD" type="CanvasLayer" unique_id=920709406]
+script = ExtResource("1_ygh00")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=38675216]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -206.0
+offset_top = -103.0
+offset_right = 206.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("4_k5p64")
+expand_mode = 3
+
+[node name="CentralMessage" type="Label" parent="TextureRect" unique_id=517401458]
+layout_mode = 0
+offset_right = 429.0
+offset_bottom = 100.0
+text = "Sort this mess out..."
+label_settings = SubResource("LabelSettings_ej2ga")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ObjectivePanel" parent="." unique_id=1956998029 instance=ExtResource("5_ie7id")]
