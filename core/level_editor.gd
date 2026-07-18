@@ -108,12 +108,11 @@ var crazify_tween: Tween
 		if not %RoadChunk: return
 		%RoadChunk.set_crazify_speed(crazify_speed)
 
-@export var level_scan_duration_sec: float = 1.3
 @export var level_scan_range: float = 0.25
 @export var scan_for_height: bool = false:
 	set(_v):
 		if not %RoadChunk: return
-		%RoadChunk.initiate_scan(level_scan_duration_sec, level_scan_range)
+		%RoadChunk.initiate_scan(level_scan_range)
 
 @export_range(0., 1.) var draw_radius: float = 0.03
 @export_range(0., 0.9) var compacting_strength: float = 0.015
@@ -151,7 +150,7 @@ var asphalt_delta: float = 0.
 var shoveling_asphalt: bool = false
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_select") and not won_game and not %RoadChunk.scan_in_progress():
-		%RoadChunk.initiate_scan(level_scan_duration_sec, level_scan_range, func():
+		%RoadChunk.initiate_scan(level_scan_range, func():
 			var deviation: float = %RoadChunk.get_deviation_from_target()
 			if(abs(deviation - 0.5) < accepted_deviation):
 				won_game = true

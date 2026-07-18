@@ -109,36 +109,42 @@ func use_roller(should_use: bool) -> void:
 
 var scan_tween: Tween
 func scan_in_progress() -> bool: return scan_tween != null
-func initiate_scan(level_scan_duration_sec: float = 0.75, level_scan_range: float = 0.25, run_when_finished: Callable = func(): pass) -> void:
+func initiate_scan(level_scan_range: float = 0.25, run_when_finished: Callable = func(): pass) -> void:
 	if scan_tween: return # Scanning is in progress! Do not initiate again!
 	var material: Material = $Ground.get_active_material(0)
 	scan_tween = create_tween()
 	material.set_shader_parameter("level_tool_range", 0.01)
-	scan_tween.tween_callback(func(): material.set_shader_parameter("level_tool_scanning_strength", 1.))
-	scan_tween.tween_method(
-		func(w: float): material.set_shader_parameter("level_tool_height", height_unit * w),
-		0., 1., level_scan_duration_sec
-	).set_ease(Tween.EASE_IN)
-	scan_tween.tween_method(
-		func(w: float): material.set_shader_parameter("level_tool_height", height_unit * w),
-		1., 0., level_scan_duration_sec
-	).set_ease(Tween.EASE_OUT)
-	scan_tween.tween_method(
-		func(w: float): material.set_shader_parameter("level_tool_height", height_unit * w),
-		0., 1., level_scan_duration_sec
-	).set_ease(Tween.EASE_OUT_IN)
-	scan_tween.tween_interval(level_scan_duration_sec / 2.)
 	scan_tween.tween_callback(func():
-		material.set_shader_parameter("level_tool_scanning_strength", 0.)
-		material.set_shader_parameter("level_tool_range", level_scan_range)
+		material.set_shader_parameter("level_tool_scanning_strength", 1.)
+		$ScanSoundShort.play()
 	)
 	scan_tween.tween_method(
 		func(w: float): material.set_shader_parameter("level_tool_height", height_unit * w),
-		1., -0.01, level_scan_duration_sec * 5.
+		0., 1., $ScanSoundShort.stream.get_length()
+	).set_ease(Tween.EASE_IN)
+	scan_tween.tween_callback(func(): $ScanSoundShort.play())
+	scan_tween.tween_method(
+		func(w: float): material.set_shader_parameter("level_tool_height", height_unit * w),
+		1., 0., $ScanSoundShort.stream.get_length()
+	).set_ease(Tween.EASE_OUT)
+	scan_tween.tween_callback(func(): $ScanSoundShort.play())
+	scan_tween.tween_method(
+		func(w: float): material.set_shader_parameter("level_tool_height", height_unit * w),
+		0., 1., $ScanSoundShort.stream.get_length()
+	).set_ease(Tween.EASE_OUT_IN)
+	scan_tween.tween_interval($ScanSoundShort.stream.get_length() / 2.)
+	scan_tween.tween_callback(func():
+		material.set_shader_parameter("level_tool_scanning_strength", 0.)
+		material.set_shader_parameter("level_tool_range", level_scan_range)
+		$ScanSoundLong.play()
+	)
+	scan_tween.tween_method(
+		func(w: float): material.set_shader_parameter("level_tool_height", height_unit * w),
+		1., -0.01, $ScanSoundLong.stream.get_length()
 	).set_ease(Tween.EASE_OUT_IN)
 	scan_tween.tween_method(
 		func(w: float): material.set_shader_parameter("level_tool_range", w),
-		level_scan_range, 0.0, level_scan_duration_sec
+		level_scan_range, 0.0, $ScanSoundShort.stream.get_length()
 	).set_ease(Tween.EASE_IN)
 	scan_tween.tween_callback(func():
 		scan_tween = null
