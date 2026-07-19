@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cv3opfg31kn80"]
 
-[ext_resource type="Script" uid="uid://depqsjdvwp6ec" path="res://core/developer_note.gd" id="1_vnj6o"]
+[ext_resource type="Script" uid="uid://depqsjdvwp6ec" path="res://core/tools/developer_note.gd" id="1_vnj6o"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_vnj6o"]
 viewport_path = NodePath("SubViewport")
@@ -17,7 +17,6 @@ texture = SubResource("ViewportTexture_vnj6o")
 script = ExtResource("1_vnj6o")
 note = "Developer Notes
 "
-text_color = null
 
 [node name="SubViewport" type="SubViewport" parent="." unique_id=1357113514]
 transparent_bg = true

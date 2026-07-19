@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://c6umqesxiecbq"]
 
-[ext_resource type="Script" uid="uid://vkmwe2lftali" path="res://actors/roller_runway.gd" id="1_731n0"]
+[ext_resource type="Script" uid="uid://vkmwe2lftali" path="res://actors/equipment/roller_runway.gd" id="1_731n0"]
 [ext_resource type="Texture2D" uid="uid://sq0jfbslepc3" path="res://models/roller_runway.fbm/runway_skin.png" id="2_t1nep"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8jg5c"]

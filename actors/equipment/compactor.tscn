@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://csaxjq3vidpcx"]
 
-[ext_resource type="Script" uid="uid://1qygtkaelkou" path="res://core/compactor.gd" id="1_1b380"]
+[ext_resource type="Script" uid="uid://1qygtkaelkou" path="res://actors/equipment/compactor.gd" id="1_1b380"]
 [ext_resource type="Texture2D" uid="uid://b6i820kn0nl8g" path="res://source_assets/models/bloke_skin.png" id="2_1b380"]
 [ext_resource type="Script" uid="uid://bpfus5xg6xcga" path="res://addons/jigglebones/jigglebone.gd" id="2_lekfh"]
 [ext_resource type="Texture2D" uid="uid://celpnphf3sy1p" path="res://source_assets/models/compactor_skin.png" id="4_ukknc"]
@@ -445,7 +445,7 @@ metadata/extras = {
 }
 
 [node name="hat2" type="Node3D" parent="Bloke/metarig/Skeleton3D" unique_id=488922783]
-transform = Transform3D(1, -1.893538e-09, -1.3192285e-08, -2.528443e-09, 0.94492394, -0.3272889, 1.3085453e-08, 0.32728896, 0.94492376, -0.029999945, 2.880906, -1.882726)
+transform = Transform3D(1, -1.893538e-09, -1.3192285e-08, -2.528443e-09, 0.94492394, -0.3272889, 1.3085453e-08, 0.32728896, 0.94492376, -0.029999945, 2.8807483, -1.88311)
 top_level = true
 script = ExtResource("2_lekfh")
 bone_name = "spine.006"

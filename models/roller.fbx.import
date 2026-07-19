@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bjeb6q2li02ma"
-path="res://.godot/imported/crow.fbx-b058bf269308fe8e9a434e4b1ee934eb.scn"
+uid="uid://cw8sj3nlo8tjc"
+path="res://.godot/imported/roller.fbx-a512878241cc49bb9eee0c88a180a65f.scn"
 
 [deps]
 
-source_file="res://source_assets/models/birds/crow.fbx"
-dest_files=["res://.godot/imported/crow.fbx-b058bf269308fe8e9a434e4b1ee934eb.scn"]
+source_file="res://models/roller.fbx"
+dest_files=["res://.godot/imported/roller.fbx-a512878241cc49bb9eee0c88a180a65f.scn"]
 
 [params]
 

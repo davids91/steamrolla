@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cv0hl80ml2ehu"
-path="res://.godot/imported/pigeon.fbx-7de631f79e90e7180af0d01396ada7b0.scn"
+uid="uid://d22ami84juxxw"
+path="res://.godot/imported/fire_hydrant.fbx-eb9f26e11e59f8e3a71d4424a5071627.scn"
 
 [deps]
 
-source_file="res://source_assets/models/birds/pigeon.fbx"
-dest_files=["res://.godot/imported/pigeon.fbx-7de631f79e90e7180af0d01396ada7b0.scn"]
+source_file="res://models/fire_hydrant.fbx"
+dest_files=["res://.godot/imported/fire_hydrant.fbx-eb9f26e11e59f8e3a71d4424a5071627.scn"]
 
 [params]
 

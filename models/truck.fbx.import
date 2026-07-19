@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://d22ami84juxxw"
-path="res://.godot/imported/fire_hydrant.fbx-7b9c7c4f9c9f05d285c6f2d60857987d.scn"
+uid="uid://bcfvi261sp483"
+path="res://.godot/imported/truck.fbx-ba019e20e764a129b42c0463543d956b.scn"
 
 [deps]
 
-source_file="res://source_assets/models/fire_hydrant/fire_hydrant.fbx"
-dest_files=["res://.godot/imported/fire_hydrant.fbx-7b9c7c4f9c9f05d285c6f2d60857987d.scn"]
+source_file="res://models/truck.fbx"
+dest_files=["res://.godot/imported/truck.fbx-ba019e20e764a129b42c0463543d956b.scn"]
 
 [params]
 

@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cw8sj3nlo8tjc"
-path="res://.godot/imported/roller.fbx-fbe07f010a3e2b1989968d4ca8f21780.scn"
+uid="uid://qg7shhxakb6c"
+path="res://.godot/imported/asphalt_bomb.fbx-c758210de6480b3f7b0f7d8cc34864de.scn"
 
 [deps]
 
-source_file="res://source_assets/models/roller/roller.fbx"
-dest_files=["res://.godot/imported/roller.fbx-fbe07f010a3e2b1989968d4ca8f21780.scn"]
+source_file="res://models/asphalt_bomb.fbx"
+dest_files=["res://.godot/imported/asphalt_bomb.fbx-c758210de6480b3f7b0f7d8cc34864de.scn"]
 
 [params]
 

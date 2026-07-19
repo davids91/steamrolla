@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bcfvi261sp483"
-path="res://.godot/imported/truck.fbx-d54952326f5bdfd9027268735c233144.scn"
+uid="uid://cv0hl80ml2ehu"
+path="res://.godot/imported/pigeon.fbx-ada81f5e10008a4118e598277f79005f.scn"
 
 [deps]
 
-source_file="res://source_assets/models/truck/truck.fbx"
-dest_files=["res://.godot/imported/truck.fbx-d54952326f5bdfd9027268735c233144.scn"]
+source_file="res://models/pigeon.fbx"
+dest_files=["res://.godot/imported/pigeon.fbx-ada81f5e10008a4118e598277f79005f.scn"]
 
 [params]
 

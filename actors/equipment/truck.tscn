@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://60fcimpaiimu"]
 
-[ext_resource type="PackedScene" uid="uid://c1htt3yyafkfi" path="res://source_assets/models/truck/truck.fbx" id="1_ilgpt"]
+[ext_resource type="PackedScene" uid="uid://bcfvi261sp483" path="res://models/truck.fbx" id="1_ilgpt"]
 
 [node name="Truck" type="Node3D" unique_id=649462306]
 

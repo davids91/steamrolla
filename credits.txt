@@ -1,0 +1,37 @@
+Demi:
+===
+- shader and script bugfixes and improvements
+- Default Roller model, Fire Hydrant model
+- Started working on the asphalt bomb and the birds
+- Updated the Scenery Museum
+- All around amazing level of activity!
+
+Michael Gunn:
+===
+- Statue, Helicopter, Fountain and Fire hydrant(WIP)
+	- it's ok to have multiple versions of the same model
+- Sfx:
+	- Mushroom squeeze, wind
+	- branches being crushed, Bomb
+	- Asphalt squeeze and expand, compactor
+	- Button pressed, secret found,
+	- Level complete, objective missed, uncanny
+
+Hunter:
+===
+- Gitignore updated to support vscode
+- Roller controller: steering and heavy movement
+
+Christer:
+===
+- Compactor sound
+
+Juan Luiz R && Roei:
+===
+ Started working on the concept art for the levels overview
+
+David:
+===
+- Optimized the physics layer for the asphalt
+- Color palette
+- Roller Runway model and behavior

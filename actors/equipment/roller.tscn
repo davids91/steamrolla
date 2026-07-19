@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dr7xbirpqj8e6"]
 
-[ext_resource type="Script" uid="uid://kpioyx2nil4v" path="res://core/roller_controller.gd" id="1_vq81g"]
-[ext_resource type="PackedScene" uid="uid://cw8sj3nlo8tjc" path="res://source_assets/models/roller/roller.fbx" id="2_qrjta"]
+[ext_resource type="Script" uid="uid://kpioyx2nil4v" path="res://actors/equipment/roller_controller.gd" id="1_vq81g"]
+[ext_resource type="PackedScene" uid="uid://cw8sj3nlo8tjc" path="res://models/roller.fbx" id="2_qrjta"]
 [ext_resource type="AudioStream" uid="uid://d0rlod5od3nxo" path="res://audio/smush_asphault.wav" id="3_qrjta"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c7bb5"]

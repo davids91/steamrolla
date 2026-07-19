@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://qg7shhxakb6c"
-path="res://.godot/imported/asphalt_bomb.fbx-d6dea131b30e396b5eb0bb585af95a48.scn"
+uid="uid://bjeb6q2li02ma"
+path="res://.godot/imported/crow.fbx-3569d93f48852357eab14c09df8fd5fe.scn"
 
 [deps]
 
-source_file="res://source_assets/models/asphalt_bomb/asphalt_bomb.fbx"
-dest_files=["res://.godot/imported/asphalt_bomb.fbx-d6dea131b30e396b5eb0bb585af95a48.scn"]
+source_file="res://models/crow.fbx"
+dest_files=["res://.godot/imported/crow.fbx-3569d93f48852357eab14c09df8fd5fe.scn"]
 
 [params]
 

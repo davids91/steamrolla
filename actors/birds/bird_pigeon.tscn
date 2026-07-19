@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://g0y2dgq3xuej" path="res://actors/birds/bird_pigeon.gd" id="1_y0po0"]
 [ext_resource type="Resource" uid="uid://dlx0hu6ikosc7" path="res://actors/birds/bird_pigeon.tres" id="2_cqiu5"]
-[ext_resource type="PackedScene" uid="uid://cv0hl80ml2ehu" path="res://source_assets/models/birds/pigeon.fbx" id="3_bdpgk"]
+[ext_resource type="PackedScene" uid="uid://cv0hl80ml2ehu" path="res://models/pigeon.fbx" id="3_bdpgk"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_uivoq"]
 
