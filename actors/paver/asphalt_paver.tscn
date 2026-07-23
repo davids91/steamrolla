@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://foh0rhiuyw2x"]
+
+[ext_resource type="PackedScene" uid="uid://c7xxtlhr3wkrh" path="res://models/asphalt-paver.fbx" id="1_4vbwx"]
+
+[node name="asphalt-paver" type="Node3D" unique_id=131327016]
+
+[node name="asphalt-paver" parent="." unique_id=1688257201 instance=ExtResource("1_4vbwx")]
