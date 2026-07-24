@@ -161,9 +161,11 @@ func update_asphalt() -> void:
 		await RenderingServer.frame_post_draw
 		asphalt_state = ImageTexture.create_from_image(%AsphaltTransformerViewport.get_texture().get_image())
 		asphalt_physics_state = ImageTexture.create_from_image(%AsphaltPhysicsViewport.get_texture().get_image())
+		#TechDebt: Setting asphalt_physics_state only works in this exact function
 		%AsphaltPhysics.material.set_shader_parameter("asphalt_state", asphalt_state)
 		%AsphaltPhysics.material.set_shader_parameter("asphalt_physics_state", asphalt_physics_state)
-		update_materials()
+		$Ground.get_active_material(0).set_shader_parameter("asphalt_physics_state", asphalt_physics_state)
+		$Ground.get_active_material(0).next_pass.set_shader_parameter("asphalt_physics_state", asphalt_physics_state)
 		physics_needs_update = true
 	).call_deferred()
 
@@ -200,15 +202,22 @@ func update_materials() -> void:
 
 	var mat: Material = $Ground.get_active_material(0)
 	mat.set_shader_parameter("level_tool_reference", level_data.target_asphalt_state)
-	mat.set_shader_parameter("asphalt_quantity", asphalt_state)
+	mat.set_shader_parameter("asphalt_state", asphalt_state)
 	mat.set_shader_parameter("asphalt_attributes",  level_data.asphalt_attributes)
 	mat.set_shader_parameter("height_unit",  height_unit)
 	mat.set_shader_parameter("terrain_heightmap", level_data.terrain_heightmap)
 	mat.set_shader_parameter("terrain_normalmap", level_data.terrain_normalmap)
 	mat.set_shader_parameter("road_colormap", level_data.terrain_albedo_image)
 
+	var water_mat: Material = $Ground.get_active_material(0).next_pass
+	water_mat.set_shader_parameter("height_unit",  height_unit)
+	water_mat.set_shader_parameter("asphalt_attributes",  level_data.asphalt_attributes)
+	water_mat.set_shader_parameter("road_colormap", level_data.terrain_albedo_image)
+	water_mat.set_shader_parameter("terrain_heightmap", level_data.terrain_heightmap)
+	water_mat.set_shader_parameter("terrain_normalmap", level_data.terrain_normalmap)
+
 static func asphalt_state_tex_path(base_dir: String)-> String:
-	return base_dir + "/asphalt_quantity.png"
+	return base_dir + "/asphalt_state.png"
 
 func _initialize(data: RoadChunkData, data_path: String = "") -> void:
 	# Fallback for asphalt state image

@@ -3,8 +3,9 @@ shader_type spatial;
 uniform sampler2D road_colormap;
 uniform sampler2D asphalt_texture;
 uniform sampler2D asphalt_normals;
-uniform sampler2D asphalt_quantity;
-uniform sampler2D asphalt_attributes; /// r: presence, g: editability, b: fluidityuniform sampler2D terrain_normalmap;
+uniform sampler2D asphalt_state;
+uniform sampler2D asphalt_attributes; /// r: presence, g: editability, b: fluidity
+uniform sampler2D asphalt_physics_state;
 uniform sampler2D terrain_normalmap;
 uniform sampler2D terrain_heightmap;
 uniform sampler2D level_tool_reference;
@@ -29,16 +30,20 @@ uniform float level_edge_transition = 0.001;
 
 varying float road_level;
 void vertex() {
+	vec3 current_asphalt_attributes = texture(asphalt_attributes, UV).rgb;
+
 	// Add asphalt and terrain heights to the height of the current vertex
-	VERTEX.y += (
-		abs(texture(asphalt_quantity, UV).r)
-		* height_unit * texture(asphalt_attributes, UV).r
+	float vertex_height_addition = (
+		abs(texture(asphalt_state, UV).r) * height_unit * current_asphalt_attributes.r
 	);
-	VERTEX.y += abs(texture(terrain_heightmap, UV).r) * height_unit;
-	VERTEX.y += (
+	vertex_height_addition += abs(texture(terrain_heightmap, UV).r) * height_unit;
+	vertex_height_addition += (
 		(sin(UV.x / crazify_scale + TIME * crazify_speed) + cos(UV.y / crazify_scale + TIME * crazify_speed))
 		* crazify_amount * texture(asphalt_attributes, UV).r
 	);
+	vertex_height_addition += texture(asphalt_physics_state, UV).b * current_asphalt_attributes.b * 0.7;
+	vertex_height_addition *= 1. - current_asphalt_attributes.b;
+	VERTEX.y += vertex_height_addition;
 
 	// Do not set mesh height from samples from the other side of the level ( texture sampling wrap-around )
 	float distance_from_level_edge = min(min(1. - UV.x, UV.x), min(1. - UV.y, UV.y));
@@ -59,7 +64,7 @@ vec3 normal_from_heightmap(sampler2D heightmap, vec2 uv, float gradient_delta){
 void fragment() {
 	vec3 normal_vec = normal_from_heightmap(terrain_heightmap, UV, normal_calculation_range);
 	float asphalt_presence = texture(asphalt_attributes, UV).r;
-	float asphalt_in_pixel = texture(asphalt_quantity, UV).r * asphalt_presence;
+	float asphalt_in_pixel = texture(asphalt_state, UV).r * asphalt_presence;
 
 	// Update normalmap from terrain normal map
 	normal_vec = mix(
@@ -69,7 +74,7 @@ void fragment() {
 
 	// Update normal map based on asphalt bumpyness
 	normal_vec += (
-		normal_from_heightmap(asphalt_quantity, UV, normal_calculation_range)
+		normal_from_heightmap(asphalt_state, UV, normal_calculation_range)
 		* asphalt_presence * asphalt_highlight
 	);
 

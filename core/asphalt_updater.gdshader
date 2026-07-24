@@ -15,7 +15,6 @@ const float CONTROL_EPSILON = 0.005;
 const float VALUE_EPSILON = 0.001;
 const float PIXEL_RADIUS = 0.002; // 1. / 512. because asphalt quantity texture is of resolution 512x512
 
-
 // https://github.com/SebLague/Gamedev-Maths/blob/master/PointInTriangle.cs
 bool point_in_triangle(vec2 a, vec2 b, vec2 c, vec2 p) {
 	float s1 = c.y - a.y;

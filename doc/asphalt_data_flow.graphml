@@ -302,7 +302,7 @@
     <node id="n2">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="70.0" width="229.0" x="1123.5999999999997" y="275.90221328735345"/>
+          <y:Geometry height="70.0" width="229.0" x="998.5749999999998" y="275.90221328735345"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="20.344114303588867" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="129.4368896484375" x="49.78155517578125" y="24.827942848205566">Ground Physics Shape<y:LabelModel>
@@ -319,7 +319,7 @@
     <node id="n3">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="70.0" width="229.0" x="222.42500000000007" y="275.90221328735345"/>
+          <y:Geometry height="70.0" width="229.0" x="522.4250000000001" y="275.90221328735345"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="20.344114303588867" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="91.21661376953125" x="68.89169311523438" y="24.827942848205566">Ground Display<y:LabelModel>
@@ -404,10 +404,27 @@
     <node id="n8">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="70.0" width="229.0" x="463.85000000000014" y="275.90221328735345"/>
+          <y:Geometry height="70.0" width="229.0" x="760.5" y="275.90221328735345"/>
           <y:Fill color="#C0C0C0" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="20.344114303588867" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="102.44871520996094" x="63.27564239501953" y="24.827942848205566">Level Win Criteria<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="n9">
+      <data key="d6">
+        <y:ShapeNode>
+          <y:Geometry height="70.0" width="229.0" x="284.35000000000014" y="275.90221328735345"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="20.344114303588867" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="82.00054931640625" x="73.49972534179688" y="24.827942848205566">Water Display<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -490,7 +507,7 @@
       <data key="d10">
         <y:BezierEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
-            <y:Point x="1247.3904945978084" y="79.72608816788"/>
+            <y:Point x="1140.0999999999997" y="79.72608816788"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -550,8 +567,10 @@
       <data key="d10">
         <y:BezierEdge>
           <y:Path sx="-11.169813721601031" sy="25.611424321838854" tx="0.0" ty="0.0">
-            <y:Point x="561.285186278399" y="186.5259960000003"/>
-            <y:Point x="385.79049459780816" y="13.326088167880016"/>
+            <y:Point x="562.0851862783991" y="219.32599600000032"/>
+            <y:Point x="357.7904945978081" y="97.32608816788002"/>
+            <y:Point x="394.7643750000002" y="291.16437499999995"/>
+            <y:Point x="573.9643750000001" y="190.36437499999994"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -642,7 +661,10 @@
     <edge id="e17" source="n6" target="n8">
       <data key="d10">
         <y:BezierEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
+            <y:Point x="524.2143750000002" y="293.064375"/>
+            <y:Point x="875.0" y="219.31437499999998"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
         </y:BezierEdge>
@@ -744,7 +766,6 @@
       </data>
     </edge>
     <edge id="n1::e8" source="n1::n5" target="n1::n6">
-      <data key="d9"/>
       <data key="d10">
         <y:BezierEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -757,7 +778,6 @@
       </data>
     </edge>
     <edge id="n1::e9" source="n1::n2" target="n1::n6">
-      <data key="d9"/>
       <data key="d10">
         <y:BezierEdge>
           <y:Path sx="-19.593756441600704" sy="-3.1917614381613078" tx="-70.18783644160055" ty="6.20871856183868">
@@ -769,11 +789,51 @@
       </data>
     </edge>
     <edge id="n1::e10" source="n1::n6" target="n1::n2">
-      <data key="d9"/>
       <data key="d10">
         <y:BezierEdge>
           <y:Path sx="-61.012796441600585" sy="2.604238561838656" tx="-19.291356441600556" ty="0.08503856183870084">
             <y:Point x="687.1006435583993" y="-49.10758975999971"/>
+          </y:Path>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+        </y:BezierEdge>
+      </data>
+    </edge>
+    <edge id="e20" source="n1::n0" target="n9">
+      <data key="d8"/>
+      <data key="d10">
+        <y:BezierEdge>
+          <y:Path sx="-14.778499999999553" sy="40.23042832183853" tx="-79.28549999999956" ty="-20.901426574706875">
+            <y:Point x="530.7643750000002" y="187.96437499999996"/>
+            <y:Point x="435.8525000000006" y="102.48899999999998"/>
+            <y:Point x="319.5645000000006" y="181.92099999999994"/>
+          </y:Path>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+        </y:BezierEdge>
+      </data>
+    </edge>
+    <edge id="e21" source="n1::n2" target="n9">
+      <data key="d10">
+        <y:BezierEdge>
+          <y:Path sx="-4.754074999999148" sy="-10.184496678161338" tx="-88.71207499999946" ty="-7.632138287353314">
+            <y:Point x="619.8579250000007" y="-74.84992499999987"/>
+            <y:Point x="285.1379250000006" y="-268.76992499999983"/>
+          </y:Path>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+        </y:BezierEdge>
+      </data>
+    </edge>
+    <edge id="e22" source="n1::n2" target="n3">
+      <data key="d9"/>
+      <data key="d10">
+        <y:BezierEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
+            <y:Point x="512.7508533333333" y="-140.5225266666666"/>
+            <y:Point x="355.56685333333337" y="-105.70652666666659"/>
+            <y:Point x="314.60685333333345" y="327.2748066666668"/>
+            <y:Point x="538.1801866666667" y="195.86147333333338"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
