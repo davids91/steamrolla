@@ -5,11 +5,12 @@ Demi:
 - Started working on the asphalt bomb and the birds
 - Updated the Scenery Museum
 - All around amazing level of activity!
+- Birds and Bombs
+- Truck Model
+- Scenery Museum additions, sounds
 
 Michael Gunn:
 ===
-- Statue, Helicopter, Fountain and Fire hydrant(WIP)
-	- it's ok to have multiple versions of the same model
 - Sfx:
 	- Mushroom squeeze, wind
 	- branches being crushed, Bomb
@@ -25,8 +26,18 @@ Hunter:
 Christer:
 ===
 - Compactor sound
+- Title music ( WIP )
 
-Juan Luiz R && Roei:
+Mo Shah:
+===
+- Orbit camera - levelr overview camera controls
+
+Juan Luiz R:
+===
+- Started working on the concept art for the levels overview
+- Sketch for Level Overview Concept Art collage
+
+Roei:
 ===
  Started working on the concept art for the levels overview
 
@@ -35,3 +46,12 @@ David:
 - Optimized the physics layer for the asphalt
 - Color palette
 - Roller Runway model and behavior
+- Roller Squeeze sound improvement
+- Laser tool sound
+- Objective Panel UI
+- Core rework - enable water and non-editable asphaltDemi:
+- shader and script bugfixes and improvements
+- Default Roller model, Fire Hydrant model
+- Started working on the asphalt bomb and the birds
+- Updated the Scenery Museum
+- All around amazing level of activity!
