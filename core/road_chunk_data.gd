@@ -6,7 +6,10 @@ extends Resource
 @export var terrain_normalmap: Texture
 @export var terrain_albedo_image: Texture
 
-@export_category("asphalt")
+@export_category("dynamic_surface")
+## The type of dynamic surface used within the level
+@export var surface: RoadChunk.DynamicSurfaces = RoadChunk.DynamicSurfaces.ASPHALT
+
 ## Data about the attributes of the asphalt
 ## Red channel: asphalt presence
 ## Green channel: asphalt editability

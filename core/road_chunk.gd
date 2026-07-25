@@ -8,16 +8,42 @@ var asphalt_attributes: Image
 var asphalt_state: Texture
 var asphalt_physics_state: Texture ## r: level height(terrain + asphalt), g: asphalt temperature, b: water waves
 
-@export_category("Physics") 
-@export_range(0.01, 1.0, 0.01) var physics_update_interval: float = 0.2
-
-@export_category("General")
-@export var map_resolution: Vector2i = Vector2(512,512)
+@export_category("Level Data")
 @export var level_data: RoadChunkData
+@export var load_data: bool:
+	set(v): _initialize(level_data)
+
+@export_category("Physics")
+@export_range(0.01, 1.0, 0.01) var physics_update_interval: float = 0.2
 @export var height_unit: float = 0.5
 
-@export var load_data: bool: 
-	set(v): _initialize(level_data)
+enum DynamicSurfaces{ ASPHALT, GRAVEL, DIRT }
+
+@export_category("Display")
+@export var call_update_materials: bool:
+	set(v): update_materials()
+@export var surface: DynamicSurfaces = DynamicSurfaces.ASPHALT:
+	set(v):
+		surface = v
+		if level_data: level_data.surface = v
+		match v:
+			DynamicSurfaces.ASPHALT:
+				asphalt_texture = load("res://textures/asphalt_tile_seamless.png")
+				asphalt_normals = load("res://textures/asphalt_tile_seamless_normal.png")
+			DynamicSurfaces.GRAVEL:
+				asphalt_texture = load("res://textures/gravel_texture.png")
+				asphalt_normals = load("res://textures/gravel_normal.png")
+			DynamicSurfaces.DIRT:
+				asphalt_texture = load("res://textures/dirt_texture.png")
+				asphalt_normals = load("res://textures/dirt_normal.png")
+			_:
+				asphalt_texture = load("res://textures/asphalt_tile_seamless.png")
+				asphalt_normals = load("res://textures/asphalt_tile_seamless_normal.png")
+
+@export var map_resolution: Vector2i = Vector2(512,512)
+@export var asphalt_texture: Texture = load("res://textures/asphalt_tile_seamless.png")
+@export var asphalt_normals: Texture = load("res://textures/asphalt_tile_seamless_normal.png")
+@export var asphalt_tile_size_ratio: float = 20.
 
 #region Asphalt setters
 func set_asphalt_to_empty() -> void:
@@ -188,7 +214,7 @@ func update_materials() -> void:
 	%AsphaltChecker.material.set_shader_parameter("asphalt_state", asphalt_state)
 	%AsphaltChecker.material.set_shader_parameter("asphalt_attributes", level_data.asphalt_attributes)
 	%AsphaltChecker.material.set_shader_parameter("target_asphalt_state", level_data.target_asphalt_state)
-	
+
 	%AsphaltUpdater.material.set_shader_parameter("terrain", level_data.terrain_heightmap)
 	%AsphaltUpdater.material.set_shader_parameter("asphalt_state", asphalt_state)
 	%AsphaltUpdater.material.set_shader_parameter("asphalt_attributes", level_data.asphalt_attributes)
@@ -209,6 +235,9 @@ func update_materials() -> void:
 	mat.set_shader_parameter("terrain_heightmap", level_data.terrain_heightmap)
 	mat.set_shader_parameter("terrain_normalmap", level_data.terrain_normalmap)
 	mat.set_shader_parameter("road_colormap", level_data.terrain_albedo_image)
+	mat.set_shader_parameter("asphalt_texture", asphalt_texture)
+	mat.set_shader_parameter("asphalt_normals", asphalt_normals)
+	mat.set_shader_parameter("asphalt_tile_size_ratio", asphalt_tile_size_ratio)
 
 	var water_mat: Material = $Ground.get_active_material(0).next_pass
 	water_mat.set_shader_parameter("height_unit",  height_unit)
@@ -231,6 +260,11 @@ func _initialize(data: RoadChunkData, data_path: String = "") -> void:
 		level_data.start_asphalt_state = load(user_asphalt_state_path)
 	elif not data.start_asphalt_state and FileAccess.file_exists(fallback_asphalt_state_path):
 		level_data.start_asphalt_state = load(fallback_asphalt_state_path)
+		ResourceSaver.save(level_data, data_path)
+
+	if not level_data.start_asphalt_state:
+		set_asphalt_to_empty()
+		level_data.start_asphalt_state = asphalt_state
 		ResourceSaver.save(level_data, data_path)
 
 	# Set node state based on level data
