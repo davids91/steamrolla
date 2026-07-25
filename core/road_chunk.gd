@@ -164,6 +164,7 @@ func update_asphalt() -> void:
 		#TechDebt: Setting asphalt_physics_state only works in this exact function
 		%AsphaltPhysics.material.set_shader_parameter("asphalt_state", asphalt_state)
 		%AsphaltPhysics.material.set_shader_parameter("asphalt_physics_state", asphalt_physics_state)
+		update_materials()
 		$Ground.get_active_material(0).set_shader_parameter("asphalt_physics_state", asphalt_physics_state)
 		$Ground.get_active_material(0).next_pass.set_shader_parameter("asphalt_physics_state", asphalt_physics_state)
 		physics_needs_update = true
@@ -272,21 +273,23 @@ func _on_asphalt_bomb_explode(explosion_pos: Vector3, explode_radius: float, amo
 	var mesh_size = $Ground.mesh.size
 	
 	var uv_x = (local_pos.x / mesh_size.x) + 0.5
-	var uv_y = (local_pos.y / mesh_size.y) + 0.5
-	var center_uv = Vector2(uv_x, uv_y)
+	var uv_z = (local_pos.z / mesh_size.y) + 0.5
+	var center_uv = Vector2(uv_x, uv_z)
 	
-	if uv_x < 0.0 or uv_x > 1.0 or uv_y < 0.0 or uv_y > 1.0:
+	if uv_x < 0.0 or uv_x > 1.0 or uv_z < 0.0 or uv_z > 1.0:
 		return
 		
 	use_roller(false)
-	
+
 	set_update_brush_center(center_uv)
-	set_update_brush_radius(explode_radius)
+	# effect_radius is in texture UV space (0..1), explode_radius is in world units
+	set_update_brush_radius(explode_radius / mesh_size.x)
 	set_update_brush_amount(amount_of_asphalt_to_add)
 
 	update_asphalt()
 	await get_tree().process_frame
 	set_update_brush_amount(0.0)
+	use_roller(true)
 #endregion Bomb Explode
 
 func _ready() -> void:
