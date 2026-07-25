@@ -219,11 +219,17 @@ func update_materials() -> void:
 static func asphalt_state_tex_path(base_dir: String)-> String:
 	return base_dir + "/asphalt_state.png"
 
+static func user_asphalt_state_tex_path(base_dir: String)-> String:
+	return base_dir.replace("res://", "user:##").replace("/", "_").replace("##", "//") + "_asphalt_state.png"
+
 func _initialize(data: RoadChunkData, data_path: String = "") -> void:
-	# Fallback for asphalt state image
-	var asphalt_image_path: String = asphalt_state_tex_path(data_path.get_base_dir())
-	if not data.start_asphalt_state and FileAccess.file_exists(asphalt_image_path):
-		level_data.start_asphalt_state = load(asphalt_image_path)
+	# Check if there's an asphalt state in user storage or a fallback in case data is not available
+	var user_asphalt_state_path: String = user_asphalt_state_tex_path(data_path.get_base_dir())
+	var fallback_asphalt_state_path: String = asphalt_state_tex_path(data_path.get_base_dir())
+	if data_path.length() > 0 and FileAccess.file_exists(user_asphalt_state_path):
+		level_data.start_asphalt_state = load(user_asphalt_state_path)
+	elif not data.start_asphalt_state and FileAccess.file_exists(fallback_asphalt_state_path):
+		level_data.start_asphalt_state = load(fallback_asphalt_state_path)
 		ResourceSaver.save(level_data, data_path)
 
 	# Set node state based on level data
@@ -246,6 +252,17 @@ func _initialize(data: RoadChunkData, data_path: String = "") -> void:
 func initialize(data_path: String) -> void: 
 	level_data = ResourceLoader.load(data_path)
 	_initialize(level_data, data_path)
+
+func save_user_data(data_path: String) -> void:
+	var base_dir: String = data_path.get_base_dir()
+	if not DirAccess.dir_exists_absolute(base_dir):
+		DirAccess.make_dir_absolute(base_dir)
+	asphalt_state.get_image().save_png(user_asphalt_state_tex_path(base_dir))
+
+func reset_user_data(data_path: String) -> void:
+	var user_data_path: String = user_asphalt_state_tex_path(data_path.get_base_dir())
+	if  FileAccess.file_exists(user_data_path):
+		DirAccess.remove_absolute(user_data_path)
 
 #endregion Update functions
 #region Bomb Explode
