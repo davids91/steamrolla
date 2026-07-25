@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dc6waktk7yn5s" path="res://actors/asphalt_bomb/asphalt_bomb.gd" id="1_odkbx"]
 [ext_resource type="PackedScene" uid="uid://7s03ocm3dcqq" path="res://actors/asphalt_bomb/asphalt_bomb_vfx.tscn" id="2_uxt2m"]
-[ext_resource type="PackedScene" uid="uid://qg7shhxakb6c" path="res://models/asphalt_bomb.fbx" id="3_e1om7"]
+[ext_resource type="PackedScene" uid="uid://cxbybgjb5iftb" path="res://models/asphalt_bomb.fbx" id="3_e1om7"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_c7bb5"]
 radius = 8.0
@@ -18,7 +18,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0904806, 0)
 shape = SubResource("SphereShape3D_c7bb5")
 
 [node name="asphalt_bomb" parent="." unique_id=965572390 instance=ExtResource("3_e1om7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.450428, 0)
 
 [connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
