@@ -5,6 +5,7 @@ uniform sampler2D asphalt_attributes; /// r: presence, g: editability, b: fluidi
 uniform sampler2D asphalt_physics_state;
 uniform sampler2D terrain_normalmap;
 uniform sampler2D terrain_heightmap;
+uniform vec3 water_color: source_color = vec3(0., 0., 1.);
 uniform float terrain_normal_strength = 0.1;
 uniform float height_unit = 0.1;
 uniform float normal_calculation_range = 0.05;
@@ -20,20 +21,20 @@ void vertex() {
 	VERTEX.y += vertex_height_addition;
 }
 
-vec3 normal_from_heightmap(sampler2D heightmap, vec2 uv, float gradient_delta){
-	float terrain_height_left = abs(texture(heightmap, uv + vec2(-gradient_delta, 0.)).r);
-	float terrain_height_right = abs(texture(heightmap, uv + vec2(gradient_delta, 0.)).r);
-	float terrain_height_far = abs(texture(heightmap, uv + vec2(0., gradient_delta)).r);
-	float terrain_height_near = abs(texture(heightmap, uv + vec2(0., -gradient_delta)).r);
+vec3 b_channel_normal_from_heightmap(sampler2D heightmap, vec2 uv, float gradient_delta){
+	float terrain_height_left = abs(texture(heightmap, uv + vec2(-gradient_delta, 0.)).b);
+	float terrain_height_right = abs(texture(heightmap, uv + vec2(gradient_delta, 0.)).b);
+	float terrain_height_far = abs(texture(heightmap, uv + vec2(0., gradient_delta)).b);
+	float terrain_height_near = abs(texture(heightmap, uv + vec2(0., -gradient_delta)).b);
 	return normalize(vec3((terrain_height_right - terrain_height_left), (terrain_height_near - terrain_height_far), -1));
 }
 
 void fragment() {
-	if (VALUE_EPSILON > texture(asphalt_physics_state, UV).b) discard;
-	ALBEDO = texture(road_colormap, UV).rgb;
+	if (VALUE_EPSILON > texture(asphalt_attributes, UV).b)discard;
+	ALBEDO = mix(texture(road_colormap, UV).rgb, water_color, 0.9);
 	NORMAL_MAP = mix(
-		normal_from_heightmap(terrain_heightmap, UV, normal_calculation_range),
-		texture(terrain_normalmap, UV).xyz, 0.5
+		b_channel_normal_from_heightmap(asphalt_physics_state, UV, normal_calculation_range),
+		texture(terrain_normalmap, UV).xyz, 0.1
 	);
-	ALPHA = texture(asphalt_attributes, UV).b;
+	ALPHA = water_transparency - texture(asphalt_attributes, UV).b;
 }

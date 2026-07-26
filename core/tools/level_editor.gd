@@ -14,10 +14,11 @@ extends Node3D
 
 @export var save_level_data: bool = false:
 	set(_v):
-		if not Engine.is_editor_hint() or not %RoadChunk: return
+		if not %RoadChunk: return
 		var asphalt_state_path: String = RoadChunk.asphalt_state_tex_path(level_data.get_base_dir())
 		%RoadChunk.asphalt_state.get_image().save_png(asphalt_state_path)
-		EditorInterface.get_resource_filesystem().scan() #TechDebt: This makes itch export crash
+		if Engine.is_editor_hint():
+			EditorInterface.get_resource_filesystem().scan() #TechDebt: This makes itch export crash
 		%RoadChunk.level_data.start_asphalt_state = load(asphalt_state_path)
 		get_tree().create_timer(1.).timeout.connect(func():ResourceSaver.save(%RoadChunk.level_data, level_data))
 

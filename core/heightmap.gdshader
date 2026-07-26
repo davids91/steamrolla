@@ -53,7 +53,7 @@ void vertex() {
 	road_level = VERTEX.y;
 }
 
-vec3 normal_from_heightmap(sampler2D heightmap, vec2 uv, float gradient_delta){
+vec3 red_channel_normal_from_heightmap(sampler2D heightmap, vec2 uv, float gradient_delta){
 	float terrain_height_left = abs(texture(heightmap, uv + vec2(-gradient_delta, 0.)).r);
 	float terrain_height_right = abs(texture(heightmap, uv + vec2(gradient_delta, 0.)).r);
 	float terrain_height_far = abs(texture(heightmap, uv + vec2(0., gradient_delta)).r);
@@ -62,7 +62,7 @@ vec3 normal_from_heightmap(sampler2D heightmap, vec2 uv, float gradient_delta){
 }
 
 void fragment() {
-	vec3 normal_vec = normal_from_heightmap(terrain_heightmap, UV, normal_calculation_range);
+	vec3 normal_vec = red_channel_normal_from_heightmap(terrain_heightmap, UV, normal_calculation_range);
 	float asphalt_presence = texture(asphalt_attributes, UV).r;
 	float asphalt_in_pixel = texture(asphalt_state, UV).r * asphalt_presence;
 
@@ -74,7 +74,7 @@ void fragment() {
 
 	// Update normal map based on asphalt bumpyness
 	normal_vec += (
-		normal_from_heightmap(asphalt_state, UV, normal_calculation_range)
+		red_channel_normal_from_heightmap(asphalt_state, UV, normal_calculation_range)
 		* asphalt_presence * asphalt_highlight
 	);
 
