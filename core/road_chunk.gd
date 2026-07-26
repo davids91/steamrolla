@@ -187,13 +187,8 @@ func update_asphalt() -> void:
 		await RenderingServer.frame_post_draw
 		asphalt_state = ImageTexture.create_from_image(%AsphaltTransformerViewport.get_texture().get_image())
 		asphalt_physics_state = ImageTexture.create_from_image(%AsphaltPhysicsViewport.get_texture().get_image())
-		#TechDebt: Setting asphalt_physics_state only works in this exact function
-		%AsphaltPhysics.material.set_shader_parameter("asphalt_state", asphalt_state)
-		%AsphaltPhysics.material.set_shader_parameter("asphalt_physics_state", asphalt_physics_state)
-		update_materials()
-		$Ground.get_active_material(0).set_shader_parameter("asphalt_physics_state", asphalt_physics_state)
-		$Ground.get_active_material(0).next_pass.set_shader_parameter("asphalt_physics_state", asphalt_physics_state)
 		physics_needs_update = true
+		update_materials()
 	).call_deferred()
 
 
@@ -223,6 +218,7 @@ func update_materials() -> void:
 	%AsphaltTransformer.material.set_shader_parameter("asphalt_state", asphalt_state)
 	%AsphaltTransformer.material.set_shader_parameter("target_asphalt_state", level_data.target_asphalt_state)
 
+	%AsphaltPhysics.material.set_shader_parameter("asphalt_physics_state", asphalt_physics_state)
 	%AsphaltPhysics.material.set_shader_parameter("terrain", level_data.terrain_heightmap)
 	%AsphaltPhysics.material.set_shader_parameter("asphalt_state", asphalt_state)
 	%AsphaltPhysics.material.set_shader_parameter("asphalt_attributes", level_data.asphalt_attributes)
@@ -238,6 +234,7 @@ func update_materials() -> void:
 	mat.set_shader_parameter("asphalt_texture", asphalt_texture)
 	mat.set_shader_parameter("asphalt_normals", asphalt_normals)
 	mat.set_shader_parameter("asphalt_tile_size_ratio", asphalt_tile_size_ratio)
+	mat.set_shader_parameter("asphalt_physics_state", asphalt_physics_state)
 
 	var water_mat: Material = $Ground.get_active_material(0).next_pass
 	water_mat.set_shader_parameter("height_unit",  height_unit)
@@ -245,6 +242,7 @@ func update_materials() -> void:
 	water_mat.set_shader_parameter("road_colormap", level_data.terrain_albedo_image)
 	water_mat.set_shader_parameter("terrain_heightmap", level_data.terrain_heightmap)
 	water_mat.set_shader_parameter("terrain_normalmap", level_data.terrain_normalmap)
+	water_mat.set_shader_parameter("asphalt_physics_state", asphalt_physics_state)
 
 static func asphalt_state_tex_path(base_dir: String)-> String:
 	return base_dir + "/asphalt_state.png"
@@ -274,6 +272,7 @@ func _initialize(data: RoadChunkData, data_path: String = "") -> void:
 	asphalt_attributes.decompress()
 
 	# Handle asphalt state starting values
+	surface = level_data.surface
 	var no_asphalt_delta_image: Image = Image.create(512,512, false, Image.FORMAT_RGBF)
 	no_asphalt_delta_image.fill(Color.from_rgba8(128,128,128,255))
 	%AsphaltPhysics.material.set_shader_parameter("asphalt_delta", ImageTexture.create_from_image(no_asphalt_delta_image))
@@ -327,13 +326,11 @@ func _on_asphalt_bomb_explode(explosion_pos: Vector3, explode_radius: float, amo
 #endregion Bomb Explode
 
 func _ready() -> void:
-	update_materials()
-
-	# Set node state based on level data
 	asphalt_state = level_data.start_asphalt_state
 	asphalt_physics_state = level_data.start_asphalt_state
 	asphalt_attributes = level_data.asphalt_attributes.get_image()
 	asphalt_attributes.decompress()
+	update_materials()
 
 func _process(delta: float) -> void:
 	time_since_last_update += delta

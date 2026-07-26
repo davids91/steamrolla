@@ -30,7 +30,7 @@ bool point_in_triangle(vec2 a, vec2 b, vec2 c, vec2 p) {
 void fragment() {
 	float asphalt_delta_output = 0.0;
 	// early exit through return; is not supported....
-	if(CONTROL_EPSILON < texture(asphalt_attributes, UV).r){ // Only run shader if the pixel is editable
+	if(CONTROL_EPSILON < texture(asphalt_attributes, UV).g){ // Only run shader if the pixel is editable
 		vec2 roller_direction = vec2(cos(roller_angle), sin(roller_angle)); // Roller direction to set esact boundaries of the roller
 		vec2 roller_sideways_direction = vec2(-roller_direction.y, roller_direction.x);
 		vec2 roller_bl = roller_center - roller_size.x * 0.5 * roller_sideways_direction - roller_size.y * 0.5 * roller_direction;

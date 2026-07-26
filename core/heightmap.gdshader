@@ -84,7 +84,7 @@ void fragment() {
 		normal_vec += texture(asphalt_texture, UV * asphalt_tile_size_ratio).xyz * asphalt_highlight;
 		ALBEDO = texture(asphalt_texture, UV * asphalt_tile_size_ratio).rgb;
 	}
-	NORMAL_MAP = normal_vec;
+	NORMAL_MAP = -normal_vec;
 
 	// Mix in highlight color
 	ALBEDO = mix(ALBEDO, highlight_color, hightlight_strength * asphalt_presence);
