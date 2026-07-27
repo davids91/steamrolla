@@ -5,18 +5,22 @@ Demi:
 - Started working on the asphalt bomb and the birds
 - Updated the Scenery Museum
 - All around amazing level of activity!
-- Birds and Bombs
+- Bird models(Crow, Pigeon)
+- Bird critter system
+- Asphalt Bomb
 - Truck Model
 - Scenery Museum additions, sounds
+- Model fixes after rearrangement
+- crack textures for roads
+- Roller squeeze logic improvement
 
 Michael Gunn:
 ===
-- Sfx:
-	- Mushroom squeeze, wind
-	- branches being crushed, Bomb
-	- Asphalt squeeze and expand, compactor
-	- Button pressed, secret found,
-	- Level complete, objective missed, uncanny
+- Mushroom squeeze, wind Sfx
+- branches being crushed, Bomb Sfx
+- Asphalt squeeze and expand Sfx
+- Button pressed, secret found Sfx
+- Level complete, objective missed, uncanny Sfx
 
 Hunter:
 ===
@@ -26,7 +30,8 @@ Hunter:
 Christer:
 ===
 - Compactor sound
-- Title music ( WIP )
+- Title music
+- Asphalt paver model
 
 Mo Shah:
 ===
@@ -49,9 +54,8 @@ David:
 - Roller Squeeze sound improvement
 - Laser tool sound
 - Objective Panel UI
-- Core rework - enable water and non-editable asphaltDemi:
-- shader and script bugfixes and improvements
-- Default Roller model, Fire Hydrant model
-- Started working on the asphalt bomb and the birds
-- Updated the Scenery Museum
-- All around amazing level of activity!
+- Core rework - enable water and non-editable asphalt
+- Base for water on terrain
+- User data save and load
+- Dirt and Gravel Surface system
+- Gravel road, River and Pond test scenes

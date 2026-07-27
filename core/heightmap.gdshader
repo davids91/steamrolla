@@ -28,6 +28,8 @@ uniform float crazify_scale = 0.0;
 uniform float crazify_speed = 0.0;
 uniform float level_edge_transition = 0.001;
 
+const float VALUE_EPSILON = 0.001;
+
 varying float road_level;
 void vertex() {
 	vec3 current_asphalt_attributes = texture(asphalt_attributes, UV).rgb;
@@ -37,12 +39,20 @@ void vertex() {
 		abs(texture(asphalt_state, UV).r) * height_unit * current_asphalt_attributes.r
 	);
 	vertex_height_addition += abs(texture(terrain_heightmap, UV).r) * height_unit;
-	vertex_height_addition += (
+	vertex_height_addition += ( // Crazify asphalt
 		(sin(UV.x / crazify_scale + TIME * crazify_speed) + cos(UV.y / crazify_scale + TIME * crazify_speed))
 		* crazify_amount * texture(asphalt_attributes, UV).r
 	);
+
+	// Display Crack wheere there is no asphalt
+	if(VALUE_EPSILON > texture(asphalt_state, UV).r){
+		vertex_height_addition -= abs(texture(terrain_heightmap, UV).g) * height_unit;
+	}
+
+	// Add water effect Sink terrain where water is present
 	vertex_height_addition += texture(asphalt_physics_state, UV).b * current_asphalt_attributes.b * 0.7;
 	vertex_height_addition *= 1. - current_asphalt_attributes.b;
+
 	VERTEX.y += vertex_height_addition;
 
 	// Do not set mesh height from samples from the other side of the level ( texture sampling wrap-around )
