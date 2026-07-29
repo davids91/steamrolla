@@ -87,7 +87,9 @@ func is_on_asphalt(global_pos: Vector3) -> bool:
 	if normalized_pos.x >= 1. or normalized_pos.y >= 1.: return false
 	normalized_pos.x *= asphalt_attributes.get_width()
 	normalized_pos.y *= asphalt_attributes.get_height()
-	return 0.5 < asphalt_attributes.get_pixelv(normalized_pos).get_luminance()
+	var asphalt_pixel:float = asphalt_attributes.get_pixelv(normalized_pos).get_luminance()
+	asphalt_pixel = asphalt_pixel if asphalt_pixel >= 0. else 0. # Checking for out of bounds
+	return 0.5 < asphalt_pixel
 
 func get_deviation_from_target() -> float:
 	var difference_image: Image = %AsphaltCheckerViewport.get_texture().get_image()
