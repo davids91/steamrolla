@@ -8,6 +8,8 @@ var asphalt_attributes: Image
 var asphalt_state: Texture
 var asphalt_physics_state: Texture ## r: level height(terrain + asphalt), g: asphalt temperature, b: water waves
 
+@export var roller: RollerController
+
 @export_category("Level Data")
 @export var level_data: RoadChunkData
 @export var load_data: bool:
@@ -327,7 +329,23 @@ func _on_asphalt_bomb_explode(explosion_pos: Vector3, explode_radius: float, amo
 	use_roller(true)
 #endregion Bomb Explode
 
+func _on_roller_roller_has_moved(roller_position: Vector3, roller_angle: float, roller_strength: float, roller_strength_from_movement: float) -> void:
+	var flat_chunk_size: Vector2 = Vector2(%RoadChunk.get_size().x, %RoadChunk.get_size().z)
+	var texture_coordinates: Vector2 = (
+		Vector2(roller_position.x, roller_position.z)
+		 - Vector2(global_position.x, global_position.z)
+		+ flat_chunk_size * 0.5
+	) / flat_chunk_size
+	
+	set_roller_brush(texture_coordinates, roller_angle, roller_strength * roller_strength_from_movement)
+	update_asphalt()
+
 func _ready() -> void:
+	if not roller:
+		push_warning("%s is not assigning roller. Please check." % name)
+	if roller and not roller.roller_has_moved.is_connected(_on_roller_roller_has_moved):
+		roller.roller_has_moved.connect(_on_roller_roller_has_moved)
+	
 	asphalt_state = level_data.start_asphalt_state
 	asphalt_physics_state = level_data.start_asphalt_state
 	asphalt_attributes = level_data.asphalt_attributes.get_image()

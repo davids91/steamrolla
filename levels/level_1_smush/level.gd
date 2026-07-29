@@ -1,24 +1,9 @@
 extends Node3D
 
-@export_range(0., 0.9) var roller_strength: float = 0.15
 
 func _ready() -> void:
 	$RoadChunk.set_roller_size($Roller.normalized_roller_size)
 	$RoadChunk.update_materials()
-
-var elapsed_time: float = 0.
-func _process(delta: float) -> void:
-	elapsed_time += delta
-	var flat_chunk_size: Vector2 = Vector2(%RoadChunk.get_size().x, %RoadChunk.get_size().z)
-	var texture_coordinates: Vector2 = (
-		Vector2($Roller.global_position.x, $Roller.global_position.z)
-		 - Vector2(%RoadChunk.global_position.x, %RoadChunk.global_position.z)
-		+ flat_chunk_size * 0.5
-	) / flat_chunk_size
-	var roller_angle = -$Roller.rotation.y + PI / 2.
-	if $Roller.is_reversing: roller_angle -= PI
-	$RoadChunk.set_roller_brush(texture_coordinates, roller_angle, roller_strength * roller_strength_from_movement)
-	$RoadChunk.update_asphalt()
 
 @export var level_scan_duration_sec: float = 0.7
 @export var level_scan_range: float = 0.25
@@ -52,7 +37,3 @@ func _have_road_paint_appear(animation_length: float = 0.7) -> void:
 			$RoadPaint.mesh.size.y = road_paint_animation_curve.sample(w) * 32.25,
 		0., 1., animation_length
 	).set_ease(Tween.EASE_IN_OUT)
-
-var roller_strength_from_movement: float = 0.
-func _on_roller_driver_intention_changed(is_moving: bool, _forward: bool) -> void:
-	roller_strength_from_movement = 1. if is_moving else 0.

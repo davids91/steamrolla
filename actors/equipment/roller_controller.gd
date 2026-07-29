@@ -2,7 +2,7 @@ class_name RollerController extends CrewMember
 
 
 signal driver_intention_changed(is_moving: bool, forward: bool)
-
+signal roller_has_moved(position: Vector3, angle: float, strength: float, strength_from_movement: float)
 @export var debug: bool
 
 @export_category("Opacity")
@@ -19,6 +19,9 @@ signal driver_intention_changed(is_moving: bool, forward: bool)
 @export var steering_angle: float = 1.0
 @export var steering_epsilon: float = 0.001
 @export var turning_speed: float = 0.25
+@export_range(0., 0.9) var strength: float = 0.15
+var strength_from_movement: float = 0.
+
 
 var is_reversing: bool = false
 var is_moving: bool = false
@@ -92,6 +95,8 @@ func _physics_process(_delta: float) -> void:
 func _handle_movement(delta: float) -> void:
 	if abs(movement_intent.y) > 0 and 0 == front_blocking_object_count:
 		global_position += basis.z * speed * -movement_intent.y * delta
+		var angle: float = -rotation.y + PI / 2.0 * (-1.0 if is_reversing else 1.0)
+		roller_has_moved.emit(global_position, angle, strength, strength_from_movement)
 
 func _handle_turning(delta: float) -> void:
 	if(
@@ -122,3 +127,6 @@ func _on_blocker_detector_right_body_entered(_body: Node3D) -> void:
 
 func _on_blocker_detector_right_body_exited(_body: Node3D) -> void:
 	right_blocking_object_count -= 1
+	
+func _on_roller_driver_intention_changed(_is_moving: bool, _forward: bool) -> void:
+	strength_from_movement = 1. if _is_moving else 0.
