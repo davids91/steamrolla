@@ -10,7 +10,7 @@ class_name BirdData
 @export var rotation_speed: float = 1
 @export var loiter_slowness: float = 100
 @export_range(0.0, 2.0, 0.1) var lotier_jump_height: float = 0.1
-@export var _loiter_max_dist : = 2
+#@export var _loiter_max_dist : = 2
 
 
 @export_category("Behaviour")

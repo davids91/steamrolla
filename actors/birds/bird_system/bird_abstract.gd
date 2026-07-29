@@ -34,6 +34,7 @@ func change_state(new_state):
 #region internal memory
 var _active_threat: Node3D = null
 var _fly_direction: = Vector3.ZERO
+@warning_ignore("unused_private_class_variable")
 var _is_loitering: = true
 var _spawn_pos: Vector3 = Vector3.ZERO
 #endregion
@@ -44,7 +45,7 @@ var _floor_detector: RayCast3D
 
 
 # Is called from BirdSystem with custom tick rate
-func think(delta: float) -> void:
+func think(_delta: float) -> void:
 	if debug:
 		print("%s's: Current state is: %d" % [name, current_state])
 	_asses_threat()
