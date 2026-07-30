@@ -4,7 +4,7 @@ class_name BirdSystem
 const TICK_RATE: float = 1.0
 
 @export var bird_type: Dictionary[BirdData, PackedScene]
-@export var spawn_radius_from_flocking_point: float = 1.0
+@export var spawn_radius_from_flocking_point: float = 3.0
 
 var flocking_points: Array[Marker3D]
 var birds: Array[ABird]
@@ -12,6 +12,7 @@ var birds: Array[ABird]
 
 var max_birds: int = 0
 
+#is used in bird abstract script
 func register(bird: ABird):
 	birds.append(bird)
 func unregister(bird: ABird):
@@ -29,19 +30,19 @@ func spawn_new_birds():
 			push_error("Invalid scene at %s" % birdi)
 			return
 		var bird_instance: Node3D = scene_to_spawn.instantiate()
-
+		var target_pos: Vector3 = Vector3.ZERO
 		if len(flocking_points) > 0:
 			var flocking_point:Marker3D = flocking_points[randi_range(0,len(flocking_points)-1)]
 			var flocking_point_position = flocking_point.global_position
-			bird_instance.global_position = Vector3(
-				randf_range(flocking_point_position.x, spawn_radius_from_flocking_point),
+			target_pos = Vector3(
+				randf_range(flocking_point_position.x, flocking_point_position.x + spawn_radius_from_flocking_point),
 				flocking_point_position.y,
-				randf_range(flocking_point_position.z, spawn_radius_from_flocking_point),
+				randf_range(flocking_point_position.z, flocking_point_position.z + spawn_radius_from_flocking_point),
 				
 				)
-		
 		birds_node.add_child.call_deferred(bird_instance)
-		_setup_new_bird(bird_instance)
+		bird_instance.set_deferred("global_position", target_pos)
+		call_deferred("_setup_new_bird", bird_instance)
 		print("Spawned a new bird")
 
 func _setup_new_bird(bird: ABird) -> ABird:

@@ -54,7 +54,7 @@ func think(_delta: float) -> void:
 
 func _create_floor_raycast() -> void:
 	_floor_detector = RayCast3D.new()
-	_floor_detector.target_position = Vector3(0.0, 2.0 ,0.0)
+	_floor_detector.target_position = Vector3(0.0, -10.0 ,0.0)
 	add_child(_floor_detector)
 
 func _snap_to_ground() -> Vector3:
