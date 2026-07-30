@@ -11,6 +11,13 @@ func set_color(color: Color) -> void:
 @export var vibration_speed: float = 100.
 @export var vibration_extent: float = 0.1
 @export var elapsed_time = 0.
+
+func compactor_set_position_return_delta(last_smoothed_position: Vector3) -> Vector3:
+	var delta_pos: Vector3 = last_smoothed_position - global_position
+	look_at(delta_pos)
+	global_position = last_smoothed_position
+	return delta_pos
+
 func _process(delta: float) -> void:
 	elapsed_time += delta
 	$compactor.position += $compactor.basis.y * sin(elapsed_time * vibration_speed) * vibration_extent
