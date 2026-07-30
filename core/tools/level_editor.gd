@@ -5,8 +5,8 @@ extends Node3D
 @export_file_path("*.res") var level_data: String:
 	set(v):
 		level_data = v
-		if not %RoadChunk: return
-		%RoadChunk.initialize(level_data)
+		if get_node_or_null("%RoadChunk"):
+			%RoadChunk.initialize(level_data)
 
 @export var load_level_data: bool = false:
 	set(_v): # Fill up %RoadChunk with data
@@ -28,7 +28,7 @@ extends Node3D
 @export var height_unit: float = 0.5:
 	set(v):
 		height_unit = v
-		if %RoadChunk:
+		if get_node_or_null("%RoadChunk"):
 			%RoadChunk.height_unit = height_unit
 			%RoadChunk.update_materials()
 
@@ -100,14 +100,14 @@ var crazify_tween: Tween
 @export var crazify_scale: float = 0:
 	set(v):
 		crazify_scale = v
-		if not %RoadChunk: return
-		%RoadChunk.set_crazify_scale(crazify_scale)
+		if get_node_or_null("%RoadChunk"):
+			%RoadChunk.set_crazify_scale(crazify_scale)
 
 @export var crazify_speed: float = 0:
 	set(v):
 		crazify_speed = v
-		if not %RoadChunk: return
-		%RoadChunk.set_crazify_speed(crazify_speed)
+		if get_node_or_null("%RoadChunk"):
+			%RoadChunk.set_crazify_speed(crazify_speed)
 
 @export var level_scan_range: float = 0.25
 @export var scan_for_height: bool = false:
