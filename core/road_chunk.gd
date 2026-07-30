@@ -329,7 +329,7 @@ func _on_asphalt_bomb_explode(explosion_pos: Vector3, explode_radius: float, amo
 	use_roller(true)
 #endregion Bomb Explode
 
-func _on_roller_roller_has_moved(roller_position: Vector3, roller_angle: float, roller_strength: float, roller_strength_from_movement: float) -> void:
+func _on_roller_has_moved(roller_position: Vector3, roller_angle: float, roller_strength: float, roller_strength_from_movement: float) -> void:
 	var flat_chunk_size: Vector2 = Vector2(%RoadChunk.get_size().x, %RoadChunk.get_size().z)
 	var texture_coordinates: Vector2 = (
 		Vector2(roller_position.x, roller_position.z)
@@ -343,8 +343,8 @@ func _on_roller_roller_has_moved(roller_position: Vector3, roller_angle: float, 
 func _ready() -> void:
 	if not roller:
 		push_warning("%s is not assigning roller. Please check." % name)
-	if roller and not roller.roller_has_moved.is_connected(_on_roller_roller_has_moved):
-		roller.roller_has_moved.connect(_on_roller_roller_has_moved)
+	if roller and not roller.roller_has_moved.is_connected(_on_roller_has_moved):
+		roller.roller_has_moved.connect(_on_roller_has_moved)
 	
 	asphalt_state = level_data.start_asphalt_state
 	asphalt_physics_state = level_data.start_asphalt_state
