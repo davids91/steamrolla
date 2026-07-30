@@ -272,16 +272,14 @@ func _physics_process(_delta: float) -> void:
 				else: last_smoothed_position = lerp(last_smoothed_position, raycast_result.position, smush_responsiveness)
 				if 2.5 > (last_smoothed_position- $consty.global_position).length(): $consty.smoosh()
 				elif $consty.is_being_smooshed(): $consty.unsmoosh()
-
+			
 				# Set roller position and udpate brush
-				var roller_delta_pos: Vector3 = last_smoothed_position - $Compactor.global_position
+				var compactor_delta_pos:Vector3 = $Compactor.compactor_set_position_return_delta(last_smoothed_position)
 				%RoadChunk.set_roller_brush(
 					%RoadChunk.get_tex_position_from(last_smoothed_position),
-					Vector2(roller_delta_pos.x, roller_delta_pos.z).angle(),
+					Vector2(compactor_delta_pos.x, compactor_delta_pos.z).angle(),
 					compacting_strength
 				)
-				$Compactor.look_at(roller_delta_pos)
-				$Compactor.global_position = last_smoothed_position
 	shoveling_asphalt = false
 	was_smoothing = smoothing
 	%RoadChunk.update_asphalt()
