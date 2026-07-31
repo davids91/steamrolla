@@ -15,6 +15,10 @@ run/main_scene="uid://bxuby8s3cvqeu"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="uid://destece58mcou"
 
+[dotnet]
+
+project/assembly_name="SteamRolla"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/jigglebones/plugin.cfg")
