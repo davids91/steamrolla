@@ -33,11 +33,11 @@ enum DynamicSurfaces{ ASPHALT, GRAVEL, DIRT }
 				asphalt_texture = load("res://textures/asphalt_tile_seamless.png")
 				asphalt_normals = load("res://textures/asphalt_tile_seamless_normal.png")
 			DynamicSurfaces.GRAVEL:
-				asphalt_texture = load("res://textures/gravel_texture.png")
-				asphalt_normals = load("res://textures/gravel_normal.png")
+				asphalt_texture = load("res://textures/gravel-seamless.png")
+				asphalt_normals = load("res://textures/gravel-seamless-normal.png")
 			DynamicSurfaces.DIRT:
-				asphalt_texture = load("res://textures/dirt_texture.png")
-				asphalt_normals = load("res://textures/dirt_normal.png")
+				asphalt_texture = load("res://textures/dirt-seamless.png")
+				asphalt_normals = load("res://textures/dirt-seamless-normal.png")
 			_:
 				asphalt_texture = load("res://textures/asphalt_tile_seamless.png")
 				asphalt_normals = load("res://textures/asphalt_tile_seamless_normal.png")
