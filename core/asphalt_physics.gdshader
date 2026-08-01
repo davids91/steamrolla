@@ -8,7 +8,7 @@ uniform sampler2D asphalt_delta;
 uniform sampler2D water_noise;
 uniform float water_speed = 0.001;
 uniform float water_flow_modifier_threshold = 0.5;
-uniform float cooldown_percentage = 0.5;
+uniform float cooldown_value = 0.0005;
 
 const float PI_DOUBLE = 6.283185307;
 const float PIXEL_RADIUS = 0.002; // 1. / 512. because asphalt quantity texture is of resolution 512x512
@@ -23,7 +23,7 @@ void fragment() {
 
 	// Handle temperature physics
 	float temp_from_updates = smoothstep(0.0, 0.05, abs(texture(asphalt_delta, UV).r - 0.5));
-	float asphalt_temperature = current_physics_state.g * cooldown_percentage + temp_from_updates;
+	float asphalt_temperature = current_physics_state.g - cooldown_value + temp_from_updates;
 
 	// Handle water physics
 	vec2 uv_water_sample = mod(UV + vec2(fract(TIME * water_speed * current_asphalt_attributes.b), 0.), 1.);

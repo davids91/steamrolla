@@ -80,6 +80,7 @@ Christer:
 Reuben:
 ===
 - tested a commit :D
+- Compactor concept art
 
 David:
 ===

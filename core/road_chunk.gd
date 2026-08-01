@@ -19,7 +19,8 @@ var asphalt_physics_state: Texture ## r: level height(terrain + asphalt), g: asp
 @export_range(0.01, 1.0, 0.01) var physics_update_interval: float = 0.2
 @export var height_unit: float = 0.5
 
-enum DynamicSurfaces{ ASPHALT, GRAVEL, DIRT }
+enum DynamicSurfaces{ ASPHALT = 0, GRAVEL = 1, DIRT = 2 }
+var DynamicSurfaceShyninessInverse: Array[float] = [10., 15., 50.]
 
 @export_category("Display")
 @export var call_update_materials: bool:
@@ -28,6 +29,7 @@ enum DynamicSurfaces{ ASPHALT, GRAVEL, DIRT }
 	set(v):
 		surface = v
 		if level_data: level_data.surface = v
+		asphalt_shyniness = DynamicSurfaceShyninessInverse[v]
 		match v:
 			DynamicSurfaces.ASPHALT:
 				asphalt_texture = load("res://textures/asphalt_tile_seamless.png")
@@ -43,9 +45,13 @@ enum DynamicSurfaces{ ASPHALT, GRAVEL, DIRT }
 				asphalt_normals = load("res://textures/asphalt_tile_seamless_normal.png")
 
 @export var map_resolution: Vector2i = Vector2(512,512)
-@export var asphalt_texture: Texture = load("res://textures/asphalt_tile_seamless.png")
-@export var asphalt_normals: Texture = load("res://textures/asphalt_tile_seamless_normal.png")
+@export var asphalt_shyniness: float = 0.
 @export var asphalt_tile_size_ratio: float = 20.
+
+@onready var asphalt_shiny: float = DynamicSurfaceShyninessInverse[surface]
+var asphalt_texture: Texture = load("res://textures/asphalt_tile_seamless.png")
+var asphalt_normals: Texture = load("res://textures/asphalt_tile_seamless_normal.png")
+
 
 #region Asphalt setters
 func set_asphalt_to_empty() -> void:
@@ -209,6 +215,8 @@ func update_physics() -> void:
 	).call_deferred()
 
 func update_materials() -> void:
+	asphalt_shyniness = DynamicSurfaceShyninessInverse[surface]
+
 	%AsphaltChecker.material.set_shader_parameter("terrain", level_data.terrain_heightmap)
 	%AsphaltChecker.material.set_shader_parameter("asphalt_state", asphalt_state)
 	%AsphaltChecker.material.set_shader_parameter("asphalt_attributes", level_data.asphalt_attributes)
@@ -239,6 +247,7 @@ func update_materials() -> void:
 	mat.set_shader_parameter("asphalt_normals", asphalt_normals)
 	mat.set_shader_parameter("asphalt_tile_size_ratio", asphalt_tile_size_ratio)
 	mat.set_shader_parameter("asphalt_physics_state", asphalt_physics_state)
+	mat.set_shader_parameter("asphalt_shiny", asphalt_shiny)
 
 	var water_mat: Material = $Ground.get_active_material(0).next_pass
 	water_mat.set_shader_parameter("height_unit",  height_unit)

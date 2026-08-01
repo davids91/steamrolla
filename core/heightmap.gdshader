@@ -27,6 +27,8 @@ uniform float crazify_amount = 0.0;
 uniform float crazify_scale = 0.0;
 uniform float crazify_speed = 0.0;
 uniform float level_edge_transition = 0.001;
+uniform float asphalt_shiny = 5.;
+uniform vec3 asphalt_hot_color: source_color = vec3(0.1,0.,0.);
 
 const float VALUE_EPSILON = 0.001;
 
@@ -116,4 +118,72 @@ void fragment() {
 		),
 		step(level_tool_height_diff, level_tool_range)
 	);
+
+	// Make Asphalt glow red when hot
+	ALBEDO += asphalt_hot_color * texture(asphalt_physics_state, UV).g;
+}
+
+// Recreation of the default godot light shader from
+// --> https://github.com/RustyRoboticsBV/GodotStandardLightShader/blob/master/Lambert_SchlickGGX.gdshader
+float DistributionGGX(float cos_theta_m, float alpha)
+{
+	float alpha2 = alpha * alpha;
+	float d = 1.0 + (alpha2 - 1.0) * cos_theta_m * cos_theta_m;
+	return alpha2 / (PI * d * d);
+}
+
+float GeometryGGX(float NdotL, float NdotV, float alpha)
+{
+	return 0.5 / mix(2.0 * NdotL * NdotV, NdotL + NdotV, alpha);
+}
+
+vec3 SchlickBaseReflectivity(float metallic, float specular, vec3 albedo)
+{
+	float dielectric = 0.04 * specular * specular;
+	return mix(vec3(dielectric), albedo, vec3(metallic));
+}
+
+float SchlickFresnel(float u)
+{
+	float m = 1.0 - u;
+	float m2 = m * m;
+	return m2 * m2 * m;
+}
+
+void light()
+{
+	// Calculate some vectors.
+	vec3 lightColor = LIGHT_COLOR / PI;
+
+	vec3 half = normalize(VIEW + LIGHT);
+
+	float NdotL = max(dot(NORMAL, LIGHT), 0.0);
+	float NdotV = max(dot(NORMAL, VIEW), 0.0);
+	float NdotH = max(dot(NORMAL, half), 0.0);
+	float LdotH = max(dot(LIGHT, half), 0.0);
+
+	// Diffuse light (Lambert).
+	DIFFUSE_LIGHT += clamp(dot(NORMAL, LIGHT), 0.0, 1.0) * ATTENUATION * lightColor;
+
+	// Specular light (Schlick-GGX).
+	float ggxAlpha = ROUGHNESS * ROUGHNESS;
+	float D = DistributionGGX(NdotH, ggxAlpha);
+	float G = GeometryGGX(NdotL, NdotV, ggxAlpha);
+
+	vec3 f0 = SchlickBaseReflectivity(METALLIC, SPECULAR_AMOUNT, ALBEDO);
+	float LdotH5 = SchlickFresnel(LdotH);
+	float f90 = clamp(50.0 * f0.g, 0.0, 1.0);
+	vec3 F = f0 + (f90 - f0) * LdotH5;
+
+	vec3 specularBRDF = max(NdotL * D * G * F, 0.0);
+	SPECULAR_LIGHT += specularBRDF * LIGHT_COLOR * ATTENUATION;
+
+	// Custom edits to (supposed) godot default light shader: Make asphalt shiny
+	if (VALUE_EPSILON < texture(asphalt_state, UV).r * texture(asphalt_attributes, UV).r){
+		vec3 halfway_vector = normalize(LIGHT + VIEW);
+		SPECULAR_LIGHT += (
+			pow(max(dot(NORMAL, halfway_vector), 0.), asphalt_shiny) * LIGHT_COLOR
+			/ (1. - texture(asphalt_physics_state, UV).g) // based on temperature
+		);
+	}
 }
