@@ -247,6 +247,16 @@ func update_materials() -> void:
 	water_mat.set_shader_parameter("terrain_heightmap", level_data.terrain_heightmap)
 	water_mat.set_shader_parameter("terrain_normalmap", level_data.terrain_normalmap)
 	water_mat.set_shader_parameter("asphalt_physics_state", asphalt_physics_state)
+	water_mat.set_shader_parameter("water_detail", level_data.water_detail_count)
+	water_mat.set_shader_parameter("water_scale", level_data.water_scale)
+	water_mat.set_shader_parameter("water_speed", level_data.water_speed)
+	water_mat.set_shader_parameter("water_shiny", level_data.water_shinyness)
+	water_mat.set_shader_parameter("water_directionality_angle", level_data.water_angle)
+	water_mat.set_shader_parameter("water_direction_dominance", level_data.water_angle_dominance)
+	water_mat.set_shader_parameter("water_detail_strength", level_data.water_detail_strength)
+	water_mat.set_shader_parameter("water_height", level_data.water_height)
+	water_mat.set_shader_parameter("water_color", level_data.water_color)
+	water_mat.set_shader_parameter("water_transparency", level_data.water_transparency)
 
 static func asphalt_state_tex_path(base_dir: String)-> String:
 	return base_dir + "/asphalt_state.png"

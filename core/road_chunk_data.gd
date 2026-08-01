@@ -6,6 +6,18 @@ extends Resource
 @export var terrain_normalmap: Texture
 @export var terrain_albedo_image: Texture
 
+@export_category("water")
+@export_range(0., 100.) var water_scale: float = 35.
+@export_range(0., 100.) var water_speed: float = 15.
+@export_range(0., 200.) var water_shinyness: float = 15
+@export_range(0.005, 20.) var water_detail_count: float = 5.0
+@export_range(0., TAU) var water_angle: float = 0.
+@export_range(0., 1.) var water_angle_dominance: float = 0.0
+@export_range(0., 1.) var water_detail_strength: float = 0.575
+@export_range(0., 1.) var water_height: float = 0.2
+@export_range(0., 1.) var water_transparency: float = 0.8
+@export var water_color: Color = Color.BLUE
+
 @export_category("dynamic_surface")
 ## The type of dynamic surface used within the level
 @export var surface: RoadChunk.DynamicSurfaces = RoadChunk.DynamicSurfaces.ASPHALT
