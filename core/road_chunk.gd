@@ -268,11 +268,17 @@ func _initialize(data: RoadChunkData, data_path: String = "") -> void:
 	# Check if there's an asphalt state in user storage or a fallback in case data is not available
 	var user_asphalt_state_path: String = user_asphalt_state_tex_path(data_path.get_base_dir())
 	var fallback_asphalt_state_path: String = asphalt_state_tex_path(data_path.get_base_dir())
+	var save_resource: bool = false
 	if data_path.length() > 0 and FileAccess.file_exists(user_asphalt_state_path):
 		level_data.start_asphalt_state = load(user_asphalt_state_path)
 	elif not data.start_asphalt_state and FileAccess.file_exists(fallback_asphalt_state_path):
 		level_data.start_asphalt_state = load(fallback_asphalt_state_path)
-		ResourceSaver.save(level_data, data_path)
+		save_resource = true
+
+	if( # Save the resource if it doesn't exist, or updated
+		(data_path.length() > 0 and not FileAccess.file_exists(data_path))
+		or save_resource
+	): ResourceSaver.save(level_data, data_path)
 
 	if not level_data.start_asphalt_state:
 		set_asphalt_to_empty()
