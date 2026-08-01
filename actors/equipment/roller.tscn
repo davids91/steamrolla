@@ -7,6 +7,7 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_45vf4"]
 resource_name = "Roller.001"
+transparency = 4
 vertex_color_use_as_albedo = true
 albedo_texture = ExtResource("3_cja5l")
 emission_enabled = true
@@ -70,7 +71,7 @@ script = ExtResource("1_vq81g")
 [node name="roller" parent="." unique_id=1787317324 instance=ExtResource("2_qrjta")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 1.056812, 0.02303505)
 
-[node name="Roller" parent="roller" index="0" unique_id=953871099]
+[node name="Roller" parent="roller" index="0" unique_id=2123755476]
 mesh = SubResource("ArrayMesh_haft6")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=7538168]
