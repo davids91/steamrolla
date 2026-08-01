@@ -59,3 +59,31 @@ David:
 - User data save and load
 - Dirt and Gravel Surface system
 - Gravel road, River and Pond test scenes
+
+2026-08-02:
+Demi:
+===
+- Tree models
+- Bird system iteration
+- Roller Controller improvement(movement signals, position update)
+- Trash bin model
+- Code bugfixes and improvements
+
+Juan Luiz R:
+===
+- City concept art
+
+Christer:
+===
+- seamless gravel and dirt textures(albedo and normal)
+
+Reuben:
+===
+- tested a commit :D
+
+David:
+===
+- minor scene and resource fixes
+- asphalt simulation bounds checking
+- water display based on sum of sines
+- asphalt shinyness based on temperature
