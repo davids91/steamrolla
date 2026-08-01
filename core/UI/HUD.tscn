@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://chrk1hugag81m"]
 
 [ext_resource type="Script" uid="uid://dqycmm121dtol" path="res://core/UI/hud.gd" id="1_ygh00"]
+[ext_resource type="PackedScene" uid="uid://cay2iy3mi03c4" path="res://core/UI/tool_panel.tscn" id="4_hyk35"]
 [ext_resource type="Texture2D" uid="uid://dwjms5mdx3iof" path="res://textures/speech_bubble.png" id="4_k5p64"]
 [ext_resource type="PackedScene" uid="uid://bnbkf3tkjckrq" path="res://core/UI/objective_panel.tscn" id="5_ie7id"]
 
@@ -9,6 +10,8 @@ font_size = 35
 
 [node name="HUD" type="CanvasLayer" unique_id=920709406]
 script = ExtResource("1_ygh00")
+
+[node name="ToolPanel" parent="." unique_id=120026210 instance=ExtResource("4_hyk35")]
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=38675216]
 anchors_preset = 7

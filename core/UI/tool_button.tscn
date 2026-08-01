@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://bymgsjpitlgah"]
+
+[ext_resource type="Script" path="res://core/UI/tool_button.gd" id="1_krd3q"]
+[ext_resource type="Texture2D" path="res://textures/ui_atlas.png" id="2_0jvag"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8jg5c"]
+resource_local_to_scene = true
+atlas = ExtResource("2_0jvag")
+region = Rect2(0, 256, 256, 256)
+
+[node name="ToolButton" type="Panel" unique_id=456187996]
+modulate = Color(0.25, 0.25, 0.25, 1)
+z_index = -10
+custom_minimum_size = Vector2(100, 100)
+script = ExtResource("1_krd3q")
+tool_icon_regions = Array[Rect2]([Rect2(0, 0, 256, 256), Rect2(256, 0, 256, 256), Rect2(0, 256, 256, 256), Rect2(0, 512, 256, 256), Rect2(512, 0, 128, 128)])
+tool_enums = Array[int]([0, 1, 2, 3, 4])
+tool_index = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2007253671]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="ToolImage" type="TextureRect" parent="MarginContainer" unique_id=1737633233]
+unique_name_in_owner = true
+z_index = 20
+layout_mode = 2
+texture = SubResource("AtlasTexture_8jg5c")
+expand_mode = 3
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

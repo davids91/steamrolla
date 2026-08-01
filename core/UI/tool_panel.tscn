@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://cay2iy3mi03c4"]
+
+[ext_resource type="Script" path="res://core/UI/tool_panel.gd" id="1_m6t0c"]
+[ext_resource type="Texture2D" path="res://textures/ui_atlas.png" id="1_m515l"]
+[ext_resource type="PackedScene" uid="uid://bymgsjpitlgah" path="res://core/UI/tool_button.tscn" id="2_m6t0c"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8jg5c"]
+atlas = ExtResource("1_m515l")
+region = Rect2(649.6884, 135.2215, 62.037415, 62.387924)
+
+[node name="ToolPanel" type="MarginContainer" unique_id=120026210]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+script = ExtResource("1_m6t0c")
+
+[node name="SelectedTool" type="TextureRect" parent="." unique_id=1802062882]
+layout_mode = 2
+texture = SubResource("AtlasTexture_8jg5c")
+stretch_mode = 5
+
+[node name="Tools" type="HBoxContainer" parent="." unique_id=1481563410]
+layout_mode = 2
+
+[node name="Tool" parent="Tools" unique_id=456187996 instance=ExtResource("2_m6t0c")]
+layout_mode = 2
+tool_index = 1
+
+[node name="Tool2" parent="Tools" unique_id=1447302817 instance=ExtResource("2_m6t0c")]
+layout_mode = 2
+
+[node name="Tool3" parent="Tools" unique_id=1189252688 instance=ExtResource("2_m6t0c")]
+layout_mode = 2
+tool_index = 0
+
+[node name="Tool4" parent="Tools" unique_id=600568313 instance=ExtResource("2_m6t0c")]
+layout_mode = 2
+tool_index = 3
+
+[node name="Tool5" parent="Tools" unique_id=892541175 instance=ExtResource("2_m6t0c")]
+layout_mode = 2
+tool_index = 4
