@@ -54,7 +54,8 @@ void fragment() {
 			if(abs(_asphalt_delta) > VALUE_EPSILON){
 				asphalt_delta_output = _asphalt_delta;
 			}
-		}else if(CONTROL_EPSILON < effect_strength && !using_roller){ // Manually compacting
+		//}else if(CONTROL_EPSILON < effect_strength && !using_roller){ // Manually compacting
+		}else if(false){ // DEBUG
 			if(distance_from_center < effect_radius){
 				float avg_value = 0.;
 				float sample_count = 0.;
@@ -68,11 +69,20 @@ void fragment() {
 				asphalt_delta_output = (avg_value - texture(asphalt_state, UV).r) * effect_strength * smoothstep(effect_radius, 0., distance_from_center);
 			}
 		}else if(CONTROL_EPSILON < effect_strength) { // Using SteamRoller
-			if(point_in_triangle(roller_bl, roller_tl, roller_tr, UV) || point_in_triangle(roller_bl, roller_tr, roller_br, UV)){
+			vec2 prev_pixel_pos = UV - roller_direction * PIXEL_RADIUS;
+			if(
+				( // Check if pixel is within Roller distance
+					point_in_triangle(roller_bl, roller_tl, roller_tr, UV)
+					|| point_in_triangle(roller_bl, roller_tr, roller_br, UV)
+				)&&( // Check for out of bounds
+					all(lessThan(prev_pixel_pos, vec2(1.)))
+					&& all(greaterThan(prev_pixel_pos, vec2(0.)))
+				)
+			){
 				// calculate the asphalt being moved forward to the direction of the rolling to the next pixel
 				asphalt_delta_output -= texture(asphalt_state, UV).r * effect_strength;
 				// calcualte the asphalt being moved into this pixel from a neighbouring pixel opposite of the rolling direction
-				asphalt_delta_output += texture(asphalt_state, UV - roller_direction * PIXEL_RADIUS).r * effect_strength;
+				asphalt_delta_output += texture(asphalt_state, prev_pixel_pos).r * effect_strength;
 			}
 		}
 	}
