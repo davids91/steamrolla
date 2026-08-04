@@ -13,6 +13,7 @@ export_credentials.cfg
 
 # Krita stuff (lock file)
 *.kra~
+*.png~
 
 # Mono-specific ignores
 .mono/
