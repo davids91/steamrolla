@@ -52,7 +52,6 @@ var DynamicSurfaceShyninessInverse: Array[float] = [10., 15., 50.]
 var asphalt_texture: Texture = load("res://textures/asphalt_tile_seamless.png")
 var asphalt_normals: Texture = load("res://textures/asphalt_tile_seamless_normal.png")
 
-
 #region Asphalt setters
 func set_asphalt_to_empty() -> void:
 	var asphalt_state_image : Image = Image.create_empty(map_resolution.x, map_resolution.y, false, Image.FORMAT_RF)
@@ -105,6 +104,17 @@ func get_deviation_from_target() -> float:
 	return difference_image.get_pixel(0,0).get_luminance()
 
 #region update brushes
+func configure_to(tool: RoadWorkTool) -> void:
+	%AsphaltUpdater.material.set_shader_parameter("tool_angle_offset", tool.tool_angle)
+	%AsphaltUpdater.material.set_shader_parameter("tool_size", tool.normalized_size)
+	%AsphaltUpdater.material.set_shader_parameter("used_tool", tool.tool_enum)
+	current_tool = tool.tool_enum
+
+var current_tool: ToolPanel.Tools = ToolPanel.Tools.PAVER
+func configure_tool_enum(tool: ToolPanel.Tools) -> void:
+	%AsphaltUpdater.material.set_shader_parameter("used_tool", tool)
+	current_tool = tool
+
 func set_crazify_amount(amount: float):
 	$Ground.get_active_material(0).set_shader_parameter("crazify_amount", amount)
 
@@ -114,32 +124,37 @@ func set_crazify_scale(amount: float):
 func set_crazify_speed(amount: float):
 	$Ground.get_active_material(0).set_shader_parameter("crazify_speed", amount)
 
+var current_update_amount: float = 0.
 func set_update_brush_amount(amount: float) -> void:
+	current_update_amount = amount
 	%AsphaltUpdater.material.set_shader_parameter("asphalt_delta", amount)
 
 func set_update_brush_radius(amount: float) -> void:
 	%AsphaltUpdater.material.set_shader_parameter("effect_radius", amount)
 
-func set_update_brush_center(center: Vector2) -> void:
-	%AsphaltUpdater.material.set_shader_parameter("roller_center", center)
+## Updates the brush based on the provided global coordinates
+func set_update_brush_center(global_center: Vector3) -> void:
+	%AsphaltUpdater.material.set_shader_parameter("tool_center", get_tex_position_from(global_center))
 
 func set_update_brush_strength(strength: float) -> void:
 	%AsphaltUpdater.material.set_shader_parameter("effect_strength", strength)
 
+func set_paver_brush_height_by(paver_global_y: float) -> void:
+	%AsphaltUpdater.material.set_shader_parameter(
+		"paver_max_height", (paver_global_y - global_position.y) / height_unit
+	)
+
 func set_roller_brush(center: Vector2, angle: float, strength: float = 1.) -> void:
-	%AsphaltUpdater.material.set_shader_parameter("roller_angle", angle)
-	%AsphaltUpdater.material.set_shader_parameter("roller_center", center)
+	%AsphaltUpdater.material.set_shader_parameter("tool_angle", angle)
+	%AsphaltUpdater.material.set_shader_parameter("tool_center", center)
 	if -1. < strength:
 		%AsphaltUpdater.material.set_shader_parameter("effect_strength", strength)
 
-func set_roller_size(size: Vector2) -> void:
-	%AsphaltUpdater.material.set_shader_parameter("roller_size", size)
+func set_tool_angle(angle: float) -> void:
+	%AsphaltUpdater.material.set_shader_parameter("tool_angle", angle)
 
 func set_highlight(amount: float) -> void :
 	$Ground.get_active_material(0).set_shader_parameter("hightlight_strength", amount)
-
-func use_roller(should_use: bool) -> void:
-	%AsphaltUpdater.material.set_shader_parameter("using_roller", should_use)
 
 #endregion update brushes
 
@@ -330,28 +345,22 @@ func reset_user_data(data_path: String) -> void:
 #endregion Update functions
 #region Bomb Explode
 func _on_asphalt_bomb_explode(explosion_pos: Vector3, explode_radius: float, amount_of_asphalt_to_add: float):
-	var local_pos = to_local(explosion_pos)
-	
-	var mesh_size = $Ground.mesh.size
-	
-	var uv_x = (local_pos.x / mesh_size.x) + 0.5
-	var uv_z = (local_pos.z / mesh_size.y) + 0.5
-	var center_uv = Vector2(uv_x, uv_z)
-	
-	if uv_x < 0.0 or uv_x > 1.0 or uv_z < 0.0 or uv_z > 1.0:
-		return
-		
-	use_roller(false)
 
-	set_update_brush_center(center_uv)
-	# effect_radius is in texture UV space (0..1), explode_radius is in world units
+	var mesh_size = $Ground.mesh.size
+	var tool_to_restore: ToolPanel.Tools = current_tool
+	var amount_to_restore: float = current_update_amount
+
+	set_update_brush_center(explosion_pos)
 	set_update_brush_radius(explode_radius / mesh_size.x)
 	set_update_brush_amount(amount_of_asphalt_to_add)
+	configure_tool_enum(ToolPanel.Tools.SHOVEL) #TechDebt: Bomb should be configured instead
 
 	update_asphalt()
-	await get_tree().process_frame
-	set_update_brush_amount(0.0)
-	use_roller(true)
+	(func():
+		await get_tree().process_frame
+		set_update_brush_amount(amount_to_restore)
+		configure_tool_enum(tool_to_restore)
+	).call_deferred()
 #endregion Bomb Explode
 
 func _on_roller_has_moved(roller_position: Vector3, roller_angle: float, roller_strength: float, roller_strength_from_movement: float) -> void:

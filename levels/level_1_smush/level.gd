@@ -2,7 +2,7 @@ extends Node3D
 
 
 func _ready() -> void:
-	$RoadChunk.set_roller_size($Roller.normalized_roller_size)
+	$RoadChunk.configure_to($Roller)
 	$RoadChunk.update_materials()
 
 @export var level_scan_duration_sec: float = 0.7

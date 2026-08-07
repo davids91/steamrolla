@@ -268,6 +268,7 @@ shadow_mesh = SubResource("ArrayMesh_futo8")
 [node name="Compactor" type="Node3D" unique_id=2098416677]
 script = ExtResource("1_1b380")
 vibration_extent = 0.11
+tool_enum = 3
 
 [node name="Bloke" type="Node3D" parent="." unique_id=1862325032]
 unique_name_in_owner = true

@@ -12,6 +12,7 @@ font_size = 35
 script = ExtResource("1_ygh00")
 
 [node name="ToolPanel" parent="." unique_id=120026210 instance=ExtResource("4_hyk35")]
+available_tools = Array[int]([0, 1, 2, 0, 3, 4])
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=38675216]
 anchors_preset = 7

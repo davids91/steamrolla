@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bymgsjpitlgah"]
 
-[ext_resource type="Script" path="res://core/UI/tool_button.gd" id="1_krd3q"]
-[ext_resource type="Texture2D" path="res://textures/ui_atlas.png" id="2_0jvag"]
+[ext_resource type="Script" uid="uid://c23sbydt4m7ko" path="res://core/UI/tool_button.gd" id="1_krd3q"]
+[ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="2_0jvag"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8jg5c"]
 resource_local_to_scene = true
@@ -13,7 +13,7 @@ modulate = Color(0.25, 0.25, 0.25, 1)
 z_index = -10
 custom_minimum_size = Vector2(100, 100)
 script = ExtResource("1_krd3q")
-tool_icon_regions = Array[Rect2]([Rect2(0, 0, 256, 256), Rect2(256, 0, 256, 256), Rect2(0, 256, 256, 256), Rect2(0, 512, 256, 256), Rect2(512, 0, 128, 128)])
+tool_icon_regions = Array[Rect2]([Rect2(256, 0, 256, 256), Rect2(0, 256, 256, 256), Rect2(0, 0, 256, 256), Rect2(0, 512, 256, 256), Rect2(512, 0, 128, 128)])
 tool_enums = Array[int]([0, 1, 2, 3, 4])
 tool_index = 2
 

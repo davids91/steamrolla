@@ -25,7 +25,6 @@ uniform float water_edge_calculation_range = 0.006;
 const float VALUE_EPSILON = 0.001;
 const float PIXEL_RADIUS = 0.002; // 1. / 512. because asphalt quantity texture is of resolution 512x512
 
-
 float water_edge_modifier_for(vec2 uv, sampler2D asphalt_attributes_for_water, float calculation_range) {
 	float water_count = 0.;
 	float non_water_count = 0.;

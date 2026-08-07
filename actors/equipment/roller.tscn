@@ -67,6 +67,7 @@ stream_0/stream = ExtResource("3_qrjta")
 
 [node name="Roller" type="Node3D" unique_id=1510864838]
 script = ExtResource("1_vq81g")
+normalized_size = Vector2(0.115, 0.075)
 
 [node name="roller" parent="." unique_id=1787317324 instance=ExtResource("2_qrjta")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 1.056812, 0.02303505)
@@ -115,6 +116,13 @@ unique_name_in_owner = true
 stream = SubResource("AudioStreamRandomizer_qrjta")
 volume_db = -7.5
 
+[connection signal="body_entered" from="BlockerDetectorFront" to="." method="_on_blocker_detector_front_body_entered"]
+[connection signal="body_exited" from="BlockerDetectorFront" to="." method="_on_blocker_detector_front_body_exited"]
+[connection signal="body_entered" from="BlockerDetectorLeft" to="." method="_on_blocker_detector_left_body_entered"]
+[connection signal="body_exited" from="BlockerDetectorLeft" to="." method="_on_blocker_detector_left_body_exited"]
+[connection signal="body_entered" from="BlockerDetectorRight" to="." method="_on_blocker_detector_right_body_entered"]
+[connection signal="body_exited" from="BlockerDetectorRight" to="." method="_on_blocker_detector_right_body_exited"]
 [connection signal="body_entered" from="AsphaltDetector" to="." method="_on_asphalt_detector_body_entered"]
+[connection signal="body_exited" from="AsphaltDetector" to="." method="_on_asphalt_detector_body_exited"]
 
 [editable path="roller"]

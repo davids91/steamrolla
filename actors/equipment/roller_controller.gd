@@ -1,18 +1,9 @@
-class_name RollerController extends CrewMember
-
+class_name RollerController extends RoadWorkTool
 
 signal driver_intention_changed(is_moving: bool, forward: bool)
 signal roller_has_moved(position: Vector3, angle: float, strength: float, strength_from_movement: float)
 @export var debug: bool
-
-@export_category("Opacity")
-@export var opacity: float = 0.4:
-	set(v):
-		opacity = v
-		if skin: skin.get_active_material(0).albedo_color.a = opacity
 @export var trasparency_responsiveness: float = 0.075
-
-@export var normalized_roller_size: Vector2 = Vector2(0.115, 0.075) ## The size of the roller within the update shaders
 
 @export_category("Locomotion")
 @export var speed: float = 5.0

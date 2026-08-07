@@ -115,7 +115,11 @@ var crazify_tween: Tween
 		if not %RoadChunk: return
 		%RoadChunk.initiate_scan(level_scan_range)
 
-@export_range(0., 1.) var draw_radius: float = 0.03
+@export_range(0., 1.) var draw_radius: float = 0.03:
+	set(v):
+		draw_radius = v
+		if get_node_or_null("%RoadChunk"): %RoadChunk.set_update_brush_radius(draw_radius)
+
 @export_range(0., 0.9) var compacting_strength: float = 0.015
 @export_range(0., 10.) var draw_strength: float = 0.15
 @export_range(0., 10.) var asphalt_addition: float = 0.25
@@ -137,13 +141,27 @@ func _snap_asphalt_to_reference() -> void:
 	snap.tween_method(func(w: float): snap_to_reference = ease(w, snap_easing), 0., max_snap_value, snap_time_sec)
 	snap.tween_callback(func(): snap_to_reference = 0.)
 
-var dragging: bool = false
-var smoothing: bool = false:
+var dragging: bool = false:
 	set(v):
-		if smoothing != v and not Engine.is_editor_hint():
-			if v: $Compactor.set_color(Color.WHITE)
-			else: $Compactor.set_color(Color.TRANSPARENT)
-		smoothing = v
+		if not dragging and selected_tool_node: selected_tool_node.stop_working()
+		dragging = v
+var selected_tool: ToolPanel.Tools = ToolPanel.Tools.UNKNOWN
+var selected_tool_node: RoadWorkTool = null
+func _on_tool_panel_selected_tool(tool: ToolPanel.Tools) -> void:
+	selected_tool = tool
+	match tool:
+		ToolPanel.Tools.PAVER:
+			selected_tool_node = $AsphaltPaver
+			%RoadChunk.configure_to(selected_tool_node)
+			%RoadChunk.set_update_brush_strength(compacting_strength)
+		ToolPanel.Tools.COMPACTOR:
+			selected_tool_node = $Compactor
+			%RoadChunk.configure_to(selected_tool_node)
+			%RoadChunk.set_update_brush_strength(compacting_strength)
+		ToolPanel.Tools.SHOVEL:
+			selected_tool_node = null
+			%RoadChunk.configure_tool_enum(tool)
+			%RoadChunk.set_update_brush_strength(0.)
 
 @export var accepted_deviation: float = 0.001
 var won_game: bool = false
@@ -169,61 +187,83 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	# Cast mouse position on click to world coordinates
 	if event is InputEventMouseButton:
-		dragging = event.is_pressed() or asphalt_delta != 0.
-		if event.button_index == MOUSE_BUTTON_LEFT and event.double_click:
-			asphalt_delta = asphalt_addition
-			$ShovelSound.play()
-			shoveling_asphalt = true
-		if event.button_index == MOUSE_BUTTON_RIGHT and event.double_click:
-			asphalt_delta = -asphalt_removal
-			$ShovelSound.play()
-			shoveling_asphalt = true
+		if selected_tool != ToolPanel.Tools.UNKNOWN:
+			dragging = (
+				selected_tool == ToolPanel.Tools.COMPACTOR
+				and (event.is_pressed() or asphalt_delta != 0.)
+			)
+			if selected_tool == ToolPanel.Tools.PAVER and event.pressed:
+				asphalt_delta = asphalt_addition
+				$ShovelSound.play()
+				shoveling_asphalt = true
+			if selected_tool == ToolPanel.Tools.SHOVEL and event.pressed:
+				asphalt_delta = -asphalt_removal
+				$ShovelSound.play()
+				shoveling_asphalt = true
 		if not event.pressed:
 			dragging = false
-			smoothing = false
 
 func _ready() -> void:
-	$RoadChunk.use_roller(false)
 	%RoadChunk.set_update_brush_radius(draw_radius)
 	%RoadChunk.initialize(level_data)
-	$Compactor.set_color(Color.TRANSPARENT)
+	%ToolPanel.call_deferred("select", ToolPanel.Tools.PAVER)
 
 const asphalt_removal_delay_sec: float = 0.25
-const smoothing_click_length_needed_sec: float = 0.25
-var time_left_for_smoothing_click_sec: float = smoothing_click_length_needed_sec
 var time_to_remove_asphalt_sec: float = asphalt_removal_delay_sec
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
-		time_left_for_smoothing_click_sec -= delta
-	else: time_left_for_smoothing_click_sec = smoothing_click_length_needed_sec
-	smoothing = 0. >= time_left_for_smoothing_click_sec
 
 	# Handle Asphalt addition/removal
 	if 0. != asphalt_delta:
 		if 0. > asphalt_delta and time_to_remove_asphalt_sec > 0.:
 			time_to_remove_asphalt_sec -= delta
-		else:
+		elif not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 			asphalt_delta *= 0.85
 			if abs(asphalt_delta) < 0.1: asphalt_delta = 0.
 			if 0. == asphalt_delta: dragging = false
 		%RoadChunk.set_update_brush_amount(asphalt_delta * delta)
 	else:
-		%RoadChunk.set_update_brush_radius(draw_radius)
 		time_to_remove_asphalt_sec = asphalt_removal_delay_sec
 
-# The asphalt level modified by the user
-@onready var last_smoothed_position: Vector3 = $Compactor.global_position
-@export_range(0., 1.) var smush_responsiveness: float = 0.25
+#region shovel_icon_animation
 @export_range(0., 5.) var shovel_icon_duration_sec: float = 1.
 @export var shovel_icon_travel_distance: float = 2.
 @export var shovel_icon_y_offset: float = 2.
 @export var shovel_icon_dig_travel_y: Curve
 @export var shovel_icon_fill_travel_y: Curve
-var was_smoothing: bool = smoothing
+func dig_shovel_into(target_position: Vector3) -> void:
+	$ShovelIcon.modulate = Color.WHITE
+	if asphalt_delta < 0.: # Digging
+		var shovel_icon_start_position: Vector3 = target_position + Vector3(0., shovel_icon_y_offset, 0.)
+		$ShovelIcon.global_position = shovel_icon_start_position
+		create_tween().tween_method(
+			func(w: float):
+				$ShovelIcon.global_position = (
+					shovel_icon_start_position
+					+ Vector3(0., shovel_icon_dig_travel_y.sample(w) * shovel_icon_travel_distance, 0.)
+				),
+			0., 1., shovel_icon_duration_sec
+		).set_ease(Tween.EASE_IN_OUT)
+	else:
+		var shovel_icon_start_position: Vector3 = (target_position + Vector3(0., shovel_icon_travel_distance + shovel_icon_y_offset, 0.))
+		$ShovelIcon.global_position = shovel_icon_start_position
+		create_tween().tween_method(
+			func(w: float):
+				$ShovelIcon.global_position = (
+					shovel_icon_start_position
+					+ Vector3(0., shovel_icon_fill_travel_y.sample(w) * shovel_icon_travel_distance, 0.)
+				),
+			0., 1., shovel_icon_duration_sec
+		).set_ease(Tween.EASE_IN_OUT)
+	create_tween().tween_property(
+		$ShovelIcon, "modulate", Color.TRANSPARENT,
+		shovel_icon_duration_sec
+	)
+#endregion shovel_icon_animation
+
 func _physics_process(_delta: float) -> void:
 	if Engine.is_editor_hint(): return
-	if smoothing or dragging or 0. != asphalt_delta:
+	if dragging or 0. != asphalt_delta:
 		var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
 		var mouse_screen_position: Vector2 = get_viewport().get_mouse_position()
 		var origin_global_pos: Vector3 = $Camera3D.project_ray_origin(mouse_screen_position)
@@ -232,54 +272,20 @@ func _physics_process(_delta: float) -> void:
 			origin_global_pos, origin_global_pos + ray_direction * 50.
 		))
 		if "position" in raycast_result:
-			if shoveling_asphalt:
-				$ShovelIcon.modulate = Color.WHITE
-				if asphalt_delta < 0.: # Digging
-					var shovel_icon_start_position: Vector3 = raycast_result.position + Vector3(0., shovel_icon_y_offset, 0.)
-					$ShovelIcon.global_position = shovel_icon_start_position
-					create_tween().tween_method(
-						func(w: float):
-							$ShovelIcon.global_position = (
-								shovel_icon_start_position
-								+ Vector3(0., shovel_icon_dig_travel_y.sample(w) * shovel_icon_travel_distance, 0.)
-							),
-						0., 1., shovel_icon_duration_sec
-					).set_ease(Tween.EASE_IN_OUT)
-				else:
-					var shovel_icon_start_position: Vector3 = (
-						raycast_result.position
-						+ Vector3(0., shovel_icon_travel_distance + shovel_icon_y_offset, 0.)
-					)
-					$ShovelIcon.global_position = shovel_icon_start_position
-					create_tween().tween_method(
-						func(w: float):
-							$ShovelIcon.global_position = (
-								shovel_icon_start_position
-								+ Vector3(0., shovel_icon_fill_travel_y.sample(w) * shovel_icon_travel_distance, 0.)
-							),
-						0., 1., shovel_icon_duration_sec
-					).set_ease(Tween.EASE_IN_OUT)
-				create_tween().tween_property(
-					$ShovelIcon, "modulate", Color.TRANSPARENT,
-					shovel_icon_duration_sec
-				)
+			%RoadChunk.set_update_brush_center(raycast_result.position)
+			if shoveling_asphalt and selected_tool == ToolPanel.Tools.SHOVEL:
+				dig_shovel_into(raycast_result.position)
 				shoveling_asphalt = false
-			if 0. < abs(asphalt_delta):
-				%RoadChunk.set_update_brush_strength(0.)
 			else:
-				%RoadChunk.set_update_brush_amount(0.)
-				if not was_smoothing: last_smoothed_position = raycast_result.position
-				else: last_smoothed_position = lerp(last_smoothed_position, raycast_result.position, smush_responsiveness)
-				if 2.5 > (last_smoothed_position- $consty.global_position).length(): $consty.smoosh()
+				if 2.5 > (raycast_result.position - $consty.global_position).length(): $consty.smoosh()
 				elif $consty.is_being_smooshed(): $consty.unsmoosh()
-			
-				# Set roller position and udpate brush
-				var compactor_delta_pos:Vector3 = $Compactor.compactor_set_position_return_delta(last_smoothed_position)
-				%RoadChunk.set_roller_brush(
-					%RoadChunk.get_tex_position_from(last_smoothed_position),
-					Vector2(compactor_delta_pos.x, compactor_delta_pos.z).angle(),
-					compacting_strength
-				)
+				if selected_tool_node:
+					selected_tool_node.work_at(raycast_result.position)
+					%RoadChunk.set_tool_angle(Vector2(-selected_tool_node.basis.z.x, -selected_tool_node.basis.z.z).angle())
+				if (
+					asphalt_delta != 0. and selected_tool_node
+					and selected_tool == ToolPanel.Tools.PAVER
+				):
+					%RoadChunk.set_paver_brush_height_by(selected_tool_node.global_position.y)
 	shoveling_asphalt = false
-	was_smoothing = smoothing
 	%RoadChunk.update_asphalt()
