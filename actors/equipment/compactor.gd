@@ -1,5 +1,6 @@
 extends RoadWorkTool
 
+#region Common Interface For Roadwork Tools
 func set_color(color: Color) -> void:
 	create_tween().tween_property($Bloke/metarig/Skeleton3D/bloke.get_active_material(0), "albedo_color", color, 0.5)
 	create_tween().tween_property($Bloke/metarig/Skeleton3D/hat.get_active_material(0), "albedo_color", color, 0.5)
@@ -7,6 +8,15 @@ func set_color(color: Color) -> void:
 
 func set_angle_from_prev_pos(prev_pos: Vector3) -> void:
 	look_at(prev_pos - global_position)
+
+func stop_working() -> void:
+	super()
+	$Sound.stop()
+
+func work_at(target_position: Vector3) -> void:
+	super(target_position)
+	$Sound.play()
+#endregion Common Interface For Roadwork Tools
 
 func _ready() -> void:
 	$Bloke/AnimationPlayer.current_animation = "default"
