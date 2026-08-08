@@ -1,9 +1,10 @@
-class_name RollerController extends RoadWorkTool
+class_name RollerController
+extends RoadWorkTool
 
 signal driver_intention_changed(is_moving: bool, forward: bool)
 signal roller_has_moved(position: Vector3, angle: float, strength: float, strength_from_movement: float)
 @export var debug: bool
-@export var trasparency_responsiveness: float = 0.075
+@export var color_responsiveness: float = 0.075
 
 @export_category("Locomotion")
 @export var speed: float = 5.0
@@ -13,16 +14,24 @@ signal roller_has_moved(position: Vector3, angle: float, strength: float, streng
 @export_range(0., 0.9) var strength: float = 0.15
 var strength_from_movement: float = 0.
 
-
 var is_reversing: bool = false
 var is_moving: bool = false
 var movement_intent: Vector2
 var direction: Vector3
-var target_transparency: float = 1.
-var current_transparency: float = 1.
+var target_color: Color = Color.WHITE:
+	set(v): target_color = v
+var current_color: Color = Color.WHITE
 
 @onready var camera_3d: Camera3D = $Camera3D
 @onready var skin: MeshInstance3D = $roller/Roller
+#region Common Interface For Roadwork Tools
+func set_color(color: Color) -> void:
+	target_color = color
+
+func set_angle_from_prev_pos(prev_pos: Vector3) -> void:
+	var corrected_prev_pos = Vector3(prev_pos.x, global_position.y, prev_pos.z)
+	look_at(global_position + (global_position - corrected_prev_pos))
+#endregion Common Interface For Roadwork Tools
 
 var is_on_asphalt: bool = false
 var was_on_asphalt: bool = is_on_asphalt
@@ -34,8 +43,10 @@ func _on_asphalt_detector_body_entered(body: Node3D) -> void:
 func _on_asphalt_detector_body_exited(body: Node3D) -> void:
 	if body == connected_chunk: connected_chunk = null
 
+func _ready() -> void: pass
+
+var moving_transparency_modifier: float = 0.
 func _process(delta: float) -> void:
-	target_transparency = 1.
 	if Input.is_action_just_pressed(&"debug"):
 		debug = !debug
 
@@ -68,10 +79,13 @@ func _process(delta: float) -> void:
 
 	was_on_asphalt = is_on_asphalt
 
-	if 0. < movement_intent.length(): target_transparency = 0.
-	current_transparency = lerp(current_transparency, target_transparency, trasparency_responsiveness)
-	skin.get_active_material(0).albedo_color.a = current_transparency
-
+	if 0. < movement_intent.length(): moving_transparency_modifier = -1.
+	else: moving_transparency_modifier = 0.
+	current_color = lerp(
+		current_color, Color(target_color.r, target_color.g, target_color.b, target_color.a + moving_transparency_modifier),
+		color_responsiveness
+	)
+	skin.get_active_material(0).albedo_color = current_color
 
 func _physics_process(_delta: float) -> void:
 	var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
@@ -80,7 +94,7 @@ func _physics_process(_delta: float) -> void:
 	))
 
 	if "position" in raycast_result:
-		global_position = raycast_result.position
+		global_position.y = raycast_result.position.y
 
 
 func _handle_movement(delta: float) -> void:

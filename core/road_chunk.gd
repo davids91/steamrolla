@@ -90,7 +90,8 @@ func get_tex_position_from(pos: Vector3) -> Vector2:
 
 func is_on_asphalt(global_pos: Vector3) -> bool:
 	var normalized_pos: Vector2 = get_tex_position_from(global_pos)
-	%AsphaltFilterPreview/PositionMarker.position = normalized_pos * %AsphaltFilterPreview.size
+	if get_node_or_null("%AsphaltFilterPreview/PositionMarker"):
+		%AsphaltFilterPreview/PositionMarker.position = normalized_pos * %AsphaltFilterPreview.size
 	if normalized_pos.x >= 1. or normalized_pos.y >= 1.: return false
 	normalized_pos.x *= asphalt_attributes.get_width()
 	normalized_pos.y *= asphalt_attributes.get_height()

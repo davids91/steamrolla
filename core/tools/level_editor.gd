@@ -112,7 +112,8 @@ var crazify_tween: Tween
 		draw_radius = v
 		if get_node_or_null("%RoadChunk"): %RoadChunk.set_update_brush_radius(draw_radius)
 
-@export_range(0., 0.9) var compacting_strength: float = 0.015
+@export_range(0., 0.99) var compacting_strength: float = 0.015
+@export_range(0., 0.99) var rolling_strength: float = 0.45
 @export_range(0., 10.) var draw_strength: float = 0.15
 @export_range(0., 10.) var asphalt_addition: float = 0.25
 @export_range(0., 10.) var asphalt_removal: float = 0.25
@@ -142,6 +143,10 @@ var selected_tool_node: RoadWorkTool = null
 func _on_tool_panel_selected_tool(tool: ToolPanel.Tools) -> void:
 	selected_tool = tool
 	match tool:
+		ToolPanel.Tools.ROLLER:
+			selected_tool_node = $Roller
+			%RoadChunk.configure_to(selected_tool_node)
+			%RoadChunk.set_update_brush_strength(rolling_strength)
 		ToolPanel.Tools.PAVER:
 			selected_tool_node = $AsphaltPaver
 			%RoadChunk.configure_to(selected_tool_node)
@@ -181,14 +186,17 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if selected_tool != ToolPanel.Tools.UNKNOWN:
 			dragging = (
-				selected_tool == ToolPanel.Tools.COMPACTOR
+				(
+					selected_tool == ToolPanel.Tools.COMPACTOR
+					or selected_tool == ToolPanel.Tools.ROLLER
+				)
 				and (event.is_pressed() or asphalt_delta != 0.)
 			)
 			if selected_tool == ToolPanel.Tools.PAVER and event.pressed:
 				asphalt_delta = asphalt_addition
 				$ShovelSound.play()
 				shoveling_asphalt = true
-			if selected_tool == ToolPanel.Tools.SHOVEL and event.pressed:
+			elif selected_tool == ToolPanel.Tools.SHOVEL and event.pressed:
 				asphalt_delta = -asphalt_removal
 				$ShovelSound.play()
 				shoveling_asphalt = true
