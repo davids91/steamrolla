@@ -19,7 +19,7 @@ script = ExtResource("1_m6t0c")
 [node name="SelectedTool" type="TextureRect" parent="." unique_id=1802062882]
 layout_mode = 2
 texture = SubResource("AtlasTexture_8jg5c")
-stretch_mode = 5
+stretch_mode = 4
 
 [node name="Tools" type="HBoxContainer" parent="." unique_id=1481563410]
 layout_mode = 2

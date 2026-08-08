@@ -23,7 +23,24 @@ func select(tool: Tools) -> void:
 	selected_tool.emit(tool)
 	var tool_index: int = available_tools.find(tool)
 	create_tween().tween_property(
-		$SelectedTool, "global_position",
-		global_position + $Tools.get_child(tool_index).global_position - Vector2(207., 0.), # TechDebt: Magic number for x offset,
+		$SelectedTool, "position",
+		Vector2(
+			get_theme_constant("margin_left") + $Tools.get_child(tool_index).position.x,
+			get_theme_constant("margin_top")
+		),
 		0.1
 	).set_ease(Tween.EASE_IN_OUT)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("tool_1"):
+		if available_tools.size() > 0: select(available_tools[0])
+	if event.is_action_pressed("tool_2"):
+		if available_tools.size() > 1: select(available_tools[1])
+	if event.is_action_pressed("tool_3"):
+		if available_tools.size() > 2: select(available_tools[2])
+	if event.is_action_pressed("tool_4"):
+		if available_tools.size() > 3: select(available_tools[3])
+	if event.is_action_pressed("tool_5"):
+		if available_tools.size() > 4: select(available_tools[4])
+	if event.is_action_pressed("tool_6"):
+		if available_tools.size() > 5: select(available_tools[5])
