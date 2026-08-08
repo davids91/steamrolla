@@ -8,19 +8,17 @@ extends Node3D
 		if get_node_or_null("%RoadChunk"):
 			%RoadChunk.initialize(level_data)
 
-@export var load_level_data: bool = false:
-	set(_v): # Fill up %RoadChunk with data
+@export_tool_button("Load Level Data", "Load") var load_level_data: Callable = func():
 		%RoadChunk.initialize(level_data)
 
-@export var save_level_data: bool = false:
-	set(_v):
-		if not %RoadChunk: return
-		var asphalt_state_path: String = RoadChunk.asphalt_state_tex_path(level_data.get_base_dir())
-		%RoadChunk.asphalt_state.get_image().save_png(asphalt_state_path)
-		if Engine.is_editor_hint():
-			EditorInterface.get_resource_filesystem().scan() #TechDebt: This makes itch export crash
-		%RoadChunk.level_data.start_asphalt_state = load(asphalt_state_path)
-		get_tree().create_timer(1.).timeout.connect(func():ResourceSaver.save(%RoadChunk.level_data, level_data))
+@export_tool_button("Save Level Data", "Save") var save_level_data: Callable = func():
+	if not get_node_or_null("%RoadChunk"): return
+	var asphalt_state_path: String = RoadChunk.asphalt_state_tex_path(level_data.get_base_dir())
+	%RoadChunk.asphalt_state.get_image().save_png(asphalt_state_path)
+	if Engine.is_editor_hint():
+		EditorInterface.get_resource_filesystem().scan() #TechDebt: This makes itch export crash
+	%RoadChunk.level_data.start_asphalt_state = load(asphalt_state_path)
+	get_tree().create_timer(1.).timeout.connect(func():ResourceSaver.save(%RoadChunk.level_data, level_data))
 
 @export var noise: FastNoiseLite = FastNoiseLite.new()
 @export var starting_asphalt_level_normalized: float = 0.2
@@ -32,47 +30,42 @@ extends Node3D
 			%RoadChunk.height_unit = height_unit
 			%RoadChunk.update_materials()
 
-@export var call_update_materials: bool = false:
-	set(_v): %RoadChunk.update_materials()
+@export_tool_button("Update Materials", "Reload") var call_update_materials: Callable = func():
+	%RoadChunk.update_materials()
 
-@export var call_update_physics: bool = false:
-	set(_v): %RoadChunk.update_physics()
+@export_tool_button("Update Physics", "Reload") var call_update_physics: Callable = func():
+	%RoadChunk.update_physics()
 
-@export var update_asphalt: bool = false:
-	set(_v):
-		%RoadChunk.update_asphalt()
-		%RoadChunk.update_physics()
+@export_tool_button("Update Asphalt", "CurveTexture") var update_asphalt: Callable = func():
+	%RoadChunk.update_asphalt()
+	%RoadChunk.update_physics()
 
-@export var empty_asphalt_image: bool = false:
-	set(_v):
-		%RoadChunk.set_asphalt_to_empty()
-		%RoadChunk.update_physics()
+@export_tool_button("Erase Asphalt", "GuiVsplitter") var empty_asphalt_image: Callable = func():
+	%RoadChunk.set_asphalt_to_empty()
+	%RoadChunk.update_physics()
 
-@export var regenerate_asphalt_image: bool = false:
-	set(_v):
-		noise.seed = randi()
-		%RoadChunk.randomize_asphalt(noise, starting_asphalt_level_normalized, starting_asphalt_distribution_normalized)
-		%RoadChunk.level_data.start_asphalt_state = %RoadChunk.asphalt_state
-		%RoadChunk.update_physics()
+@export_tool_button("Randomize Asphalt", "CurveXYZTexture") var regenerate_asphalt_image: Callable = func():
+	noise.seed = randi()
+	%RoadChunk.randomize_asphalt(noise, starting_asphalt_level_normalized, starting_asphalt_distribution_normalized)
+	%RoadChunk.level_data.start_asphalt_state = %RoadChunk.asphalt_state
+	%RoadChunk.update_physics()
 
 @export_range(0., 1.) var reference_asphalt_height: float = starting_asphalt_level_normalized
-@export var set_asphalt_to_reference_height: bool = false:
-	set(_v):
-		%RoadChunk.randomize_asphalt(noise, reference_asphalt_height, 0.)
+@export_tool_button("Set Asphalt To Ref Height", "CurveConstant") var set_asphalt_to_reference_height: Callable = func():
+	%RoadChunk.randomize_asphalt(noise, reference_asphalt_height, 0.)
 
-@export var take_current_asphalt_state_as_target: bool = false:
-	set(_v):
-		%RoadChunk.set_target()
+@export_tool_button("Take Asphalt as Target", "CurveCenter") var take_current_asphalt_state_as_target: Callable = func():
+	%RoadChunk.set_target()
 
 @export var max_snap_value: float = 0.6
 @export var snap_time_sec: float = 0.6
 @export var snap_easing: float = 1.0
-@export var start_snapping_to_ref: bool = false:
-	set(_v): _snap_asphalt_to_reference()
+@export_tool_button("Snap to Reference", "CollapseTree") var start_snapping_to_ref: Callable = func():
+	_snap_asphalt_to_reference()
 
-@export_range(0., 10.) var snap_to_reference: float = false:
+@export_range(0., 10.) var reference_snap_strength: float = false:
 	set(v):
-		snap_to_reference = v
+		reference_snap_strength = v
 		%RoadChunk.snap_to_reference(v)
 		%RoadChunk.update_asphalt()
 
@@ -110,10 +103,9 @@ var crazify_tween: Tween
 			%RoadChunk.set_crazify_speed(crazify_speed)
 
 @export var level_scan_range: float = 0.25
-@export var scan_for_height: bool = false:
-	set(_v):
-		if not %RoadChunk: return
-		%RoadChunk.initiate_scan(level_scan_range)
+@export_tool_button("Scan Level", "ColorTrackVu") var scan_for_height: Callable = func():
+	if not %RoadChunk: return
+	%RoadChunk.initiate_scan(level_scan_range)
 
 @export_range(0., 1.) var draw_radius: float = 0.03:
 	set(v):
@@ -138,8 +130,8 @@ func _have_road_paint_appear(animation_length: float = 0.7) -> void:
 
 func _snap_asphalt_to_reference() -> void:
 	var snap: Tween = create_tween() # snap_to_reference setter includes logic for shader updates
-	snap.tween_method(func(w: float): snap_to_reference = ease(w, snap_easing), 0., max_snap_value, snap_time_sec)
-	snap.tween_callback(func(): snap_to_reference = 0.)
+	snap.tween_method(func(w: float): reference_snap_strength = ease(w, snap_easing), 0., max_snap_value, snap_time_sec)
+	snap.tween_callback(func(): reference_snap_strength = 0.)
 
 var dragging: bool = false:
 	set(v):
