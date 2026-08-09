@@ -7,14 +7,7 @@ enum Tools{ ROLLER, PAVER, DUMPTRUCK, COMPACTOR, SHOVEL, UNKNOWN }
 signal selected_tool(tool: Tools)
 
 @export var available_tools: Array[Tools]
-
-const TOOL_BUTTON_TEMPLATE: PackedScene = preload("res://core/UI/tool_button.tscn")
-func _ready() -> void:
-	for t in available_tools:
-		var button: ToolButton = TOOL_BUTTON_TEMPLATE.instantiate()
-		button.selected.connect(select)
-		button.tool_index = t
-		$Tools.add_child(button)
+@export_tool_button("Reload Buttons", "Button") var refresh_buttons_button: Callable = _refresh_buttons
 
 func select(tool: Tools) -> void:
 	for c in $Tools.get_children() as Array[ToolButton]:
@@ -30,6 +23,18 @@ func select(tool: Tools) -> void:
 		),
 		0.1
 	).set_ease(Tween.EASE_IN_OUT)
+
+const TOOL_BUTTON_TEMPLATE: PackedScene = preload("res://core/UI/tool_button.tscn")
+func _refresh_buttons() -> void:
+	for c in $Tools.get_children(): queue_free()
+	for t in available_tools:
+		var button: ToolButton = TOOL_BUTTON_TEMPLATE.instantiate()
+		button.selected.connect(select)
+		button.tool_index = t
+		$Tools.add_child(button)
+
+func _ready() -> void:
+	_refresh_buttons()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("tool_1"):

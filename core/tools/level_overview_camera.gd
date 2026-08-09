@@ -18,8 +18,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			_camera_3d.position.z -= zoom_speed
 			
 	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
-		var offset := Vector3(-event.relative.x * panning_speed, event.relative.y * panning_speed, 0)
-		var local_offset_transform = Transform3D(Basis.IDENTITY, offset)
+		var offset: Vector3 = Vector3(-event.relative.x * panning_speed, event.relative.y * panning_speed, 0)
+		var local_offset_transform: Transform3D = Transform3D(Basis.IDENTITY, offset)
 		set_transform(transform * local_offset_transform)
 		
 func _rotate_camera_by(offset: Vector2) -> void:

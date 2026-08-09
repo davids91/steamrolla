@@ -18,9 +18,11 @@ func work_at(target_position: Vector3) -> void:
 		set_color(Color.WHITE)
 	set_transform_based_on(target_position)
 
-@export var tool_enum: ToolPanel.Tools
-@export var normalized_size: Vector2 ## The size of the tool active part within the update shaders
-@export var tool_angle: float
+@export var tool_enum: ToolPanel.Tools = ToolPanel.Tools.UNKNOWN
+@export var normalized_size: Vector2 = Vector2(0.1, 0.1) ## The size of the tool active part within the update shaders
+@export var tool_angle: float = 0. ## The persistent angle offset of the tool active part within the update shaders
+@export var tool_strength: float = 0.5 ## The strength of the tool active part within the update shaders
+@export var tool_radius: float = 0.1 ## May not always be used
 #endregion Common Interface For Roadwork Tools
 
 @onready var previous_position: Vector3 = global_position

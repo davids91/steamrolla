@@ -1,9 +1,7 @@
 extends Node3D
 
-
-func _ready() -> void:
-	$RoadChunk.configure_to($Roller)
-	$RoadChunk.update_materials()
+#TODO: Initiate roller runway selection when roller is chosen
+#TODO: Stop Roller phase when roller re-enters runway
 
 @export var level_scan_duration_sec: float = 0.7
 @export var level_scan_range: float = 0.25

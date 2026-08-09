@@ -275,6 +275,7 @@ stream_0/stream = ExtResource("5_5lgew")
 script = ExtResource("1_1b380")
 vibration_extent = 0.11
 tool_enum = 3
+tool_radius = 0.075
 
 [node name="Bloke" type="Node3D" parent="." unique_id=1862325032]
 unique_name_in_owner = true

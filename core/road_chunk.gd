@@ -107,6 +107,8 @@ func configure_to(tool: RoadWorkTool) -> void:
 	%AsphaltUpdater.material.set_shader_parameter("tool_angle_offset", tool.tool_angle)
 	%AsphaltUpdater.material.set_shader_parameter("tool_size", tool.normalized_size)
 	%AsphaltUpdater.material.set_shader_parameter("used_tool", tool.tool_enum)
+	%AsphaltUpdater.material.set_shader_parameter("effect_strength", tool.tool_strength)
+	%AsphaltUpdater.material.set_shader_parameter("effect_radius", tool.tool_radius)
 	current_tool = tool.tool_enum
 
 var current_tool: ToolPanel.Tools = ToolPanel.Tools.PAVER
