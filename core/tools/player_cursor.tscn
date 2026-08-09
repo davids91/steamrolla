@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://cvvnwqj8sfbtp"]
+
+[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_rk6a3"]
+transparency = 1
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.98333335, 1, 0, 0.58431375)
+emission_enabled = true
+emission = Color(0.7407475, 0.8577769, 1.3091564e-05, 1)
+clearcoat_enabled = true
+
+[node name="PlayerCursor" type="Node3D" unique_id=1630135012]
+
+[node name="Donut" type="CSGTorus3D" parent="." unique_id=850018795]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, -0.5)
+inner_radius = 0.424
+sides = 32
+ring_sides = 3
+material = SubResource("ORMMaterial3D_rk6a3")
+
+[node name="Arrow" type="CSGCylinder3D" parent="." unique_id=1218896462]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, -0.5)
+cone = true
+material = SubResource("ORMMaterial3D_rk6a3")

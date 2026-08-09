@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://btpepqma8jc6j"]
+
+[ext_resource type="Script" uid="uid://fs2nb7yohxvp" path="res://core/tools/tool_controller.gd" id="1_mu5et"]
+[ext_resource type="Texture2D" uid="uid://tj57qnmtb46o" path="res://textures/shovel_icon.png" id="2_q4062"]
+[ext_resource type="AudioStream" uid="uid://c2wni3e7h2oig" path="res://audio/asphalt.wav" id="3_5dlyw"]
+
+[sub_resource type="Curve" id="Curve_aicyk"]
+_limits = [-1.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0.0016778521, 0.51259995), 0.0, -0.8210587, 0, 0, Vector2(0.23657718, -0.6060232), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_8b0r0"]
+_limits = [-1.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.25000003, -0.6699445), 0.0, 0.0, 0, 0, Vector2(0.57046986, -0.64597404), 0.0, 0.0, 0, 0, Vector2(0.96308726, 1), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_5pxul"]
+random_pitch = 1.3348398
+streams_count = 1
+stream_0/stream = ExtResource("3_5dlyw")
+
+[node name="ToolController" type="Node3D" unique_id=129265235]
+script = ExtResource("1_mu5et")
+shovel_icon_dig_travel_y = SubResource("Curve_aicyk")
+shovel_icon_fill_travel_y = SubResource("Curve_8b0r0")
+
+[node name="ShovelIcon" type="Sprite3D" parent="." unique_id=1647755864]
+transform = Transform3D(-0.017602984, 0.7189509, -0.6948379, 0.012131715, 0.69504803, 0.718861, 0.9997714, 0.004224522, -0.020957027, -6.051, 2.573, 0)
+modulate = Color(1, 1, 1, 0)
+texture = ExtResource("2_q4062")
+
+[node name="ShovelSound" type="AudioStreamPlayer3D" parent="." unique_id=1951448107]
+stream = SubResource("AudioStreamRandomizer_5pxul")
