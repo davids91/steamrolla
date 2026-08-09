@@ -1,4 +1,5 @@
 shader_type spatial;
+render_mode cull_disabled;
 
 uniform sampler2D road_colormap;
 uniform sampler2D asphalt_attributes; /// r: presence, g: editability, b: fluidity

@@ -1,4 +1,5 @@
 shader_type spatial;
+render_mode cull_disabled, depth_prepass_alpha;
 
 uniform sampler2D road_colormap;
 uniform sampler2D asphalt_texture;
@@ -121,6 +122,7 @@ void fragment() {
 
 	// Make Asphalt glow red when hot
 	ALBEDO += asphalt_hot_color * texture(asphalt_physics_state, UV).g;
+	ALPHA = texture(road_colormap, UV).a;
 }
 
 // Recreation of the default godot light shader from
