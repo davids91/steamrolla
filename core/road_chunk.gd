@@ -12,8 +12,7 @@ var asphalt_physics_state: Texture ## r: level height(terrain + asphalt), g: asp
 
 @export_category("Level Data")
 @export var level_data: RoadChunkData
-@export var load_data: bool:
-	set(v): _initialize(level_data)
+@export_tool_button("Load data", "Reload") var load_data: Callable = func(): _initialize(level_data)
 
 @export_category("Physics")
 @export_range(0.01, 1.0, 0.01) var physics_update_interval: float = 0.2
@@ -23,8 +22,7 @@ enum DynamicSurfaces{ ASPHALT = 0, GRAVEL = 1, DIRT = 2 }
 var DynamicSurfaceShyninessInverse: Array[float] = [10., 15., 50.]
 
 @export_category("Display")
-@export var call_update_materials: bool:
-	set(v): update_materials()
+@export_tool_button("Update Materials", "Reload") var call_update_materials: Callable = update_materials
 @export var surface: DynamicSurfaces = DynamicSurfaces.ASPHALT:
 	set(v):
 		surface = v

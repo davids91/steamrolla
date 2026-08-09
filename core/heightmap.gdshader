@@ -38,17 +38,15 @@ void vertex() {
 	vec3 current_asphalt_attributes = texture(asphalt_attributes, UV).rgb;
 
 	// Add asphalt and terrain heights to the height of the current vertex
-	float vertex_height_addition = (
-		abs(texture(asphalt_state, UV).r) * height_unit * current_asphalt_attributes.r
-	);
+	float vertex_height_addition = abs(texture(asphalt_state, UV).r) * height_unit * current_asphalt_attributes.r;
 	vertex_height_addition += abs(texture(terrain_heightmap, UV).r) * height_unit;
 	vertex_height_addition += ( // Crazify asphalt
 		(sin(UV.x / crazify_scale + TIME * crazify_speed) + cos(UV.y / crazify_scale + TIME * crazify_speed))
 		* crazify_amount * texture(asphalt_attributes, UV).r
 	);
 
-	// Display Crack wheere there is no asphalt
-	if(VALUE_EPSILON > texture(asphalt_state, UV).r){
+	// Display Crack where there is no asphalt
+	if(VALUE_EPSILON > texture(asphalt_state, UV).r && VALUE_EPSILON < current_asphalt_attributes.r){
 		vertex_height_addition -= abs(texture(terrain_heightmap, UV).g) * height_unit;
 	}
 
