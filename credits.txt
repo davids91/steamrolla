@@ -31,6 +31,7 @@ Christer:
 - Title music
 - Asphalt paver model
 - Seamless gravel and dirt textures(albedo and normal)
+- Dumpster model
 - Compactor sound
 
 Mo Shah:
@@ -40,6 +41,7 @@ Mo Shah:
 Juan Luiz R:
 ===
 - Cityscape concept art
+- Gravel Roads concept art
 
 Roei:
 ===
@@ -47,21 +49,22 @@ Roei:
 
 Reuben:
 ===
-- Compactor concept art
+- Compactor concept art(completed)
 
 David:
 ===
-- Asphalt squeeze simulation
-- Color palette
+- Asphalt, Dirt and Gravel Dynamic Surface system(with shiny asphlat, editor, )
+- Water system and display
 - Roller Runway model and behavior
-- Optimized the physics layer for the asphalt
+- Asphalt Paver behavior
+- Road cracks system
+- Objective Panel UI
+- Tool seelction UI panel
+- Color palette
+- User data save and load
+- Gravel road, River and Pond test scenes
+- Roller control with left click
 - Roller Squeeze sound
 - Laser tool sound
-- Objective Panel UI
-- Non editable asphalt
-- Water system and display
-- User data save and load
-- Dirt and Gravel Surface system
-- Gravel road, River and Pond test scenes
-- Road cracks system
-- minor scene and resource fixes
+- minor scene, code and resource fixes
+- adjustments to inner systems(orbit camera usage with roller, using gravel and dirt textures, )
