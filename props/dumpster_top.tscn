@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://de4bct2h5uhap"]
+
+[ext_resource type="PackedScene" uid="uid://u5ruewqfut2v" path="res://models/dumpster-top.fbx" id="1_o5csv"]
+
+[node name="dumpster-top" unique_id=1209047307 instance=ExtResource("1_o5csv")]
+
+[node name="dumpster-top" parent="." index="0" unique_id=94559576]
+transform = Transform3D(150, 0, 0, 0, -1.1920929e-05, 99.99999, 0, -99.99999, -1.1920929e-05, 0, -0.95, 1)

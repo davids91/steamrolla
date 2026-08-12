@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://clhwaefy5o32a"]
+
+[ext_resource type="PackedScene" uid="uid://cllh5pum6y1p3" path="res://models/ratrick.fbx" id="1_h4hm4"]
+[ext_resource type="Material" uid="uid://cvupu4h55xidx" path="res://models/ratrick-opaque-material.tres" id="2_nqqto"]
+
+[node name="ratrick" unique_id=87839735 instance=ExtResource("1_h4hm4")]
+
+[node name="ratrick" parent="." index="0" unique_id=1130308638]
+transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, 4, 0, -4, -1.7484555e-07, 0, 0, 0)
+surface_material_override/0 = ExtResource("2_nqqto")

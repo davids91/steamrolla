@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://8hfjfckh6mrm"]
+
+[ext_resource type="PackedScene" uid="uid://fwjueyobqjoq" path="res://props/dumpster_bottom.tscn" id="1_1xjs5"]
+[ext_resource type="PackedScene" uid="uid://de4bct2h5uhap" path="res://props/dumpster_top.tscn" id="2_gxdjq"]
+[ext_resource type="PackedScene" uid="uid://clhwaefy5o32a" path="res://models/ratrick-opaque.tscn" id="3_gxdjq"]
+
+[node name="dumpster_openable" type="Node3D" unique_id=1262409965]
+
+[node name="dumpster-bottom" parent="." unique_id=256881013 instance=ExtResource("1_1xjs5")]
+
+[node name="dumpster-top" parent="." unique_id=1209047307 instance=ExtResource("2_gxdjq")]
+transform = Transform3D(1, 0, 0, 0, 0.96592575, 0.258819, 0, -0.258819, 0.96592575, 0, 0.95, -1)
+
+[node name="ratrick" parent="." unique_id=87839735 instance=ExtResource("3_gxdjq")]
+transform = Transform3D(0.70710677, 0, -0.70710677, 0, 1, 0, 0.70710677, 0, 0.70710677, 1.3, 0.95, -0.3)
