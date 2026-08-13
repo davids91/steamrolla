@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://bjrlhsb7w2vmf"]
+
+[ext_resource type="PackedScene" uid="uid://cnaqspcql1woq" path="res://models/sign-road-work-ahead.fbx" id="1_a1cfd"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kdu0b"]
+size = Vector3(0.2, 3.3, 0.2)
+
+[node name="sign-road-work-ahead" unique_id=691483435 instance=ExtResource("1_a1cfd")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="2" unique_id=1963705940]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0" unique_id=1854510187]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8626451e-08, 1.5499998, 2.9802322e-08)
+shape = SubResource("BoxShape3D_kdu0b")
