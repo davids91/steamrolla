@@ -1,8 +1,5 @@
 extends Node3D
 
-#TODO: Initiate roller runway selection when roller is chosen
-#TODO: Stop Roller phase when roller re-enters runway
-
 @export var level_scan_duration_sec: float = 0.7
 @export var level_scan_range: float = 0.25
 @export var accepted_deviation: float = 0.001

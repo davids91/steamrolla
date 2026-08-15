@@ -1,29 +1,37 @@
-class_name RoadWorkTool
+class_name RoadworkTool
 extends Node3D
 
 #region Common Interface For Roadwork Tools
+func prepare_for_runway() -> void: pass
+func entered_runway() -> void: pass
+func exited_runway() -> void: pass
 func set_color(_color: Color) -> void: pass
 func set_angle_from_prev_pos(_prev_pos: Vector3) -> void: pass
 func set_transform_based_on(target_position: Vector3) -> void:
 	global_position = target_position
 	set_angle_from_prev_pos(previous_position)
 
+func start_working() -> void:
+	is_working = true
+
 func stop_working() -> void:
 	is_working = false
-	set_color(Color.TRANSPARENT)
 
-func work_at(target_position: Vector3) -> void:
-	if not is_working:
-		is_working = true
-		set_color(Color.WHITE)
+func work_at_cursor(target_position: Vector3) -> void:
+	if is_piloted: return
+	is_working = true
 	set_transform_based_on(target_position)
 
+@export var default_color: Color = Color.WHITE
 @export var tool_enum: ToolPanel.Tools = ToolPanel.Tools.UNKNOWN
 @export var normalized_size: Vector2 = Vector2(0.1, 0.1) ## The size of the tool active part within the update shaders
 @export var tool_angle: float = 0. ## The persistent angle offset of the tool active part within the update shaders
 @export var tool_strength: float = 0.5 ## The strength of the tool active part within the update shaders
 @export var tool_radius: float = 0.1 ## May not always be used
+@export var is_piloted: bool = false ## The tool is either piloted by a custom controller or draggable by mouse
 #endregion Common Interface For Roadwork Tools
+
+func reset_color() -> void: set_color(default_color)
 
 @onready var previous_position: Vector3 = global_position
 @onready var was_working: bool = is_working
@@ -31,9 +39,6 @@ func work_at(target_position: Vector3) -> void:
 	set(v):
 		is_working = v
 		previous_position = global_position
-
-func _ready() -> void:
-	set_color(Color.TRANSPARENT)
 
 @export_range(0., 1.) var inv_turn_responsiveness: float = 0.25
 func _process(_delta: float) -> void:

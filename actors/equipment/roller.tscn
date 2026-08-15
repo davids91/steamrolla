@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cw8sj3nlo8tjc" path="res://models/roller.fbx" id="2_qrjta"]
 [ext_resource type="Texture2D" uid="uid://b866nkjmqwwlj" path="res://models/textures/color-palette.png" id="3_cja5l"]
 [ext_resource type="AudioStream" uid="uid://d0rlod5od3nxo" path="res://audio/smush_asphault.wav" id="3_qrjta"]
+[ext_resource type="PackedScene" uid="uid://bb24gus88qx5r" path="res://core/tools/orbit_camera_3d.tscn" id="5_haft6"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_45vf4"]
 resource_name = "Roller.001"
@@ -49,16 +50,10 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_tglvp")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c7bb5"]
-size = Vector3(3.6660156, 4.4519043, 6.8864746)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_vq81g"]
-size = Vector3(3.2893143, 0.4393921, 0.18969727)
+size = Vector3(3.6660156, 3.566452, 6.5078735)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qrjta"]
 size = Vector3(0.13275337, 0.4393921, 2.415619)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_b7bnf"]
-size = Vector3(0.11291695, 0.4393921, 2.40802)
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_qrjta"]
 random_pitch = 1.1553527
@@ -71,38 +66,20 @@ strength = 0.85
 tool_enum = 0
 normalized_size = Vector2(0.115, 0.075)
 
+[node name="OrbitCamera" parent="." unique_id=1504134869 instance=ExtResource("5_haft6")]
+transform = Transform3D(-0.9089847, 0, 0.41682938, 0, 1, 0, -0.41682938, 0, -0.9089847, 3.2651744, 4.8342853, -6.400869)
+
 [node name="roller" parent="." unique_id=1787317324 instance=ExtResource("2_qrjta")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 1.056812, 0.02303505)
 
 [node name="Roller" parent="roller" index="0" unique_id=2123755476]
 mesh = SubResource("ArrayMesh_haft6")
 
-[node name="BodyRepresentation" type="Area3D" parent="." unique_id=1575235035 groups=["BirdReactable", "BombActivator"]]
+[node name="BodyRepresentation" type="Area3D" parent="." unique_id=581004782 groups=["BirdReactable", "BombActivator"]]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BodyRepresentation" unique_id=1931688132]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0897217, -2.072876)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5340805, -2.0591736)
 shape = SubResource("BoxShape3D_c7bb5")
-
-[node name="BlockerDetectorFront" type="Area3D" parent="." unique_id=900877332]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8958168, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BlockerDetectorFront" unique_id=1141939933]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0012626648, 0, 0.9209113)
-shape = SubResource("BoxShape3D_vq81g")
-
-[node name="BlockerDetectorLeft" type="Area3D" parent="." unique_id=2126040418]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2391386, 0.7632103, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BlockerDetectorLeft" unique_id=668114430]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.52102566, 0, -0.0332489)
-shape = SubResource("BoxShape3D_qrjta")
-
-[node name="BlockerDetectorRight" type="Area3D" parent="." unique_id=562118963]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2431695, 0.7632103, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BlockerDetectorRight" unique_id=1596125449]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5143423, 0, -0.02609253)
-shape = SubResource("BoxShape3D_b7bnf")
 
 [node name="AsphaltDetector" type="Area3D" parent="." unique_id=1043122648]
 
@@ -115,12 +92,6 @@ unique_name_in_owner = true
 stream = SubResource("AudioStreamRandomizer_qrjta")
 volume_db = -7.5
 
-[connection signal="body_entered" from="BlockerDetectorFront" to="." method="_on_blocker_detector_front_body_entered"]
-[connection signal="body_exited" from="BlockerDetectorFront" to="." method="_on_blocker_detector_front_body_exited"]
-[connection signal="body_entered" from="BlockerDetectorLeft" to="." method="_on_blocker_detector_left_body_entered"]
-[connection signal="body_exited" from="BlockerDetectorLeft" to="." method="_on_blocker_detector_left_body_exited"]
-[connection signal="body_entered" from="BlockerDetectorRight" to="." method="_on_blocker_detector_right_body_entered"]
-[connection signal="body_exited" from="BlockerDetectorRight" to="." method="_on_blocker_detector_right_body_exited"]
 [connection signal="body_entered" from="AsphaltDetector" to="." method="_on_asphalt_detector_body_entered"]
 [connection signal="body_exited" from="AsphaltDetector" to="." method="_on_asphalt_detector_body_exited"]
 

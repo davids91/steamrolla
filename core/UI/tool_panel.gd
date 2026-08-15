@@ -7,6 +7,7 @@ enum Tools{ ROLLER, PAVER, DUMPTRUCK, COMPACTOR, SHOVEL, UNKNOWN }
 signal selected_tool(tool: Tools)
 
 @export var available_tools: Array[Tools]
+@export var default_selected_tool: Tools = Tools.UNKNOWN
 @export_tool_button("Reload Buttons", "Button") var refresh_buttons_button: Callable = _refresh_buttons
 
 func select(tool: Tools) -> void:
@@ -35,6 +36,7 @@ func _refresh_buttons() -> void:
 
 func _ready() -> void:
 	_refresh_buttons()
+	select.call_deferred(default_selected_tool)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("tool_1"):

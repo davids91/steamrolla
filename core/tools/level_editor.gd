@@ -146,3 +146,5 @@ func _unhandled_input(event: InputEvent) -> void:
 func _ready() -> void:
 	%RoadChunk.initialize(level_data)
 	%ToolPanel.call_deferred("select", ToolPanel.Tools.PAVER)
+	for tool in $ToolController.get_children(): if tool is RoadworkTool:
+		tool.set_color(Color.TRANSPARENT)

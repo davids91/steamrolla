@@ -1,4 +1,4 @@
-extends RoadWorkTool
+extends RoadworkTool
 
 #region Common Interface For Roadwork Tools
 func set_color(color: Color) -> void:
@@ -13,7 +13,7 @@ func stop_working() -> void:
 	super()
 	$Sound.stop()
 
-func work_at(target_position: Vector3) -> void:
+func work_at_cursor(target_position: Vector3) -> void:
 	super(target_position)
 	$Sound.play()
 #endregion Common Interface For Roadwork Tools
@@ -23,7 +23,7 @@ func _ready() -> void:
 
 @export var vibration_speed: float = 100.
 @export var vibration_extent: float = 0.1
-@export var elapsed_time = 0.
+var elapsed_time = 0.
 func _process(delta: float) -> void:
 	elapsed_time += delta
 	$compactor.position += $compactor.basis.y * sin(elapsed_time * vibration_speed) * vibration_extent

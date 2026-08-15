@@ -1,8 +1,10 @@
 extends Node3D
 
+@export var HUD: HeadsUpDisplay
 @export var view: PlayerView
 @export var road_chunk: RoadChunk
-@export var tool_nodes: Dictionary[ToolPanel.Tools, RoadWorkTool]
+@export var runways: Dictionary[ToolPanel.Tools, Runway]
+@export var tool_nodes: Dictionary[ToolPanel.Tools, RoadworkTool]
 
 @export_range(0., 10.) var draw_strength: float = 0.15
 @export_range(0., 10.) var asphalt_addition: float = 0.25
@@ -13,10 +15,29 @@ extends Node3D
 		if road_chunk: road_chunk.set_update_brush_radius(draw_radius)
 
 var active_tool: ToolPanel.Tools = ToolPanel.Tools.UNKNOWN
+var tool_session_ongoing: bool = false
 func select_tool(tool: ToolPanel.Tools) -> void:
-	active_tool = tool
-	if road_chunk and tool_nodes.has(tool):
+	if runways.has(tool):
+		if tool_session_ongoing and runways.has(tool):
+			runways[tool].interrupt_deployment()
+			if HUD: HUD.visible = true
+			view.make_current()
+		tool_session_ongoing = true
+		tool_nodes[tool].reset_color()
+		runways[tool].initiate_deployment()
+		runways[tool].payload_left.connect(func():
+			if HUD: HUD.visible = false,
+			CONNECT_ONE_SHOT
+		)
+		runways[tool].payload_entered.connect(func():
+			tool_session_ongoing = false
+			if HUD: HUD.visible = true
+			view.make_current(),
+			CONNECT_ONE_SHOT
+		)
+	elif road_chunk and tool_nodes.has(tool):
 		road_chunk.configure_to(tool_nodes[tool])
+	active_tool = tool
 
 @export_range(0., 5.) var shovel_icon_duration_sec: float = 1.
 @export var shovel_icon_travel_distance: float = 2.
@@ -63,6 +84,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		dragging = false
 		if active_tool != ToolPanel.Tools.UNKNOWN:
 			dragging = event.is_pressed()
+			if not runways.has(active_tool): tool_nodes[active_tool].set_color(
+				Color.WHITE if dragging else Color.TRANSPARENT
+			)
 			if active_tool == ToolPanel.Tools.PAVER and event.pressed:
 				asphalt_delta = asphalt_addition
 				$ShovelSound.play()
@@ -96,7 +120,7 @@ func _physics_process(_delta: float) -> void:
 			shoveling_asphalt = false
 		else:
 			if tool_nodes.has(active_tool):
-				tool_nodes[active_tool].work_at(view.cursor.global_position)
+				tool_nodes[active_tool].work_at_cursor(view.cursor.global_position)
 				road_chunk.set_tool_angle(Vector2(-tool_nodes[active_tool].basis.z.x, -tool_nodes[active_tool].basis.z.z).angle())
 				if (active_tool == ToolPanel.Tools.PAVER):
 					road_chunk.set_paver_brush_height_by(tool_nodes[active_tool].global_position.y)

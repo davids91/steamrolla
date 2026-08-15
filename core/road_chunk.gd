@@ -103,7 +103,7 @@ func get_deviation_from_target() -> float:
 	return difference_image.get_pixel(0,0).get_luminance()
 
 #region update brushes
-func configure_to(tool: RoadWorkTool) -> void:
+func configure_to(tool: RoadworkTool) -> void:
 	%AsphaltUpdater.material.set_shader_parameter("tool_angle_offset", tool.tool_angle)
 	%AsphaltUpdater.material.set_shader_parameter("tool_size", tool.normalized_size)
 	%AsphaltUpdater.material.set_shader_parameter("used_tool", tool.tool_enum)

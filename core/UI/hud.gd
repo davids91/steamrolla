@@ -1,4 +1,4 @@
-class_name HUD
+class_name HeadsUpDisplay
 extends CanvasLayer
 
 signal selected(tool: ToolPanel.Tools)

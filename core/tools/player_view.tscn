@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b371k1r87v2p7"]
 
-[ext_resource type="PackedScene" uid="uid://gvtuisq6ffy5" path="res://core/tools/orbit_camera_3d.tscn" id="1_f1u8a"]
+[ext_resource type="PackedScene" uid="uid://bb24gus88qx5r" path="res://core/tools/orbit_camera_3d.tscn" id="1_f1u8a"]
 [ext_resource type="Script" uid="uid://c3l8sdeulgsj1" path="res://core/tools/player_view.gd" id="2_cos2a"]
 
 [node name="PlayerView" unique_id=1504134869 instance=ExtResource("1_f1u8a")]

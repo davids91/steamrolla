@@ -1,4 +1,4 @@
-extends RoadWorkTool
+extends RoadworkTool
 
 #region Common Interface For Roadwork Tools
 func set_color(color: Color) -> void:

@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://c6umqesxiecbq"]
 
-[ext_resource type="Script" uid="uid://vkmwe2lftali" path="res://actors/equipment/roller_runway.gd" id="1_731n0"]
+[ext_resource type="Script" uid="uid://vkmwe2lftali" path="res://actors/equipment/tool_runway.gd" id="1_731n0"]
 [ext_resource type="Texture2D" uid="uid://sq0jfbslepc3" path="res://models/roller_runway.fbm/runway_skin.png" id="2_t1nep"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8jg5c"]
@@ -46,15 +46,25 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_n8dst")
 
-[node name="RollerRunway" type="AnimatableBody3D" unique_id=328105869 node_paths=PackedStringArray("level", "following")]
+[sub_resource type="BoxShape3D" id="BoxShape3D_5j0fq"]
+size = Vector3(2, 5, 2)
+
+[node name="Runway" type="AnimatableBody3D" unique_id=328105869]
 script = ExtResource("1_731n0")
-level = NodePath("")
-following = NodePath("")
 
 [node name="Shape" type="CollisionShape3D" parent="." unique_id=1370689810]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0018615723, 2.7058182, 0.004760742)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.002, -2.685, 0.005)
 shape = SubResource("BoxShape3D_8jg5c")
 
 [node name="Cube_001" type="MeshInstance3D" parent="." unique_id=1224225659]
-transform = Transform3D(100, 0, 0, 0, -1.1920929e-05, 99.99999, 0, -99.99999, -1.1920929e-05, 0, 0, 0)
+transform = Transform3D(100, 0, 0, 0, -1.1920929e-05, 99.99999, 0, -99.99999, -1.1920929e-05, 0, -5.364, 0)
 mesh = SubResource("ArrayMesh_wi1cl")
+
+[node name="DeploymentArea" type="Area3D" parent="." unique_id=1816332539]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DeploymentArea" unique_id=936140518]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.19799805, 1.6763458, 0.070892334)
+shape = SubResource("BoxShape3D_5j0fq")
+
+[connection signal="area_entered" from="DeploymentArea" to="." method="_on_deployment_area_area_entered"]
+[connection signal="area_exited" from="DeploymentArea" to="." method="_on_deployment_area_area_exited"]

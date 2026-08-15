@@ -6,7 +6,7 @@ extends HBoxContainer
 		completed = v
 		if completed:
 			$Icon.texture = preload("res://textures/shovel_icon.png")
-			$Icon.modulate = HUD.MAIN_COLOR_GREEN
+			$Icon.modulate = HeadsUpDisplay.MAIN_COLOR_GREEN
 		else:
 			$Icon.texture = preload("res://textures/shovel_icon_outline.png")
 			$Icon.modulate = Color.WHITE

@@ -6,6 +6,9 @@ class_name OrbitCamera3D extends Node3D
 
 @onready var _camera_3d: Camera3D = %Camera3D
 
+func make_current() -> void: _camera_3d.make_current()
+func get_view_origin() -> Vector3: return $%Camera3D.global_position
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		var offset: Vector2 = event.screen_relative * orbit_speed

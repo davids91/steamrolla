@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://btpepqma8jc6j"]
 
-[ext_resource type="Script" uid="uid://fs2nb7yohxvp" path="res://core/tools/tool_controller.gd" id="1_mu5et"]
+[ext_resource type="Script" uid="uid://fs2nb7yohxvp" path="res://actors/equipment/tool_controller.gd" id="1_mu5et"]
 [ext_resource type="Texture2D" uid="uid://tj57qnmtb46o" path="res://textures/shovel_icon.png" id="2_q4062"]
 [ext_resource type="AudioStream" uid="uid://c2wni3e7h2oig" path="res://audio/asphalt.wav" id="3_5dlyw"]
 

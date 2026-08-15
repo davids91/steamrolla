@@ -15,6 +15,7 @@ theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 script = ExtResource("1_m6t0c")
+default_selected_tool = null
 
 [node name="SelectedTool" type="TextureRect" parent="." unique_id=1802062882]
 layout_mode = 2
