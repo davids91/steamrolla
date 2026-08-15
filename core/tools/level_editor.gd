@@ -13,11 +13,21 @@ extends Node3D
 
 @export_tool_button("Save Level Data", "Save") var save_level_data: Callable = func():
 	if not get_node_or_null("%RoadChunk"): return
-	var asphalt_state_path: String = RoadChunk.asphalt_state_tex_path(level_data.get_base_dir())
-	%RoadChunk.asphalt_state.get_image().save_png(asphalt_state_path)
+	var updated_start_state: bool = false
+	var start_state_img_path: String = RoadChunk.asphalt_state_tex_path(level_data.get_base_dir())
+	if %RoadChunk.asphalt_state:
+		updated_start_state = true
+		%RoadChunk.asphalt_state.get_image().save_png(start_state_img_path)
+	var updated_target_state: bool = false
+	var target_state_img_path: String = RoadChunk.asphalt_target_state_tex_path(level_data.get_base_dir())
+	if %RoadChunk.level_data.target_asphalt_state:
+		updated_target_state = true
+		%RoadChunk.level_data.target_asphalt_state.get_image().save_png(target_state_img_path)
+	if not updated_start_state and not updated_target_state: return
 	if Engine.is_editor_hint():
 		EditorInterface.get_resource_filesystem().scan() #TechDebt: This makes itch export crash
-	%RoadChunk.level_data.start_asphalt_state = load(asphalt_state_path)
+	if updated_start_state: %RoadChunk.level_data.start_asphalt_state = load(start_state_img_path)
+	if updated_target_state: %RoadChunk.level_data.target_asphalt_state = load(target_state_img_path)
 	get_tree().create_timer(1.).timeout.connect(func():ResourceSaver.save(%RoadChunk.level_data, level_data))
 
 @export var noise: FastNoiseLite = FastNoiseLite.new()

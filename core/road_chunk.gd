@@ -287,25 +287,36 @@ func update_materials() -> void:
 static func asphalt_state_tex_path(base_dir: String)-> String:
 	return base_dir + "/asphalt_state.png"
 
+static func asphalt_target_state_tex_path(base_dir: String)-> String:
+	return base_dir + "/target_asphalt_state.png"
+
 static func user_asphalt_state_tex_path(base_dir: String)-> String:
 	return base_dir.replace("res://", "user:##").replace("/", "_").replace("##", "//") + "_asphalt_state.png"
 
 func _initialize(data: RoadChunkData, data_path: String = "") -> void:
 	# Check if there's an asphalt state in user storage or a fallback in case data is not available
-	var user_asphalt_state_path: String = user_asphalt_state_tex_path(data_path.get_base_dir())
-	var fallback_asphalt_state_path: String = asphalt_state_tex_path(data_path.get_base_dir())
 	var save_resource: bool = false
-	if data_path.length() > 0 and FileAccess.file_exists(user_asphalt_state_path):
-		level_data.start_asphalt_state = load(user_asphalt_state_path)
-	elif not data.start_asphalt_state and FileAccess.file_exists(fallback_asphalt_state_path):
-		level_data.start_asphalt_state = load(fallback_asphalt_state_path)
-		save_resource = true
+	if data_path.length() > 0: # The resource is supposed to exist in res:// somewhere!
+		var user_asphalt_state_path: String = user_asphalt_state_tex_path(data_path.get_base_dir())
+		var fallback_asphalt_state_path: String = asphalt_state_tex_path(data_path.get_base_dir())
+		var fallback_asphalt_target_path: String = asphalt_target_state_tex_path(data_path.get_base_dir())
 
-	if( # Save the resource if it doesn't exist, or updated
-		(data_path.length() > 0 and not FileAccess.file_exists(data_path))
-		or save_resource
-	): ResourceSaver.save(level_data, data_path)
+		# Load user or fallback asphalt state image: always overwrite resource data with user state image when available!
+		if FileAccess.file_exists(user_asphalt_state_path): level_data.start_asphalt_state = load(user_asphalt_state_path)
+		elif not data.start_asphalt_state and FileAccess.file_exists(fallback_asphalt_state_path):
+			level_data.start_asphalt_state = load(fallback_asphalt_state_path)
+			save_resource = true
 
+		# Load fallback asphalt target image
+		if not data.target_asphalt_state and FileAccess.file_exists(fallback_asphalt_target_path):
+			level_data.target_asphalt_state = load(fallback_asphalt_target_path)
+			save_resource = true
+
+	# Save the resource if it doesn't exist, or updated
+	if((data_path.length() > 0 and not FileAccess.file_exists(data_path)) or save_resource):
+		ResourceSaver.save(level_data, data_path)
+
+	# Generate an empty asphalt state if nothing is provided either from res:// or user://
 	if not level_data.start_asphalt_state:
 		set_asphalt_to_empty()
 		level_data.start_asphalt_state = asphalt_state
