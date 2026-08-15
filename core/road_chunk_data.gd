@@ -5,6 +5,7 @@ extends Resource
 @export var terrain_heightmap: Texture
 @export var terrain_normalmap: Texture
 @export var terrain_albedo_image: Texture
+@export var height_unit: float = 5.
 
 @export_category("water")
 @export_range(0., 100.) var water_scale: float = 35.

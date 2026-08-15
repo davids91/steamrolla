@@ -232,6 +232,7 @@ func update_physics() -> void:
 
 func update_materials() -> void:
 	asphalt_shyniness = DynamicSurfaceShyninessInverse[surface]
+	height_unit = level_data.height_unit
 
 	%AsphaltChecker.material.set_shader_parameter("terrain", level_data.terrain_heightmap)
 	%AsphaltChecker.material.set_shader_parameter("asphalt_state", asphalt_state)
