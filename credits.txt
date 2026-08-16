@@ -31,7 +31,9 @@ Christer:
 - Title music
 - Asphalt paver model
 - Seamless gravel and dirt textures(albedo and normal)
-- Dumpster model
+- Open/Closable Dumpster model
+- Road Cunstruction Sign
+- Ratrick Cameo appearances
 - Compactor sound
 
 Mo Shah:
@@ -41,7 +43,7 @@ Mo Shah:
 Juan Luiz R:
 ===
 - Cityscape concept art
-- Gravel Roads concept art
+- Countryside Gravel Roads concept art
 
 Roei:
 ===
@@ -53,9 +55,11 @@ Reuben:
 
 David:
 ===
-- Asphalt, Dirt and Gravel Dynamic Surface system(with shiny asphlat, editor, )
+- Asphalt, Dirt and Gravel Dynamic Surface system(with shiny asphalt, editor, save system)
+- Road chunk level structure (heightmap, attributes, water and height properties, start and target states)
 - Water system and display
-- Roller Runway model and behavior
+- Runway model and behavior
+- Runway game loop experiment
 - Asphalt Paver behavior
 - Road cracks system
 - Objective Panel UI
