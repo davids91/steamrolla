@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://dujcwqpeofpqp"]
+
+[ext_resource type="PackedScene" uid="uid://ds1xrhajtex4" path="res://props/panorama_sphere_fullbright.tscn" id="1_0shnw"]
+[ext_resource type="Script" uid="uid://8xrlxrg768yy" path="res://props/panorama_spin.gd" id="2_fndem"]
+
+[node name="panorama" type="Node3D" unique_id=1549718638]
+
+[node name="panorama_sphere" parent="." unique_id=298437647 instance=ExtResource("1_0shnw")]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
+script = ExtResource("2_fndem")

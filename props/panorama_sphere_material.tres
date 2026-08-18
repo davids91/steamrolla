@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://p01xssefy8qe"]
+
+[ext_resource type="Texture2D" uid="uid://dclalxtdsmbw6" path="res://textures/panorama.png" id="1_s3147"]
+
+[resource]
+shading_mode = 0
+disable_ambient_light = true
+disable_fog = true
+disable_specular_occlusion = true
+albedo_texture = ExtResource("1_s3147")
+disable_receive_shadows = true
