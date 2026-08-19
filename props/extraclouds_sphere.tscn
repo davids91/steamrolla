@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://2r00ae07r273"]
+
+[ext_resource type="PackedScene" uid="uid://dp7vqdf1b6ru6" path="res://models/panorama_sphere.fbx" id="1_ve6jo"]
+[ext_resource type="Material" uid="uid://byoqtqp06au4" path="res://props/panorama_clouds_material.tres" id="2_ve6jo"]
+
+[node name="panorama_sphere" unique_id=298437647 instance=ExtResource("1_ve6jo")]
+
+[node name="Sphere" parent="." index="0" unique_id=1373823465]
+surface_material_override/0 = ExtResource("2_ve6jo")

@@ -1,0 +1,15 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://byoqtqp06au4"]
+
+[ext_resource type="Texture2D" uid="uid://dclalxtdsmbw6" path="res://textures/panorama.png" id="1_vhdf1"]
+
+[resource]
+transparency = 1
+blend_mode = 3
+no_depth_test = true
+shading_mode = 0
+disable_ambient_light = true
+disable_fog = true
+disable_specular_occlusion = true
+albedo_color = Color(1, 1, 1, 0.21176471)
+albedo_texture = ExtResource("1_vhdf1")
+disable_receive_shadows = true
