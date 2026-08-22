@@ -48,7 +48,7 @@ func _on_asphalt_detector_body_exited(body: Node3D) -> void:
 
 var moving_transparency_modifier: float = 0.
 func _physics_process(delta: float) -> void:
-	if not is_piloted and not is_working: return
+	if controlled_by != ControlMethods.PILOTED and not is_working: return
 	movement_intent = Input.get_vector(&"move_left", &"move_right", &"move_forward", &"move_backwards")
 	direction = Vector3(movement_intent.x, 0, movement_intent.y).normalized()
 

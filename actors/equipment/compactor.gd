@@ -11,10 +11,12 @@ func set_angle_from_prev_pos(prev_pos: Vector3) -> void:
 
 func stop_working() -> void:
 	super()
+	set_color(Color.TRANSPARENT)
 	$Sound.stop()
 
 func work_at_cursor(target_position: Vector3) -> void:
 	super(target_position)
+	set_color(default_color)
 	$Sound.play()
 #endregion Common Interface For Roadwork Tools
 
