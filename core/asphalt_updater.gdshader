@@ -3,15 +3,15 @@ shader_type canvas_item;
 uniform sampler2D terrain;
 uniform sampler2D asphalt_state; // Basically asphalt quantity
 uniform sampler2D asphalt_attributes; /// r: presence, g: editability, b: fluidity
-uniform float effect_radius = 0.01; // Shovel for asphalt alpha
-uniform float effect_strength: hint_range(0.0, 1.0) = 0.4;
 uniform float asphalt_delta = 0.; // Addition / removal of asphalt under brush
-uniform float paver_max_height = 0.;
+uniform float paver_height = 0.;
 uniform float paver_overflow_min: hint_range(0.0, 1.) = 0.1;
 uniform float paver_overflow_max: hint_range(0.0, 1.) = 0.1;
 
 uniform vec2 tool_center = vec2(0.5); 
-uniform vec2 tool_size = vec2(0.3, 0.2);
+uniform vec2 tool_size = vec2(0.3, 0.2); // size for rectangle shaped tools
+uniform float tool_radius = 0.01; // radius for tools without a defined shape
+uniform float tool_strength: hint_range(0.0, 1.0) = 0.4; // sets how mush the equipped tool affects the level
 uniform float tool_angle = 0.;
 uniform float tool_angle_offset = 0.;
 uniform int used_tool = 0; // values of enum Tools{ ROLLER, PAVER, DUMPTRUCK, COMPACTOR, SHOVEL, UNKNOWN } (from core/UI/tool_panel.gd)
@@ -68,13 +68,13 @@ void fragment() {
 				//if(0.05 < length(UV - roller_br)) asphalt_delta_output += 0.3;
 		//} else
 		if (used_tool == TOOL_SHOVEL){
-			asphalt_delta_output = asphalt_delta * (1. - smoothstep(0., effect_radius, distance_from_center));
+			asphalt_delta_output = asphalt_delta * (1. - smoothstep(0., tool_radius, distance_from_center));
 		}else if (
 			used_tool == TOOL_PAVER 
 		){
 			asphalt_delta_output = max( 
 				sign(
-					paver_max_height * (1. + effect_strength)
+					paver_height * (1. + tool_strength)
 					- smoothstep(
 						paver_overflow_min, paver_overflow_max,
 						min(
@@ -87,17 +87,17 @@ void fragment() {
 				0.
 			);
 		}else if(used_tool == TOOL_COMPACTOR) {
-			if(distance_from_center < effect_radius){
+			if(distance_from_center < tool_radius){
 				float avg_value = 0.;
 				float sample_count = 0.;
-				for(float x = UV.x - effect_radius; x < UV.x + effect_radius; x += (effect_radius / 5.)) {
-					for(float y = UV.y - effect_radius; y < UV.y + effect_radius; y += (effect_radius / 5.)) {
+				for(float x = UV.x - tool_radius; x < UV.x + tool_radius; x += (tool_radius / 5.)) {
+					for(float y = UV.y - tool_radius; y < UV.y + tool_radius; y += (tool_radius / 5.)) {
 						avg_value += texture(asphalt_state, vec2(x,y)).r;
 						sample_count += 1.;
 					}
 				}
 				avg_value /= sample_count;
-				asphalt_delta_output = (avg_value - current_asphalt_level) * effect_strength * smoothstep(effect_radius, 0., distance_from_center);
+				asphalt_delta_output = (avg_value - current_asphalt_level) * tool_strength * smoothstep(tool_radius, 0., distance_from_center);
 			}
 		}else if(used_tool == TOOL_ROLLER) {
 			vec2 prev_pixel_pos = UV - roller_direction * PIXEL_RADIUS;
@@ -107,9 +107,9 @@ void fragment() {
 				&&(all(lessThan(prev_pixel_pos, vec2(1.))) && all(greaterThan(prev_pixel_pos, vec2(0.))))
 			){
 				// calculate the asphalt being moved forward to the direction of the rolling to the next pixel
-				asphalt_delta_output -= current_asphalt_level * effect_strength;
+				asphalt_delta_output -= current_asphalt_level * tool_strength;
 				// calcualte the asphalt being moved into this pixel from a neighbouring pixel opposite of the rolling direction
-				asphalt_delta_output += texture(asphalt_state, prev_pixel_pos).r * effect_strength;
+				asphalt_delta_output += texture(asphalt_state, prev_pixel_pos).r * tool_strength;
 			}
 		}
 	}

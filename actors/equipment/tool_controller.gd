@@ -13,15 +13,15 @@ extends Node3D
 @export_range(0., 1.) var draw_radius: float = 0.03:
 	set(v):
 		draw_radius = v
-		if road_chunk: road_chunk.set_update_brush_radius(draw_radius)
+		if road_chunk: road_chunk.update_brush_radius = draw_radius
 
 func piloted_tool_driver_intention_changed(is_moving: bool, forward: bool) -> void:
 	if ( # Update angle of piloted tool based on driver intention
 		is_moving and tool_nodes.has(active_tool) and tool_nodes[active_tool]
 		and tool_nodes[active_tool].controlled_by == RoadworkTool.ControlMethods.PILOTED
 	):
-		if forward: road_chunk.set_tool_angle_offset(tool_nodes[active_tool].tool_angle)
-		else: road_chunk.set_tool_angle_offset(tool_nodes[active_tool].tool_angle + PI)
+		if forward: road_chunk.tool_angle_offset = tool_nodes[active_tool].tool_angle
+		else: road_chunk.tool_angle_offset = tool_nodes[active_tool].tool_angle + PI
 
 var active_tool: ToolPanel.Tools = ToolPanel.Tools.UNKNOWN
 var tool_session_ongoing: bool = false
@@ -121,11 +121,11 @@ func _process(delta: float) -> void:
 	if tool_nodes.has(active_tool):
 		if tool_nodes[active_tool].is_working:
 			# Configure the level to be updated based on the tool
-			road_chunk.set_update_brush_amount(asphalt_delta * delta)
+			road_chunk.asphalt_delta = asphalt_delta * delta
 			road_chunk.set_update_brush_center(tool_nodes[active_tool].global_position)
-			road_chunk.set_tool_angle(Vector2(-tool_nodes[active_tool].basis.z.x, -tool_nodes[active_tool].basis.z.z).angle())
+			road_chunk.tool_angle = Vector2(-tool_nodes[active_tool].basis.z.x, -tool_nodes[active_tool].basis.z.z).angle()
 			if (active_tool == ToolPanel.Tools.PAVER):
-				road_chunk.set_paver_brush_height_by(tool_nodes[active_tool].global_position.y + tool_nodes[active_tool].tool_strength)
+				road_chunk.paver_height = tool_nodes[active_tool].global_position.y + tool_nodes[active_tool].tool_strength
 			tool_nodes[active_tool].work_at_cursor(view.cursor.global_position)
 			road_chunk.update_asphalt()
 		else:
