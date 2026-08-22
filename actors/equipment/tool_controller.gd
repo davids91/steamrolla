@@ -18,9 +18,16 @@ extends Node3D
 var active_tool: ToolPanel.Tools = ToolPanel.Tools.UNKNOWN
 var tool_session_ongoing: bool = false
 func select_tool(tool: ToolPanel.Tools) -> void:
+	# Rewire trajectory drawn signal if a drawn trajectory is available
+	if trajectory:
+		if tool_nodes.has(active_tool) and tool_nodes[active_tool] and tool_nodes[active_tool].controlled_by == RoadworkTool.ControlMethods.DRAWN:
+			trajectory.trajectory_drawn.disconnect(tool_nodes[active_tool].trajectory_drawn)
+		if tool_nodes.has(tool) and tool_nodes[tool].controlled_by == RoadworkTool.ControlMethods.DRAWN: 
+			trajectory.trajectory_drawn.connect(tool_nodes[tool].trajectory_drawn)
+
 	if runways.has(tool):
 		if tool_session_ongoing and runways.has(tool):
-			runways[tool].interrupt_deployment()
+			runways[tool].stop_deployment()
 			if HUD: HUD.visible = true
 			view.make_current()
 		tool_session_ongoing = true
@@ -33,7 +40,9 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 		runways[tool].payload_entered.connect(func():
 			tool_session_ongoing = false
 			if HUD: HUD.visible = true
-			view.make_current(),
+			view.make_current()
+			runways[tool].stop_deployment()
+			select_tool(tool),
 			CONNECT_ONE_SHOT
 		)
 	elif road_chunk and tool_nodes.has(tool):
@@ -90,19 +99,12 @@ func _unhandled_input(event: InputEvent) -> void:
 			if event.is_pressed(): tool_nodes[active_tool].start_working()
 			else: tool_nodes[active_tool].stop_working()
 
-func _ready() -> void:
-	if trajectory: # Connect trajectory drawn signal if a drawn trajectory is available
-		for tool in get_children(): if tool is RoadworkTool and tool.controlled_by == RoadworkTool.ControlMethods.DRAWN:
-			trajectory.trajectory_drawn.connect(tool.trajectory_drawn)
-
 const VALUE_EPSILON: float = 0.001;
 func _process(delta: float) -> void:
 	# Set the asphalt being updated
 	if tool_nodes.has(active_tool):
 		if tool_nodes[active_tool].is_working:
 			# Configure the level to be updated based on the tool
-			#TODO: check for roller is_working in editor (dragged)
-			#TODO: check if roller is working on level ( piloted through runway )
 			#TODO: implement roller controlled by trajectory
 			road_chunk.set_update_brush_amount(asphalt_delta * delta)
 			road_chunk.set_update_brush_center(tool_nodes[active_tool].global_position)

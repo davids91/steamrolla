@@ -14,7 +14,6 @@ enum ControlMethods{
 	PILOTED
 }
 
-func trajectory_drawn(_trajectory: PathFollow3D, _duration_sec: float, _call_when_done: Callable) -> void: pass
 func prepare_for_runway() -> void: pass
 func entered_runway() -> void: pass
 func exited_runway() -> void: pass
@@ -33,6 +32,34 @@ func stop_working() -> void:
 func work_at_cursor(target_position: Vector3) -> void:
 	is_working = true
 	set_transform_based_on(target_position)
+
+var trajectory_tween: Tween
+var trajectory_reference_pos: Vector3
+func trajectory_drawn(trajectory: PathFollow3D, duration_sec: float, call_when_done: Callable) -> void:
+	# Do not start when not configured for this control, or multiple times at once
+	if controlled_by != ControlMethods.DRAWN or trajectory_tween: return
+
+	trajectory.progress_ratio = 0.
+	global_position = trajectory.global_position
+	set_color(default_color)
+	start_working()
+	trajectory_reference_pos = global_position
+	get_tree().create_timer(0.0).timeout.connect(func():
+		trajectory_tween = create_tween()
+		trajectory_tween.tween_method(
+			func(w: float):
+				trajectory.progress_ratio = w
+				trajectory_reference_pos = lerp(global_position, trajectory_reference_pos, inv_turn_responsiveness)
+				global_position = trajectory.global_position
+				set_angle_from_prev_pos(trajectory_reference_pos),
+			0., 1., duration_sec
+		).set_ease(Tween.EASE_IN_OUT).finished.connect(func():
+			stop_working()
+			set_color(Color.TRANSPARENT)
+			trajectory_tween = null
+			call_when_done.call()
+		)
+	)
 
 @export var default_color: Color = Color.WHITE
 @export var tool_enum: ToolPanel.Tools = ToolPanel.Tools.UNKNOWN

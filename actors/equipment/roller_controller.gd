@@ -22,17 +22,28 @@ var current_color: Color = default_color
 
 @onready var skin: MeshInstance3D = $roller/Roller
 #region Common Interface For Roadwork Tools
-#TODO: play squeeze sound when RoadworkTool work_at_cursor is called
 func set_color(color: Color) -> void:
 	target_color = color
 
 func set_angle_from_prev_pos(prev_pos: Vector3) -> void:
-	var corrected_prev_pos = Vector3(prev_pos.x, global_position.y, prev_pos.z)
-	look_at(global_position + (global_position - corrected_prev_pos))
+	look_at(global_position - (global_position - prev_pos))
 
 func start_working() -> void:
+	if controlled_by == RoadworkTool.ControlMethods.PILOTED: $OrbitCamera.make_current()
+	set_color(default_color)
 	super()
-	$OrbitCamera.make_current()
+
+func stop_working() -> void:
+	if controlled_by != ControlMethods.PILOTED: set_color(Color.TRANSPARENT)
+	$SqueezeSound.stop()
+	super()
+
+func work_at_cursor(target_position: Vector3) -> void:
+	if not controlled_by == RoadworkTool.ControlMethods.DRAGGED: return
+	if not is_working:
+		$OrbitCamera.make_current()
+		$SqueezeSound.play(randf() * 1.89)
+	super(target_position)
 
 #endregion Common Interface For Roadwork Tools
 

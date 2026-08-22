@@ -27,10 +27,11 @@ enum State{
 @onready var runway_height: float = global_position.y
 
 var current_state: State = State.HIDDEN
-func initiate_deployment() -> void: 
+func initiate_deployment() -> void:
+	following = player_cursor
 	current_state = State.PLACEMENT
 
-func interrupt_deployment() -> void:
+func stop_deployment() -> void:
 	current_state = State.HIDDEN
 	following = player_cursor
 	carrying.stop_working()
@@ -63,8 +64,12 @@ func _physics_process(_delta: float) -> void:
 		z_bound_min -= $Shape.shape.size.z / 2.
 		z_bound_max += $Shape.shape.size.z / 2.
 		
+		# Check which positions at the levels edge would be best for the runway
 		var current_distance_to_target: float = (following.global_position - global_position).length()
-		# Check which positions would be closer to the target
+		if(not(
+			following.global_position.x < x_bound_min or following.global_position.x > x_bound_max
+			or following.global_position.z < z_bound_min or following.global_position.z > z_bound_max
+		)): current_distance_to_target = INF # Runway is inside the level, it shouldn't stay there!
 		var z_bound_min_position: Vector3 = Vector3(following.global_position.x, global_position.y, z_bound_min)
 		var z_bound_min_distance_to_target: float = (following.global_position - z_bound_min_position).length()
 		if(z_bound_min_distance_to_target < current_distance_to_target):
@@ -116,7 +121,6 @@ func _on_deployment_area_area_entered(area: Area3D) -> void:
 		payload_inside_deployment = true
 		if current_state == State.RELEASED:
 			payload_entered.emit()
-			get_tree().create_timer(0.25).timeout.connect(interrupt_deployment)
 
 func _on_deployment_area_area_exited(area: Area3D) -> void:
 	if area.get_parent() == carrying:
