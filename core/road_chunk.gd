@@ -8,8 +8,6 @@ var asphalt_attributes: Image
 var asphalt_state: Texture
 var asphalt_physics_state: Texture ## r: level height(terrain + asphalt), g: asphalt temperature, b: water waves
 
-@export var roller: RollerController
-
 @export_category("Level Data")
 @export var level_data: RoadChunkData
 @export_tool_button("Load data", "Reload") var load_data: Callable = func(): _initialize(level_data)
@@ -116,6 +114,9 @@ func configure_tool_enum(tool: ToolPanel.Tools) -> void:
 	%AsphaltUpdater.material.set_shader_parameter("used_tool", tool)
 	current_tool = tool
 
+func set_tool_angle_offset(angle_offset: float) -> void:
+	%AsphaltUpdater.material.set_shader_parameter("tool_angle_offset", angle_offset)
+
 func set_crazify_amount(amount: float):
 	$Ground.get_active_material(0).set_shader_parameter("crazify_amount", amount)
 
@@ -141,15 +142,7 @@ func set_update_brush_strength(strength: float) -> void:
 	%AsphaltUpdater.material.set_shader_parameter("effect_strength", strength)
 
 func set_paver_brush_height_by(paver_global_y: float) -> void:
-	%AsphaltUpdater.material.set_shader_parameter(
-		"paver_max_height", (paver_global_y - global_position.y) / height_unit
-	)
-
-func set_roller_brush(center: Vector2, angle: float, strength: float = 1.) -> void:
-	%AsphaltUpdater.material.set_shader_parameter("tool_angle", angle)
-	%AsphaltUpdater.material.set_shader_parameter("tool_center", center)
-	if -1. < strength:
-		%AsphaltUpdater.material.set_shader_parameter("effect_strength", strength)
+	%AsphaltUpdater.material.set_shader_parameter("paver_max_height", (paver_global_y - global_position.y) / height_unit)
 
 func set_tool_angle(angle: float) -> void:
 	%AsphaltUpdater.material.set_shader_parameter("tool_angle", angle)
@@ -376,23 +369,7 @@ func _on_asphalt_bomb_explode(explosion_pos: Vector3, explode_radius: float, amo
 	).call_deferred()
 #endregion Bomb Explode
 
-func _on_roller_has_moved(roller_position: Vector3, roller_angle: float, roller_strength: float, roller_strength_from_movement: float) -> void:
-	var flat_chunk_size: Vector2 = Vector2(%RoadChunk.get_size().x, %RoadChunk.get_size().z)
-	var texture_coordinates: Vector2 = (
-		Vector2(roller_position.x, roller_position.z)
-		 - Vector2(global_position.x, global_position.z)
-		+ flat_chunk_size * 0.5
-	) / flat_chunk_size
-	
-	set_roller_brush(texture_coordinates, roller_angle, roller_strength * roller_strength_from_movement)
-	update_asphalt()
-
 func _ready() -> void:
-	if not roller:
-		push_warning("%s is not assigning roller. Please check." % name)
-	if roller and not roller.roller_has_moved.is_connected(_on_roller_has_moved):
-		roller.roller_has_moved.connect(_on_roller_has_moved)
-	
 	asphalt_state = level_data.start_asphalt_state
 	asphalt_physics_state = level_data.start_asphalt_state
 	asphalt_attributes = level_data.asphalt_attributes.get_image()

@@ -15,6 +15,14 @@ extends Node3D
 		draw_radius = v
 		if road_chunk: road_chunk.set_update_brush_radius(draw_radius)
 
+func piloted_tool_driver_intention_changed(is_moving: bool, forward: bool) -> void:
+	if ( # Update angle of piloted tool based on driver intention
+		is_moving and tool_nodes.has(active_tool) and tool_nodes[active_tool]
+		and tool_nodes[active_tool].controlled_by == RoadworkTool.ControlMethods.PILOTED
+	):
+		if forward: road_chunk.set_tool_angle_offset(tool_nodes[active_tool].tool_angle)
+		else: road_chunk.set_tool_angle_offset(tool_nodes[active_tool].tool_angle + PI)
+
 var active_tool: ToolPanel.Tools = ToolPanel.Tools.UNKNOWN
 var tool_session_ongoing: bool = false
 func select_tool(tool: ToolPanel.Tools) -> void:
@@ -25,18 +33,26 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 		if tool_nodes.has(tool) and tool_nodes[tool].controlled_by == RoadworkTool.ControlMethods.DRAWN: 
 			trajectory.trajectory_drawn.connect(tool_nodes[tool].trajectory_drawn)
 
-	if runways.has(tool):
-		if tool_session_ongoing and runways.has(tool):
+	# Cleanup after previously used tool
+	if runways.has(active_tool):
+		runways[active_tool].stop_deployment()
+	if tool_nodes.has(active_tool) and tool_nodes[active_tool] and tool != active_tool:
+		tool_nodes[active_tool].set_color(Color.TRANSPARENT)
+		# Rewire driver intention changed
+		tool_nodes[active_tool].driver_intention_changed.disconnect(piloted_tool_driver_intention_changed)
+		tool_nodes[tool].driver_intention_changed.connect(piloted_tool_driver_intention_changed)
+
+	# Initiate runway logic if runway is available and the tool is not controlled by a trajectory
+	if runways.has(tool) and tool_nodes[tool].controlled_by != RoadworkTool.ControlMethods.DRAWN:
+		if tool_session_ongoing:
 			runways[tool].stop_deployment()
 			if HUD: HUD.visible = true
 			view.make_current()
 		tool_session_ongoing = true
 		tool_nodes[tool].reset_color()
+		runways[tool].carrying = tool_nodes[tool]
 		runways[tool].initiate_deployment()
-		runways[tool].payload_left.connect(func():
-			if HUD: HUD.visible = false,
-			CONNECT_ONE_SHOT
-		)
+		runways[tool].payload_left.connect(func(): if HUD: HUD.visible = false, CONNECT_ONE_SHOT)
 		runways[tool].payload_entered.connect(func():
 			tool_session_ongoing = false
 			if HUD: HUD.visible = true
@@ -45,7 +61,7 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 			select_tool(tool),
 			CONNECT_ONE_SHOT
 		)
-	elif road_chunk and tool_nodes.has(tool):
+	elif road_chunk and tool_nodes.has(tool): # No runway available, simply configure tool
 		road_chunk.configure_to(tool_nodes[tool])
 		if trajectory:
 			trajectory.is_enabled = tool_nodes[tool].controlled_by == RoadworkTool.ControlMethods.DRAWN
@@ -105,7 +121,6 @@ func _process(delta: float) -> void:
 	if tool_nodes.has(active_tool):
 		if tool_nodes[active_tool].is_working:
 			# Configure the level to be updated based on the tool
-			#TODO: implement roller controlled by trajectory
 			road_chunk.set_update_brush_amount(asphalt_delta * delta)
 			road_chunk.set_update_brush_center(tool_nodes[active_tool].global_position)
 			road_chunk.set_tool_angle(Vector2(-tool_nodes[active_tool].basis.z.x, -tool_nodes[active_tool].basis.z.z).angle())

@@ -1,6 +1,6 @@
 extends RoadworkTool
 
-#region Common Interface For Roadwork Tools
+#region from @RoadworkTools
 func set_color(color: Color) -> void:
 	create_tween().tween_property($DisplayMesh.get_active_material(0), "albedo_color", color, 0.5)
 
@@ -11,7 +11,12 @@ func set_angle_from_prev_pos(prev_pos: Vector3) -> void:
 func set_transform_based_on(target_position: Vector3) -> void:
 	global_position = lerp(global_position, target_position, drag_response)
 	set_angle_from_prev_pos(previous_position)
-#endregion Common Interface For Roadwork Tools
+
+func start_working() -> void:
+	if controlled_by == RoadworkTool.ControlMethods.PILOTED: $OrbitCamera.make_current()
+	set_color(default_color)
+	super()
+#endregion
 
 var ground_entered: bool = false
 func _on_body_representation_body_entered(body: Node3D) -> void:

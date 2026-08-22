@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cglj5nsrr7ntb" path="res://models/asphalt-paver_0.png" id="1_0d3me"]
 [ext_resource type="Script" uid="uid://d1tbgsojf2nr5" path="res://actors/asphalt_paver.gd" id="1_pogr6"]
+[ext_resource type="PackedScene" uid="uid://bb24gus88qx5r" path="res://core/tools/orbit_camera_3d.tscn" id="2_tthve"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_srf32"]
 resource_name = "palette"
@@ -54,6 +55,9 @@ script = ExtResource("1_pogr6")
 tool_enum = 1
 normalized_size = Vector2(0.1, 0.02)
 tool_angle = 3.142
+
+[node name="OrbitCamera" parent="." unique_id=1504134869 instance=ExtResource("2_tthve")]
+transform = Transform3D(-0.9089847, 0, 0.41682938, 0, 1, 0, -0.41682938, 0, -0.9089847, 3.2651744, 4.8342853, -6.400869)
 
 [node name="DisplayMesh" type="MeshInstance3D" parent="." unique_id=753197751]
 transform = Transform3D(-1.0927848e-06, 0, 25.000002, 0, 25, 0, -25.000002, 0, -1.0927848e-06, 0, 0, -1.5)

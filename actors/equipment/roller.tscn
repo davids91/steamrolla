@@ -62,10 +62,8 @@ stream_0/stream = ExtResource("3_qrjta")
 
 [node name="Roller" type="Node3D" unique_id=1510864838]
 script = ExtResource("1_vq81g")
-strength = 0.85
 tool_enum = 0
 normalized_size = Vector2(0.115, 0.075)
-tool_angle = 3.142
 controlled_by = 2
 
 [node name="OrbitCamera" parent="." unique_id=1504134869 instance=ExtResource("5_haft6")]
