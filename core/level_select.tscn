@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://c3vrtvay36bhk"]
+
+[ext_resource type="Script" uid="uid://cjfp6pmui58nv" path="res://core/level_select.gd" id="1_esh0k"]
+[ext_resource type="PackedScene" uid="uid://b371k1r87v2p7" path="res://core/tools/player_view.tscn" id="2_hm68f"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hm68f"]
+
+[sub_resource type="Sky" id="Sky_sntts"]
+sky_material = SubResource("ProceduralSkyMaterial_hm68f")
+
+[sub_resource type="Environment" id="Environment_lnrnj"]
+background_mode = 2
+sky = SubResource("Sky_sntts")
+ambient_light_color = Color(0, 0.5882353, 0.5647059, 1)
+
+[node name="LevelSelect" type="Node3D" unique_id=2110132494]
+script = ExtResource("1_esh0k")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=308553165]
+environment = SubResource("Environment_lnrnj")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=2105608034]
+transform = Transform3D(0.27630687, 0.6249125, 0.73016346, -0.96074337, 0.15980859, 0.2267896, 0.025037196, -0.7641629, 0.6445372, -29.381084, 38.16057, 7.2412863)
+shadow_enabled = true
+shadow_bias = 0.0
+
+[node name="PlayerView" parent="." unique_id=1504134869 instance=ExtResource("2_hm68f")]
+transform = Transform3D(-0.17314243, 0.5246573, -0.8335206, -0.07854365, 0.8362515, 0.54269177, 0.98176, 0.15943071, -0.10358216, -30.4125, 15.911701, 8.004426)
+visible = true
+make_current_on_start = true
+
+[node name="Chunks" type="Node3D" parent="." unique_id=827268148]

@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://ccd6hldeyxwf6"]
 
-[ext_resource type="Theme" uid="uid://cjbyaermnkf75" path="res://levels/main_menu/title_style.tres" id="1_u4e7g"]
+[ext_resource type="Theme" uid="uid://cjbyaermnkf75" path="res://core/UI/main_menu/title_style.tres" id="1_u4e7g"]
 [ext_resource type="Texture2D" uid="uid://destece58mcou" path="res://textures/icon.png" id="2_qbtdg"]
-[ext_resource type="Theme" uid="uid://d1tgwdb3grjhr" path="res://levels/main_menu/menu_button_style.tres" id="3_qbtdg"]
+[ext_resource type="Theme" uid="uid://d1tgwdb3grjhr" path="res://core/UI/main_menu/menu_button_style.tres" id="3_qbtdg"]
 [ext_resource type="AudioStream" uid="uid://bfqbrqjnjxh3" path="res://audio/SteamRolla-Main-Menu-Music-Loop.ogg" id="4_86fa0"]
 
 [sub_resource type="Gradient" id="Gradient_86fa0"]

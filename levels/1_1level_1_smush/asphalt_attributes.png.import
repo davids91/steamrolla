@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b7ykdx8um73le"
-path.s3tc="res://.godot/imported/color.png-14d1c3be194448a1edf01da09a2e6653.s3tc.ctex"
+uid="uid://5xc8158i1q0f"
+path.s3tc="res://.godot/imported/asphalt_attributes.png-44eed930298c444b4f03cfcca129452f.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://levels/level_1_smush/color.png"
-dest_files=["res://.godot/imported/color.png-14d1c3be194448a1edf01da09a2e6653.s3tc.ctex"]
+source_file="res://levels/1_1level_1_smush/asphalt_attributes.png"
+dest_files=["res://.godot/imported/asphalt_attributes.png-44eed930298c444b4f03cfcca129452f.s3tc.ctex"]
 
 [params]
 

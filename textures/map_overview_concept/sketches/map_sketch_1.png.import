@@ -2,21 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bax2nvit14dmm"
-path.s3tc="res://.godot/imported/normal.png-4834f56b3cccc6cc5d1aa3ae8f7761b5.s3tc.ctex"
+uid="uid://dbik14p2pp5iu"
+path="res://.godot/imported/map_sketch_1.png-c9da2aaf09d52d6140b2843c88a7748c.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
-source_file="res://levels/level_1_smush/normal.png"
-dest_files=["res://.godot/imported/normal.png-4834f56b3cccc6cc5d1aa3ae8f7761b5.s3tc.ctex"]
+source_file="res://textures/map_overview_concept/sketches/map_sketch_1.png"
+dest_files=["res://.godot/imported/map_sketch_1.png-c9da2aaf09d52d6140b2843c88a7748c.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -24,7 +23,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -38,4 +37,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1

@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dolceee14sgli"
-path.s3tc="res://.godot/imported/maze-attributes.png-56da143885c8e6b18e5db59cecb5c8d0.s3tc.ctex"
+uid="uid://bia75lqnad3y7"
+path.s3tc="res://.godot/imported/height.png-48c725fe5637a9e92464876000c0e5a2.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://levels/maze/maze-attributes.png"
-dest_files=["res://.godot/imported/maze-attributes.png-56da143885c8e6b18e5db59cecb5c8d0.s3tc.ctex"]
+source_file="res://levels/1_1level_1_smush/height.png"
+dest_files=["res://.godot/imported/height.png-48c725fe5637a9e92464876000c0e5a2.s3tc.ctex"]
 
 [params]
 
