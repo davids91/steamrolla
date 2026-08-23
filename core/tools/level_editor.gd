@@ -220,7 +220,7 @@ func _change_data_mode() -> void:
 		asphalt_attributes.save_png(_level_image_path("asphalt_attributes"))
 		EditorInterface.get_resource_filesystem().scan() #TechDebt: This makes itch export crash
 		get_tree().create_timer(0.5).timeout.connect(func(): # also try to initialize level data
-			if _is_level_data_in_packaged_format(): _load_level_data()
+			if _is_level_data_in_packaged_format(): _save_level_data()
 			else: push_error("Unable to convert level data from raw to packaged format!")
 		)
 	else: push_error("Level data is in undefined state")
