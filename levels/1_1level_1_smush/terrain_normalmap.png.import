@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b7ykdx8um73le"
-path.s3tc="res://.godot/imported/color.png-869b755ddd167dd41dc07cae4fb24204.s3tc.ctex"
+uid="uid://weeb7h16wmhm"
+path.s3tc="res://.godot/imported/terrain_normalmap.png-bb49bc0a749c08983c46028a5badeb5e.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://levels/1_1level_1_smush/color.png"
-dest_files=["res://.godot/imported/color.png-869b755ddd167dd41dc07cae4fb24204.s3tc.ctex"]
+source_file="res://levels/1_1level_1_smush/terrain_normalmap.png"
+dest_files=["res://.godot/imported/terrain_normalmap.png-bb49bc0a749c08983c46028a5badeb5e.s3tc.ctex"]
 
 [params]
 

@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bia75lqnad3y7"
-path.s3tc="res://.godot/imported/height.png-48c725fe5637a9e92464876000c0e5a2.s3tc.ctex"
+uid="uid://dpsaf0n7e5coq"
+path.s3tc="res://.godot/imported/terrain_heightmap.png-fd911bdc346abeb66533efd1b2c68138.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://levels/1_1level_1_smush/height.png"
-dest_files=["res://.godot/imported/height.png-48c725fe5637a9e92464876000c0e5a2.s3tc.ctex"]
+source_file="res://levels/1_1level_1_smush/terrain_heightmap.png"
+dest_files=["res://.godot/imported/terrain_heightmap.png-fd911bdc346abeb66533efd1b2c68138.s3tc.ctex"]
 
 [params]
 
