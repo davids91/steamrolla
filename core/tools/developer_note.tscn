@@ -8,7 +8,7 @@ viewport_path = NodePath("SubViewport")
 [sub_resource type="LabelSettings" id="LabelSettings_18l51"]
 resource_local_to_scene = true
 font_size = 64
-font_color = Color(0.21233357, 0, 0.91, 1)
+font_color = Color(0, 0, 0, 1)
 
 [node name="DeveloperNote" type="Sprite3D" unique_id=105299966]
 billboard = 1
@@ -20,7 +20,7 @@ note = "Developer Notes
 
 [node name="SubViewport" type="SubViewport" parent="." unique_id=1357113514]
 transparent_bg = true
-size = Vector2i(1024, 256)
+size = Vector2i(1024, 512)
 
 [node name="Label" type="Label" parent="SubViewport" unique_id=1716640747]
 unique_name_in_owner = true

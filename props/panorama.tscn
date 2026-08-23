@@ -7,10 +7,10 @@
 [node name="panorama" type="Node3D" unique_id=1549718638]
 
 [node name="panorama_sphere" parent="." unique_id=298437647 instance=ExtResource("1_0shnw")]
-transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, 0, 0, 0)
 script = ExtResource("2_fndem")
 
 [node name="panorama_extraclouds" parent="." unique_id=1460927905 instance=ExtResource("3_vjqhf")]
-transform = Transform3D(95, 0, 0, 0, 95, 0, 0, 0, 95, 0, 0, 0)
+transform = Transform3D(495, 0, 0, 0, 495, 0, 0, 0, 495, 0, 0, 0)
 script = ExtResource("2_fndem")
 speed = 0.011

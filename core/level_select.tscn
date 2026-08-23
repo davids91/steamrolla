@@ -15,6 +15,7 @@ ambient_light_color = Color(0, 0.5882353, 0.5647059, 1)
 
 [node name="LevelSelect" type="Node3D" unique_id=2110132494]
 script = ExtResource("1_esh0k")
+road_chunk_spacing = 100.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=308553165]
 environment = SubResource("Environment_lnrnj")
