@@ -29,12 +29,14 @@ Hunter:
 Christer:
 ===
 - Title music
+- Sky-dome with clouds
 - Asphalt paver model
 - Seamless gravel and dirt textures(albedo and normal)
 - Open/Closable Dumpster model
 - Road Cunstruction Sign
 - Ratrick Cameo appearances
 - Compactor sound
+- Maze level
 
 Mo Shah:
 ===
@@ -60,11 +62,16 @@ David:
 - Water system and display
 - Runway model and behavior
 - Runway game loop experiment
+- Drawn Trajectory System
+- Level Editor(level data structure, template generation, packing data in compact form)
+- Automated population of Level Selection Scene
+- Roadwork tool control system (generic control with mouse drag, keyboard or drawn trajectory)
 - Asphalt Paver behavior
 - Road cracks system
 - Objective Panel UI
 - Tool seelction UI panel
 - Color palette
+- Sky texture ( cloudy sky )
 - User data save and load
 - Gravel road, River and Pond test scenes
 - Roller control with left click
