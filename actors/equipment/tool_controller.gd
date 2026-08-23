@@ -40,7 +40,7 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 		tool_nodes[active_tool].set_color(Color.TRANSPARENT)
 		# Rewire driver intention changed
 		tool_nodes[active_tool].driver_intention_changed.disconnect(piloted_tool_driver_intention_changed)
-		tool_nodes[tool].driver_intention_changed.connect(piloted_tool_driver_intention_changed)
+		tool_nodes[active_tool].driver_intention_changed.connect(piloted_tool_driver_intention_changed)
 
 	# Initiate runway logic if runway is available and the tool is not controlled by a trajectory
 	if runways.has(tool) and tool_nodes[tool].controlled_by != RoadworkTool.ControlMethods.DRAWN:
