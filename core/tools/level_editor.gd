@@ -7,21 +7,28 @@ func _validate_property(property: Dictionary) -> void:
 		or property.name == "save_level_data"
 		or property.name == "load_level_data"
 		or property.name == "change_data_mode"
+		or property.name == "create_level_resource"
 	):
 		$RoadChunk.visible = false
 		if _level_folder_exists():
 			if property.name == "create_level_data": property.usage &= ~PROPERTY_USAGE_EDITOR
 			if _is_level_data_in_packaged_format(): $RoadChunk.visible = true
 			else:
-				if property.name == "save_level_data": property.usage |= PROPERTY_USAGE_READ_ONLY
-				if property.name == "save_level_data": property.usage |= PROPERTY_USAGE_READ_ONLY
-				elif property.name == "load_level_data": property.usage |= PROPERTY_USAGE_READ_ONLY
+				if _level_resource_exists():
+					if property.name == "create_level_resource": property.usage &= ~PROPERTY_USAGE_EDITOR
+					elif property.name == "save_level_data": property.usage |= PROPERTY_USAGE_READ_ONLY
+					elif property.name == "load_level_data": property.usage |= PROPERTY_USAGE_READ_ONLY
+				else:
+					if property.name == "create_level_resource": property.usage |= PROPERTY_USAGE_EDITOR
+					elif property.name == "save_level_data": property.usage &= ~PROPERTY_USAGE_READ_ONLY
+					elif property.name == "load_level_data": property.usage &= ~PROPERTY_USAGE_READ_ONLY
 		else:
 			if property.name == "create_level_data": property.usage |= PROPERTY_USAGE_EDITOR
 			elif property.name == "save_level_data": property.usage &= ~PROPERTY_USAGE_EDITOR
 			elif property.name == "load_level_data": property.usage &= ~PROPERTY_USAGE_EDITOR
 			elif property.name == "change_data_mode": property.usage &= ~PROPERTY_USAGE_EDITOR
 			elif property.name == "level_data_mode": property.usage &= ~PROPERTY_USAGE_EDITOR
+			elif property.name == "create_level_resource": property.usage &= ~PROPERTY_USAGE_EDITOR
 
 @export_category("Level Data")
 @export var map_overview: Image = preload("res://textures/map_overview_concept/map_file.png").get_image()
@@ -145,6 +152,14 @@ func _create_level_data() -> void:
 	_set_data_mode_raw()
 	ResourceSaver.save(%RoadChunk.level_data, _level_resource_path())
 	EditorInterface.get_resource_filesystem().scan() #TechDebt: This makes itch export crash
+
+@export_tool_button("Create Level Resource", "Save") var create_level_resource: Callable = _create_level_resource
+func _create_level_resource() -> void:
+	if not _level_resource_exists():
+		var resource: RoadChunkData = RoadChunkData.new()
+		ResourceSaver.save(resource, _level_resource_path())
+		EditorInterface.get_resource_filesystem().scan() #TechDebt: This makes itch export crash
+		get_tree().create_timer(0.5).timeout.connect(_load_level_data)
 
 @export_tool_button("Change Data Mode", "Save") var change_data_mode: Callable = _change_data_mode
 func _change_data_mode() -> void:

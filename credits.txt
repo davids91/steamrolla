@@ -37,6 +37,7 @@ Christer:
 - Ratrick Cameo appearances
 - Compactor sound
 - Maze level
+- Intersection level
 
 Mo Shah:
 ===
