@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cf2ngj02plug0"]
+
+[ext_resource type="Texture2D" uid="uid://tghqcuq3u1me" path="res://textures/gravel-seamless.png" id="1_jax5g"]
+
+[resource]
+specular_mode = 2
+albedo_texture = ExtResource("1_jax5g")
+metallic_specular = 0.0
+roughness_texture_channel = 2
+uv1_scale = Vector3(0.125, 0.125, 0.125)
+uv1_triplanar = true

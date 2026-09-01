@@ -1,0 +1,15 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://itb2j3ws4kgu"]
+
+[ext_resource type="Texture2D" uid="uid://c8rgkwgnn1tl4" path="res://textures/buildings_texture.png" id="1_kq5sf"]
+
+[resource]
+albedo_texture = ExtResource("1_kq5sf")
+metallic_specular = 0.74
+roughness = 0.35
+roughness_texture = ExtResource("1_kq5sf")
+roughness_texture_channel = 2
+heightmap_enabled = true
+heightmap_scale = 16.0
+heightmap_texture = ExtResource("1_kq5sf")
+uv1_scale = Vector3(0.125, 0.125, 0.125)
+uv1_triplanar = true

@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dahsnt3vphwe3"]
+
+[ext_resource type="Texture2D" uid="uid://c8rgkwgnn1tl4" path="res://textures/buildings_texture.png" id="1_m73h2"]
+
+[resource]
+specular_mode = 2
+albedo_texture = ExtResource("1_m73h2")
+metallic_specular = 0.0
+uv1_scale = Vector3(0.05, 0.025, 0.05)
+uv1_offset = Vector3(0, -0.05, 0)
+uv1_triplanar = true
