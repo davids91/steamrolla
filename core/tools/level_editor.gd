@@ -37,7 +37,10 @@ func _validate_property(property: Dictionary) -> void:
 
 func _get_map_region_for_coordinate() -> Rect2i:
 	return Rect2i(
-		one_level_within_the_overview * level_coordinate,
+		Vector2(
+			one_level_within_the_overview.x * level_coordinate.x,
+			map_overview.get_height() - (one_level_within_the_overview.y * (level_coordinate.y + 1))
+		),
 		one_level_within_the_overview
 	)
 
