@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="SteamRolla"
-run/main_scene="uid://bxuby8s3cvqeu"
+run/main_scene="uid://dio5mdbn1uoef"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="uid://destece58mcou"
 

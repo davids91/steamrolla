@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://dio5mdbn1uoef"]
+
+[ext_resource type="PackedScene" uid="uid://c3vrtvay36bhk" path="res://core/level_select.tscn" id="1_rw80f"]
+
+[node name="Main" type="Node" unique_id=574895689]
+
+[node name="LevelContainer" type="Node" parent="." unique_id=815142842]
+unique_name_in_owner = true
+
+[node name="LevelSelect" parent="LevelContainer" unique_id=2110132494 instance=ExtResource("1_rw80f")]

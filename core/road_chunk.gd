@@ -371,8 +371,11 @@ func _initialize(data: RoadChunkData, data_path: String = "") -> void:
 	# Set node state based on level data
 	asphalt_state = level_data.start_asphalt_state
 	asphalt_physics_state = level_data.start_asphalt_state
-	asphalt_attributes = level_data.asphalt_attributes.get_image()
-	asphalt_attributes.decompress()
+
+	if level_data.asphalt_attributes:
+		asphalt_attributes = level_data.asphalt_attributes.get_image()
+		asphalt_attributes.decompress()
+	else: asphalt_attributes = Image.create_empty(map_resolution.x, map_resolution.y, false, Image.FORMAT_RGBF)
 
 	# Handle asphalt state starting values
 	surface = level_data.surface
