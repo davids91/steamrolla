@@ -13,7 +13,7 @@ func _position_from_dir_name(dir_name: String) -> Vector3:
 	return Vector3(x * road_chunk_spacing, 0., y * road_chunk_spacing)
 
 @export_tool_button("Load Level Data", "CheckBox") var create_level_data: Callable = _load_level_data
-const road_chunk_template: PackedScene = preload("res://core/road_chunk.scn")
+const road_chunk_template: PackedScene = preload("res://core/scenes/road_chunk.scn")
 var scenes: Dictionary[RoadChunk, String] = {}
 func _load_level_data() -> void:
 	for c in $Chunks.get_children(): c.queue_free()

@@ -21,6 +21,7 @@ var DynamicSurfaceShyninessInverse: Array[float] = [10., 15., 50.]
 
 @export_category("Display")
 @export_tool_button("Update Materials", "Reload") var call_update_materials: Callable = update_materials
+@export_tool_button("Update Physics", "Reload") var call_update_physics: Callable = update_physics
 @export var surface: DynamicSurfaces = DynamicSurfaces.ASPHALT:
 	set(v):
 		surface = v

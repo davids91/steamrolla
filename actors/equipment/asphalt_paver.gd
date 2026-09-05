@@ -24,3 +24,12 @@ func _on_body_representation_body_entered(body: Node3D) -> void:
 
 func _on_body_representation_body_exited(body: Node3D) -> void:
 	if body is RoadChunkBody: ground_entered = false
+
+
+func _physics_process(delta: float) -> void:
+	super(delta)
+	var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+	var raycast_result: Dictionary = space_state.intersect_ray(PhysicsRayQueryParameters3D.create(
+		global_position + Vector3(0.0, 100., 0.0), global_position - Vector3(0.0, 100., 0.0)
+	))
+	if "position" in raycast_result: global_position.y = raycast_result.position.y

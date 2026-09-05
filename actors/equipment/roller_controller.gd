@@ -70,5 +70,4 @@ func _physics_process(delta: float) -> void:
 	var raycast_result: Dictionary = space_state.intersect_ray(PhysicsRayQueryParameters3D.create(
 		global_position + Vector3(0.0, 100., 0.0), global_position - Vector3(0.0, 100., 0.0)
 	))
-	if "position" in raycast_result:
-		global_position.y = raycast_result.position.y
+	if "position" in raycast_result: global_position.y = raycast_result.position.y

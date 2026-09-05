@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://de464tly5tid8"]
 
 [ext_resource type="Texture2D" uid="uid://cglj5nsrr7ntb" path="res://models/asphalt-paver_0.png" id="1_0d3me"]
-[ext_resource type="Script" uid="uid://d1tbgsojf2nr5" path="res://actors/asphalt_paver.gd" id="1_pogr6"]
+[ext_resource type="Script" uid="uid://d1tbgsojf2nr5" path="res://actors/equipment/asphalt_paver.gd" id="1_pogr6"]
 [ext_resource type="PackedScene" uid="uid://bb24gus88qx5r" path="res://core/tools/orbit_camera_3d.tscn" id="2_tthve"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_srf32"]
@@ -48,27 +48,28 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_v4nxo")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pogr6"]
-size = Vector3(3.6660156, 3.2512817, 6.2854614)
+size = Vector3(3.6660156, 3.2068634, 6.483719)
 
 [node name="AsphaltPaver" type="Node3D" unique_id=655459454]
 script = ExtResource("1_pogr6")
 tool_enum = 1
-normalized_size = Vector2(0.1, 0.02)
+normalized_size = Vector2(0.05, 0.01)
 tool_angle = 3.142
 
 [node name="OrbitCamera" parent="." unique_id=1504134869 instance=ExtResource("2_tthve")]
 transform = Transform3D(-0.9089847, 0, 0.41682938, 0, 1, 0, -0.41682938, 0, -0.9089847, 3.2651744, 4.8342853, -6.400869)
 
 [node name="DisplayMesh" type="MeshInstance3D" parent="." unique_id=753197751]
-transform = Transform3D(-1.0927848e-06, 0, 25.000002, 0, 25, 0, -25.000002, 0, -1.0927848e-06, 0, 0, -1.5)
+transform = Transform3D(-1.0927848e-06, 0, 25.000002, 0, 25, 0, -25.000002, 0, -1.0927848e-06, 0, 0.38728374, -1.5)
 mesh = SubResource("ArrayMesh_llcvb")
 
 [node name="BodyRepresentation" type="Area3D" parent="." unique_id=1561204565 groups=["BirdReactable", "BombActivator"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.041612327, 1.9486904)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.34567142, 0.43688107)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BodyRepresentation" unique_id=1865316412]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6689758, -1.9662781)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5928879, -1.9426804)
 shape = SubResource("BoxShape3D_pogr6")
+debug_color = Color(0, 0.6885001, 0.81, 0.9372549)
 
 [connection signal="body_entered" from="BodyRepresentation" to="." method="_on_body_representation_body_entered"]
 [connection signal="body_exited" from="BodyRepresentation" to="." method="_on_body_representation_body_exited"]
