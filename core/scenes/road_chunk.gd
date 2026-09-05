@@ -329,19 +329,31 @@ static func asphalt_state_tex_path(base_dir: String)-> String:
 static func asphalt_target_state_tex_path(base_dir: String)-> String:
 	return base_dir + "/target_asphalt_state.png"
 
-static func user_asphalt_state_tex_path(base_dir: String)-> String:
-	return base_dir.replace("res://", "user:##").replace("/", "_").replace("##", "//") + "_asphalt_state.png"
+## Converts the res:// base dir of the level into a single filename for the asphalt state
+static func user_asphalt_state_tex_path(base_dir: String) -> String:
+	var image_path_base: String = (
+		base_dir
+		.replace("res://", "user:##")
+		.replace("/", "_")
+		.replace("##", "//")
+	)
+	# Limit the filename to have max ~255 characters including '_asphalt_state.png'
+	image_path_base = image_path_base.substr(max(0, image_path_base.length() - 235))
+	return image_path_base + "_asphalt_state.png"
 
+@onready var used_data_path: String = get_parent().scene_file_path
 func _initialize(data: RoadChunkData, data_path: String = "") -> void:
 	# Check if there's an asphalt state in user storage or a fallback in case data is not available
 	var save_resource: bool = false
 	if data_path.length() > 0: # The resource is supposed to exist in res:// somewhere!
+		used_data_path = data_path
 		var user_asphalt_state_path: String = user_asphalt_state_tex_path(data_path.get_base_dir())
 		var fallback_asphalt_state_path: String = asphalt_state_tex_path(data_path.get_base_dir())
 		var fallback_asphalt_target_path: String = asphalt_target_state_tex_path(data_path.get_base_dir())
 
 		# Load user or fallback asphalt state image: always overwrite resource data with user state image when available!
-		if FileAccess.file_exists(user_asphalt_state_path): level_data.start_asphalt_state = load(user_asphalt_state_path)
+		if FileAccess.file_exists(user_asphalt_state_path):
+			level_data.start_asphalt_state = ImageTexture.create_from_image(Image.load_from_file(user_asphalt_state_path))
 		elif not data.start_asphalt_state and FileAccess.file_exists(fallback_asphalt_state_path):
 			level_data.start_asphalt_state = load(fallback_asphalt_state_path)
 			save_resource = true
@@ -386,11 +398,10 @@ func initialize(data_path: String) -> void:
 	level_data = ResourceLoader.load(data_path)
 	_initialize(level_data, data_path)
 
-func save_user_data(data_path: String) -> void:
-	var base_dir: String = data_path.get_base_dir()
-	if not DirAccess.dir_exists_absolute(base_dir):
-		DirAccess.make_dir_absolute(base_dir)
-	asphalt_state.get_image().save_png(user_asphalt_state_tex_path(base_dir))
+## Saves user data into the specified folder
+func save_user_data(data_path: String = used_data_path) -> void:
+	assert(0 < data_path.length())
+	asphalt_state.get_image().save_png(user_asphalt_state_tex_path(data_path.get_base_dir()))
 
 func reset_user_data(data_path: String) -> void:
 	var user_data_path: String = user_asphalt_state_tex_path(data_path.get_base_dir())
@@ -411,6 +422,7 @@ func _on_asphalt_bomb_explode(explosion_pos: Vector3, explode_radius: float, amo
 #endregion 
 
 func _ready() -> void:
+	_initialize(level_data, used_data_path)
 	asphalt_state = level_data.start_asphalt_state
 	asphalt_physics_state = level_data.start_asphalt_state
 	asphalt_attributes = level_data.asphalt_attributes.get_image()

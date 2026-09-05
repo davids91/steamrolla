@@ -4,15 +4,32 @@
 [ext_resource type="PackedScene" uid="uid://cay2iy3mi03c4" path="res://core/UI/tool_panel.tscn" id="4_hyk35"]
 [ext_resource type="Texture2D" uid="uid://dwjms5mdx3iof" path="res://textures/speech_bubble.png" id="4_k5p64"]
 [ext_resource type="PackedScene" uid="uid://bnbkf3tkjckrq" path="res://core/UI/objective_panel.tscn" id="5_ie7id"]
+[ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="5_ygh00"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ej2ga"]
 font_size = 35
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k5p64"]
+atlas = ExtResource("5_ygh00")
+region = Rect2(897.618, -2.324, 128, 128)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ie7id"]
+load_path = "res://.godot/imported/ui_atlas.png-2bd7ce3660b7972b2e7472f622ad4e26.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ie7id"]
+atlas = SubResource("CompressedTexture2D_ie7id")
+region = Rect2(897.618, 125.676, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ygh00"]
+atlas = ExtResource("5_ygh00")
+region = Rect2(772.883, 121.768, 128, 137.545)
 
 [node name="HUD" type="CanvasLayer" unique_id=920709406]
 script = ExtResource("1_ygh00")
 
 [node name="ToolPanel" parent="." unique_id=120026210 instance=ExtResource("4_hyk35")]
 available_tools = Array[int]([0, 1, 3, 4, 5])
+default_selected_tool = 5
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=38675216]
 anchors_preset = 7
@@ -39,4 +56,22 @@ vertical_alignment = 1
 
 [node name="ObjectivePanel" parent="." unique_id=1956998029 instance=ExtResource("5_ie7id")]
 
+[node name="ExitBtn" type="TextureButton" parent="." unique_id=622200269]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
+texture_normal = SubResource("AtlasTexture_k5p64")
+texture_pressed = SubResource("AtlasTexture_ie7id")
+
+[node name="TextureRect" type="TextureRect" parent="ExitBtn" unique_id=176742937]
+layout_mode = 0
+offset_right = 129.0
+offset_bottom = 124.0
+texture = SubResource("AtlasTexture_ygh00")
+expand_mode = 3
+
 [connection signal="selected_tool" from="ToolPanel" to="." method="_on_tool_panel_selected_tool"]
+[connection signal="pressed" from="ExitBtn" to="." method="_on_exit_btn_pressed"]

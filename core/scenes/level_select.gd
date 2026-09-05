@@ -27,7 +27,6 @@ func _load_level_data() -> void:
 			scenes[road_chunk] = MapStructure.scene_path_in_levels(d)
 
 var selected_chunk: RoadChunk = null
-var selected_scene: PackedScene = null
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.is_pressed():
@@ -40,7 +39,7 @@ func _unhandled_input(event: InputEvent) -> void:
 					time_left_to_travel = time_to_travel_towards_selected_sec
 					selected_chunk = $PlayerView.looking_at_chunk
 					create_tween().tween_property(%ScreenBlocker, "modulate", Color.WHITE, time_to_travel_towards_selected_sec)
-					selected_scene = load(scenes[selected_chunk])
+					ResourceLoader.load_threaded_request(scenes[selected_chunk])
 			selected_chunk = $PlayerView.looking_at_chunk
 		else:
 			$Highlight.visible = true
@@ -57,4 +56,4 @@ func _process(delta: float) -> void:
 		time_left_to_travel -= delta
 		if 0. >= time_left_to_travel:
 			for c in level_container.get_children(): c.queue_free()
-			level_container.add_child(selected_scene.instantiate())
+			level_container.add_child(ResourceLoader.load_threaded_get(scenes[selected_chunk]).instantiate())

@@ -1,10 +1,20 @@
 [gd_scene format=3 uid="uid://bnbkf3tkjckrq"]
 
 [ext_resource type="Script" uid="uid://fb6jwtwvjdej" path="res://core/UI/objective_panel.gd" id="1_yfeup"]
-[ext_resource type="Texture2D" uid="uid://cflmqsk3y2rl2" path="res://textures/button_normal.png" id="3_u8e25"]
-[ext_resource type="Texture2D" uid="uid://dur2eroxjhq2h" path="res://textures/button_down.png" id="4_bjnmv"]
-[ext_resource type="Texture2D" uid="uid://ddkux4nkqkl0d" path="res://textures/laser_icon.png" id="5_qsu52"]
+[ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="4_u8e25"]
 [ext_resource type="AudioStream" uid="uid://dvs77bs0xyv2i" path="res://audio/button_press.wav" id="6_bjnmv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k5p64"]
+atlas = ExtResource("4_u8e25")
+region = Rect2(897.618, -2.324, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xel4c"]
+atlas = ExtResource("4_u8e25")
+region = Rect2(897.618, 125.676, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8jg5c"]
+atlas = ExtResource("4_u8e25")
+region = Rect2(631.808, 2.943, 128, 128)
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_8jg5c"]
 random_pitch = 1.0883054
@@ -29,14 +39,14 @@ layout_mode = 2
 
 [node name="CheckBtn" type="TextureButton" parent="HBoxContainer" unique_id=1180050793]
 layout_mode = 2
-texture_normal = ExtResource("3_u8e25")
-texture_pressed = ExtResource("4_bjnmv")
+texture_normal = SubResource("AtlasTexture_k5p64")
+texture_pressed = SubResource("AtlasTexture_xel4c")
 
 [node name="TextureRect" type="TextureRect" parent="HBoxContainer/CheckBtn" unique_id=1212835322]
 layout_mode = 0
 offset_right = 129.0
 offset_bottom = 124.0
-texture = ExtResource("5_qsu52")
+texture = SubResource("AtlasTexture_8jg5c")
 expand_mode = 3
 
 [node name="ObjectivePanel" type="Panel" parent="HBoxContainer" unique_id=1462847364]
