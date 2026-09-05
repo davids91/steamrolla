@@ -28,7 +28,8 @@ uniform float crazify_amount = 0.0;
 uniform float crazify_scale = 0.0;
 uniform float crazify_speed = 0.0;
 uniform float level_edge_transition = 0.001;
-uniform float asphalt_shiny = 5.;
+uniform float asphalt_shiny: hint_range(0.0, 1.0) = 0.2;
+uniform float asphalt_spread: hint_range(0.0, 500.0) = 10.;
 uniform vec3 asphalt_hot_color: source_color = vec3(0.1,0.,0.);
 
 const float VALUE_EPSILON = 0.001;
@@ -95,7 +96,7 @@ void fragment() {
 		normal_vec += texture(asphalt_texture, UV * asphalt_tile_size_ratio).xyz * asphalt_highlight;
 		ALBEDO = texture(asphalt_texture, UV * asphalt_tile_size_ratio).rgb;
 	}
-	NORMAL_MAP = -normal_vec;
+	NORMAL_MAP = normal_vec;
 
 	// Mix in highlight color
 	ALBEDO = mix(ALBEDO, highlight_color, hightlight_strength * asphalt_presence);
@@ -178,12 +179,12 @@ void light()
 	vec3 specularBRDF = max(NdotL * D * G * F, 0.0);
 	SPECULAR_LIGHT += specularBRDF * LIGHT_COLOR * ATTENUATION;
 
-	// Custom edits to (supposed) godot default light shader: Make asphalt shiny
+	// Custom edits to (supposed) godot default light shader: Make asphalt shiny where hot
 	if (VALUE_EPSILON < texture(asphalt_state, UV).r * texture(asphalt_attributes, UV).r){
 		vec3 halfway_vector = normalize(LIGHT + VIEW);
 		SPECULAR_LIGHT += (
-			pow(max(dot(NORMAL, halfway_vector), 0.), asphalt_shiny) * LIGHT_COLOR
-			/ (1. - texture(asphalt_physics_state, UV).g) // based on temperature
+			pow(max(dot(NORMAL, halfway_vector), 0.), 500. - asphalt_spread) * LIGHT_COLOR * asphalt_shiny
+			* (10. * texture(asphalt_physics_state, UV).g) // Have asphalt be shinyer when hot
 		);
 	}
 }

@@ -17,7 +17,7 @@ var asphalt_physics_state: Texture ## r: level height(terrain + asphalt), g: asp
 @export var height_unit: float = 0.5
 
 enum DynamicSurfaces{ ASPHALT = 0, GRAVEL = 1, DIRT = 2 }
-var DynamicSurfaceShyninessInverse: Array[float] = [10., 15., 50.]
+var DynamicSurfaceShyniness: Array[float] = [0.05, 0., 0.]
 
 @export_category("Display")
 @export_tool_button("Update Materials", "Reload") var call_update_materials: Callable = update_materials
@@ -26,7 +26,7 @@ var DynamicSurfaceShyninessInverse: Array[float] = [10., 15., 50.]
 	set(v):
 		surface = v
 		if level_data: level_data.surface = v
-		asphalt_shyniness = DynamicSurfaceShyninessInverse[v]
+		asphalt_shyniness = DynamicSurfaceShyniness[v]
 		match v:
 			DynamicSurfaces.ASPHALT:
 				asphalt_texture = load("res://textures/asphalt_tile_seamless.png")
@@ -45,7 +45,7 @@ var DynamicSurfaceShyninessInverse: Array[float] = [10., 15., 50.]
 @export var asphalt_shyniness: float = 0.
 @export var asphalt_tile_size_ratio: float = 20.
 
-@onready var asphalt_shiny: float = DynamicSurfaceShyninessInverse[surface]
+@onready var asphalt_shiny: float = DynamicSurfaceShyniness[surface]
 var asphalt_texture: Texture = load("res://textures/asphalt_tile_seamless.png")
 var asphalt_normals: Texture = load("res://textures/asphalt_tile_seamless_normal.png")
 
@@ -270,7 +270,7 @@ func update_physics() -> void:
 	).call_deferred()
 
 func update_materials() -> void:
-	asphalt_shyniness = DynamicSurfaceShyninessInverse[surface]
+	asphalt_shyniness = DynamicSurfaceShyniness[surface]
 	height_unit = level_data.height_unit
 
 	%AsphaltChecker.material.set_shader_parameter("terrain", level_data.terrain_heightmap)
