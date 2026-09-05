@@ -1,18 +1,25 @@
 [gd_scene format=3 uid="uid://dc8fban4hbc8f"]
 
-[ext_resource type="Texture2D" uid="uid://2monxwscyud2" path="res://textures/shovel_icon_outline.png" id="1_jtsnn"]
 [ext_resource type="Script" uid="uid://ynpppg0hcxe1" path="res://core/UI/objective_item.gd" id="1_s4lgr"]
+[ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="2_s4lgr"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kglve"]
+atlas = ExtResource("2_s4lgr")
+region = Rect2(516, 10, 128, 128)
 
 [sub_resource type="LabelSettings" id="LabelSettings_ygh00"]
 font_size = 20
 
 [node name="ObjectiveItem" type="HBoxContainer" unique_id=1521236591]
 script = ExtResource("1_s4lgr")
+uncompleted_region = Rect2(516, 257.074, 128, 128)
+completed_region = Rect2(516, 10, 128, 128)
+completed = true
 
 [node name="Icon" type="TextureRect" parent="." unique_id=959038970]
-modulate = Color(0.1254, 0.66, 0.25014, 1)
+modulate = Color(0.21176471, 0.6627451, 0.2784314, 1)
 layout_mode = 2
-texture = ExtResource("1_jtsnn")
+texture = SubResource("AtlasTexture_kglve")
 expand_mode = 3
 
 [node name="ObjectiveText" type="Label" parent="." unique_id=1709416543]

@@ -6,7 +6,7 @@ extends Node3D
 @export var road_chunk_spacing: float = 50.
 
 func _position_from_dir_name(dir_name: String) -> Vector3:
-	var regex_match: RegExMatch = RegEx.create_from_string(MapStructure.LEVEL_FOLDER_NAME_REGEX).search(dir_name)
+	var regex_match: RegExMatch = RegEx.create_from_string(LevelStructure.LEVEL_FOLDER_NAME_REGEX).search(dir_name)
 	if regex_match.get_group_count() < 2: push_error("level folder name " + dir_name + " is not supported!")
 	var x: float = float(regex_match.strings[1]) # X coordinate is the first group, which is after the full match
 	var y: float = float(regex_match.strings[2]) # Y coordinate is the second group, which is after the full match
@@ -18,13 +18,13 @@ var scenes: Dictionary[RoadChunk, String] = {}
 func _load_level_data() -> void:
 	for c in $Chunks.get_children(): c.queue_free()
 	# Iterate all of the compliant folders
-	for d in DirAccess.get_directories_at(MapStructure.LEVELS_FOLDER): if MapStructure.complies_with_level_folder_name(d):
+	for d in DirAccess.get_directories_at(LevelStructure.LEVELS_FOLDER): if LevelStructure.complies_with_level_folder_name(d):
 		var road_chunk: RoadChunk = road_chunk_template.instantiate()
 		$Chunks.add_child(road_chunk)
-		road_chunk.initialize(MapStructure.resource_path_in_levels(d))
+		road_chunk.initialize(LevelStructure.resource_path_in_levels(d))
 		road_chunk.global_position = _position_from_dir_name(d)
-		if FileAccess.file_exists(MapStructure.scene_path_in_levels(d)):
-			scenes[road_chunk] = MapStructure.scene_path_in_levels(d)
+		if FileAccess.file_exists(LevelStructure.scene_path_in_levels(d)):
+			scenes[road_chunk] = LevelStructure.scene_path_in_levels(d)
 
 var selected_chunk: RoadChunk = null
 func _unhandled_input(event: InputEvent) -> void:

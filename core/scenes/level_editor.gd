@@ -93,8 +93,8 @@ func _level_base_dir() -> String:
 		return levels_folder + _level_map_name() + "/"
 
 	# Neither the cache or the default name exists, look for all compliant folders that start with the given coordinates
-	for d in DirAccess.get_directories_at(MapStructure.LEVELS_FOLDER):
-		if d.begins_with(_level_map_name()) and MapStructure.complies_with_level_folder_name(d):
+	for d in DirAccess.get_directories_at(LevelStructure.LEVELS_FOLDER):
+		if d.begins_with(_level_map_name()) and LevelStructure.complies_with_level_folder_name(d):
 			cached_level_base_dir = d
 			return levels_folder + cached_level_base_dir + "/"
 	
@@ -103,7 +103,7 @@ func _level_base_dir() -> String:
 	return levels_folder + cached_level_base_dir + "/"
 
 ## the path of the resource of the level
-func _level_resource_path() -> String: return MapStructure.resource_path_in_dir(_level_base_dir())
+func _level_resource_path() -> String: return LevelStructure.resource_path_in_dir(_level_base_dir())
 
 ## the path of the image which contains information for the level
 func _level_image_path(image_name: String) -> String: return _level_base_dir() + image_name + ".png"

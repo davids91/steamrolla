@@ -1,5 +1,28 @@
 extends Node3D
 
+var level_attributes: Dictionary[String, String] = {"bomb_set_off": "BOMB"}
+func erase_attribute_data() -> void:
+	%RoadChunk.reset_user_data(base_dir)
+	for attr in level_attributes:
+		if LevelStructure.level_attribute_present(base_dir, attr):
+			LevelStructure.level_attribute_reset(base_dir, attr)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("debug"):
+		erase_attribute_data()
+
+@onready var base_dir: String = LevelStructure.get_base_dir_for_scene(self)
+func _ready() -> void:
+	$HUD.set_objectives(level_attributes.values())
+	LevelStructure.level_attribute_list_overwrite(base_dir, level_attributes)
+	if LevelStructure.level_attribute_present(base_dir, "bomb_set_off"):
+		%AsphaltBomb.queue_free()
+		$HUD.objective_complete(0)
+
+func _on_asphalt_bomb_asphalt_bomb_exploded(_blast_pos: Vector3, _explode_radius: float, _amount_to_add_asphalt: float) -> void:
+	LevelStructure.level_attribute_set(base_dir, "bomb_set_off")
+	$HUD.objective_complete(0)
+
 @export var level_scan_duration_sec: float = 0.7
 @export var level_scan_range: float = 0.25
 @export var accepted_deviation: float = 0.001
