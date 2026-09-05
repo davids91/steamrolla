@@ -124,8 +124,6 @@ func _process(delta: float) -> void:
 			road_chunk.asphalt_delta = asphalt_delta * delta
 			road_chunk.set_update_brush_center(tool_nodes[active_tool].global_position)
 			road_chunk.tool_angle = Vector2(-tool_nodes[active_tool].basis.z.x, -tool_nodes[active_tool].basis.z.z).angle()
-			if (active_tool == ToolPanel.Tools.PAVER):
-				road_chunk.paver_height = tool_nodes[active_tool].global_position.y + tool_nodes[active_tool].tool_strength
 			tool_nodes[active_tool].work_at_cursor(view.cursor.global_position)
 			road_chunk.update_asphalt()
 		else:

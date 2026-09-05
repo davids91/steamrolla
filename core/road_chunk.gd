@@ -107,7 +107,6 @@ func push_config() -> void:
 		"tool_radius": tool_radius,
 		"tool_strength": tool_strength,
 		"asphalt_delta": asphalt_delta,
-		"paver_height": paver_height,
 		"tool_center": tool_center,
 		"tool_size": tool_size,
 		"tool_angle": tool_angle,
@@ -122,7 +121,6 @@ func pop_config() -> void:
 	tool_radius = update_config_stack[-1]["tool_radius"]
 	tool_strength = update_config_stack[-1]["tool_strength"]
 	asphalt_delta = update_config_stack[-1]["asphalt_delta"]
-	paver_height = update_config_stack[-1]["paver_height"]
 	tool_center = update_config_stack[-1]["tool_center"]
 	tool_size = update_config_stack[-1]["tool_size"]
 	tool_angle = update_config_stack[-1]["tool_angle"]
@@ -184,12 +182,6 @@ var tool_strength: float = 0.:
 	set(amount):
 		tool_strength = amount
 		%AsphaltUpdater.material.set_shader_parameter("tool_strength", amount)
-
-## The normalized height of the paver(if that tool is used) within updates
-var paver_height: float = 0.:
-	set(amount):
-		paver_height = amount
-		%AsphaltUpdater.material.set_shader_parameter("paver_height", (amount - global_position.y) / height_unit)
 
 ## The volatile angle of the tool updating the level
 var tool_angle: float = 0.:
@@ -273,7 +265,7 @@ func update_physics() -> void:
 		var physics_material: Image = %MiniAsphaltPhysicsViewport.get_texture().get_image()
 		physics_material.decompress()
 		physics_material.convert(Image.FORMAT_RF)
-		$GroundPhysicsFake/Shape.shape.update_map_data_from_image(physics_material, 0., height_unit)
+		$GroundPhysicsFake/Shape.shape.update_map_data_from_image(physics_material, 0., height_unit * 2.)
 	).call_deferred()
 
 func update_materials() -> void:

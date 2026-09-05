@@ -3,8 +3,8 @@ shader_type canvas_item;
 uniform sampler2D terrain;
 uniform sampler2D asphalt_state; // Basically asphalt quantity
 uniform sampler2D asphalt_attributes; /// r: presence, g: editability, b: fluidity
+uniform float asphalt_minimum_quantity_for_display = 0.005;
 uniform float asphalt_delta = 0.; // Addition / removal of asphalt under brush
-uniform float paver_height = 0.;
 uniform float paver_overflow_min: hint_range(0.0, 1.) = 0.1;
 uniform float paver_overflow_max: hint_range(0.0, 1.) = 0.1;
 
@@ -47,9 +47,10 @@ float sdSegment( in vec2 p, in vec2 a, in vec2 b )
 
 void fragment() {
 	float asphalt_delta_output = 0.0;
+	float current_asphalt_level = texture(asphalt_state, UV).r;
+
 	// early exit through return; is not supported....
 	if(CONTROL_EPSILON < texture(asphalt_attributes, UV).g){ // Only run shader if the pixel is editable
-		float current_asphalt_level = texture(asphalt_state, UV).r;
 		vec2 roller_direction = vec2(cos(tool_angle + tool_angle_offset), sin(tool_angle + tool_angle_offset)); // Roller direction to set esact boundaries of the roller
 		vec2 roller_sideways_direction = vec2(-roller_direction.y, roller_direction.x);
 		vec2 roller_bl = tool_center - tool_size.x * 0.5 * roller_sideways_direction - tool_size.y * 0.5 * roller_direction;
@@ -69,21 +70,16 @@ void fragment() {
 		//} else
 		if (used_tool == TOOL_SHOVEL){
 			asphalt_delta_output = asphalt_delta * (1. - smoothstep(0., tool_radius, distance_from_center));
-		}else if (
-			used_tool == TOOL_PAVER 
-		){
-			asphalt_delta_output = max( 
-				sign(
-					paver_height * (1. + tool_strength)
-					- smoothstep(
-						paver_overflow_min, paver_overflow_max,
-						min(
-							sdSegment(UV, roller_tl, tool_center),
-							sdSegment(UV, roller_tr, tool_center)
-						)
-					)
-					- current_asphalt_level
-				) * asphalt_delta,
+		}else if (used_tool == TOOL_PAVER){
+			float paver_range = 1. - smoothstep(
+				paver_overflow_min, paver_overflow_max,
+				min(
+					sdSegment(UV, roller_tl, tool_center),
+					sdSegment(UV, roller_tr, tool_center)
+				)
+			);
+			asphalt_delta_output = max(
+				sign((paver_range * tool_strength) - current_asphalt_level) * asphalt_delta,
 				0.
 			);
 		}else if(used_tool == TOOL_COMPACTOR) {
@@ -106,12 +102,33 @@ void fragment() {
 				// Check for out of bounds
 				&&(all(lessThan(prev_pixel_pos, vec2(1.))) && all(greaterThan(prev_pixel_pos, vec2(0.))))
 			){
-				// calculate the asphalt being moved forward to the direction of the rolling to the next pixel
-				asphalt_delta_output -= current_asphalt_level * tool_strength;
-				// calcualte the asphalt being moved into this pixel from a neighbouring pixel opposite of the rolling direction
-				asphalt_delta_output += texture(asphalt_state, prev_pixel_pos).r * tool_strength;
+				// Collect the average value under the roller
+				float avg_value = 0.;
+				float sample_count = 0.;
+				for(float x = UV.x - tool_radius; x < UV.x + tool_radius; x += (tool_radius / 5.)) {
+					for(float y = UV.y - tool_radius; y < UV.y + tool_radius; y += (tool_radius / 5.)) {
+						vec2 nearby_px_pos = vec2(x,y);
+						//if(point_in_triangle(roller_bl, roller_tl, roller_tr, nearby_px_pos)|| point_in_triangle(roller_bl, roller_tr, roller_br, nearby_px_pos)){
+							avg_value += texture(asphalt_state, nearby_px_pos).r;
+							sample_count += 1.;
+						//}
+					}
+				}
+				avg_value /= sample_count;
+				asphalt_delta_output = (avg_value - current_asphalt_level) * tool_strength;
+
+				// The below lines are an attempt to simulate roller pressure for each induvidual pixel under the roller
+				//// calculate the asphalt being moved forward to the direction of the rolling to the next pixel
+				//asphalt_delta_output += current_asphalt_level * tool_strength;
+				//// calcualte the asphalt being moved into this pixel from a neighbouring pixel opposite of the rolling direction
+				//asphalt_delta_output -= texture(asphalt_state, prev_pixel_pos).r * tool_strength;
 			}
 		}
+	}
+
+	// clamp asphalt delta output in case it would eliminate asphalt
+	if(current_asphalt_level > asphalt_minimum_quantity_for_display && asphalt_delta_output <= -current_asphalt_level) {
+		asphalt_delta_output = asphalt_minimum_quantity_for_display - current_asphalt_level;
 	}
 
 	// asphalt delta is relative to 0.5
