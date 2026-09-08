@@ -325,6 +325,11 @@ func update_materials() -> void:
 
 @onready var used_base_dir: String = get_parent().scene_file_path.get_base_dir()
 func _initialize(data: RoadChunkData, data_path: String = "") -> void:
+	
+	if (data==null):
+		print("ERROR: road chunk got null data during init. ignoring.")
+		return
+		
 	# Check if there's an asphalt state in user storage or a fallback in case data is not available
 	var save_resource: bool = false
 	if data_path.length() > 0: # The resource is supposed to exist in res:// somewhere!

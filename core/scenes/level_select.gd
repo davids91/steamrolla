@@ -51,9 +51,12 @@ func _ready() -> void:
 @export var time_to_travel_towards_selected_sec: float = 1.
 var time_left_to_travel: float = 0.
 func _process(delta: float) -> void:
-	if 0. < time_left_to_travel and selected_chunk:
+	if 0. < time_left_to_travel and selected_chunk != null:
 		$PlayerView.move_towards_object_by(distance_travel_towards_selected * delta, selected_chunk)
 		time_left_to_travel -= delta
 		if 0. >= time_left_to_travel:
 			for c in level_container.get_children(): c.queue_free()
-			level_container.add_child(ResourceLoader.load_threaded_get(scenes[selected_chunk]).instantiate())
+			if ResourceLoader.load_threaded_get(scenes[selected_chunk]) == null:
+				print("ERROR - level select got a null selected scene. ignoring.")
+			else:
+				level_container.add_child(ResourceLoader.load_threaded_get(scenes[selected_chunk]).instantiate())
