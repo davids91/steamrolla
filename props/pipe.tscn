@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://xehtklcspjew"]
+
+[ext_resource type="PackedScene" uid="uid://c84644mrj117x" path="res://models/pipe.fbx" id="1_jkit7"]
+
+[node name="Pipe" type="Node3D" unique_id=159934017]
+
+[node name="pipe-mesh" parent="." unique_id=1458786714 instance=ExtResource("1_jkit7")]
