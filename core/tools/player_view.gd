@@ -33,5 +33,9 @@ func _physics_process(_delta: float) -> void:
 		if raycast_result.collider is RoadChunkBody:
 			looking_at_chunk = raycast_result.collider.get_road_chunk()
 		cursor.global_position = raycast_result.position
-		# FIXME: avoid colinear error by checking that both are far enough apart
-		cursor.look_at(raycast_result.position + raycast_result.normal)
+		# this check avoids a godot warning message about colinear vectors
+		if cursor.global_position.direction_to(raycast_result.position + raycast_result.normal).is_equal_approx(Vector3.UP):
+			cursor.look_at(cursor.position + Vector3.UP)
+		else:	
+			cursor.look_at(raycast_result.position + raycast_result.normal)
+			
