@@ -44,35 +44,6 @@ func _get_map_region_for_coordinate() -> Rect2i:
 		one_level_within_the_overview
 	)
 
-@export var levels_folder: String = "res://levels/":
-	set(v): pass
-
-## Images for level data in raw mode
-## RAW_MODE: data of the level are in separate heightmaps
-const raw_image_names: Array[String] = [
-	"raw_terrain_heightmap",
-	"raw_terrain_crackmap",
-	"terrain_normalmap",
-	"terrain_albedo_image",
-	"raw_asphalt_presence",
-	"raw_asphalt_editability",
-	"raw_water_presence",
-	"start_asphalt_state",
-	"target_asphalt_state",
-]
-
-## Images for level data in packaged mode
-## PACKAGED_MODE: data of the level is collected in a well defined set of images
-## --> names of the images are also the fields within @RoadChunkData
-const final_image_names: Array[String] = [
-	"terrain_heightmap",
-	"terrain_normalmap",
-	"terrain_albedo_image",
-	"asphalt_attributes",
-	"start_asphalt_state",
-	"target_asphalt_state",
-]
-
 @export_category("Level Data state")
 @export var level_coordinate: Vector2i = Vector2i.ZERO:
 	set(pos):
@@ -84,41 +55,45 @@ const final_image_names: Array[String] = [
 ## The name of the folder under the given coordinate, no zeroes as padding, just the raw numbers
 func _level_map_name() -> String: return str(level_coordinate.x) + "_" + str(level_coordinate.y)
 
+#TechDebt: Conceptually this belongs to LevelStructure object
 ## The path of the folder containing all the level data
 var cached_level_base_dir: String = "N/A"
 func _level_base_dir() -> String:
-	if cached_level_base_dir != "N/A" and DirAccess.dir_exists_absolute(levels_folder + cached_level_base_dir + "/"):
-		return levels_folder + cached_level_base_dir + "/"
-	if DirAccess.dir_exists_absolute(levels_folder + _level_map_name() + "/"):
-		return levels_folder + _level_map_name() + "/"
+	if cached_level_base_dir != "N/A" and DirAccess.dir_exists_absolute(LevelStructure.LEVELS_FOLDER + cached_level_base_dir + "/"):
+		return LevelStructure.LEVELS_FOLDER + cached_level_base_dir + "/"
+	if DirAccess.dir_exists_absolute(LevelStructure.LEVELS_FOLDER + _level_map_name() + "/"):
+		return LevelStructure.LEVELS_FOLDER + _level_map_name() + "/"
 
 	# Neither the cache or the default name exists, look for all compliant folders that start with the given coordinates
 	for d in DirAccess.get_directories_at(LevelStructure.LEVELS_FOLDER):
 		if d.begins_with(_level_map_name()) and LevelStructure.complies_with_level_folder_name(d):
 			cached_level_base_dir = d
-			return levels_folder + cached_level_base_dir + "/"
+			return LevelStructure.LEVELS_FOLDER + cached_level_base_dir + "/"
 	
 	# No folder matches the given coordinates, it has to be created
 	cached_level_base_dir = _level_map_name()
-	return levels_folder + cached_level_base_dir + "/"
+	return LevelStructure.LEVELS_FOLDER + cached_level_base_dir + "/"
 
 ## the path of the resource of the level
 func _level_resource_path() -> String: return LevelStructure.resource_path_in_dir(_level_base_dir())
 
 ## the path of the image which contains information for the level
-func _level_image_path(image_name: String) -> String: return _level_base_dir() + image_name + ".png"
+func _level_image_path(image_name: String) -> String: return LevelStructure.level_image_path(_level_base_dir(), image_name)
+
+## the path of the minified image which contains information for the level(resolution 64x64)
+func _level_mini_image_path(image_name: String) -> String: return LevelStructure.level_mini_image_path(_level_base_dir(), image_name)
 
 func _level_folder_exists() -> bool: return DirAccess.dir_exists_absolute(_level_base_dir())
 func _level_resource_exists() -> bool: return FileAccess.file_exists(_level_resource_path())
 func _level_image_exists(image_name: String) -> bool: return FileAccess.file_exists(_level_image_path(image_name))
 func _is_level_data_in_raw_format() -> bool:
 	if not _level_folder_exists(): return false
-	for img in raw_image_names: if not _level_image_exists(img): return false
+	for img in LevelStructure.raw_image_names: if not _level_image_exists(img): return false
 	return true
 
 func _is_level_data_in_packaged_format() -> bool:
 	if not _level_folder_exists(): return false
-	for img in final_image_names: if not _level_image_exists(img): return false
+	for img in LevelStructure.final_image_names: if not _level_image_exists(img): return false
 	return true
 
 var level_data_state_editable: bool = false
@@ -143,7 +118,7 @@ func _create_level_data() -> void:
 	if _level_resource_exists(): %RoadChunk.level_data = load(_level_resource_path())
 	else: %RoadChunk.level_data = RoadChunkData.new()
 	# New level is always created in raw format: 
-	for img in raw_image_names:
+	for img in LevelStructure.raw_image_names:
 		var image: Image
 		# if it's the albedo, take the image from the map overview instead of making an empty image
 		if img == "terrain_albedo_image":
@@ -253,11 +228,11 @@ func _load_level_data() -> void:
 		%RoadChunk.level_data = RoadChunkData.new()
 		resource_updated = true
 	if _is_level_data_in_packaged_format():
-		for img in final_image_names:
+		for img in LevelStructure.final_image_names:
 			%RoadChunk.level_data.set(img, load(_level_image_path(img)))
 		_set_data_mode_packaged()
 	else: # create empty image for every image that is not available
-		for img in raw_image_names:
+		for img in LevelStructure.raw_image_names:
 			if not _level_image_exists(img):
 				push_warning("level attribute <" + img + "> was not availble, created empty image for it!")
 				resource_updated = true
@@ -270,7 +245,7 @@ func _load_level_data() -> void:
 		_set_data_mode_raw()
 
 	# For each field in the resource: if the field is not set but the image is available, connect them
-	for img in final_image_names: if not %RoadChunk.get(img) and _level_image_exists(img):
+	for img in LevelStructure.final_image_names: if not %RoadChunk.get(img) and _level_image_exists(img):
 		%RoadChunk.level_data.set(img, load(_level_image_path(img)))
 		resource_updated = true
 
@@ -286,14 +261,23 @@ func _save_level_data():
 	if not get_node_or_null("%RoadChunk"): return
 	if not _is_level_data_in_packaged_format(): return
 	if not _level_resource_exists(): $RoadChunk.level_data = RoadChunkData.new()
+
 	# always overwrite stored start and target asphalt states with the ones provided by the editor
 	if %RoadChunk.asphalt_state:
 		%RoadChunk.asphalt_state.get_image().save_png(_level_image_path("start_asphalt_state"))
 	if %RoadChunk.level_data.target_asphalt_state:
 		%RoadChunk.level_data.target_asphalt_state.get_image().save_png(_level_image_path("target_asphalt_state"))
+
+	# Also save minified images
+	for img in LevelStructure.final_image_names:
+		var minified_image: Image = %RoadChunk.level_data.get(img).get_image()
+		minified_image.decompress()
+		minified_image.resize(64, 64, Image.INTERPOLATE_LANCZOS)
+		minified_image.save_png(_level_mini_image_path(img))
+	
 	EditorInterface.get_resource_filesystem().scan() #TechDebt: This makes itch export crash
 	get_tree().create_timer(0.5).timeout.connect(func(): # Update resource, set the updated fields and save it!
-		for img in final_image_names: %RoadChunk.level_data.set(img, load(_level_image_path(img)))
+		for img in LevelStructure.final_image_names: %RoadChunk.level_data.set(img, load(_level_image_path(img)))
 		ResourceSaver.save(%RoadChunk.level_data, _level_resource_path())
 	)
 

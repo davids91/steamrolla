@@ -10,6 +10,8 @@ var asphalt_physics_state: Texture ## r: level height(terrain + asphalt), g: asp
 
 @export_category("Level Data")
 @export var level_data: RoadChunkData
+@export var is_minified: bool = false ## When true loading the data makes an attempt to read in smaller textures
+@export var is_stub: bool = false ## Stub roadChuinks are present e.g. within the level selection screen or the scenery museum 
 @export_tool_button("Load data", "Reload") var load_data: Callable = func(): _initialize(level_data)
 
 @export_category("Physics")
@@ -323,44 +325,8 @@ func update_materials() -> void:
 	water_mat.set_shader_parameter("water_color", level_data.water_color)
 	water_mat.set_shader_parameter("water_transparency", level_data.water_transparency)
 
-@onready var used_base_dir: String = get_parent().scene_file_path.get_base_dir()
-func _initialize(data: RoadChunkData, data_path: String = "") -> void:
-	
-	if (data==null):
-		print("ERROR: road chunk got null data during init. ignoring.")
-		return
-		
-	# Check if there's an asphalt state in user storage or a fallback in case data is not available
-	var save_resource: bool = false
-	if data_path.length() > 0: # The resource is supposed to exist in res:// somewhere!
-		used_base_dir = data_path.get_base_dir()
-		var user_asphalt_state_path: String = LevelStructure.user_asphalt_state_tex_path(data_path.get_base_dir())
-		var fallback_asphalt_state_path: String = LevelStructure.asphalt_state_tex_path(data_path.get_base_dir())
-		var fallback_asphalt_target_path: String = LevelStructure.asphalt_target_state_tex_path(data_path.get_base_dir())
-
-		# Load user or fallback asphalt state image: always overwrite resource data with user state image when available!
-		if FileAccess.file_exists(user_asphalt_state_path):
-			level_data.start_asphalt_state = ImageTexture.create_from_image(Image.load_from_file(user_asphalt_state_path))
-		elif not data.start_asphalt_state and FileAccess.file_exists(fallback_asphalt_state_path):
-			level_data.start_asphalt_state = load(fallback_asphalt_state_path)
-			save_resource = true
-
-		# Load fallback asphalt target image
-		if not data.target_asphalt_state and FileAccess.file_exists(fallback_asphalt_target_path):
-			level_data.target_asphalt_state = load(fallback_asphalt_target_path)
-			save_resource = true
-
-	# Save the resource if it doesn't exist, or updated
-	if((data_path.length() > 0 and not FileAccess.file_exists(data_path)) or save_resource):
-		ResourceSaver.save(level_data, data_path)
-
-	# Generate an empty asphalt state if nothing is provided either from res:// or user://
-	if not level_data.start_asphalt_state:
-		set_asphalt_to_empty()
-		level_data.start_asphalt_state = asphalt_state
-		ResourceSaver.save(level_data, data_path)
-
-	# Set node state based on level data
+## Set node state based on loaded level data
+func _initialize_state() -> void:
 	asphalt_state = level_data.start_asphalt_state
 	asphalt_physics_state = level_data.start_asphalt_state
 
@@ -381,6 +347,86 @@ func _initialize(data: RoadChunkData, data_path: String = "") -> void:
 	update_materials()
 	update_physics()
 
+## Loads the minified version of the roadchunk, level data is expected to be in packaged format!
+func _initialize_minified(data_path: String = "") -> void:
+	assert(data_path.length() > 0) # The base data is supposed to exist in res:// somewhere!
+	for img in LevelStructure.final_image_names:
+		if img == "start_asphalt_state":
+			level_data.start_asphalt_state = ImageTexture.create_from_image(Image.create_empty(64, 64, false, Image.FORMAT_RF))
+			continue # Handle asphalt state from user data explicitly
+		var image_path: String = LevelStructure.level_image_path(used_base_dir, img)
+		var mini_image_path: String = LevelStructure.level_mini_image_path(used_base_dir, img)
+		if FileAccess.file_exists(mini_image_path):
+			level_data.set(img, ImageTexture.create_from_image(Image.load_from_file(mini_image_path)))
+		elif FileAccess.file_exists(image_path):
+			level_data.set(img, ImageTexture.create_from_image(Image.load_from_file(image_path)))
+		else:
+			level_data.set(img, ImageTexture.create_from_image(Image.create_empty(64, 64, false, Image.FORMAT_RF)))
+
+	# Load ashpalt state: Try to load minified user state, try non-minified user state next
+	# fall back to start asphalt state in 'res://' if all else fails
+	var user_mini_asphalt_state_path: String = LevelStructure.user_asphalt_state_mini_tex_path(used_base_dir)
+	var user_asphalt_state_path: String = LevelStructure.user_asphalt_state_tex_path(used_base_dir)
+	var mini_asphalt_state_path: String = LevelStructure.asphalt_state_mini_tex_path(used_base_dir)
+	var asphalt_state_path: String = LevelStructure.asphalt_state_tex_path(used_base_dir)
+	if FileAccess.file_exists(user_mini_asphalt_state_path):
+		level_data.start_asphalt_state = ImageTexture.create_from_image(Image.load_from_file(user_mini_asphalt_state_path))
+	elif FileAccess.file_exists(user_asphalt_state_path):
+		level_data.start_asphalt_state = ImageTexture.create_from_image(Image.load_from_file(user_asphalt_state_path))
+	elif FileAccess.file_exists(mini_asphalt_state_path):
+		level_data.start_asphalt_state = ImageTexture.create_from_image(Image.load_from_file(mini_asphalt_state_path))
+	elif FileAccess.file_exists(asphalt_state_path):
+		level_data.start_asphalt_state = ImageTexture.create_from_image(Image.load_from_file(asphalt_state_path))
+	_initialize_state()
+
+@onready var used_base_dir: String = get_parent().scene_file_path.get_base_dir() + "/"
+func _initialize(data: RoadChunkData, data_path: String = "") -> void:
+	
+	if (data==null):
+		print("ERROR: road chunk got null data during init. ignoring.")
+		return
+
+	# Try to load minified images if setting is present
+	if is_minified and data_path.length() > 0:
+		_initialize_minified(data_path)
+		return
+
+	# Check if there's an asphalt state in user storage or a fallback in case data is not available
+	var save_resource: bool = false
+	# Check if there's an asphalt state in user storage or a fallback in case data is not available
+	if data_path.length() > 0: # The resource is supposed to exist in res:// somewhere!
+		var user_asphalt_state_path: String = LevelStructure.user_asphalt_state_tex_path(used_base_dir)
+		var fallback_asphalt_state_path: String = LevelStructure.asphalt_state_tex_path(used_base_dir)
+		var fallback_asphalt_target_path: String = LevelStructure.asphalt_target_state_tex_path(used_base_dir)
+
+		# Load user or fallback asphalt state image: always overwrite resource data with user state image when available!
+		if FileAccess.file_exists(user_asphalt_state_path):
+			level_data.start_asphalt_state = ImageTexture.create_from_image(Image.load_from_file(user_asphalt_state_path))
+		elif not data.start_asphalt_state and FileAccess.file_exists(fallback_asphalt_state_path):
+			level_data.start_asphalt_state = load(fallback_asphalt_state_path)
+			save_resource = true
+
+		# Load fallback asphalt target image
+		if not data.target_asphalt_state and FileAccess.file_exists(fallback_asphalt_target_path):
+			level_data.target_asphalt_state = load(fallback_asphalt_target_path)
+			save_resource = true
+
+	# Generate an empty asphalt state if nothing is provided either from res:// or user://
+	if not level_data.start_asphalt_state:
+		set_asphalt_to_empty()
+		level_data.start_asphalt_state = asphalt_state
+		save_resource = true
+
+	# Save the resource if it doesn't exist, or updated
+	if(
+		data_path.strip_edges().length() > 0
+		and not is_stub
+		and (not FileAccess.file_exists(data_path) or save_resource)
+	):
+		ResourceSaver.save(level_data, data_path)
+
+	_initialize_state()
+
 func initialize(data_path: String) -> void: 
 	level_data = ResourceLoader.load(data_path)
 	_initialize(level_data, data_path)
@@ -389,6 +435,9 @@ func initialize(data_path: String) -> void:
 func save_user_data(base_dir: String = used_base_dir) -> void:
 	assert(0 < base_dir.length())
 	asphalt_state.get_image().save_png(LevelStructure.user_asphalt_state_tex_path(base_dir))
+	var current_asphalt_state: Image = asphalt_state.get_image()
+	current_asphalt_state.resize(64,64, Image.INTERPOLATE_LANCZOS)
+	current_asphalt_state.save_png(LevelStructure.user_asphalt_state_mini_tex_path(base_dir))
 
 func reset_user_data(base_dir: String = used_base_dir) -> void:
 	var user_data_path: String = LevelStructure.user_asphalt_state_tex_path(base_dir)
@@ -410,12 +459,7 @@ func _on_asphalt_bomb_explode(explosion_pos: Vector3, explode_radius: float, amo
 #endregion 
 
 func _ready() -> void:
-	_initialize(level_data, LevelStructure.resource_path_in_dir(used_base_dir))
-	asphalt_state = level_data.start_asphalt_state
-	asphalt_physics_state = level_data.start_asphalt_state
-	asphalt_attributes = level_data.asphalt_attributes.get_image()
-	asphalt_attributes.decompress()
-	update_materials()
+	if not is_stub: _initialize(level_data, LevelStructure.resource_path_in_dir(used_base_dir))
 
 func _process(delta: float) -> void:
 	time_since_last_update += delta

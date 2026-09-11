@@ -8,11 +8,14 @@ static func complies_with_level_folder_name(dir_name: String) -> bool:
 	var level_folder_name_regex = RegEx.create_from_string(LEVEL_FOLDER_NAME_REGEX)
 	return null != level_folder_name_regex.search(dir_name)
 
+static func base_dir_of(level_name: String) -> String:
+	return LEVELS_FOLDER + level_name + "/"
+
 static func scene_path_in_dir(dir_path: String) -> String:
-	return dir_path + "/level.scn"
+	return dir_path + "level.scn"
 
 static func resource_path_in_dir(dir_path: String) -> String:
-	return dir_path + "/level_data.res"
+	return dir_path + "level_data.res"
 
 static func scene_path_in_levels(level_name: String) -> String:
 	return  LEVELS_FOLDER + level_name + "/level.scn"
@@ -20,15 +23,43 @@ static func scene_path_in_levels(level_name: String) -> String:
 static func resource_path_in_levels(level_name: String) -> String:
 	return LEVELS_FOLDER + level_name + "/level_data.res"
 
-static func asphalt_state_tex_path(base_dir: String)-> String:
-	return base_dir + "/asphalt_state.png"
+static func level_position_from_dir_name(dir_name: String) -> Vector2:
+	var regex_match: RegExMatch = RegEx.create_from_string(LevelStructure.LEVEL_FOLDER_NAME_REGEX).search(dir_name)
+	if regex_match.get_group_count() < 2: push_error("level folder name " + dir_name + " is not supported!")
+	return Vector2(float(regex_match.strings[1]), float(regex_match.strings[2]))
 
-static func asphalt_target_state_tex_path(base_dir: String)-> String:
-	return base_dir + "/target_asphalt_state.png"
+#region Level data images
+## Images for level data in raw mode
+## RAW_MODE: data of the level are in separate heightmaps
+const raw_image_names: Array[String] = [
+	"raw_terrain_heightmap",
+	"raw_terrain_crackmap",
+	"terrain_normalmap",
+	"terrain_albedo_image",
+	"raw_asphalt_presence",
+	"raw_asphalt_editability",
+	"raw_water_presence",
+	"start_asphalt_state",
+	"target_asphalt_state",
+]
+
+## Images for level data in packaged mode
+## PACKAGED_MODE: data of the level is collected in a well defined set of images
+## --> names of the images are also the fields within @RoadChunkData
+const final_image_names: Array[String] = [
+	"terrain_heightmap",
+	"terrain_normalmap",
+	"terrain_albedo_image",
+	"asphalt_attributes",
+	"start_asphalt_state",
+	"target_asphalt_state",
+]
 
 static func _user_path_prefix(base_dir: String, user_token_length: int) -> String:
-	var path: String = (
-		base_dir
+	var path: String = base_dir
+	if path.ends_with("/"): path = path.substr(0, path.length() - 1)
+	path = (
+		path
 		.replace("res://", "user:##")
 		.replace("/", "_")
 		.replace("##", "//")
@@ -39,12 +70,34 @@ static func _user_path_prefix(base_dir: String, user_token_length: int) -> Strin
 
 ## Returns the base directory for a particular level scene.
 static func get_base_dir_for_scene(scene: Node) -> String:
-	print(scene.scene_file_path.get_base_dir())
 	return scene.scene_file_path.get_base_dir()
+
+#TechDebt: instead of supplying base dir every function call, this could be a separate object
+## the path of the image which contains information for the level
+static func level_image_path(base_dir: String, image_name: String) -> String:
+	return base_dir + image_name + ".png"
+
+## the path of the minified image which contains information for the level(resolution 64x64)
+static func level_mini_image_path(base_dir: String, image_name: String) -> String:
+	return base_dir + image_name + "_minified.png"
+
+static func asphalt_state_mini_tex_path(base_dir: String)-> String:
+	return base_dir + "asphalt_state_minified.png"
+
+static func asphalt_state_tex_path(base_dir: String)-> String:
+	return base_dir + "asphalt_state.png"
+
+static func asphalt_target_state_tex_path(base_dir: String)-> String:
+	return base_dir + "target_asphalt_state.png"
 
 ## Converts the res:// base dir of the level into a single filename for the asphalt state
 static func user_asphalt_state_tex_path(base_dir: String) -> String:
 	return _user_path_prefix(base_dir, 18) + "_asphalt_state.png"
+
+## Converts the res:// base dir of the level into a single filename for the asphalt state
+static func user_asphalt_state_mini_tex_path(base_dir: String) -> String:
+	return _user_path_prefix(base_dir, 27) + "_asphalt_state_minified.png"
+#endregion
 
 #region Level Attributes
 """
