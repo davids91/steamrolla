@@ -33,11 +33,13 @@ Christer:
 - Asphalt paver model
 - Seamless gravel and dirt textures(albedo and normal)
 - Open/Closable Dumpster model
+- Car model
+- Office Building with stairs and foundation
+- Intersection level (and polish)
 - Road Cunstruction Sign
 - Ratrick Cameo appearances
 - Compactor sound
 - Maze level
-- Intersection level
 
 Mo Shah:
 ===
@@ -59,16 +61,15 @@ Reuben:
 David:
 ===
 - Asphalt, Dirt and Gravel Dynamic Surface system(with shiny asphalt, editor, save system)
-- Road chunk level structure (heightmap, attributes, water and height properties, start and target states)
+- Road chunk level structure (heightmap, attributes, road crack system, water and height properties, start and target states)
 - Water system and display
-- Runway model and behavior
-- Runway game loop experiment
-- Drawn Trajectory System
+- Runway model, behavior and game loop system
+- Level Objective and attribute system System
 - Level Editor(level data structure, template generation, packing data in compact form)
-- Automated population of Level Selection Scene
+- Level select scene with transition animation(populated automatically from available levels)
 - Roadwork tool control system (generic control with mouse drag, keyboard or drawn trajectory)
 - Asphalt Paver behavior
-- Road cracks system
+- Drawn Trajectory System
 - Objective Panel UI
 - Tool seelction UI panel
 - Color palette
