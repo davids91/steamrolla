@@ -19,14 +19,14 @@ func _unhandled_input(event: InputEvent) -> void:
 
 @onready var base_dir: String = LevelStructure.get_base_dir_for_scene(self)
 func _ready() -> void:
-	$HUD.set_objectives(level_attributes.values())
+	$HUD.set_objectives(level_attributes, base_dir)
 	LevelStructure.level_attribute_list_overwrite(base_dir, level_attributes)
 	if LevelStructure.level_attribute_present(base_dir, "bomb_set_off"):
 		%AsphaltBomb.queue_free()
 		$HUD.objective_complete(0)
 
 func _on_asphalt_bomb_asphalt_bomb_exploded(_blast_pos: Vector3, _explode_radius: float, _amount_to_add_asphalt: float) -> void:
-	LevelStructure.level_attribute_set(base_dir, "bomb_set_off")
+	LevelStructure.level_attribute_store_completed(base_dir, "bomb_set_off")
 	$HUD.objective_complete(0)
 
 @export var level_scan_duration_sec: float = 0.7

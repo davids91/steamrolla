@@ -6,6 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://celpnphf3sy1p" path="res://source_assets/models/compactor_skin.png" id="4_ukknc"]
 [ext_resource type="AudioStream" uid="uid://8wf5r8kj4wv8" path="res://audio/compactor.wav" id="5_5lgew"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_5lgew"]
+size = Vector3(1.0891113, 2.7536497, 2.5981522)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rfa05"]
 resource_name = "Material"
 transparency = 4
@@ -276,6 +279,12 @@ script = ExtResource("1_1b380")
 vibration_extent = 0.11
 tool_enum = 3
 tool_radius = 0.075
+
+[node name="BodyRepresentation" type="Area3D" parent="." unique_id=1789476627 groups=["BirdReactable", "BombActivator"]]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BodyRepresentation" unique_id=1162582284]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.029174805, 1.3768725, -0.42316818)
+shape = SubResource("BoxShape3D_5lgew")
 
 [node name="Bloke" type="Node3D" parent="." unique_id=1862325032]
 unique_name_in_owner = true

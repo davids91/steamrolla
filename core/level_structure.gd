@@ -70,7 +70,7 @@ static func _user_path_prefix(base_dir: String, user_token_length: int) -> Strin
 
 ## Returns the base directory for a particular level scene.
 static func get_base_dir_for_scene(scene: Node) -> String:
-	return scene.scene_file_path.get_base_dir()
+	return scene.scene_file_path.get_base_dir() + "/"
 
 #TechDebt: instead of supplying base dir every function call, this could be a separate object
 ## the path of the image which contains information for the level
@@ -128,8 +128,12 @@ static func level_attribute_path(base_dir: String, attribute_name: String) -> St
 static func level_attribute_present(base_dir: String, attribute_name: String) -> bool:
 	return FileAccess.file_exists(level_attribute_path(base_dir, attribute_name))
 
+## Presence of the given attribute within the given levels base directory
+static func level_attribute_under_path_present(attribute_path: String) -> bool:
+	return FileAccess.file_exists(attribute_path)
+
 ## Set the given attribute within the given levels base directory
-static func level_attribute_set(base_dir: String, attribute_name: String) -> void:
+static func level_attribute_store_completed(base_dir: String, attribute_name: String) -> void:
 	var file: FileAccess = FileAccess.open(level_attribute_path(base_dir, attribute_name), FileAccess.WRITE)
 	file.store_var(true)
 

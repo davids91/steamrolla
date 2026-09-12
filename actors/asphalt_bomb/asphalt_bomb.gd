@@ -13,8 +13,6 @@ const ACTIVATE_GROUP = "BombActivator"
 
 signal asphalt_bomb_exploded(blast_pos: Vector3, explode_radius: float, amount_to_add_asphalt: float)
 
-
-
 func _on_area_3d_area_entered(body: Node3D) -> void:
 	if body.is_in_group(ACTIVATE_GROUP):
 		await get_tree().create_timer(to_explode_time).timeout

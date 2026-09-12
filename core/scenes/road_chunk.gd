@@ -453,7 +453,6 @@ func reset_user_data(base_dir: String = used_base_dir) -> void:
 	var user_data_path: String = LevelStructure.user_asphalt_state_tex_path(base_dir)
 	if  FileAccess.file_exists(user_data_path): DirAccess.remove_absolute(user_data_path)
 	initialize(LevelStructure.resource_path_in_dir(base_dir))
-	update_materials()
 
 func _on_asphalt_bomb_explode(explosion_pos: Vector3, explode_radius: float, amount_of_asphalt_to_add: float):
 	push_config()

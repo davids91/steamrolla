@@ -8,8 +8,8 @@ static var MAIN_COLOR_GREEN: Color = Color.from_string("#36a947", Color.WEB_GREE
 const LEVEL_SELECT_SCENE_TEMPLATE: PackedScene = preload("res://core/scenes/level_select.tscn")
 @onready var level_container: Node = get_node("/root/Main/LevelContainer")
 
-func set_objectives(objective_texts: Array[String]) -> void:
-	$ObjectivePanel.set_objectives(objective_texts)
+func set_objectives(objectives: Dictionary[String, String], base_dir: String) -> void:
+	$ObjectivePanel.set_objectives(objectives, base_dir)
 
 func objective_complete(objective_index: int) -> void:
 	$ObjectivePanel.set_completed(objective_index)
