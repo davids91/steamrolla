@@ -38,6 +38,9 @@ fill_to = Vector2(0.94017094, 0.43589744)
 [node name="LevelSelect" type="Node3D" unique_id=2110132494]
 script = ExtResource("1_esh0k")
 road_chunk_spacing = 100.0
+coming_from = null
+distance_travel_towards_selected = 0.0
+transition_time_sec = null
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=308553165]
 environment = SubResource("Environment_lnrnj")
@@ -55,7 +58,7 @@ transform = Transform3D(-0.033853333, 0.6682737, -0.74314487, -0.037597883, 0.74
 visible = false
 
 [node name="PlayerView" parent="." unique_id=1504134869 node_paths=PackedStringArray("cursor") instance=ExtResource("2_hm68f")]
-transform = Transform3D(-0.03385333, 0.6682737, -0.74314487, -0.03759788, 0.7421931, 0.6691307, 0.99871933, 0.05059297, -3.2483896e-08, -104.202, 167.417, 125.509)
+transform = Transform3D(-0.033853333, 0.66827375, -0.74314475, -0.03759788, 0.74219304, 0.6691307, 0.99871933, 0.05059297, -3.248389e-08, -104.202, 167.417, 125.509)
 visible = true
 cursor = NodePath("../PlayerCursor")
 make_current_on_start = true

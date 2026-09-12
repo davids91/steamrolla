@@ -3,7 +3,11 @@ extends OrbitCamera3D
 
 @export var cursor: Node3D
 @export var make_current_on_start: bool = false
+
 @onready var camera: Camera3D = $Pitch/Camera3D
+@onready var camera_transform: Transform3D:
+	get(): return camera.global_transform
+	set(v): camera.global_transform = v
 
 func lock_view(yesno: bool = true) -> void:
 	_view_locked = yesno
@@ -11,13 +15,13 @@ func lock_view(yesno: bool = true) -> void:
 func _ready() -> void:
 	if make_current_on_start: make_current()
 
-var _view_locked: bool = false
-func _rotate_camera_by(offset: Vector2) -> void:
-	if not _view_locked: super(offset)
-
 func move_towards_object_by(distance: float, o: Node3D = looking_at_chunk) -> void:
 	if not o: return
 	global_position += (o.global_position - global_position).normalized() * distance
+
+var _view_locked: bool = false
+func _rotate_camera_by(offset: Vector2) -> void:
+	if not _view_locked: super(offset)
 
 var looking_at_chunk: RoadChunk
 func _physics_process(_delta: float) -> void:
@@ -36,6 +40,6 @@ func _physics_process(_delta: float) -> void:
 		# this check avoids a godot warning message about colinear vectors
 		if cursor.global_position.direction_to(raycast_result.position + raycast_result.normal).is_equal_approx(Vector3.UP):
 			cursor.look_at(cursor.position + Vector3.UP)
-		else:	
+		else:
 			cursor.look_at(raycast_result.position + raycast_result.normal)
 			

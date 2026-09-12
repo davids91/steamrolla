@@ -1,9 +1,12 @@
 @tool
+class_name LevelSelectScene
 extends Node3D
 
-@onready var level_container: Node = get_node("/root/Main/LevelContainer")
-
 @export var road_chunk_spacing: float = 50.
+@export var coming_from: String = "" # If set, this makes the camera start from here and zoom into the start camera position
+@export_range(0., 1.) var transition_zoom_amount: float = 0.95
+@onready var start_camera_transform: Transform3D = $PlayerView.camera_transform
+@onready var level_container: Node = get_node("/root/Main/LevelContainer")
 
 func _position_from_dir_name(dir_name: String) -> Vector3:
 	var level_coordinate: Vector2 = LevelStructure.level_position_from_dir_name(dir_name)
@@ -26,29 +29,41 @@ func _load_level_data() -> void:
 		if FileAccess.file_exists(LevelStructure.scene_path_in_levels(d)):
 			scenes[road_chunk] = LevelStructure.scene_path_in_levels(d)
 
+		# Set position of player camera
+		if d == coming_from:
+			$PlayerView.camera_transform.origin = lerp($PlayerView.camera_transform.origin, road_chunk.global_position, transition_zoom_amount)
+			$PlayerView.look_at(road_chunk.global_position)
+			%ScreenBlocker.modulate = Color.WHITE
+			create_tween().tween_property($PlayerView, "camera_transform", start_camera_transform, transition_time_sec)
+			create_tween().tween_property(%ScreenBlocker, "modulate", Color.TRANSPARENT, transition_time_sec)
+
 var selected_chunk: RoadChunk = null
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
-		if event.is_pressed():
-			if $PlayerView.looking_at_chunk:
-				if scenes.has($PlayerView.looking_at_chunk): $Highlight.modulate = Color.WHITE
-				else: $Highlight.modulate = Color.RED
-				$Highlight.visible = true
-				$Highlight.global_position = $PlayerView.looking_at_chunk.global_position
-				if selected_chunk == $PlayerView.looking_at_chunk and scenes.has(selected_chunk):
-					time_left_to_travel = time_to_travel_towards_selected_sec
-					selected_chunk = $PlayerView.looking_at_chunk
-					create_tween().tween_property(%ScreenBlocker, "modulate", Color.WHITE, time_to_travel_towards_selected_sec)
-					ResourceLoader.load_threaded_request(scenes[selected_chunk])
-			selected_chunk = $PlayerView.looking_at_chunk
-		else:
+	if event is InputEventMouseButton or event is InputEventMouseMotion:
+		if $PlayerView.looking_at_chunk:
+			if scenes.has($PlayerView.looking_at_chunk): $Highlight.modulate = Color.WHITE
+			else: $Highlight.modulate = Color.RED
 			$Highlight.visible = true
+			$Highlight.global_position = $PlayerView.looking_at_chunk.global_position
+			if(
+				event is InputEventMouseButton and event.is_pressed()
+				and selected_chunk == $PlayerView.looking_at_chunk and scenes.has(selected_chunk)
+			):
+				time_left_to_travel = transition_time_sec
+				selected_chunk = $PlayerView.looking_at_chunk
+				var target_transform : Transform3D = $PlayerView.camera_transform
+				target_transform.origin = lerp(target_transform.origin, selected_chunk.global_position, transition_zoom_amount)
+				target_transform.looking_at(target_transform.origin)
+				create_tween().tween_property($PlayerView, "camera_transform", target_transform, transition_time_sec)
+				create_tween().tween_property(%ScreenBlocker, "modulate", Color.WHITE, transition_time_sec)
+				ResourceLoader.load_threaded_request(scenes[selected_chunk])
+		selected_chunk = $PlayerView.looking_at_chunk
 
 func _ready() -> void:
 	_load_level_data()
 
 @export var distance_travel_towards_selected: float = 100.
-@export var time_to_travel_towards_selected_sec: float = 1.
+@export var transition_time_sec: float = 1.
 var time_left_to_travel: float = 0.
 func _process(delta: float) -> void:
 	if 0. < time_left_to_travel and selected_chunk != null:
