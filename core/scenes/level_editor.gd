@@ -374,15 +374,6 @@ var crazify_tween: Tween
 	if not %RoadChunk: return
 	%RoadChunk.initiate_scan(level_scan_range)
 
-@export var road_paint_animation_curve: Curve
-func _have_road_paint_appear(animation_length: float = 0.7) -> void:
-	create_tween().tween_method(
-		func(w: float):
-			$RoadPaint.mesh.size.x = road_paint_animation_curve.sample(w) * 20.
-			$RoadPaint.mesh.size.y = road_paint_animation_curve.sample(w) * 0.5,
-		0., 1., animation_length
-	).set_ease(Tween.EASE_IN_OUT)
-
 func _snap_asphalt_to_reference() -> void:
 	var snap: Tween = create_tween() # snap_to_reference setter includes logic for shader updates
 	snap.tween_method(func(w: float): reference_snap_strength = ease(w, snap_easing), 0., max_snap_value, snap_time_sec)
@@ -401,7 +392,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				winning_animation.tween_method(func(w: float): %RoadChunk.set_highlight(sin(w)), 0., PI, 1.3)
 				winning_animation.tween_method(func(w: float): %RoadChunk.set_highlight(sin(w)), 0., PI, 0.15)
 				winning_animation.tween_method(func(w: float): %RoadChunk.set_highlight(sin(w)), 0., PI, 0.15)
-				winning_animation.tween_callback(_have_road_paint_appear)
+				#winning_animation.tween_callback(_have_road_paint_appear)
 		)
 	elif event.is_action_pressed("ui_select"):
 		won_game = false

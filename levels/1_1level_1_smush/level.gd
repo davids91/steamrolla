@@ -7,9 +7,15 @@ func erase_attribute_data() -> void:
 		if LevelStructure.level_attribute_present(base_dir, attr):
 			LevelStructure.level_attribute_reset(base_dir, attr)
 
+@export var road_paint_display_pause_sec: float = 0.01
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("debug"):
 		erase_attribute_data()
+	elif event.is_action_pressed("ui_select"):
+		create_tween().tween_callback(func():
+			while ($RoadPaint.show_random()):
+				await get_tree().create_timer(road_paint_display_pause_sec).timeout
+		)
 
 @onready var base_dir: String = LevelStructure.get_base_dir_for_scene(self)
 func _ready() -> void:
