@@ -7,9 +7,9 @@ func set_color(color: Color) -> void:
 func set_angle_from_prev_pos(prev_pos: Vector3) -> void:
 	look_at(global_position + (global_position - prev_pos))
 
-@export var drag_response: float = 0.1
+@export_range(0. , 1.) var dynamism: float = 0.1
 func set_transform_based_on(target_position: Vector3) -> void:
-	global_position = lerp(global_position, target_position, drag_response)
+	global_position = lerp(global_position, target_position, dynamism)
 	set_angle_from_prev_pos(previous_position)
 
 func start_working() -> void:
@@ -32,4 +32,4 @@ func _physics_process(delta: float) -> void:
 	var raycast_result: Dictionary = space_state.intersect_ray(PhysicsRayQueryParameters3D.create(
 		global_position + Vector3(0.0, 100., 0.0), global_position - Vector3(0.0, 100., 0.0)
 	))
-	if "position" in raycast_result: global_position.y = raycast_result.position.y
+	if "position" in raycast_result: global_position.y = lerp(global_position.y, raycast_result.position.y, dynamism)
