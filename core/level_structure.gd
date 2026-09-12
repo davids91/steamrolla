@@ -85,7 +85,7 @@ static func asphalt_state_mini_tex_path(base_dir: String)-> String:
 	return base_dir + "asphalt_state_minified.png"
 
 static func asphalt_state_tex_path(base_dir: String)-> String:
-	return base_dir + "asphalt_state.png"
+	return base_dir + "start_asphalt_state.png"
 
 static func asphalt_target_state_tex_path(base_dir: String)-> String:
 	return base_dir + "target_asphalt_state.png"

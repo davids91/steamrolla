@@ -49,7 +49,10 @@ func _get_map_region_for_coordinate() -> Rect2i:
 	set(pos):
 		level_coordinate = pos
 		cached_level_base_dir = "N/A"
-		if _is_level_data_in_packaged_format() or _is_level_data_in_raw_format(): _load_level_data()
+		if(
+			Engine.is_editor_hint()
+			and (_is_level_data_in_packaged_format() or _is_level_data_in_raw_format())
+		): _load_level_data()
 		notify_property_list_changed()
 
 ## The name of the folder under the given coordinate, no zeroes as padding, just the raw numbers
@@ -220,13 +223,13 @@ func _change_data_mode() -> void:
 
 @export_tool_button("Load/Refresh Level Data", "Load") var load_level_data: Callable = _load_level_data
 func _load_level_data() -> void:
-	if not Engine.is_editor_hint(): return
 	var resource_updated: bool = false
 	if not _level_folder_exists(): DirAccess.make_dir_absolute(_level_base_dir())
 	if _level_resource_exists(): %RoadChunk.level_data = load(_level_resource_path())
 	else:
 		%RoadChunk.level_data = RoadChunkData.new()
 		resource_updated = true
+	%RoadChunk.used_base_dir = _level_base_dir()
 	if _is_level_data_in_packaged_format():
 		for img in LevelStructure.final_image_names:
 			%RoadChunk.level_data.set(img, load(_level_image_path(img)))
@@ -249,7 +252,7 @@ func _load_level_data() -> void:
 		%RoadChunk.level_data.set(img, load(_level_image_path(img)))
 		resource_updated = true
 
-	if resource_updated:
+	if resource_updated and Engine.is_editor_hint():
 		ResourceSaver.save(%RoadChunk.level_data, _level_resource_path())
 		EditorInterface.get_resource_filesystem().scan() #TechDebt: This makes itch export crash
 		get_tree().create_timer(1.).timeout.connect(func():%RoadChunk.initialize(_level_resource_path()))
@@ -290,6 +293,7 @@ func _save_level_data():
 		height_unit = v
 		if get_node_or_null("%RoadChunk"):
 			%RoadChunk.height_unit = height_unit
+			%RoadChunk.level_data.height_unit = height_unit
 			%RoadChunk.update_materials()
 
 @export_tool_button("Update Materials", "Reload") var call_update_materials: Callable = func():

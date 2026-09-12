@@ -56,7 +56,6 @@ func _process(delta: float) -> void:
 		time_left_to_travel -= delta
 		if 0. >= time_left_to_travel:
 			for c in level_container.get_children(): c.queue_free()
-			if ResourceLoader.load_threaded_get(scenes[selected_chunk]) == null:
-				print("ERROR - level select got a null selected scene. ignoring.")
-			else:
-				level_container.add_child(ResourceLoader.load_threaded_get(scenes[selected_chunk]).instantiate())
+			var packed_scene: PackedScene = ResourceLoader.load_threaded_get(scenes[selected_chunk])
+			if not packed_scene: push_error("level select got a null selected scene. ignoring.")
+			else: level_container.add_child(packed_scene.instantiate())

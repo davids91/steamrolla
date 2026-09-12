@@ -11,7 +11,9 @@ var asphalt_physics_state: Texture ## r: level height(terrain + asphalt), g: asp
 @export_category("Level Data")
 @export var level_data: RoadChunkData
 @export var is_minified: bool = false ## When true loading the data makes an attempt to read in smaller textures
-@export var is_stub: bool = false ## Stub roadChuinks are present e.g. within the level selection screen or the scenery museum 
+## Denotes if the road chunk is a stub. A stub RoadChunk is not part of a level, its parent may not be a playable level
+## Stub RoadChunks are present e.g. within the level selection screen or the scenery museum
+@export var is_stub: bool = false
 @export_tool_button("Load data", "Reload") var load_data: Callable = func(): _initialize(level_data)
 
 @export_category("Physics")
@@ -328,7 +330,10 @@ func update_materials() -> void:
 ## Set node state based on loaded level data
 func _initialize_state() -> void:
 	asphalt_state = level_data.start_asphalt_state
-	asphalt_physics_state = level_data.start_asphalt_state
+	var start_phyisics_state: Image = level_data.start_asphalt_state.get_image()
+	start_phyisics_state.decompress()
+	start_phyisics_state.convert(Image.FORMAT_RF)
+	asphalt_physics_state = ImageTexture.create_from_image(start_phyisics_state)
 
 	if level_data.asphalt_attributes:
 		asphalt_attributes = level_data.asphalt_attributes.get_image()
@@ -393,6 +398,11 @@ func _initialize(data: RoadChunkData, data_path: String = "") -> void:
 
 	# Check if there's an asphalt state in user storage or a fallback in case data is not available
 	var save_resource: bool = false
+
+	for img in LevelStructure.final_image_names:
+		if img == "start_asphalt_state" and data_path.length() > 0: continue
+		level_data.set(img, load(LevelStructure.level_image_path(used_base_dir, img)))
+
 	# Check if there's an asphalt state in user storage or a fallback in case data is not available
 	if data_path.length() > 0: # The resource is supposed to exist in res:// somewhere!
 		var user_asphalt_state_path: String = LevelStructure.user_asphalt_state_tex_path(used_base_dir)
@@ -422,12 +432,11 @@ func _initialize(data: RoadChunkData, data_path: String = "") -> void:
 		data_path.strip_edges().length() > 0
 		and not is_stub
 		and (not FileAccess.file_exists(data_path) or save_resource)
-	):
-		ResourceSaver.save(level_data, data_path)
+	): ResourceSaver.save(level_data, data_path)
 
 	_initialize_state()
 
-func initialize(data_path: String) -> void: 
+func initialize(data_path: String) -> void:
 	level_data = ResourceLoader.load(data_path)
 	_initialize(level_data, data_path)
 
@@ -456,10 +465,10 @@ func _on_asphalt_bomb_explode(explosion_pos: Vector3, explode_radius: float, amo
 		await get_tree().process_frame
 		pop_config()
 	).call_deferred()
-#endregion 
+#endregionp
 
 func _ready() -> void:
-	if not is_stub: _initialize(level_data, LevelStructure.resource_path_in_dir(used_base_dir))
+	if not is_stub: initialize(LevelStructure.resource_path_in_dir(used_base_dir))
 
 func _process(delta: float) -> void:
 	time_since_last_update += delta
