@@ -44,6 +44,7 @@ var DynamicSurfaceShyniness: Array[float] = [0.05, 0., 0.]
 			_:
 				asphalt_texture = load("res://textures/asphalt_tile_seamless.png")
 				asphalt_normals = load("res://textures/asphalt_tile_seamless_normal.png")
+		if not is_stub: update_materials()
 
 @export var map_resolution: Vector2i = Vector2(512,512)
 @export var asphalt_shyniness: float = 0.
@@ -386,7 +387,7 @@ func _initialize_minified(data_path: String = "") -> void:
 
 @onready var used_base_dir: String = get_parent().scene_file_path.get_base_dir() + "/"
 func _initialize(data: RoadChunkData, data_path: String = "") -> void:
-	
+
 	if (data==null):
 		print("ERROR: road chunk got null data during init. ignoring.")
 		return
@@ -399,12 +400,12 @@ func _initialize(data: RoadChunkData, data_path: String = "") -> void:
 	# Check if there's an asphalt state in user storage or a fallback in case data is not available
 	var save_resource: bool = false
 
-	for img in LevelStructure.final_image_names:
-		if img == "start_asphalt_state" and data_path.length() > 0: continue
-		level_data.set(img, load(LevelStructure.level_image_path(used_base_dir, img)))
-
 	# Check if there's an asphalt state in user storage or a fallback in case data is not available
 	if data_path.length() > 0: # The resource is supposed to exist in res:// somewhere!
+		for img in LevelStructure.final_image_names:
+			if img == "start_asphalt_state" and data_path.length() > 0: continue
+			level_data.set(img, load(LevelStructure.level_image_path(used_base_dir, img)))
+
 		var user_asphalt_state_path: String = LevelStructure.user_asphalt_state_tex_path(used_base_dir)
 		var fallback_asphalt_state_path: String = LevelStructure.asphalt_state_tex_path(used_base_dir)
 		var fallback_asphalt_target_path: String = LevelStructure.asphalt_target_state_tex_path(used_base_dir)
@@ -465,7 +466,7 @@ func _on_asphalt_bomb_explode(explosion_pos: Vector3, explode_radius: float, amo
 		await get_tree().process_frame
 		pop_config()
 	).call_deferred()
-#endregionp
+#endregion
 
 func _ready() -> void:
 	if not is_stub: initialize(LevelStructure.resource_path_in_dir(used_base_dir))
