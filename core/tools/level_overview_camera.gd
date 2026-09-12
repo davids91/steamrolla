@@ -7,6 +7,7 @@ class_name OrbitCamera3D extends Node3D
 @onready var _camera_3d: Camera3D = %Camera3D
 
 func make_current() -> void: _camera_3d.make_current()
+func get_current() -> bool: return _camera_3d.current
 func get_view_origin() -> Vector3: return $%Camera3D.global_position
 
 func _unhandled_input(event: InputEvent) -> void:

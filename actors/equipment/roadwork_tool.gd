@@ -18,7 +18,7 @@ enum ControlMethods{
 @export var tool_enum: ToolPanel.Tools = ToolPanel.Tools.UNKNOWN
 @export var normalized_size: Vector2 = Vector2(0.1, 0.1) ## The size of the tool active part within the update shaders
 @export_range(0., TAU) var tool_angle: float = 0. ## The persistent angle offset of the tool active part within the update shaders
-@export_range(-1., 1.) var tool_strength: float = 0.5 ## The strength of the tool active part within the update shaders
+@export_range(-10., 10.) var tool_strength: float = 0.5 ## The strength of the tool active part within the update shaders
 @export_range(0., 1.) var tool_radius: float = 0.1 ## May not always be used
 @export_range(0., 1.) var tool_responsiveness: float = 0.9 ## How sharp the tool updates the level
 @export var controlled_by: ControlMethods = ControlMethods.DRAGGED

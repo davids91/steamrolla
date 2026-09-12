@@ -42,6 +42,7 @@ func _on_asphalt_detector_body_exited(body: Node3D) -> void:
 var moving_transparency_modifier: float = 0.
 func _process(delta: float) -> void:
 	super(delta)
+	if not $OrbitCamera.get_current(): return
 	var movement_direction: Vector3 = (basis.z * -movement_intent.y).normalized()
 	var camera_direction: Vector3 = ($OrbitCamera.get_view_origin() - global_position)
 	if 0. > movement_direction.dot(camera_direction): moving_transparency_modifier = -1.
