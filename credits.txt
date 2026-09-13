@@ -33,7 +33,7 @@ Christer:
 - Asphalt paver model
 - Seamless gravel and dirt textures(albedo and normal)
 - Open/Closable Dumpster model
-- Car model
+- Car model with crushed animation and particle effects
 - Office Building with stairs and foundation
 - Intersection level (and polish)
 - Road Cunstruction Sign
@@ -47,8 +47,10 @@ Mo Shah:
 
 Juan Luiz R:
 ===
-- Cityscape concept art
+- Concept art overview map structure
+- Cityscape concept art(and rework from scratch)
 - Countryside Gravel Roads concept art
+- Mountain range concept art ( WIP )
 
 Roei:
 ===
@@ -61,17 +63,20 @@ Reuben:
 David:
 ===
 - Asphalt, Dirt and Gravel Dynamic Surface system(with shiny asphalt, editor, save system)
-- Road chunk level structure (heightmap, attributes, road crack system, water and height properties, start and target states)
+- Road chunk level structure with LOD(heightmap, attributes, road crack system, water and height properties, start and target states)
 - Water system and display
 - Runway model, behavior and game loop system
-- Level Objective and attribute system System
+- Level Objective and attribute system System with automated completion check
 - Level Editor(level data structure, template generation, packing data in compact form)
-- Level select scene with transition animation(populated automatically from available levels)
+- Level select scene with transition animations(populated automatically from available levels)
 - Roadwork tool control system (generic control with mouse drag, keyboard or drawn trajectory)
-- Asphalt Paver behavior
+- Asphalt Paver behavior and sounds
+- Road paint animation system
 - Drawn Trajectory System
+- Scenery museum with automated camera walkthrough
 - Objective Panel UI
 - Tool seelction UI panel
+- road paint in intersection level
 - Color palette
 - Sky texture ( cloudy sky )
 - User data save and load
@@ -81,3 +86,4 @@ David:
 - Laser tool sound
 - minor scene, code and resource fixes
 - adjustments to inner systems(orbit camera usage with roller, using gravel and dirt textures, )
+- minor changes in intersection level
