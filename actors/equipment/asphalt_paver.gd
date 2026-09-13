@@ -14,7 +14,12 @@ func set_transform_based_on(target_position: Vector3) -> void:
 
 func start_working() -> void:
 	if controlled_by == RoadworkTool.ControlMethods.PILOTED: $OrbitCamera.make_current()
+	$ActiveSound.play()
 	set_color(default_color)
+	super()
+
+func stop_working() -> void:
+	$ActiveSound.stop()
 	super()
 #endregion
 
@@ -24,7 +29,6 @@ func _on_body_representation_body_entered(body: Node3D) -> void:
 
 func _on_body_representation_body_exited(body: Node3D) -> void:
 	if body is RoadChunkBody: ground_entered = false
-
 
 func _physics_process(delta: float) -> void:
 	super(delta)

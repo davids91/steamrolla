@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://cglj5nsrr7ntb" path="res://models/asphalt-paver_0.png" id="1_0d3me"]
 [ext_resource type="Script" uid="uid://d1tbgsojf2nr5" path="res://actors/equipment/asphalt_paver.gd" id="1_pogr6"]
 [ext_resource type="PackedScene" uid="uid://bb24gus88qx5r" path="res://core/tools/orbit_camera_3d.tscn" id="2_tthve"]
+[ext_resource type="AudioStream" uid="uid://d1n0nybaatu7w" path="res://audio/paver.wav" id="4_ww7qr"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_srf32"]
 resource_name = "palette"
@@ -50,6 +51,10 @@ shadow_mesh = SubResource("ArrayMesh_v4nxo")
 [sub_resource type="BoxShape3D" id="BoxShape3D_pogr6"]
 size = Vector3(3.6660156, 3.2068634, 6.483719)
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_8jg5c"]
+streams_count = 1
+stream_0/stream = ExtResource("4_ww7qr")
+
 [node name="AsphaltPaver" type="Node3D" unique_id=655459454]
 script = ExtResource("1_pogr6")
 tool_enum = 1
@@ -70,6 +75,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.34567142, 0.43688107)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5928879, -1.9426804)
 shape = SubResource("BoxShape3D_pogr6")
 debug_color = Color(0, 0.6885001, 0.81, 0.9372549)
+
+[node name="ActiveSound" type="AudioStreamPlayer3D" parent="." unique_id=1532210739]
+stream = SubResource("AudioStreamRandomizer_8jg5c")
+volume_db = -3.0
 
 [connection signal="body_entered" from="BodyRepresentation" to="." method="_on_body_representation_body_entered"]
 [connection signal="body_exited" from="BodyRepresentation" to="." method="_on_body_representation_body_exited"]
