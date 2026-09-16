@@ -1,0 +1,86 @@
+[gd_scene format=3 uid="uid://gkla30eu20j8"]
+
+[ext_resource type="Texture2D" uid="uid://dnvigyyxfjp0k" path="res://levels/2_1intersection/terrain_albedo_image_minified.png" id="1_6lrjc"]
+[ext_resource type="Theme" uid="uid://cjbyaermnkf75" path="res://core/UI/main_menu/title_style.tres" id="1_o4dpg"]
+[ext_resource type="PackedScene" uid="uid://dc8fban4hbc8f" path="res://core/UI/objective_item.tscn" id="2_yem36"]
+[ext_resource type="Theme" uid="uid://d1tgwdb3grjhr" path="res://core/UI/main_menu/menu_button_style.tres" id="3_cqva8"]
+
+[node name="LevelCompletePanel" type="CanvasLayer" unique_id=1544193920]
+
+[node name="Overlay" type="ColorRect" parent="." unique_id=2060406121]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.39607844)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=648509208]
+propagate_maximum_size = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="CenterContainer" unique_id=63247827]
+custom_minimum_size = Vector2(1080, 450)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/Panel" unique_id=2032865438]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/Panel/MarginContainer" unique_id=1982440072]
+layout_mode = 2
+
+[node name="LevelIcon" type="TextureRect" parent="CenterContainer/Panel/MarginContainer/HBoxContainer" unique_id=2102299048]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("1_6lrjc")
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Panel/MarginContainer/HBoxContainer" unique_id=131813691]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_constants/separation = 32
+alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CenterContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=2006440459]
+layout_mode = 2
+theme = ExtResource("1_o4dpg")
+theme_override_font_sizes/normal_font_size = 40
+text = "Level Completed!"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ObjectiveList" type="VBoxContainer" parent="CenterContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=481300421]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="ObjectiveItem" parent="CenterContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/ObjectiveList" unique_id=1521236591 instance=ExtResource("2_yem36")]
+layout_mode = 2
+
+[node name="ObjectiveItem2" parent="CenterContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/ObjectiveList" unique_id=1066345456 instance=ExtResource("2_yem36")]
+layout_mode = 2
+
+[node name="ObjectiveItem3" parent="CenterContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/ObjectiveList" unique_id=1567715575 instance=ExtResource("2_yem36")]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="CenterContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=354698346]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme = ExtResource("3_cqva8")
+theme_override_font_sizes/font_size = 30
+text = "Next level"
