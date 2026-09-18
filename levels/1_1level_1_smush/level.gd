@@ -1,6 +1,9 @@
 extends Node3D
 
-var level_attributes: Dictionary[String, String] = {"bomb_set_off": "BOMB"}
+var level_attributes: Dictionary[String, String] = {
+	"bomb_set_off": "!!BOMBA!!",
+	"asphalt_done": "Fix the pothole"
+}
 func erase_attribute_data() -> void:
 	%RoadChunk.reset_user_data(base_dir)
 	for attr in level_attributes:
@@ -23,11 +26,11 @@ func _ready() -> void:
 	LevelStructure.level_attribute_list_overwrite(base_dir, level_attributes)
 	if LevelStructure.level_attribute_present(base_dir, "bomb_set_off"):
 		%AsphaltBomb.queue_free()
-		$HUD.objective_complete(0)
+		$HUD.objective_complete("bomb_set_off")
 
 func _on_asphalt_bomb_asphalt_bomb_exploded(_blast_pos: Vector3, _explode_radius: float, _amount_to_add_asphalt: float) -> void:
 	LevelStructure.level_attribute_store_completed(base_dir, "bomb_set_off")
-	$HUD.objective_complete(0)
+	$HUD.objective_complete("bomb_set_off")
 
 @export var level_scan_duration_sec: float = 0.7
 @export var level_scan_range: float = 0.25
@@ -36,8 +39,6 @@ func _on_asphalt_bomb_asphalt_bomb_exploded(_blast_pos: Vector3, _explode_radius
 func _on_check_btn_button_down() -> void:
 	if not %RoadChunk.scan_in_progress():
 		%RoadChunk.initiate_scan(level_scan_duration_sec, level_scan_range, func():
-			var deviation: float = %RoadChunk.get_deviation_from_target()
-			print(abs(deviation - 0.5)) #DEBUG: To see what would be the acepted level of deviation
 			if(1. > accepted_deviation):
 				var winning_animation: Tween = create_tween()
 				create_tween().tween_method(

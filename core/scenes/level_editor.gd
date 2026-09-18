@@ -132,14 +132,14 @@ func _create_level_data() -> void:
 		%RoadChunk.level_data.set(img, load(_level_image_path(img)))
 	_set_data_mode_raw()
 	ResourceSaver.save(%RoadChunk.level_data, _level_resource_path())
-	EditorInterface.get_resource_filesystem().scan() #TechDebt: This makes itch export crash
+	EditorInterface.get_resource_filesystem().scan()
 
 @export_tool_button("Create Level Resource", "Save") var create_level_resource: Callable = _create_level_resource
 func _create_level_resource() -> void:
 	if not _level_resource_exists():
 		var resource: RoadChunkData = RoadChunkData.new()
 		ResourceSaver.save(resource, _level_resource_path())
-		EditorInterface.get_resource_filesystem().scan() #TechDebt: This makes itch export crash
+		EditorInterface.get_resource_filesystem().scan()
 		get_tree().create_timer(0.5).timeout.connect(_load_level_data)
 
 @export_tool_button("Change Data Mode", "Save") var change_data_mode: Callable = _change_data_mode
@@ -214,7 +214,7 @@ func _change_data_mode() -> void:
 		DirAccess.remove_absolute(_level_image_path("raw_water_presence"))
 		terrain_heightmap.save_png(_level_image_path("terrain_heightmap"))
 		asphalt_attributes.save_png(_level_image_path("asphalt_attributes"))
-		EditorInterface.get_resource_filesystem().scan() #TechDebt: This makes itch export crash
+		EditorInterface.get_resource_filesystem().scan()
 		get_tree().create_timer(0.5).timeout.connect(func(): # also try to initialize level data
 			if _is_level_data_in_packaged_format(): _save_level_data()
 			else: push_error("Unable to convert level data from raw to packaged format!")
@@ -254,7 +254,7 @@ func _load_level_data() -> void:
 
 	if resource_updated and Engine.is_editor_hint():
 		ResourceSaver.save(%RoadChunk.level_data, _level_resource_path())
-		EditorInterface.get_resource_filesystem().scan() #TechDebt: This makes itch export crash
+		EditorInterface.get_resource_filesystem().scan()
 		get_tree().create_timer(1.).timeout.connect(func():%RoadChunk.initialize(_level_resource_path()))
 	else: %RoadChunk.initialize(_level_resource_path())
 
@@ -278,7 +278,7 @@ func _save_level_data():
 		minified_image.resize(64, 64, Image.INTERPOLATE_LANCZOS)
 		minified_image.save_png(_level_mini_image_path(img))
 	
-	EditorInterface.get_resource_filesystem().scan() #TechDebt: This makes itch export crash
+	EditorInterface.get_resource_filesystem().scan()
 	get_tree().create_timer(0.5).timeout.connect(func(): # Update resource, set the updated fields and save it!
 		for img in LevelStructure.final_image_names: %RoadChunk.level_data.set(img, load(_level_image_path(img)))
 		ResourceSaver.save(%RoadChunk.level_data, _level_resource_path())
@@ -329,12 +329,6 @@ func _save_level_data():
 @export_tool_button("Snap to Reference", "CollapseTree") var start_snapping_to_ref: Callable = func():
 	_snap_asphalt_to_reference()
 
-@export_range(0., 10.) var reference_snap_strength: float = false:
-	set(v):
-		reference_snap_strength = v
-		%RoadChunk.snap_to_reference(v)
-		%RoadChunk.update_asphalt()
-
 var crazify_tween: Tween
 @export var crazify: bool = false:
 	set(v):
@@ -376,8 +370,12 @@ var crazify_tween: Tween
 
 func _snap_asphalt_to_reference() -> void:
 	var snap: Tween = create_tween() # snap_to_reference setter includes logic for shader updates
-	snap.tween_method(func(w: float): reference_snap_strength = ease(w, snap_easing), 0., max_snap_value, snap_time_sec)
-	snap.tween_callback(func(): reference_snap_strength = 0.)
+	snap.tween_method(func(w: float):
+		%RoadChunk.snap_to_reference(ease(w, snap_easing))
+		%RoadChunk.update_asphalt(),
+		0., max_snap_value, snap_time_sec
+	)
+	snap.tween_callback(func(): %RoadChunk.snap_to_reference(0.))
 
 @export var accepted_deviation: float = 0.001
 var won_game: bool = false

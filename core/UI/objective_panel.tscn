@@ -69,6 +69,26 @@ theme_override_constants/margin_bottom = 20
 unique_name_in_owner = true
 layout_mode = 2
 
+[node name="AsphaltProgress" type="Control" parent="HBoxContainer/ObjectivePanel/MarginContainer/ObjectiveList" unique_id=1168125046]
+custom_minimum_size = Vector2(275, 25)
+layout_mode = 2
+
+[node name="AsphaltDoneProgress" type="ProgressBar" parent="HBoxContainer/ObjectivePanel/MarginContainer/ObjectiveList/AsphaltProgress" unique_id=2079539087]
+unique_name_in_owner = true
+modulate = Color(0.32, 1, 0.42199987, 1)
+layout_mode = 0
+offset_right = 260.0
+offset_bottom = 27.0
+max_value = 1.0
+value = 0.59
+show_percentage = false
+
+[node name="Label" type="Label" parent="HBoxContainer/ObjectivePanel/MarginContainer/ObjectiveList/AsphaltProgress" unique_id=2052282681]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Asphalt perfection"
+
 [node name="ObjectiveButtonSound" type="AudioStreamPlayer" parent="." unique_id=1626320519]
 stream = SubResource("AudioStreamRandomizer_8jg5c")
 

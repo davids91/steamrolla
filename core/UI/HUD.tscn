@@ -73,4 +73,5 @@ texture = SubResource("AtlasTexture_ygh00")
 expand_mode = 3
 
 [connection signal="selected_tool" from="ToolPanel" to="." method="_on_tool_panel_selected_tool"]
+[connection signal="objective_completed" from="ObjectivePanel" to="." method="_on_objective_panel_objective_completed"]
 [connection signal="pressed" from="ExitBtn" to="." method="_on_exit_btn_pressed"]

@@ -26,3 +26,9 @@ expand_mode = 3
 layout_mode = 2
 text = "Objective to do"
 label_settings = SubResource("LabelSettings_ygh00")
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=1157908763]
+custom_minimum_size = Vector2(50, 15)
+layout_mode = 2
+size_flags_vertical = 4
+show_percentage = false

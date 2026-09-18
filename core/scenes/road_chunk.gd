@@ -101,6 +101,12 @@ func is_on_asphalt(global_pos: Vector3) -> bool:
 	asphalt_pixel = asphalt_pixel if asphalt_pixel >= 0. else 0. # Checking for out of bounds
 	return 0.5 < asphalt_pixel
 
+@export var deviation_threshold: float = 0.005
+
+## Returns with true if the current asphalt state is close enough to the target state
+func is_state_in_target() -> bool:
+	return get_deviation_from_target() < deviation_threshold
+
 func get_deviation_from_target() -> float:
 	var difference_image: Image = %AsphaltCheckerViewport.get_texture().get_image()
 	difference_image.resize(1,1, Image.INTERPOLATE_LANCZOS)
