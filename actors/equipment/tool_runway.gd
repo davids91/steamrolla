@@ -50,20 +50,11 @@ func _physics_process(_delta: float) -> void:
 	if current_state == State.HIDDEN: target_global_position.y = hidden_depth
 	elif current_state == State.PLACEMENT || current_state == State.DEPLOYED || current_state == State.RELEASED:
 		# Calculate Horizontal trajectory of the runway
-		var x_bound_min: float = level.global_position.x - level.get_size().x / 2.
-		var x_bound_max: float = level.global_position.x + level.get_size().x / 2.
-		var z_bound_min: float = level.global_position.z - level.get_size().z / 2.
-		var z_bound_max: float = level.global_position.z + level.get_size().z / 2.
-		if(
-			following.global_position.x < x_bound_min or following.global_position.x > x_bound_max
-			or following.global_position.z < z_bound_min or following.global_position.z > z_bound_max
-		): return # Do not move runway if target is outside the level
+		var x_bound_min: float = level.global_position.x - level.get_size().x / 2. - $Shape.shape.size.x / 2.
+		var x_bound_max: float = level.global_position.x + level.get_size().x / 2. + $Shape.shape.size.x / 2.
+		var z_bound_min: float = level.global_position.z - level.get_size().z / 2. - $Shape.shape.size.z / 2.
+		var z_bound_max: float = level.global_position.z + level.get_size().z / 2. + $Shape.shape.size.z / 2.
 
-		x_bound_min -= $Shape.shape.size.x / 2.
-		x_bound_max += $Shape.shape.size.x / 2.
-		z_bound_min -= $Shape.shape.size.z / 2.
-		z_bound_max += $Shape.shape.size.z / 2.
-		
 		# Check which positions at the levels edge would be best for the runway
 		var current_distance_to_target: float = (following.global_position - global_position).length()
 		if(not(
