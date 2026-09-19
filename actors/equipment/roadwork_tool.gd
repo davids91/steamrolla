@@ -22,6 +22,9 @@ enum ControlMethods{
 @export_range(0., 1.) var tool_radius: float = 0.1 ## May not always be used
 @export_range(0., 1.) var tool_responsiveness: float = 0.9 ## How sharp the tool updates the level
 @export var controlled_by: ControlMethods = ControlMethods.DRAGGED
+@export var has_payload: bool = false
+@onready var payload_triggered: bool = false
+
 
 func prepare_for_runway() -> void: pass
 func entered_runway() -> void: pass

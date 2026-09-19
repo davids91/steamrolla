@@ -4,6 +4,8 @@
 [ext_resource type="Script" uid="uid://d1tbgsojf2nr5" path="res://actors/equipment/asphalt_paver.gd" id="1_pogr6"]
 [ext_resource type="PackedScene" uid="uid://bb24gus88qx5r" path="res://core/tools/orbit_camera_3d.tscn" id="2_tthve"]
 [ext_resource type="AudioStream" uid="uid://d1n0nybaatu7w" path="res://audio/paver.wav" id="4_ww7qr"]
+[ext_resource type="Shader" uid="uid://trnxwrt5vs7p" path="res://actors/equipment/asphalt_pile.gdshader" id="5_b1e0e"]
+[ext_resource type="Texture2D" uid="uid://b8jol13gu6v18" path="res://textures/asphalt_tile_seamless.png" id="6_tqasd"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_srf32"]
 resource_name = "palette"
@@ -55,11 +57,41 @@ size = Vector3(3.6660156, 3.2068634, 6.483719)
 streams_count = 1
 stream_0/stream = ExtResource("4_ww7qr")
 
+[sub_resource type="Gradient" id="Gradient_f1fbw"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vgkag"]
+noise_type = 2
+fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_tqasd"]
+noise = SubResource("FastNoiseLite_vgkag")
+color_ramp = SubResource("Gradient_f1fbw")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ww7qr"]
+render_priority = 0
+shader = ExtResource("5_b1e0e")
+shader_parameter/asphalt_texture = ExtResource("6_tqasd")
+shader_parameter/pile_noise = SubResource("NoiseTexture2D_tqasd")
+shader_parameter/opacity = 0.745
+shader_parameter/asphalt_pile_size = 2.26
+shader_parameter/asphalt_pile_spread_min = -0.305
+shader_parameter/asphalt_pile_spread_max = 0.705
+shader_parameter/asphalt_tile_size_ratio = 1.675
+shader_parameter/asphalt_shiny = 0.366000017385
+shader_parameter/asphalt_spread = 372.54801769603
+shader_parameter/edge_transition = 0.196
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_8jg5c"]
+material = SubResource("ShaderMaterial_ww7qr")
+subdivide_width = 16
+subdivide_depth = 16
+
 [node name="AsphaltPaver" type="Node3D" unique_id=655459454]
 script = ExtResource("1_pogr6")
 tool_enum = 1
 normalized_size = Vector2(0.05, 0.01)
 tool_angle = 3.142
+has_payload = true
 
 [node name="OrbitCamera" parent="." unique_id=1504134869 instance=ExtResource("2_tthve")]
 transform = Transform3D(-0.9089847, 0, 0.41682938, 0, 1, 0, -0.41682938, 0, -0.9089847, 3.2651744, 4.8342853, -6.400869)
@@ -79,6 +111,10 @@ debug_color = Color(0, 0.6885001, 0.81, 0.9372549)
 [node name="ActiveSound" type="AudioStreamPlayer3D" parent="." unique_id=1532210739]
 stream = SubResource("AudioStreamRandomizer_8jg5c")
 volume_db = -3.0
+
+[node name="AsphaltPile" type="MeshInstance3D" parent="." unique_id=1484526018]
+transform = Transform3D(1.41, 0, 0, 0, 1, 0, 0, 0, 0.75, -0.03479004, 1.0255737, -3.487793)
+mesh = SubResource("PlaneMesh_8jg5c")
 
 [connection signal="body_entered" from="BodyRepresentation" to="." method="_on_body_representation_body_entered"]
 [connection signal="body_exited" from="BodyRepresentation" to="." method="_on_body_representation_body_exited"]

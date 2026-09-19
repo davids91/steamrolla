@@ -43,6 +43,7 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 	# Cleanup after previously used tool
 	if runways.has(active_tool):
 		runways[active_tool].stop_deployment()
+		tool_nodes[active_tool].prepare_for_runway()
 	if tool_nodes.has(active_tool) and tool_nodes[active_tool] and tool != active_tool:
 		tool_nodes[active_tool].set_color(Color.TRANSPARENT)
 		# Rewire driver intention changed
@@ -110,13 +111,21 @@ func dig_shovel_into(target_position: Vector3) -> void:
 
 var asphalt_delta: float = 0.
 func _unhandled_input(event: InputEvent) -> void:
+	if active_tool == ToolPanel.Tools.UNKNOWN: return
+
+	# Handle releasing the payload
+	if Input.is_action_just_pressed("deploy_payload"):
+		tool_nodes[active_tool].payload_triggered = true
+	elif Input.is_action_just_released("deploy_payload"):
+		tool_nodes[active_tool].payload_triggered = false
+
+	# Handle dragged control method and shovel
 	if event is InputEventMouseButton:
-		if active_tool != ToolPanel.Tools.UNKNOWN:
-			if active_tool == ToolPanel.Tools.SHOVEL and event.pressed:
-				$ShovelSound.play()
-				dig_shovel_into(view.cursor.global_position)
-			if tool_nodes.has(active_tool):
-				asphalt_delta = tool_nodes[active_tool].tool_strength
+		if active_tool == ToolPanel.Tools.SHOVEL and event.pressed:
+			$ShovelSound.play()
+			dig_shovel_into(view.cursor.global_position)
+		if tool_nodes.has(active_tool):
+			asphalt_delta = tool_nodes[active_tool].tool_strength
 		view.lock_view(event.is_pressed())
 		if tool_nodes.has(active_tool) and tool_nodes[active_tool].controlled_by == RoadworkTool.ControlMethods.DRAGGED:
 			if event.is_pressed(): tool_nodes[active_tool].start_working()
@@ -124,15 +133,15 @@ func _unhandled_input(event: InputEvent) -> void:
 
 const VALUE_EPSILON: float = 0.001;
 func _process(delta: float) -> void:
-	# Set the asphalt being updated
+	# Configure the level to be updated based on the active tool
 	if tool_nodes.has(active_tool):
 		if tool_nodes[active_tool].is_working:
-			# Configure the level to be updated based on the tool
-			road_chunk.asphalt_delta = asphalt_delta * delta
+			if (tool_nodes[active_tool].payload_triggered or not tool_nodes[active_tool].has_payload):
+				road_chunk.asphalt_delta = asphalt_delta * delta
+				road_chunk.update_asphalt()
+			tool_nodes[active_tool].work_at_cursor(view.cursor.global_position)
 			road_chunk.set_update_brush_center(tool_nodes[active_tool].global_position)
 			road_chunk.tool_angle = Vector2(-tool_nodes[active_tool].basis.z.x, -tool_nodes[active_tool].basis.z.z).angle()
-			tool_nodes[active_tool].work_at_cursor(view.cursor.global_position)
-			road_chunk.update_asphalt()
 		else:
 			asphalt_delta *= (1. - tool_nodes[active_tool].tool_responsiveness)
 			if abs(asphalt_delta) < VALUE_EPSILON: asphalt_delta = 0.
