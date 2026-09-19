@@ -15,6 +15,13 @@ extends Node3D
 		draw_radius = v
 		if road_chunk: road_chunk.update_brush_radius = draw_radius
 
+func _ready() -> void:
+	for c in get_children():
+		if(
+			"controlled_by" in c and c.controlled_by == RoadworkTool.ControlMethods.PILOTED
+			and c.has_signal("driver_intention_changed")
+		): c.driver_intention_changed.connect(piloted_tool_driver_intention_changed)
+
 func piloted_tool_driver_intention_changed(is_moving: bool, forward: bool) -> void:
 	if ( # Update angle of piloted tool based on driver intention
 		is_moving and tool_nodes.has(active_tool) and tool_nodes[active_tool]

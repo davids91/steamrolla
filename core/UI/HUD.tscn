@@ -5,6 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://dwjms5mdx3iof" path="res://textures/speech_bubble.png" id="4_k5p64"]
 [ext_resource type="PackedScene" uid="uid://bnbkf3tkjckrq" path="res://core/UI/objective_panel.tscn" id="5_ie7id"]
 [ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="5_ygh00"]
+[ext_resource type="AudioStream" uid="uid://dvhgxea4thtal" path="res://audio/botch.wav" id="6_k5p64"]
+[ext_resource type="AudioStream" uid="uid://dif8avwftb7wi" path="res://audio/success.wav" id="7_ej2ga"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ej2ga"]
 font_size = 35
@@ -71,6 +73,12 @@ offset_right = 129.0
 offset_bottom = 124.0
 texture = SubResource("AtlasTexture_ygh00")
 expand_mode = 3
+
+[node name="BotchLevel" type="AudioStreamPlayer" parent="." unique_id=1032426370]
+stream = ExtResource("6_k5p64")
+
+[node name="SuccessLevel" type="AudioStreamPlayer" parent="." unique_id=295704303]
+stream = ExtResource("7_ej2ga")
 
 [connection signal="selected_tool" from="ToolPanel" to="." method="_on_tool_panel_selected_tool"]
 [connection signal="objective_completed" from="ObjectivePanel" to="." method="_on_objective_panel_objective_completed"]

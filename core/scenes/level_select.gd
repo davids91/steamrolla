@@ -39,6 +39,8 @@ func _load_level_data() -> void:
 
 var selected_chunk: RoadChunk = null
 func _unhandled_input(event: InputEvent) -> void:
+
+	# Select road chunk on hover
 	if event is InputEventMouseButton or event is InputEventMouseMotion:
 		if $PlayerView.looking_at_chunk:
 			if scenes.has($PlayerView.looking_at_chunk): $Highlight.modulate = Color.WHITE
@@ -52,12 +54,20 @@ func _unhandled_input(event: InputEvent) -> void:
 				time_left_to_travel = transition_time_sec
 				selected_chunk = $PlayerView.looking_at_chunk
 				var target_transform : Transform3D = $PlayerView.camera_transform
+				var previous_target_origin: Vector3 = target_transform.origin
 				target_transform.origin = lerp(target_transform.origin, selected_chunk.global_position, transition_zoom_amount)
-				target_transform.looking_at(target_transform.origin)
+				target_transform.looking_at(previous_target_origin)
 				create_tween().tween_property($PlayerView, "camera_transform", target_transform, transition_time_sec)
 				create_tween().tween_property(%ScreenBlocker, "modulate", Color.WHITE, transition_time_sec)
 				ResourceLoader.load_threaded_request(scenes[selected_chunk])
 		selected_chunk = $PlayerView.looking_at_chunk
+
+	# Erase attribute and user state from selected level
+	if selected_chunk and event.is_action_pressed("debug"):
+		selected_chunk.reset_user_data()
+		for attr in LevelStructure.level_attribute_list(selected_chunk.used_base_dir):
+			if LevelStructure.level_attribute_present(selected_chunk.used_base_dir, attr):
+				LevelStructure.level_attribute_reset(selected_chunk.used_base_dir, attr)
 
 func _ready() -> void:
 	_load_level_data()

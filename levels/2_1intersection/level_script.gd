@@ -3,16 +3,6 @@ extends Node3D
 var level_attributes: Dictionary[String, String] = {
 	"asphalt_done": "Fix the pothole"
 }
-func erase_attribute_data() -> void:
-	%RoadChunk.reset_user_data(base_dir)
-	for attr in level_attributes:
-		if LevelStructure.level_attribute_present(base_dir, attr):
-			LevelStructure.level_attribute_reset(base_dir, attr)
-
-@export var road_paint_display_pause_sec: float = 0.01
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("debug"):
-		erase_attribute_data()
 
 @onready var base_dir: String = LevelStructure.get_base_dir_for_scene(self)
 func _ready() -> void:
@@ -24,6 +14,7 @@ var victory_tween: Tween:
 		if victory_tween: victory_tween.kill()
 		victory_tween = v
 
+@export var road_paint_display_pause_sec: float = 0.01
 @export var max_snap_value: float = 0.6
 @export var snap_time_sec: float = 0.6
 @export var snap_easing: float = 1.0
