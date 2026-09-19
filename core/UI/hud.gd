@@ -20,14 +20,6 @@ func objective_complete(objective_name: String) -> void:
 func _ready() -> void: # Automatically wire the level down to the objective panel
 	if level: $ObjectivePanel.level = level
 
-var time_to_check_asphalt_sec: float = asphalt_check_interval_sec
-func _process(delta: float) -> void:
-	time_to_check_asphalt_sec -= delta
-	if 0. > time_to_check_asphalt_sec:
-		time_to_check_asphalt_sec = asphalt_check_interval_sec
-		if level and 0 <= level.get_deviation_from_target():
-			print()
-
 func _on_tool_panel_selected_tool(tool: ToolPanel.Tools) -> void:
 	selected.emit(tool)
 

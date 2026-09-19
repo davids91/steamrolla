@@ -1,13 +1,13 @@
 class_name RoadChunkData
 extends Resource
 
-@export_category("terrain")
+@export_category("Terrain")
 @export var terrain_heightmap: Texture
 @export var terrain_normalmap: Texture
 @export var terrain_albedo_image: Texture
 @export var height_unit: float = 5.
 
-@export_category("water")
+@export_category("Water")
 @export_range(0., 100.) var water_scale: float = 35.
 @export_range(0., 100.) var water_speed: float = 15.
 @export_range(0., 200.) var water_shinyness: float = 15
@@ -19,7 +19,7 @@ extends Resource
 @export_range(0., 1.) var water_transparency: float = 0.8
 @export var water_color: Color = Color.BLUE
 
-@export_category("dynamic_surface")
+@export_category("Dynamic Surface")
 ## The type of dynamic surface used within the level
 @export var surface: RoadChunk.DynamicSurfaces = RoadChunk.DynamicSurfaces.ASPHALT
 
@@ -40,3 +40,6 @@ extends Resource
 ## Green channel: unused
 ## Blue channel: unused
 @export var target_asphalt_state: Texture
+
+@export_category("Misc")
+@export var stub_angle: float = 0.

@@ -19,7 +19,6 @@ var victory_tween: Tween:
 @export var snap_time_sec: float = 0.6
 @export var snap_easing: float = 1.0
 func _on_hud_objective_completed(objective_name: String) -> void:
-	%RoadChunk.save_user_data()
 	if objective_name == "asphalt_done":
 		victory_tween = create_tween()
 
@@ -31,7 +30,11 @@ func _on_hud_objective_completed(objective_name: String) -> void:
 				%RoadChunk.update_asphalt(),
 				0., max_snap_value, snap_time_sec
 			)
-			snap_tween.tween_callback(func(): %RoadChunk.snap_to_reference(0.))
+			snap_tween.tween_callback(func():
+				%RoadChunk.snap_to_reference(0.)
+				%RoadChunk.save_user_data()
+				%RoadChunk.asphalt_editable = false
+			)
 			var flash_tween: Tween = create_tween()
 			flash_tween.tween_method(func(w: float): %RoadChunk.set_highlight(sin(w)), 0., PI, 1.3)
 			flash_tween.tween_method(func(w: float): %RoadChunk.set_highlight(sin(w)), 0., PI, 0.15)

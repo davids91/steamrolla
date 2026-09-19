@@ -102,7 +102,6 @@ func is_on_asphalt(global_pos: Vector3) -> bool:
 	return 0.5 < asphalt_pixel
 
 @export var deviation_threshold: float = 0.005
-
 ## Returns with true if the current asphalt state is close enough to the target state
 func is_state_in_target() -> bool:
 	return get_deviation_from_target() < deviation_threshold
@@ -258,8 +257,9 @@ func initiate_scan(level_scan_range: float = 0.25, run_when_finished: Callable =
 	)
 
 #region Update functions
+@export var asphalt_editable: bool = true
 func update_asphalt() -> void:
-	if scan_in_progress(): return
+	if not asphalt_editable or scan_in_progress(): return
 	%AsphaltTransformer.material.set_shader_parameter("asphalt_delta", %AsphaltUpdaterViewport.get_texture())
 	%AsphaltPhysics.material.set_shader_parameter("asphalt_delta", %AsphaltUpdaterViewport.get_texture())
 	asphalt_state = ImageTexture.create_from_image(%AsphaltTransformerViewport.get_texture().get_image())
@@ -397,6 +397,8 @@ func _initialize(data: RoadChunkData, data_path: String = "") -> void:
 	if (data==null):
 		print("ERROR: road chunk got null data during init. ignoring.")
 		return
+
+	if is_stub: rotation.y = level_data.stub_angle
 
 	# Try to load minified images if setting is present
 	if is_minified and data_path.length() > 0:
