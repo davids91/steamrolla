@@ -12,5 +12,6 @@ script = ExtResource("2_fndem")
 
 [node name="panorama_extraclouds" parent="." unique_id=1460927905 instance=ExtResource("3_vjqhf")]
 transform = Transform3D(495, 0, 0, 0, 495, 0, 0, 0, 495, 0, 0, 0)
+visible = false
 script = ExtResource("2_fndem")
 speed = 0.011
