@@ -15,6 +15,7 @@ var asphalt_physics_state: Texture ## r: level height(terrain + asphalt), g: asp
 ## Stub RoadChunks are present e.g. within the level selection screen or the scenery museum
 @export var is_stub: bool = false
 @export_tool_button("Load data", "Reload") var load_data: Callable = func(): _initialize(level_data)
+@export_tool_button("Load data from HDD", "Reload") var load_data_hdd: Callable = func(): initialize(used_base_dir)
 
 @export_category("Physics")
 @export_range(0.01, 1.0, 0.01) var physics_update_interval: float = 0.2
@@ -91,6 +92,7 @@ func get_tex_position_from(pos: Vector3) -> Vector2:
 	) / flat_chunk_size
 
 func is_on_asphalt(global_pos: Vector3) -> bool:
+	if is_stub: return false
 	var normalized_pos: Vector2 = get_tex_position_from(global_pos)
 	if get_node_or_null("%AsphaltFilterPreview/PositionMarker"):
 		%AsphaltFilterPreview/PositionMarker.position = normalized_pos * %AsphaltFilterPreview.size
@@ -393,7 +395,6 @@ func _initialize_minified(data_path: String = "") -> void:
 
 @onready var used_base_dir: String = get_parent().scene_file_path.get_base_dir() + "/"
 func _initialize(data: RoadChunkData, data_path: String = "") -> void:
-
 	if (data==null):
 		print("ERROR: road chunk got null data during init. ignoring.")
 		return
@@ -414,20 +415,14 @@ func _initialize(data: RoadChunkData, data_path: String = "") -> void:
 			if img == "start_asphalt_state" and data_path.length() > 0: continue
 			level_data.set(img, load(LevelStructure.level_image_path(used_base_dir, img)))
 
-		var user_asphalt_state_path: String = LevelStructure.user_asphalt_state_tex_path(used_base_dir)
-		var fallback_asphalt_state_path: String = LevelStructure.asphalt_state_tex_path(used_base_dir)
-		var fallback_asphalt_target_path: String = LevelStructure.asphalt_target_state_tex_path(used_base_dir)
 
 		# Load user or fallback asphalt state image: always overwrite resource data with user state image when available!
+		var user_asphalt_state_path: String = LevelStructure.user_asphalt_state_tex_path(used_base_dir)
+		var fallback_asphalt_state_path: String = LevelStructure.asphalt_state_tex_path(used_base_dir)
 		if FileAccess.file_exists(user_asphalt_state_path):
 			level_data.start_asphalt_state = ImageTexture.create_from_image(Image.load_from_file(user_asphalt_state_path))
 		elif not data.start_asphalt_state and FileAccess.file_exists(fallback_asphalt_state_path):
 			level_data.start_asphalt_state = load(fallback_asphalt_state_path)
-			save_resource = true
-
-		# Load fallback asphalt target image
-		if not data.target_asphalt_state and FileAccess.file_exists(fallback_asphalt_target_path):
-			level_data.target_asphalt_state = load(fallback_asphalt_target_path)
 			save_resource = true
 
 	# Generate an empty asphalt state if nothing is provided either from res:// or user://

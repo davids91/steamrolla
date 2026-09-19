@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://dio5mdbn1uoef"]
 
-[ext_resource type="PackedScene" uid="uid://c3vrtvay36bhk" path="res://core/scenes/level_select.tscn" id="1_rw80f"]
+[ext_resource type="PackedScene" uid="uid://dbaycbd46p3op" path="res://core/scenes/title_screen.tscn" id="1_epeqb"]
 
 [node name="Main" type="Node" unique_id=574895689]
 
 [node name="LevelContainer" type="Node" parent="." unique_id=815142842]
 unique_name_in_owner = true
 
-[node name="LevelSelect" parent="LevelContainer" unique_id=2110132494 instance=ExtResource("1_rw80f")]
+[node name="TitleScreen" parent="LevelContainer" unique_id=1389045047 instance=ExtResource("1_epeqb")]

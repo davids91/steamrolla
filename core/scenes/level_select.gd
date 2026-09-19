@@ -39,7 +39,6 @@ func _load_level_data() -> void:
 
 var selected_chunk: RoadChunk = null
 func _unhandled_input(event: InputEvent) -> void:
-
 	# Select road chunk on hover
 	if event is InputEventMouseButton or event is InputEventMouseMotion:
 		if $PlayerView.looking_at_chunk:
@@ -60,6 +59,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				create_tween().tween_property($PlayerView, "camera_transform", target_transform, transition_time_sec)
 				create_tween().tween_property(%ScreenBlocker, "modulate", Color.WHITE, transition_time_sec)
 				ResourceLoader.load_threaded_request(scenes[selected_chunk])
+		else: $Highlight.visible = false
 		selected_chunk = $PlayerView.looking_at_chunk
 
 	# Erase attribute and user state from selected level
@@ -84,3 +84,7 @@ func _process(delta: float) -> void:
 			var packed_scene: PackedScene = ResourceLoader.load_threaded_get(scenes[selected_chunk])
 			if not packed_scene: push_error("level select got a null selected scene. ignoring.")
 			else: level_container.add_child(packed_scene.instantiate())
+
+func _on_exit_btn_pressed() -> void:
+	for c in level_container.get_children(): c.queue_free()
+	level_container.add_child(load("res://core/scenes/title_screen.tscn").instantiate())

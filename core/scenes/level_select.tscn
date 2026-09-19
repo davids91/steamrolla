@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cvvnwqj8sfbtp" path="res://props/player_cursor.tscn" id="3_lnrnj"]
 [ext_resource type="Script" uid="uid://ccyo8n18hat0m" path="res://props/highlight.gd" id="4_ohvno"]
 [ext_resource type="PackedScene" uid="uid://biysx7wem6d8s" path="res://props/panorama_sphere.tscn" id="5_335hl"]
+[ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="5_rltma"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hm68f"]
 
@@ -24,6 +25,20 @@ gradient = SubResource("Gradient_hm68f")
 fill_from = Vector2(0.4059829, 0.26923078)
 fill_to = Vector2(0.3846154, 1)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_0pojg"]
+atlas = ExtResource("5_rltma")
+region = Rect2(897.618, -2.324, 128, 128)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ie7id"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_668k5"]
+atlas = SubResource("CompressedTexture2D_ie7id")
+region = Rect2(897.618, 125.676, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ffkug"]
+atlas = ExtResource("5_rltma")
+region = Rect2(772.883, 121.768, 128, 137.545)
+
 [sub_resource type="Gradient" id="Gradient_lnrnj"]
 colors = PackedColorArray(0.66656864, 0.6665687, 0.66656864, 1, 1, 1, 1, 0)
 
@@ -38,9 +53,7 @@ fill_to = Vector2(0.94017094, 0.43589744)
 [node name="LevelSelect" type="Node3D" unique_id=2110132494]
 script = ExtResource("1_esh0k")
 road_chunk_spacing = 100.0
-coming_from = null
 distance_travel_towards_selected = 0.0
-transition_time_sec = null
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=308553165]
 environment = SubResource("Environment_lnrnj")
@@ -87,6 +100,30 @@ texture = SubResource("GradientTexture2D_8jg5c")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1403548672]
 
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=46391299]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -178.0
+offset_right = 178.0
+grow_vertical = 0
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="ExitBtn" type="TextureButton" parent="CanvasLayer/MarginContainer" unique_id=315599497]
+layout_mode = 2
+texture_normal = SubResource("AtlasTexture_0pojg")
+texture_pressed = SubResource("AtlasTexture_668k5")
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/ExitBtn" unique_id=441056521]
+layout_mode = 0
+offset_right = 129.0
+offset_bottom = 124.0
+texture = SubResource("AtlasTexture_ffkug")
+expand_mode = 3
+
 [node name="ScreenBlocker" type="Control" parent="CanvasLayer" unique_id=1150977170]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
@@ -124,3 +161,5 @@ stretch_mode = 5
 
 [node name="panorama_sphere" parent="." unique_id=298437647 instance=ExtResource("5_335hl")]
 transform = Transform3D(1000, 0, 0, 0, 1000, 0, 0, 0, 1000, 0, 0, 0)
+
+[connection signal="pressed" from="CanvasLayer/MarginContainer/ExitBtn" to="." method="_on_exit_btn_pressed"]
