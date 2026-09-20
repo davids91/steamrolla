@@ -1,7 +1,84 @@
 [gd_scene format=3 uid="uid://cnarqk06h326x"]
 
-[ext_resource type="PackedScene" uid="uid://d22ami84juxxw" path="res://source_assets/models/fire_hydrant/fire_hydrant.fbx" id="1_jop2m"]
+[ext_resource type="Script" uid="uid://cj4e4wfblplx" path="res://props/fire_hydrant.gd" id="1_g740w"]
+[ext_resource type="PackedScene" uid="uid://d22ami84juxxw" path="res://models/fire_hydrant.fbx" id="1_jop2m"]
+[ext_resource type="Texture2D" uid="uid://ce7n7n6w38pnc" path="res://textures/water_particle.png" id="2_wirqx"]
+
+[sub_resource type="Curve" id="Curve_psbkg"]
+_data = [Vector2(0, 1), 0.0, -0.10305185, 0, 0, Vector2(0.8733459, 0.06818187), -0.116349414, -0.116349414, 0, 0, Vector2(1, 0), -1.6646843, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_6mpk8"]
+curve = SubResource("Curve_psbkg")
+
+[sub_resource type="Curve" id="Curve_lextx"]
+_data = [Vector2(0, 0.05454552), 0.0, 0.0, 0, 0, Vector2(0.6011342, 0.08636367), 0.0975295, 0.0975295, 0, 0, Vector2(0.83553874, 0.71818185), 12.022713, 12.022713, 0, 0, Vector2(0.8695652, 0), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="Curve" id="Curve_7ljr2"]
+_data = [Vector2(0, 0.98636365), 0.0, 0.0, 0, 0, Vector2(1e-05, 0.100000024), 0.0, 0.0, 0, 0, Vector2(0.88090736, 0.07727277), 0.0, 0.0, 0, 0, Vector2(1, 0.113636434), 1.1577443, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_fgski"]
+curve_x = SubResource("Curve_lextx")
+curve_y = SubResource("Curve_7ljr2")
+
+[sub_resource type="Curve" id="Curve_g740w"]
+_data = [Vector2(0, 0.5136364), 0.0, 1.2315961, 0, 0, Vector2(1, 1), -0.054442484, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_638yh"]
+curve = SubResource("Curve_g740w")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8jg5c"]
+angle_min = -99.99999
+angle_max = 100.000015
+direction = Vector3(0, 1, 0)
+spread = 6.0
+initial_velocity_min = 2.0
+initial_velocity_max = 6.0
+directional_velocity_min = -10.000016
+directional_velocity_max = 9.999984
+directional_velocity_curve = SubResource("CurveXYZTexture_fgski")
+gravity = Vector3(0, 0, 0)
+scale_min = 0.099999994
+scale_curve = SubResource("CurveTexture_638yh")
+alpha_curve = SubResource("CurveTexture_6mpk8")
+hue_variation_min = -0.020000022
+hue_variation_max = 0.019999977
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3oeo6"]
+transparency = 4
+no_depth_test = true
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("2_wirqx")
+billboard_mode = 2
+billboard_keep_scale = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_5j0fq"]
+material = SubResource("StandardMaterial3D_3oeo6")
+size = Vector2(1, 1)
+orientation = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_g740w"]
+size = Vector3(0.73950195, 1.1490536, 0.72537994)
 
 [node name="FireHydrant" type="Node3D" unique_id=2124233241]
+script = ExtResource("1_g740w")
+water_broke = true
 
 [node name="fire_hydrant" parent="." unique_id=1933406828 instance=ExtResource("1_jop2m")]
+
+[node name="WaterSpurt" type="GPUParticles3D" parent="." unique_id=872076081]
+emitting = false
+amount = 64
+process_material = SubResource("ParticleProcessMaterial_8jg5c")
+draw_pass_1 = SubResource("PlaneMesh_5j0fq")
+
+[node name="BodyRepresentation" type="Area3D" parent="." unique_id=1613156850 groups=["BirdReactable", "BombActivator"]]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BodyRepresentation" unique_id=1862541351]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0037841797, 0.41231823, 0.017917633)
+shape = SubResource("BoxShape3D_g740w")
+
+[connection signal="area_entered" from="BodyRepresentation" to="." method="_on_body_representation_area_entered"]
