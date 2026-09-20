@@ -180,15 +180,15 @@ func _change_data_mode() -> void:
 	elif _is_level_data_in_raw_format():
 		# Unchanged: terrain_normalmap, terrain_albedo_image, start_asphalt_state, target_asphalt_state
 		# Changed:
-		var raw_terrain_heightmap: Image = load(_level_image_path("raw_terrain_heightmap")).get_image()
+		var raw_terrain_heightmap: Image = Image.load_from_file(_level_image_path("raw_terrain_heightmap"))
 		raw_terrain_heightmap.decompress()
-		var raw_terrain_crackmap: Image = load(_level_image_path("raw_terrain_crackmap")).get_image()
+		var raw_terrain_crackmap: Image = Image.load_from_file(_level_image_path("raw_terrain_crackmap"))
 		raw_terrain_crackmap.decompress()
-		var raw_asphalt_presence: Image = load(_level_image_path("raw_asphalt_presence")).get_image()
+		var raw_asphalt_presence: Image = Image.load_from_file(_level_image_path("raw_asphalt_presence"))
 		raw_asphalt_presence.decompress()
-		var raw_asphalt_editability: Image = load(_level_image_path("raw_asphalt_editability")).get_image()
+		var raw_asphalt_editability: Image = Image.load_from_file(_level_image_path("raw_asphalt_editability"))
 		raw_asphalt_editability.decompress()
-		var raw_water_presence: Image = load(_level_image_path("raw_water_presence")).get_image()
+		var raw_water_presence: Image = Image.load_from_file(_level_image_path("raw_water_presence"))
 		raw_water_presence.decompress()
 		var terrain_heightmap: Image = Image.create_empty(level_resolution.x, level_resolution.y, false, Image.FORMAT_RGBF)
 		var asphalt_attributes: Image = Image.create_empty(level_resolution.x, level_resolution.y, false, Image.FORMAT_RGBF)
