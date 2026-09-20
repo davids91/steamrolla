@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://fb6jwtwvjdej" path="res://core/UI/objective_panel.gd" id="1_yfeup"]
 [ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="4_u8e25"]
-[ext_resource type="AudioStream" uid="uid://dvs77bs0xyv2i" path="res://audio/button_press.wav" id="6_bjnmv"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_k5p64"]
 atlas = ExtResource("4_u8e25")
@@ -15,11 +14,6 @@ region = Rect2(897.618, 125.676, 128, 128)
 [sub_resource type="AtlasTexture" id="AtlasTexture_8jg5c"]
 atlas = ExtResource("4_u8e25")
 region = Rect2(631.808, 2.943, 128, 128)
-
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_8jg5c"]
-random_pitch = 1.0883054
-streams_count = 1
-stream_0/stream = ExtResource("6_bjnmv")
 
 [node name="ObjectivePanel" type="MarginContainer" unique_id=1956998029]
 anchors_preset = 1
@@ -88,8 +82,5 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 text = "Asphalt perfection"
-
-[node name="ObjectiveButtonSound" type="AudioStreamPlayer" parent="." unique_id=1626320519]
-stream = SubResource("AudioStreamRandomizer_8jg5c")
 
 [connection signal="pressed" from="HBoxContainer/CheckBtn" to="." method="_on_check_btn_pressed"]

@@ -214,45 +214,20 @@ func set_highlight(amount: float) -> void :
 
 #endregion update brushes
 
-var scan_tween: Tween
+var scan_tween: Tween:
+	set(v):
+		if scan_tween: scan_tween.kill()
+		scan_tween = v
+
 func scan_in_progress() -> bool: return scan_tween != null
-func initiate_scan(level_scan_range: float = 0.25, run_when_finished: Callable = func(): pass) -> void:
+func initiate_scan(run_when_finished: Callable = func(): pass) -> void:
 	if scan_tween: return # Scanning is in progress! Do not initiate again!
-	var material: Material = $Ground.get_active_material(0)
+	$ScanSoundLong.play()
 	scan_tween = create_tween()
-	material.set_shader_parameter("level_tool_range", 0.01)
-	scan_tween.tween_callback(func():
-		material.set_shader_parameter("level_tool_scanning_strength", 1.)
-		$ScanSoundShort.play()
-	)
 	scan_tween.tween_method(
-		func(w: float): material.set_shader_parameter("level_tool_height", height_unit * w),
-		0., 1., $ScanSoundShort.stream.get_length()
-	).set_ease(Tween.EASE_IN)
-	scan_tween.tween_callback(func(): $ScanSoundShort.play())
-	scan_tween.tween_method(
-		func(w: float): material.set_shader_parameter("level_tool_height", height_unit * w),
-		1., 0., $ScanSoundShort.stream.get_length()
-	).set_ease(Tween.EASE_OUT)
-	scan_tween.tween_callback(func(): $ScanSoundShort.play())
-	scan_tween.tween_method(
-		func(w: float): material.set_shader_parameter("level_tool_height", height_unit * w),
-		0., 1., $ScanSoundShort.stream.get_length()
-	).set_ease(Tween.EASE_OUT_IN)
-	scan_tween.tween_interval($ScanSoundShort.stream.get_length() / 2.)
-	scan_tween.tween_callback(func():
-		material.set_shader_parameter("level_tool_scanning_strength", 0.)
-		material.set_shader_parameter("level_tool_range", level_scan_range)
-		$ScanSoundLong.play()
-	)
-	scan_tween.tween_method(
-		func(w: float): material.set_shader_parameter("level_tool_height", height_unit * w),
-		1., -0.01, $ScanSoundLong.stream.get_length()
-	).set_ease(Tween.EASE_OUT_IN)
-	scan_tween.tween_method(
-		func(w: float): material.set_shader_parameter("level_tool_range", w),
-		level_scan_range, 0.0, $ScanSoundShort.stream.get_length()
-	).set_ease(Tween.EASE_IN)
+		func(w: float): $Ground.get_active_material(0).set_shader_parameter("level_tool_strength", sin(w)),
+		0., PI, $ScanSoundLong.stream.get_length()
+	).set_ease(Tween.EASE_IN_OUT)
 	scan_tween.tween_callback(func():
 		scan_tween = null
 		run_when_finished.call()
@@ -461,7 +436,9 @@ func _on_asphalt_bomb_explode(explosion_pos: Vector3, explode_radius: float, amo
 #endregion
 
 func _ready() -> void:
-	if not is_stub: initialize(LevelStructure.resource_path_in_dir(used_base_dir))
+	if not is_stub:
+		$Ground.get_active_material(0).set_shader_parameter("level_tool_strength", 0.)
+		initialize(LevelStructure.resource_path_in_dir(used_base_dir))
 
 func _process(delta: float) -> void:
 	time_since_last_update += delta

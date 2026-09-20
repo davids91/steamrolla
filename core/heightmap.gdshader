@@ -10,8 +10,7 @@ uniform sampler2D asphalt_physics_state;
 uniform sampler2D terrain_normalmap;
 uniform sampler2D terrain_heightmap;
 uniform sampler2D level_tool_reference;
-uniform sampler2D level_tool_result_color;
-uniform vec4 level_tool_scan_color: source_color;
+uniform vec4 unfinished_area_color: source_color;
 uniform float asphalt_tile_size_ratio = 1.;
 uniform float asphalt_highlight = 1.6;
 uniform float asphalt_minimum_quantity_for_display = 0.005;
@@ -20,10 +19,8 @@ uniform float height_unit = 0.1;
 uniform float normal_calculation_range = 0.05;
 uniform float hightlight_strength = 0.0;
 uniform vec3 highlight_color: source_color;
-uniform float level_tool_scanning_strength = 0.0;
-uniform float level_tool_height = 0.2;
-uniform float level_tool_range: hint_range(0.0, 1.0) = 0.005;
 uniform float level_tool_tolerance: hint_range(0.0, 1.0) = 0.05;
+uniform float level_tool_strength: hint_range(0.0, 1.0) = 0.0;
 uniform float crazify_amount = 0.0;
 uniform float crazify_scale = 0.0;
 uniform float crazify_speed = 0.0;
@@ -102,21 +99,12 @@ void fragment() {
 	ALBEDO = mix(ALBEDO, highlight_color, hightlight_strength * asphalt_presence);
 
 	// update output for level tool color
-	float level_tool_height_diff = clamp(abs(road_level - level_tool_height), 0., 1.);
-	float target_level_height_diff_ratio = clamp(
-		abs( // reference contains both the terrain and asphalt quantity heights
-			(texture(level_tool_reference, UV).r * 2.)
-			- (asphalt_in_pixel + texture(terrain_heightmap, UV).r)
-		) * 0.5 / level_tool_tolerance,
-		0.01, 0.99
-	);
 	ALBEDO = mix(
-		ALBEDO,
-		mix(
-			texture(level_tool_result_color, vec2(target_level_height_diff_ratio, 0.0)).rgb,
-			level_tool_scan_color.rgb, level_tool_scanning_strength
-		),
-		step(level_tool_height_diff, level_tool_range)
+		ALBEDO, unfinished_area_color.rgb,
+		step(
+			level_tool_tolerance,
+			abs(texture(level_tool_reference, UV).r - asphalt_in_pixel) * asphalt_presence
+		) * level_tool_strength
 	);
 
 	// Make Asphalt glow red when hot

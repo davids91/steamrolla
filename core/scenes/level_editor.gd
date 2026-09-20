@@ -363,10 +363,9 @@ var crazify_tween: Tween
 			%RoadChunk.set_crazify_speed(crazify_speed)
 
 @export_category("Level Completion(Misc)")
-@export var level_scan_range: float = 0.25
 @export_tool_button("Scan Level", "ColorTrackVu") var scan_for_height: Callable = func():
 	if not %RoadChunk: return
-	%RoadChunk.initiate_scan(level_scan_range)
+	%RoadChunk.initiate_scan()
 
 func _snap_asphalt_to_reference() -> void:
 	var snap: Tween = create_tween() # snap_to_reference setter includes logic for shader updates
@@ -381,7 +380,7 @@ func _snap_asphalt_to_reference() -> void:
 var won_game: bool = false
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_select") and not won_game and not %RoadChunk.scan_in_progress():
-		%RoadChunk.initiate_scan(level_scan_range, func():
+		%RoadChunk.initiate_scan(func():
 			var deviation: float = %RoadChunk.get_deviation_from_target()
 			if(abs(deviation - 0.5) < accepted_deviation):
 				won_game = true

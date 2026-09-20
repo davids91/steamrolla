@@ -46,7 +46,7 @@ func revert_completed(objective_name: String) -> void:
 	objectives[objective_names.find(objective_name)].completed = false
 
 func _on_check_btn_pressed() -> void:
-	$ObjectiveButtonSound.play()
+	if level: level.initiate_scan()
 
 @export var objective_check_interval_sec : float = 0.5
 var time_left_to_check_sec: float = objective_check_interval_sec
