@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://d4e81v5p2nt06"]
+
+[ext_resource type="Texture2D" uid="uid://uxfl8p7kamqs" path="res://textures/sprite_particle/explosion_particle_92x92.png" id="1_wu8mb"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_bsofj"]
+particles_animation = true
+particles_anim_h_frames = 10
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[node name="CpuParticleTest" type="CPUParticles2D" unique_id=524329069]
+material = SubResource("CanvasItemMaterial_bsofj")
+amount = 1
+texture = ExtResource("1_wu8mb")
+lifetime = 0.5
+gravity = Vector2(0, -980)
+anim_speed_min = 1.0
+anim_speed_max = 1.0

@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://njitf8yrlkoq"]
+
+[ext_resource type="Texture2D" uid="uid://uxfl8p7kamqs" path="res://textures/sprite_particle/explosion_particle_92x92.png" id="1_h1fjv"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_dajr3"]
+particles_animation = true
+particles_anim_h_frames = 10
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pc0ex"]
+particle_flag_disable_z = true
+inherit_velocity_ratio = 1.0
+gravity = Vector3(0, -98, 0)
+scale_min = 0.5
+scale_max = 0.5
+anim_speed_min = 1.0
+anim_speed_max = 1.0
+
+[node name="GpuParticleTest" type="GPUParticles2D" unique_id=1502286342]
+material = SubResource("CanvasItemMaterial_dajr3")
+amount = 1
+texture = ExtResource("1_h1fjv")
+process_material = SubResource("ParticleProcessMaterial_pc0ex")
