@@ -206,6 +206,6 @@ transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.53932136, 0.39768708)
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 
 [node name="ratrick" type="MeshInstance3D" parent="." unique_id=727229284]
-transform = Transform3D(-4.371139e-07, 10, 4.371139e-07, 0, -4.371139e-07, 10, 10, 4.371139e-07, 1.9106854e-14, 0.984074, 0.7544981, -0.9280834)
+transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, 0, -4.371139e-08, 1, 1, 4.371139e-08, 1.9106855e-15, 0.984074, 0.7544981, -0.9280834)
 mesh = SubResource("ArrayMesh_odmfo")
 surface_material_override/0 = ExtResource("4_73gxh")

@@ -81,14 +81,19 @@ David:
 - Level Objective and attribute system System with automated completion check
 - Automatic detection of asphalt reaching target level
 - Road paint animation system
+- Unfinished parts of asphalt flashing red
+- Title screen
 - Level Editor(level data structure, template generation, packing data in compact form)
 - Roadwork tool control system (generic control with mouse drag, keyboard or drawn trajectory)
 - Paver with asphalt storage and release trigger; behavior and sounds
 - Road paint animation system
+- Water Spurt Particle system
 - Drawn Trajectory System
 - Scenery museum with automated camera walkthrough
+- Roundabout level structure
 - Objective Panel UI
 - Tool seelction UI panel
+- Animated Ratrick in a trash container
 - Road paint in intersection level
 - Color palette
 - Sky texture ( cloudy sky )
@@ -98,5 +103,6 @@ David:
 - Roller Squeeze sound
 - Laser tool sound
 - Minor updates in intersection level
-- minor scene, code and resource fixes
-- adjustments to inner systems(orbit camera usage with roller, using gravel and dirt textures, )
+- minor scene and resource fixes
+- various bugfixes
+- adjustments to inner systems(orbit camera usage with roller, using gravel and dirt textures)
