@@ -31,10 +31,10 @@ func work_at_cursor(target_position: Vector3) -> void:
 
 var is_on_asphalt: bool = false
 var was_on_asphalt: bool = is_on_asphalt
-var connected_chunk: RoadChunkBody
+var connected_chunk: RoadChunk
 func _on_asphalt_detector_body_entered(body: Node3D) -> void:
 	if not connected_chunk or body is RoadChunkBody:
-		connected_chunk = body as RoadChunkBody
+		connected_chunk = body.get_parent() as RoadChunk
 
 func _on_asphalt_detector_body_exited(body: Node3D) -> void:
 	if body == connected_chunk: connected_chunk = null
@@ -55,7 +55,12 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	super(delta)
-	if connected_chunk: is_on_asphalt = connected_chunk.is_on_asphalt(global_position)
+	(func():
+		if connected_chunk:
+			var asphalt_quantity: float = await connected_chunk.get_asphalt_quantity_at(global_position)
+			is_on_asphalt = 0. < asphalt_quantity
+	).call_deferred()
+
 	if(
 		is_reversing != (direction.z > 0.0) or is_moving != (direction.z != 0.0)
 		or was_on_asphalt != is_on_asphalt

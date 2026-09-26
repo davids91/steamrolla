@@ -4,7 +4,6 @@ extends Node3D
 
 var physics_needs_update: bool = false
 var time_since_last_update: float = 0.0
-var asphalt_attributes: Image
 var asphalt_state: Texture
 var asphalt_physics_state: Texture ## r: level height(terrain + asphalt), g: asphalt temperature, b: water waves
 
@@ -30,7 +29,6 @@ var DynamicSurfaceShyniness: Array[float] = [0.05, 0., 0.]
 @export var surface: DynamicSurfaces = DynamicSurfaces.ASPHALT:
 	set(v):
 		surface = v
-		if level_data: level_data.surface = v
 		asphalt_shyniness = DynamicSurfaceShyniness[v]
 		match v:
 			DynamicSurfaces.ASPHALT:
@@ -45,7 +43,9 @@ var DynamicSurfaceShyniness: Array[float] = [0.05, 0., 0.]
 			_:
 				asphalt_texture = load("res://textures/asphalt_tile_seamless.png")
 				asphalt_normals = load("res://textures/asphalt_tile_seamless_normal.png")
-		if not is_stub: update_materials()
+		if level_data:
+			level_data.surface = v
+			if not is_stub: update_materials()
 
 @export var map_resolution: Vector2i = Vector2(512,512)
 @export var asphalt_shyniness: float = 0.
@@ -91,17 +91,17 @@ func get_tex_position_from(pos: Vector3) -> Vector2:
 		Vector2(pos.x, pos.z) - Vector2(global_position.x, global_position.z) + flat_chunk_size * 0.5
 	) / flat_chunk_size
 
-func is_on_asphalt(global_pos: Vector3) -> bool:
-	if is_stub: return false
+func get_asphalt_quantity_at(global_pos: Vector3) -> float:
+	if is_stub: return 0.0
 	var normalized_pos: Vector2 = get_tex_position_from(global_pos)
-	if get_node_or_null("%AsphaltFilterPreview/PositionMarker"):
-		%AsphaltFilterPreview/PositionMarker.position = normalized_pos * %AsphaltFilterPreview.size
-	if normalized_pos.x >= 1. or normalized_pos.y >= 1.: return false
-	normalized_pos.x *= asphalt_attributes.get_width()
-	normalized_pos.y *= asphalt_attributes.get_height()
-	var asphalt_pixel:float = asphalt_attributes.get_pixelv(normalized_pos).get_luminance()
-	asphalt_pixel = asphalt_pixel if asphalt_pixel >= 0. else 0. # Checking for out of bounds
-	return 0.5 < asphalt_pixel
+	if normalized_pos.x >= 1. or normalized_pos.y >= 1.: return 0.0
+	%AsphaltStateGetter.material.set_shader_parameter("getter_position", normalized_pos)
+
+	await RenderingServer.frame_post_draw
+	var getter_texture: Texture = %AsphaltStateGetterViewport.get_texture()
+	var asphalt_pixel:float = getter_texture.get_image().get_pixel(0, 0).get_luminance()
+	asphalt_pixel = clamp(asphalt_pixel, 0., 1.) # Checking for out of bounds
+	return asphalt_pixel
 
 @export var deviation_threshold: float = 0.005
 ## Returns with true if the current asphalt state is close enough to the target state
@@ -266,6 +266,9 @@ func update_materials() -> void:
 	%AsphaltChecker.material.set_shader_parameter("asphalt_attributes", level_data.asphalt_attributes)
 	%AsphaltChecker.material.set_shader_parameter("target_asphalt_state", level_data.target_asphalt_state)
 
+	%AsphaltStateGetter.material.set_shader_parameter("asphalt_state", asphalt_state)
+	%AsphaltStateGetter.material.set_shader_parameter("asphalt_attributes", level_data.asphalt_attributes)
+
 	%AsphaltUpdater.material.set_shader_parameter("terrain", level_data.terrain_heightmap)
 	%AsphaltUpdater.material.set_shader_parameter("asphalt_state", asphalt_state)
 	%AsphaltUpdater.material.set_shader_parameter("asphalt_attributes", level_data.asphalt_attributes)
@@ -318,11 +321,6 @@ func _initialize_state() -> void:
 	start_phyisics_state.decompress()
 	start_phyisics_state.convert(Image.FORMAT_RF)
 	asphalt_physics_state = ImageTexture.create_from_image(start_phyisics_state)
-
-	if level_data.asphalt_attributes:
-		asphalt_attributes = level_data.asphalt_attributes.get_image()
-		asphalt_attributes.decompress()
-	else: asphalt_attributes = Image.create_empty(map_resolution.x, map_resolution.y, false, Image.FORMAT_RGBF)
 
 	# Handle asphalt state starting values
 	surface = level_data.surface
