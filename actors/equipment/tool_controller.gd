@@ -51,9 +51,10 @@ func _ready() -> void:
 
 	if tool_transforms: # If any positions are stored, update the tools based on them
 		for c in get_children(): if c is RoadworkTool:
-			if deployed_tools.has(c.tool_enum) and tool_transforms.has(c.tool_enum):
+			if tool_transforms.has(c.tool_enum):
+				deployed_tools.push_back(c.tool_enum)
+				c.global_transform = tool_transforms[c.tool_enum]
 				deployment_changed.emit(c.tool_enum, true)
-				c.global_position = tool_transforms[c.tool_enum]
 			elif runways.has(c.tool_enum): # Hide undeployed, but deployable tools
 				c.set_color(Color.TRANSPARENT)
 
