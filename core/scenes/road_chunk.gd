@@ -2,6 +2,8 @@
 class_name RoadChunk
 extends Node3D
 
+signal user_data_saved()
+
 var physics_needs_update: bool = false
 var time_since_last_update: float = 0.0
 var asphalt_state: Texture
@@ -412,6 +414,7 @@ func save_user_data(base_dir: String = used_base_dir) -> void:
 	var current_asphalt_state: Image = asphalt_state.get_image()
 	current_asphalt_state.resize(64,64, Image.INTERPOLATE_LANCZOS)
 	current_asphalt_state.save_png(LevelStructure.user_asphalt_state_mini_tex_path(base_dir))
+	user_data_saved.emit()
 
 func reset_user_data(base_dir: String = used_base_dir) -> void:
 	var user_data_path: String = LevelStructure.user_asphalt_state_tex_path(base_dir)

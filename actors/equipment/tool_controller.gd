@@ -1,7 +1,6 @@
 extends Node3D
 
 @export var trajectory: Trajectory
-@export var HUD: HeadsUpDisplay
 @export var view: PlayerView
 @export var road_chunk: RoadChunk
 @export var runways: Dictionary[ToolPanel.Tools, Runway]
@@ -21,6 +20,14 @@ func _ready() -> void:
 			"controlled_by" in c and c.controlled_by == RoadworkTool.ControlMethods.PILOTED
 			and c.has_signal("driver_intention_changed")
 		): c.driver_intention_changed.connect(piloted_tool_driver_intention_changed)
+	road_chunk.user_data_saved.connect(func():
+		LevelStructure.level_attribute_store(road_chunk.used_base_dir, "tool_positions", get_tool_positions())
+	)
+	var tool_transforms: Dictionary[ToolPanel.Tools, Transform3D] = LevelStructure.level_attribute_data_read(
+		road_chunk.used_base_dir, "tool_positions"
+	)
+	if tool_transforms: for t in tool_transforms: if tool_nodes.has(t):
+		tool_nodes[t].global_transform = tool_transforms[t]
 
 func piloted_tool_driver_intention_changed(is_moving: bool, forward: bool) -> void:
 	if ( # Update angle of piloted tool based on driver intention
@@ -29,6 +36,12 @@ func piloted_tool_driver_intention_changed(is_moving: bool, forward: bool) -> vo
 	):
 		if forward: road_chunk.tool_angle_offset = tool_nodes[active_tool].tool_angle
 		else: road_chunk.tool_angle_offset = tool_nodes[active_tool].tool_angle + PI
+
+func get_tool_positions() -> Dictionary[ToolPanel.Tools, Transform3D]:
+	var positions: Dictionary[ToolPanel.Tools, Transform3D]
+	for c in get_children(): if c is RoadworkTool:
+		positions[c.tool_enum] = c.global_transform
+	return positions
 
 var active_tool: ToolPanel.Tools = ToolPanel.Tools.UNKNOWN
 var tool_session_ongoing: bool = false
@@ -45,7 +58,6 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 		runways[active_tool].stop_deployment()
 		tool_nodes[active_tool].prepare_for_runway()
 	if tool_nodes.has(active_tool) and tool_nodes[active_tool] and tool != active_tool:
-		tool_nodes[active_tool].set_color(Color.TRANSPARENT)
 		# Rewire driver intention changed
 		tool_nodes[active_tool].driver_intention_changed.disconnect(piloted_tool_driver_intention_changed)
 		tool_nodes[active_tool].driver_intention_changed.connect(piloted_tool_driver_intention_changed)
@@ -54,16 +66,13 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 	if runways.has(tool) and tool_nodes[tool].controlled_by != RoadworkTool.ControlMethods.DRAWN:
 		if tool_session_ongoing:
 			runways[tool].stop_deployment()
-			if HUD: HUD.visible = true
 			view.make_current()
 		tool_session_ongoing = true
 		tool_nodes[tool].reset_color()
 		runways[tool].carrying = tool_nodes[tool]
 		runways[tool].initiate_deployment()
-		runways[tool].payload_left.connect(func(): if HUD: HUD.visible = false, CONNECT_ONE_SHOT)
 		runways[tool].payload_entered.connect(func():
 			tool_session_ongoing = false
-			if HUD: HUD.visible = true
 			view.make_current()
 			runways[tool].stop_deployment()
 			select_tool(tool),

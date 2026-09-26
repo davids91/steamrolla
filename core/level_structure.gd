@@ -1,6 +1,7 @@
 class_name LevelStructure
 extends Node
 
+#region level folder structure
 const LEVELS_FOLDER: String = "res://levels/"
 ## The folder for a level should start with the appropriate coordinates, separated by a single underline
 const LEVEL_FOLDER_NAME_REGEX: String = "^([0-9]*)_([0-9]*).*"
@@ -27,6 +28,7 @@ static func level_position_from_dir_name(dir_name: String) -> Vector2:
 	var regex_match: RegExMatch = RegEx.create_from_string(LevelStructure.LEVEL_FOLDER_NAME_REGEX).search(dir_name)
 	if regex_match.get_group_count() < 2: push_error("level folder name " + dir_name + " is not supported!")
 	return Vector2(float(regex_match.strings[1]), float(regex_match.strings[2]))
+#endregion
 
 #region Level data images
 ## Images for level data in raw mode
@@ -115,7 +117,9 @@ static func level_attribute_list(base_dir: String) -> Dictionary[String, String]
 	var file: FileAccess = FileAccess.open(level_attribute_list_path(base_dir), FileAccess.READ)
 	return file.get_var()
 
-## Updates the stored attributes for the given level base directory
+## Updates the stored objective attributes for the given level base directory
+## Meaning: attributes required to be set for the level to be completed.
+## A level might have other attributes, e.g. tool_positions --> position of each tool
 static func level_attribute_list_overwrite(base_dir: String, new_attribute_list: Dictionary[String, String]) -> void:
 	var file: FileAccess = FileAccess.open(level_attribute_list_path(base_dir), FileAccess.WRITE)
 	file.store_var(new_attribute_list)
@@ -133,9 +137,16 @@ static func level_attribute_under_path_present(attribute_path: String) -> bool:
 	return FileAccess.file_exists(attribute_path)
 
 ## Set the given attribute within the given levels base directory
-static func level_attribute_store_completed(base_dir: String, attribute_name: String) -> void:
+static func level_attribute_store(base_dir: String, attribute_name: String, contents = null) -> void:
 	var file: FileAccess = FileAccess.open(level_attribute_path(base_dir, attribute_name), FileAccess.WRITE)
-	file.store_var(true)
+	if not contents: file.store_var(true)
+	else: file.store_var(contents)
+
+## Returns with the data stored under the attribute ( if there is any )
+static func level_attribute_data_read(base_dir: String, attribute_name: String):
+	var file: FileAccess = FileAccess.open(level_attribute_path(base_dir, attribute_name), FileAccess.READ)
+	if not file: return null
+	return file.get_var()
 
 ## Erase the given attribute within the given levels base directory
 static func level_attribute_reset(base_dir: String, attribute_name: String) -> void:
@@ -147,4 +158,5 @@ static func level_attribute_completion(base_dir: String) -> float:
 	var completed_attr: int = 0
 	for attr in attribute_list.keys(): if level_attribute_present(base_dir, attr): completed_attr += 1
 	return float(completed_attr) / float(attribute_list.size())
+
 #endregion
