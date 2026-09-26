@@ -25,7 +25,6 @@ enum ControlMethods{
 @export var has_payload: bool = false
 @onready var payload_triggered: bool = false
 
-
 func prepare_for_runway() -> void: pass
 func entered_runway() -> void: pass
 func exited_runway() -> void: pass
@@ -60,7 +59,6 @@ func trajectory_drawn(trajectory: PathFollow3D, duration_sec: float, call_when_d
 
 	trajectory.progress_ratio = 0.
 	global_position = trajectory.global_position
-	set_color(default_color)
 	start_working()
 	trajectory_reference_pos = global_position
 	get_tree().create_timer(0.0).timeout.connect(func():
@@ -74,7 +72,6 @@ func trajectory_drawn(trajectory: PathFollow3D, duration_sec: float, call_when_d
 			0., 1., duration_sec
 		).set_ease(Tween.EASE_IN_OUT).finished.connect(func():
 			stop_working()
-			set_color(Color.TRANSPARENT)
 			trajectory_tween = null
 			call_when_done.call()
 		)

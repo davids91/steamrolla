@@ -15,11 +15,9 @@ func set_angle_from_prev_pos(prev_pos: Vector3) -> void:
 
 func start_working() -> void:
 	if controlled_by == RoadworkTool.ControlMethods.PILOTED: $OrbitCamera.make_current()
-	set_color(default_color)
 	super()
 
 func stop_working() -> void:
-	if controlled_by != ControlMethods.PILOTED: set_color(Color.TRANSPARENT)
 	$SqueezeSound.stop()
 	super()
 

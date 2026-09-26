@@ -25,7 +25,6 @@ func set_transform_based_on(target_position: Vector3) -> void:
 
 func start_working() -> void:
 	if controlled_by == RoadworkTool.ControlMethods.PILOTED: $OrbitCamera.make_current()
-	set_color(default_color)
 	super()
 
 func stop_working() -> void:

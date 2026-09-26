@@ -21,6 +21,7 @@ func work_at_cursor(target_position: Vector3) -> void:
 #endregion Common Interface For Roadwork Tools
 
 func _ready() -> void:
+	set_color(Color.TRANSPARENT)
 	$Bloke/AnimationPlayer.current_animation = "default"
 
 @export var vibration_speed: float = 100.

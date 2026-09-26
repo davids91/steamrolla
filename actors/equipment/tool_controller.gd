@@ -1,5 +1,7 @@
 extends Node3D
 
+signal deployment_changed(tool: ToolPanel.Tools, deployed: bool)
+
 @export var trajectory: Trajectory
 @export var view: PlayerView
 @export var road_chunk: RoadChunk
@@ -14,20 +16,46 @@ extends Node3D
 		draw_radius = v
 		if road_chunk: road_chunk.update_brush_radius = draw_radius
 
+## Tools deployed by the runway (if the given tool has an assigned runway)
+var deployed_tools: Array[ToolPanel.Tools] = []
 func _ready() -> void:
+	# Connect driver intention changed signals for piloted tools
 	for c in get_children():
 		if(
 			"controlled_by" in c and c.controlled_by == RoadworkTool.ControlMethods.PILOTED
 			and c.has_signal("driver_intention_changed")
 		): c.driver_intention_changed.connect(piloted_tool_driver_intention_changed)
-	road_chunk.user_data_saved.connect(func():
-		LevelStructure.level_attribute_store(road_chunk.used_base_dir, "tool_positions", get_tool_positions())
-	)
-	var tool_transforms: Dictionary[ToolPanel.Tools, Transform3D] = LevelStructure.level_attribute_data_read(
-		road_chunk.used_base_dir, "tool_positions"
-	)
-	if tool_transforms: for t in tool_transforms: if tool_nodes.has(t):
-		tool_nodes[t].global_transform = tool_transforms[t]
+
+	# Runway deployment signals
+	for r in runways:
+		runways[r].payload_left.connect(func():
+			if not deployed_tools.has(active_tool):
+				deployed_tools.push_back(active_tool)
+				deployment_changed.emit(active_tool, true)
+		)
+		runways[r].payload_entered.connect(func():
+			tool_session_ongoing = false
+			runways[r].stop_deployment()
+			deployed_tools.erase(active_tool)
+			deployment_changed.emit(active_tool, false)
+			select_tool(active_tool)
+		)
+
+	# Storage and retrieval of the positions of the deployed tools
+	road_chunk.user_data_saved.connect(func():LevelStructure.level_attribute_store(
+		road_chunk.used_base_dir, "tool_positions", get_deployed_tool_positions()
+	))
+	var readout = LevelStructure.level_attribute_data_read(road_chunk.used_base_dir, "tool_positions")
+	var tool_transforms: Dictionary[ToolPanel.Tools, Transform3D]
+	if readout is Dictionary[ToolPanel.Tools, Transform3D]: tool_transforms = readout
+
+	if tool_transforms: # If any positions are stored, update the tools based on them
+		for c in get_children(): if c is RoadworkTool:
+			if deployed_tools.has(c.tool_enum) and tool_transforms.has(c.tool_enum):
+				deployment_changed.emit(c.tool_enum, true)
+				c.global_position = tool_transforms[c.tool_enum]
+			elif runways.has(c.tool_enum): # Hide undeployed, but deployable tools
+				c.set_color(Color.TRANSPARENT)
 
 func piloted_tool_driver_intention_changed(is_moving: bool, forward: bool) -> void:
 	if ( # Update angle of piloted tool based on driver intention
@@ -37,9 +65,10 @@ func piloted_tool_driver_intention_changed(is_moving: bool, forward: bool) -> vo
 		if forward: road_chunk.tool_angle_offset = tool_nodes[active_tool].tool_angle
 		else: road_chunk.tool_angle_offset = tool_nodes[active_tool].tool_angle + PI
 
-func get_tool_positions() -> Dictionary[ToolPanel.Tools, Transform3D]:
+## Provide the positions of the deployed tools
+func get_deployed_tool_positions() -> Dictionary[ToolPanel.Tools, Transform3D]:
 	var positions: Dictionary[ToolPanel.Tools, Transform3D]
-	for c in get_children(): if c is RoadworkTool:
+	for c in get_children(): if c is RoadworkTool and deployed_tools.has(c.tool_enum):
 		positions[c.tool_enum] = c.global_transform
 	return positions
 
@@ -54,32 +83,43 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 			trajectory.trajectory_drawn.connect(tool_nodes[tool].trajectory_drawn)
 
 	# Cleanup after previously used tool
+	view.make_current()
 	if runways.has(active_tool):
+		tool_nodes[active_tool].stop_working()
 		runways[active_tool].stop_deployment()
 		tool_nodes[active_tool].prepare_for_runway()
+		if tool != active_tool and not deployed_tools.has(active_tool):
+			tool_nodes[active_tool].set_color(Color.TRANSPARENT)
 	if tool_nodes.has(active_tool) and tool_nodes[active_tool] and tool != active_tool:
 		# Rewire driver intention changed
 		tool_nodes[active_tool].driver_intention_changed.disconnect(piloted_tool_driver_intention_changed)
 		tool_nodes[active_tool].driver_intention_changed.connect(piloted_tool_driver_intention_changed)
 
-	# Initiate runway logic if runway is available and the tool is not controlled by a trajectory
-	if runways.has(tool) and tool_nodes[tool].controlled_by != RoadworkTool.ControlMethods.DRAWN:
-		if tool_session_ongoing:
-			runways[tool].stop_deployment()
-			view.make_current()
+		# Hide undeployed tool
+		if not deployed_tools.has(active_tool): tool_nodes[active_tool].set_color(Color.TRANSPARENT)
+
+	# Initiate runway logic
+	if( #  if runway is available, it's not deployed already
+		runways.has(tool) and not deployed_tools.has(tool)
+		# and the tool is not controlled by a trajectory
+		and tool_nodes[tool].controlled_by != RoadworkTool.ControlMethods.DRAWN
+	):
+		if tool_session_ongoing: runways[tool].stop_deployment()
 		tool_session_ongoing = true
 		tool_nodes[tool].reset_color()
 		runways[tool].carrying = tool_nodes[tool]
 		runways[tool].initiate_deployment()
-		runways[tool].payload_entered.connect(func():
-			tool_session_ongoing = false
-			view.make_current()
-			runways[tool].stop_deployment()
-			select_tool(tool),
-			CONNECT_ONE_SHOT
-		)
-	elif road_chunk and tool_nodes.has(tool): # No runway available, simply configure tool
-		road_chunk.configure_to(tool_nodes[tool])
+	elif road_chunk and tool_nodes.has(tool):# No runway available or tool already deployed
+		road_chunk.configure_to(tool_nodes[tool]) # Configure tool
+		if runways.has(tool): # Configure runway if available
+			runways[tool].resume_deployment()
+			runways[tool].carrying = tool_nodes[tool]
+			runways[tool].following = tool_nodes[tool]
+		if( # Also resume work on Drawn and Piloted tools
+			tool_nodes[tool].controlled_by == RoadworkTool.ControlMethods.DRAWN
+			or tool_nodes[tool].controlled_by == RoadworkTool.ControlMethods.PILOTED
+		): tool_nodes[tool].start_working()
+
 		if trajectory:
 			trajectory.is_enabled = tool_nodes[tool].controlled_by == RoadworkTool.ControlMethods.DRAWN
 	active_tool = tool

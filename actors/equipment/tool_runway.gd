@@ -31,8 +31,10 @@ func initiate_deployment() -> void:
 	following = player_cursor
 	current_state = State.PLACEMENT
 
+func resume_deployment() -> void:
+	current_state = State.DEPLOYED
+
 func stop_deployment() -> void:
-	current_state = State.HIDDEN
 	following = player_cursor
 	carrying.stop_working()
 
