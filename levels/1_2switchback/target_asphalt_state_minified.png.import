@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://co25chd140vxl"
-path="res://.godot/imported/normal.png-5a895cba3b93dcd325a2e0974ebb31bb.ctex"
+uid="uid://crykrdiq4d4xi"
+path="res://.godot/imported/target_asphalt_state_minified.png-2892c32b7133d9a5b07cced3e59e5f69.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://levels/switchback/normal.png"
-dest_files=["res://.godot/imported/normal.png-5a895cba3b93dcd325a2e0974ebb31bb.ctex"]
+source_file="res://levels/1_2switchback/target_asphalt_state_minified.png"
+dest_files=["res://.godot/imported/target_asphalt_state_minified.png-2892c32b7133d9a5b07cced3e59e5f69.ctex"]
 
 [params]
 

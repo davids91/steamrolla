@@ -109,7 +109,9 @@ void fragment() {
 
 	// Make Asphalt glow red when hot
 	ALBEDO += asphalt_hot_color * texture(asphalt_physics_state, UV).g;
-	ALPHA = texture(road_colormap, UV).a;
+	// TechDebt: Setting alpha to shader confuses render order
+	// https://github.com/godotengine/godot/issues/98217
+	//ALPHA = texture(road_colormap, UV).a;
 }
 
 // Recreation of the default godot light shader from

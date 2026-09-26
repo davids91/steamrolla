@@ -391,13 +391,12 @@ func _unhandled_input(event: InputEvent) -> void:
 				winning_animation.tween_method(func(w: float): %RoadChunk.set_highlight(sin(w)), 0., PI, 0.15)
 				#winning_animation.tween_callback(_have_road_paint_appear)
 		)
-	elif event.is_action_pressed("ui_select"):
-		won_game = false
-		$RoadPaint.mesh.size.x = 0.
-		$RoadPaint.mesh.size.y = 0.
 
 func _ready() -> void:
 	_load_level_data()
 	%ToolPanel.call_deferred("select", ToolPanel.Tools.PAVER)
 	for tool in $ToolController.get_children(): if tool is RoadworkTool:
 		tool.set_color(Color.TRANSPARENT)
+	get_tree().create_timer(0.5).timeout.connect(func():
+		%RoadChunk.rotation = Vector3.ZERO # The chunk is a stub so it might rotate on ready
+	)

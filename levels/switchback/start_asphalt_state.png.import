@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dvf5myxwlhb2v"
-path="res://.godot/imported/height.png-04a5e5aa0887163d6d254711d78667f2.ctex"
+uid="uid://b0q72alau7fsv"
+path="res://.godot/imported/start_asphalt_state.png-fb01c087eb521254b8fa74e98a439d20.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://levels/switchback/height.png"
-dest_files=["res://.godot/imported/height.png-04a5e5aa0887163d6d254711d78667f2.ctex"]
+source_file="res://levels/switchback/start_asphalt_state.png"
+dest_files=["res://.godot/imported/start_asphalt_state.png-fb01c087eb521254b8fa74e98a439d20.ctex"]
 
 [params]
 

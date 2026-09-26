@@ -39,13 +39,14 @@ func _on_asphalt_detector_body_entered(body: Node3D) -> void:
 func _on_asphalt_detector_body_exited(body: Node3D) -> void:
 	if body == connected_chunk: connected_chunk = null
 
+@export var transparency_while_moving: float = 0.025
 var moving_transparency_modifier: float = 0.
 func _process(delta: float) -> void:
 	super(delta)
 	if not $OrbitCamera.get_current(): return
 	var movement_direction: Vector3 = (basis.z * -movement_intent.y).normalized()
 	var camera_direction: Vector3 = ($OrbitCamera.get_view_origin() - global_position)
-	if 0. > movement_direction.dot(camera_direction): moving_transparency_modifier = -1.
+	if 0. > movement_direction.dot(camera_direction): moving_transparency_modifier = -(1. - transparency_while_moving)
 	else: moving_transparency_modifier = 0.
 	current_color = lerp(
 		current_color, Color(target_color.r, target_color.g, target_color.b, target_color.a + moving_transparency_modifier),

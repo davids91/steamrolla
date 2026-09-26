@@ -91,6 +91,7 @@ script = ExtResource("1_pogr6")
 tool_enum = 1
 normalized_size = Vector2(0.05, 0.01)
 tool_angle = 3.142
+tool_strength = 3.0
 has_payload = true
 
 [node name="OrbitCamera" parent="." unique_id=1504134869 instance=ExtResource("2_tthve")]
