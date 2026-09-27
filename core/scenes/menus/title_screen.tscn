@@ -1,12 +1,13 @@
 [gd_scene format=4 uid="uid://dbaycbd46p3op"]
 
-[ext_resource type="Script" uid="uid://doqxefey6s7j7" path="res://core/scenes/title_screen.gd" id="1_58eve"]
-[ext_resource type="PackedScene" uid="uid://ccd6hldeyxwf6" path="res://core/UI/main_menu/main_menu.tscn" id="1_r0kk5"]
+[ext_resource type="Script" uid="uid://doqxefey6s7j7" path="res://core/scenes/menus/title_screen.gd" id="1_58eve"]
+[ext_resource type="PackedScene" uid="uid://ccd6hldeyxwf6" path="res://core/scenes/menus/main_menu.tscn" id="1_r0kk5"]
 [ext_resource type="PackedScene" uid="uid://b7143f1jor1qd" path="res://core/scenes/road_chunk.scn" id="2_58eve"]
 [ext_resource type="AudioStream" uid="uid://bfqbrqjnjxh3" path="res://audio/SteamRolla-Main-Menu-Music-Loop.ogg" id="2_658y6"]
 [ext_resource type="Texture2D" uid="uid://dk0r2hexmx6ad" path="res://textures/map_overview_concept/map_file.png" id="3_658y6"]
 [ext_resource type="Script" uid="uid://bclv735d06io5" path="res://core/tools/road_paint.gd" id="4_658y6"]
 [ext_resource type="PackedScene" uid="uid://xehtklcspjew" path="res://props/pipe.tscn" id="5_5fdls"]
+[ext_resource type="Resource" uid="uid://b2dbwi2ryh3oc" path="res://levels/2_1intersection/level_data.res" id="6_658y6"]
 [ext_resource type="PackedScene" uid="uid://yiyute5quljt" path="res://props/dumpster.tscn" id="7_7qqah"]
 [ext_resource type="PackedScene" uid="uid://cnarqk06h326x" path="res://props/fire_hydrant.tscn" id="8_aohd5"]
 [ext_resource type="PackedScene" uid="uid://cgt8pdj2hnchc" path="res://props/car.tscn" id="9_2fu0v"]
@@ -321,6 +322,7 @@ stream = ExtResource("2_658y6")
 autoplay = true
 
 [node name="MainMenu" parent="." unique_id=767521340 instance=ExtResource("1_r0kk5")]
+anchors_preset = 2
 
 [node name="MainTitleEnvironment" type="Node3D" parent="." unique_id=1286330709]
 
@@ -341,8 +343,10 @@ texture = ExtResource("3_658y6")
 
 [node name="Intersection" parent="MainTitleEnvironment" unique_id=716876623 instance=ExtResource("2_58eve")]
 unique_name_in_owner = true
+level_data = ExtResource("6_658y6")
 is_stub = true
 height_unit = 2.0
+surface = 0
 asphalt_shyniness = 0.05
 
 [node name="RoadPaint" type="Node3D" parent="MainTitleEnvironment/Intersection" unique_id=1749392337]

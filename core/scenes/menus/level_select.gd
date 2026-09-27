@@ -37,6 +37,7 @@ func _load_level_data() -> void:
 			create_tween().tween_property($PlayerView, "camera_transform", start_camera_transform, transition_time_sec)
 			create_tween().tween_property(%ScreenBlocker, "modulate", Color.TRANSPARENT, transition_time_sec)
 
+var traveling_towards_selected_chunk: bool = false
 var selected_chunk: RoadChunk = null
 func _unhandled_input(event: InputEvent) -> void:
 	# Select road chunk on hover
@@ -50,6 +51,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				event is InputEventMouseButton and event.is_pressed()
 				and selected_chunk == $PlayerView.looking_at_chunk and scenes.has(selected_chunk)
 			):
+				traveling_towards_selected_chunk = true
 				time_left_to_travel = transition_time_sec
 				selected_chunk = $PlayerView.looking_at_chunk
 				var target_transform : Transform3D = $PlayerView.camera_transform
@@ -60,7 +62,8 @@ func _unhandled_input(event: InputEvent) -> void:
 				create_tween().tween_property(%ScreenBlocker, "modulate", Color.WHITE, transition_time_sec)
 				ResourceLoader.load_threaded_request(scenes[selected_chunk])
 		else: $Highlight.visible = false
-		selected_chunk = $PlayerView.looking_at_chunk
+		if not traveling_towards_selected_chunk:
+			selected_chunk = $PlayerView.looking_at_chunk
 
 	# Erase attribute and user state from selected level
 	if selected_chunk and event.is_action_pressed("debug"):
@@ -87,4 +90,4 @@ func _process(delta: float) -> void:
 
 func _on_exit_btn_pressed() -> void:
 	for c in level_container.get_children(): c.queue_free()
-	level_container.add_child(load("res://core/scenes/title_screen.tscn").instantiate())
+	level_container.add_child(load("res://core/scenes/menus/title_screen.tscn").instantiate())

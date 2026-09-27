@@ -12,4 +12,4 @@ func _process(delta: float) -> void:
 @onready var level_container: Node = get_node("/root/Main/LevelContainer")
 func _on_exit_btn_pressed() -> void:
 	for c in level_container.get_children(): c.queue_free()
-	level_container.add_child(load("res://core/scenes/title_screen.tscn").instantiate())
+	level_container.add_child(load("res://core/scenes/menus/title_screen.tscn").instantiate())

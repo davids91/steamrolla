@@ -1,0 +1,116 @@
+[gd_scene format=3 uid="uid://cfb8we0g6l50f"]
+
+[ext_resource type="Script" uid="uid://bekwbb18eupg3" path="res://core/scenes/base_level.gd" id="1_0iqqk"]
+[ext_resource type="PackedScene" uid="uid://b371k1r87v2p7" path="res://core/tools/player_view.tscn" id="1_0oa8v"]
+[ext_resource type="PackedScene" uid="uid://cvvnwqj8sfbtp" path="res://props/player_cursor.tscn" id="2_0iqqk"]
+[ext_resource type="PackedScene" uid="uid://dujcwqpeofpqp" path="res://props/panorama.tscn" id="2_dph8v"]
+[ext_resource type="Script" uid="uid://bclv735d06io5" path="res://core/tools/road_paint.gd" id="3_dph8v"]
+[ext_resource type="PackedScene" uid="uid://chrk1hugag81m" path="res://core/UI/HUD.tscn" id="4_onofa"]
+[ext_resource type="PackedScene" uid="uid://dnqtesccg76t7" path="res://core/UI/screen_blocker.tscn" id="5_g0uno"]
+[ext_resource type="PackedScene" uid="uid://b7143f1jor1qd" path="res://core/scenes/road_chunk.scn" id="6_rutvw"]
+[ext_resource type="PackedScene" uid="uid://btpepqma8jc6j" path="res://actors/equipment/tool_controller.tscn" id="7_gsihx"]
+[ext_resource type="PackedScene" uid="uid://c6umqesxiecbq" path="res://actors/equipment/tool_runway.tscn" id="8_8or7f"]
+[ext_resource type="PackedScene" uid="uid://de464tly5tid8" path="res://actors/equipment/asphalt_paver.tscn" id="9_eub5e"]
+[ext_resource type="PackedScene" uid="uid://csaxjq3vidpcx" path="res://actors/equipment/compactor.tscn" id="10_0qlnr"]
+[ext_resource type="Script" uid="uid://6yit4f6dscyo" path="res://actors/equipment/roadwork_tool.gd" id="11_bbaub"]
+[ext_resource type="PackedScene" uid="uid://dr7xbirpqj8e6" path="res://actors/equipment/roller.tscn" id="12_vgfd3"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_82otu"]
+
+[sub_resource type="Sky" id="Sky_oi3di"]
+sky_material = SubResource("ProceduralSkyMaterial_82otu")
+
+[sub_resource type="Environment" id="Environment_puwdi"]
+background_mode = 2
+sky = SubResource("Sky_oi3di")
+ambient_light_color = Color(0, 0.5882353, 0.5647059, 1)
+
+[sub_resource type="Curve" id="Curve_gij5m"]
+_limits = [0.0, 1.25, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 4.295519, 0, 0, Vector2(0.7030201, 1.0452518), 2.8887992, 2.8887992, 0, 0, Vector2(1, 1), -1.4652756, 0.0, 0, 0]
+point_count = 3
+
+[node name="Level" type="Node3D" unique_id=1539626438]
+script = ExtResource("1_0iqqk")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1708251831]
+environment = SubResource("Environment_puwdi")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1828634084]
+transform = Transform3D(0.52001595, -0.28811294, -0.8040985, 0.8066554, -0.14391099, 0.57323366, -0.2808746, -0.946721, 0.15757184, 1.6042094, 12.744053, -0.8896208)
+shadow_enabled = true
+shadow_bias = 0.0
+
+[node name="panorama" parent="." unique_id=1549718638 instance=ExtResource("2_dph8v")]
+transform = Transform3D(0.0017408282, 0, -0.99999845, 0, 1, 0, 0.99999845, 0, 0.0017408282, 13.073471, 0.87625206, -59.401245)
+
+[node name="PlayerView" parent="." unique_id=1504134869 node_paths=PackedStringArray("cursor") instance=ExtResource("1_0oa8v")]
+transform = Transform3D(0.11978244, 0.54834604, -0.8276284, -0.07854364, 0.8362515, 0.54269177, 0.98968834, 0, 0.14323734, -18.784536, 15.911701, 8.004426)
+visible = true
+cursor = NodePath("../PlayerCursor")
+make_current_on_start = false
+
+[node name="PlayerCursor" parent="." unique_id=1630135012 instance=ExtResource("2_0iqqk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2210603, 1.9019608, 4.4473124)
+
+[node name="RoadPaint" type="Node3D" parent="." unique_id=484806174]
+script = ExtResource("3_dph8v")
+road_paint_animation_curve = SubResource("Curve_gij5m")
+
+[node name="HUD" parent="." unique_id=920709406 node_paths=PackedStringArray("level") instance=ExtResource("4_onofa")]
+level = NodePath("../RoadChunk")
+
+[node name="ScreenBlocker" parent="HUD" unique_id=991935671 instance=ExtResource("5_g0uno")]
+unique_name_in_owner = true
+z_index = 500
+
+[node name="RoadChunk" parent="." unique_id=716876623 instance=ExtResource("6_rutvw")]
+unique_name_in_owner = true
+height_unit = 2.0
+surface = 0
+asphalt_shyniness = 0.05
+deviation_threshold = 0.003
+
+[node name="ToolController" parent="." unique_id=129265235 node_paths=PackedStringArray("view", "level", "runways", "tool_nodes") instance=ExtResource("7_gsihx")]
+view = NodePath("../PlayerView")
+level = NodePath("../RoadChunk")
+runways = {
+0: NodePath("RollerRunway"),
+1: NodePath("RollerRunway")
+}
+tool_nodes = {
+0: NodePath("Roller"),
+1: NodePath("AsphaltPaver"),
+3: NodePath("Compactor"),
+4: NodePath("Shovel")
+}
+
+[node name="RollerRunway" parent="ToolController" unique_id=328105869 node_paths=PackedStringArray("level", "player_cursor", "carrying") instance=ExtResource("8_8or7f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.81038, 0, 2.2620502)
+level = NodePath("../../RoadChunk")
+player_cursor = NodePath("../../PlayerCursor")
+carrying = NodePath("../Roller")
+
+[node name="AsphaltPaver" parent="ToolController" unique_id=655459454 groups=["BirdReactable", "BombActivator"] instance=ExtResource("9_eub5e")]
+transform = Transform3D(0.0017408282, 0, -0.99999845, 0, 1, 0, 0.99999845, 0, 0.0017408282, 13.073471, 0.87625206, -59.401245)
+
+[node name="Compactor" parent="ToolController" unique_id=2098416677 groups=["BirdReactable", "BombActivator"] instance=ExtResource("10_0qlnr")]
+transform = Transform3D(0.0017408282, 0, -0.99999845, 0, 1, 0, 0.99999845, 0, 0.0017408282, 25.878357, 1.5274742, -56.18244)
+
+[node name="Shovel" type="Node3D" parent="ToolController" unique_id=1584478563 groups=["BirdReactable", "BombActivator"]]
+transform = Transform3D(0.0017408282, 0, -0.99999845, 0, 1, 0, 0.99999845, 0, 0.0017408282, 20.52368, 0.8762511, 5.0524797)
+script = ExtResource("11_bbaub")
+tool_enum = 4
+tool_radius = 0.085
+
+[node name="Roller" parent="ToolController" unique_id=1510864838 groups=["BirdReactable", "BombActivator"] instance=ExtResource("12_vgfd3")]
+transform = Transform3D(0.0017408282, 0, -0.99999845, 0, 1, 0, 0.99999845, 0, 0.0017408282, 14.404985, 0.8762511, -50.341175)
+tool_strength = 0.75
+tool_radius = 0.3
+speed = 7.5
+turning_speed = 0.5
+
+[connection signal="exit_scene" from="HUD" to="RoadChunk" method="save_user_data"]
+[connection signal="objective_completed" from="HUD" to="." method="_on_hud_objective_completed"]
+[connection signal="selected" from="HUD" to="ToolController" method="select_tool"]
+[connection signal="deployment_changed" from="ToolController" to="HUD" method="_on_tool_controller_deployment_changed"]

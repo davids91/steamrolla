@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://dnqtesccg76t7"]
+
+[sub_resource type="Gradient" id="Gradient_lnrnj"]
+colors = PackedColorArray(0.66656864, 0.6665687, 0.66656864, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5j0fq"]
+gradient = SubResource("Gradient_lnrnj")
+width = 512
+height = 512
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.94017094, 0.43589744)
+
+[node name="ScreenBlocker" type="Control" unique_id=991935671]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 376.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1211959003]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1736099993]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_5j0fq")
+expand_mode = 2
+stretch_mode = 5

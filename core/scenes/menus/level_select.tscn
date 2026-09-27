@@ -1,11 +1,12 @@
 [gd_scene format=3 uid="uid://c3vrtvay36bhk"]
 
-[ext_resource type="Script" uid="uid://cjfp6pmui58nv" path="res://core/scenes/level_select.gd" id="1_esh0k"]
+[ext_resource type="Script" uid="uid://cjfp6pmui58nv" path="res://core/scenes/menus/level_select.gd" id="1_esh0k"]
 [ext_resource type="PackedScene" uid="uid://b371k1r87v2p7" path="res://core/tools/player_view.tscn" id="2_hm68f"]
 [ext_resource type="PackedScene" uid="uid://cvvnwqj8sfbtp" path="res://props/player_cursor.tscn" id="3_lnrnj"]
 [ext_resource type="Script" uid="uid://ccyo8n18hat0m" path="res://props/highlight.gd" id="4_ohvno"]
 [ext_resource type="PackedScene" uid="uid://biysx7wem6d8s" path="res://props/panorama_sphere.tscn" id="5_335hl"]
 [ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="5_rltma"]
+[ext_resource type="PackedScene" uid="uid://dnqtesccg76t7" path="res://core/UI/screen_blocker.tscn" id="6_0pojg"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hm68f"]
 
@@ -38,17 +39,6 @@ region = Rect2(897.618, 125.676, 128, 128)
 [sub_resource type="AtlasTexture" id="AtlasTexture_ffkug"]
 atlas = ExtResource("5_rltma")
 region = Rect2(772.883, 121.768, 128, 137.545)
-
-[sub_resource type="Gradient" id="Gradient_lnrnj"]
-colors = PackedColorArray(0.66656864, 0.6665687, 0.66656864, 1, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_5j0fq"]
-gradient = SubResource("Gradient_lnrnj")
-width = 512
-height = 512
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(0.94017094, 0.43589744)
 
 [node name="LevelSelect" type="Node3D" unique_id=2110132494]
 script = ExtResource("1_esh0k")
@@ -124,40 +114,8 @@ offset_bottom = 124.0
 texture = SubResource("AtlasTexture_ffkug")
 expand_mode = 3
 
-[node name="ScreenBlocker" type="Control" parent="CanvasLayer" unique_id=1150977170]
+[node name="ScreenBlocker" parent="CanvasLayer" unique_id=991935671 instance=ExtResource("6_0pojg")]
 unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0)
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_bottom = 376.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-mouse_filter = 2
-
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/ScreenBlocker" unique_id=887976648]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/ScreenBlocker" unique_id=1558589073]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = SubResource("GradientTexture2D_5j0fq")
-expand_mode = 2
-stretch_mode = 5
 
 [node name="panorama_sphere" parent="." unique_id=298437647 instance=ExtResource("5_335hl")]
 transform = Transform3D(1000, 0, 0, 0, 1000, 0, 0, 0, 1000, 0, 0, 0)
