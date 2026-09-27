@@ -15,25 +15,36 @@ func select(tool: Tools) -> void:
 		if c.get_tool_enum() != tool: c.unselect()
 		else: c.select()
 	selected_tool.emit(tool)
-	var tool_index: int = available_tools.find(tool)
 	create_tween().tween_property(
 		$SelectedTool, "position",
 		Vector2(
-			get_theme_constant("margin_left") + $Tools.get_child(tool_index).position.x,
+			get_theme_constant("margin_left") + tool_buttons[tool].position.x,
 			get_theme_constant("margin_top")
 		),
 		0.1
 	).set_ease(Tween.EASE_IN_OUT)
 
+func set_deployed(tool: Tools, deployed: bool) -> void:
+	if not tool_buttons.has(tool):
+		push_error("Couldn't deploy tool(", tool ,") as it's not found in ", tool_buttons)
+		return
+	tool_buttons[tool].deployed = deployed
+
 const TOOL_BUTTON_TEMPLATE: PackedScene = preload("res://core/UI/tool_button.tscn")
 func _refresh_buttons() -> void:
+	tool_buttons.clear()
 	for c in $Tools.get_children(): queue_free()
+	var i: int = 0
 	for t in available_tools:
 		var button: ToolButton = TOOL_BUTTON_TEMPLATE.instantiate()
 		button.selected.connect(select)
 		button.tool_index = t
+		button.tool_number = i
+		tool_buttons[t] = button
 		$Tools.add_child(button)
+		i += 1
 
+@onready var tool_buttons: Dictionary[Tools, ToolButton] = {}
 func _ready() -> void:
 	_refresh_buttons()
 	select.call_deferred(default_selected_tool)

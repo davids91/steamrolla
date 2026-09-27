@@ -2,18 +2,38 @@
 
 [ext_resource type="Script" uid="uid://c23sbydt4m7ko" path="res://core/UI/tool_button.gd" id="1_krd3q"]
 [ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="2_0jvag"]
+[ext_resource type="Shader" uid="uid://cestwc0w0cjw1" path="res://core/UI/decorated_text.gdshader" id="2_pmmbx"]
+
+[sub_resource type="Gradient" id="Gradient_aqvre"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.5083933)
+colors = PackedColorArray(0.9254902, 0.9098039, 0.101960786, 1, 0.088666655, 0.0784, 0.14, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_k5p64"]
+gradient = SubResource("Gradient_aqvre")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2ie5f"]
+resource_local_to_scene = true
+shader = ExtResource("2_pmmbx")
+shader_parameter/color_gradient = SubResource("GradientTexture1D_k5p64")
+shader_parameter/stripes_angle = -1.305
+shader_parameter/stripes_spread = 75.0
+shader_parameter/stripes_edge = 0.001
+
+[sub_resource type="LabelSettings" id="LabelSettings_blmab"]
+font_size = 50
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8jg5c"]
 resource_local_to_scene = true
 atlas = ExtResource("2_0jvag")
-region = Rect2(750, 0, 150, 150)
+region = Rect2(768, 0, 128, 128)
 
 [node name="ToolButton" type="Panel" unique_id=456187996]
 modulate = Color(0.25, 0.25, 0.25, 1)
 z_index = -10
 custom_minimum_size = Vector2(100, 100)
 script = ExtResource("1_krd3q")
-tool_icon_regions = Array[Rect2]([Rect2(256, 0, 256, 256), Rect2(0, 256, 256, 256), Rect2(0, 0, 256, 256), Rect2(0, 512, 256, 256), Rect2(512, 0, 128, 128), Rect2(750, 0, 150, 150)])
+tool_icon_regions = Array[Rect2]([Rect2(256, 0, 256, 256), Rect2(0, 256, 256, 256), Rect2(0, 0, 256, 256), Rect2(0, 512, 256, 256), Rect2(512, 0, 128, 128), Rect2(768, 0, 128, 128)])
 tool_enums = Array[int]([0, 1, 2, 3, 4, 5])
 tool_index = 2
 
@@ -28,6 +48,20 @@ theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
+
+[node name="ToolNumber" type="Label" parent="MarginContainer" unique_id=1470516327]
+unique_name_in_owner = true
+z_index = 100
+material = SubResource("ShaderMaterial_2ie5f")
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 10)
+text = "1"
+label_settings = SubResource("LabelSettings_blmab")
+horizontal_alignment = 2
+vertical_alignment = 2
 
 [node name="ToolImage" type="TextureRect" parent="MarginContainer" unique_id=1737633233]
 unique_name_in_owner = true

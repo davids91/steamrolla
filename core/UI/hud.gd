@@ -33,3 +33,6 @@ func _on_exit_btn_pressed() -> void:
 func _on_objective_panel_objective_completed(objective_name: String) -> void:
 	objective_completed.emit(objective_name)
 	if objective_name == "asphalt_done": $SuccessLevel.play()
+
+func _on_tool_controller_deployment_changed(tool: ToolPanel.Tools, deployed: bool) -> void:
+	$ToolPanel.set_deployed(tool, deployed)

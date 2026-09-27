@@ -30,7 +30,6 @@ script = ExtResource("1_ygh00")
 
 [node name="ToolPanel" parent="." unique_id=120026210 instance=ExtResource("4_hyk35")]
 available_tools = Array[int]([0, 1, 3, 4, 5])
-default_selected_tool = 5
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=38675216]
 anchors_preset = 7
