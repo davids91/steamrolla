@@ -6,6 +6,8 @@
 [ext_resource type="AudioStream" uid="uid://d1n0nybaatu7w" path="res://audio/paver.wav" id="4_ww7qr"]
 [ext_resource type="Shader" uid="uid://trnxwrt5vs7p" path="res://actors/equipment/asphalt_pile.gdshader" id="5_b1e0e"]
 [ext_resource type="Texture2D" uid="uid://b8jol13gu6v18" path="res://textures/asphalt_tile_seamless.png" id="6_tqasd"]
+[ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="7_vgkag"]
+[ext_resource type="Script" uid="uid://m7cns5r4uxhp" path="res://core/UI/key_prompt.gd" id="8_f1fbw"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_srf32"]
 resource_name = "palette"
@@ -86,6 +88,10 @@ material = SubResource("ShaderMaterial_ww7qr")
 subdivide_width = 16
 subdivide_depth = 16
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_8jg5c"]
+atlas = ExtResource("7_vgkag")
+region = Rect2(384, 256, 128, 128)
+
 [node name="AsphaltPaver" type="Node3D" unique_id=655459454]
 script = ExtResource("1_pogr6")
 tool_enum = 1
@@ -116,6 +122,14 @@ volume_db = -3.0
 [node name="AsphaltPile" type="MeshInstance3D" parent="." unique_id=1484526018]
 transform = Transform3D(1.41, 0, 0, 0, 1, 0, 0, 0, 0.75, -0.03479004, 1.0255737, -3.487793)
 mesh = SubResource("PlaneMesh_8jg5c")
+
+[node name="KeyPrompt" type="Sprite3D" parent="." unique_id=1458141456]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.69812, 0)
+modulate = Color(1, 1, 1, 0.53333336)
+pixel_size = 0.05
+billboard = 1
+texture = SubResource("AtlasTexture_8jg5c")
+script = ExtResource("8_f1fbw")
 
 [connection signal="body_entered" from="BodyRepresentation" to="." method="_on_body_representation_body_entered"]
 [connection signal="body_exited" from="BodyRepresentation" to="." method="_on_body_representation_body_exited"]

@@ -59,6 +59,8 @@ const final_image_names: Array[String] = [
 
 static func _user_path_prefix(base_dir: String, user_token_length: int) -> String:
 	var path: String = base_dir
+	if not path.contains("res://") and not path.contains("user://"):
+		path = path.insert(0, "res://")
 	if path.ends_with("/"): path = path.substr(0, path.length() - 1)
 	path = (
 		path
@@ -139,7 +141,7 @@ static func level_attribute_under_path_present(attribute_path: String) -> bool:
 ## Set the given attribute within the given levels base directory
 static func level_attribute_store(base_dir: String, attribute_name: String, contents = null) -> void:
 	var file: FileAccess = FileAccess.open(level_attribute_path(base_dir, attribute_name), FileAccess.WRITE)
-	if not contents: file.store_var(true)
+	if contents == null: file.store_var(true)
 	else: file.store_var(contents)
 
 ## Returns with the data stored under the attribute ( if there is any )

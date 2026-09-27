@@ -24,10 +24,12 @@ func set_transform_based_on(target_position: Vector3) -> void:
 	set_angle_from_prev_pos(previous_position)
 
 func start_working() -> void:
+	if get_node_or_null("KeyPrompt"): $KeyPrompt.is_enabled = true
 	if controlled_by == RoadworkTool.ControlMethods.PILOTED: $OrbitCamera.make_current()
 	super()
 
 func stop_working() -> void:
+	if get_node_or_null("KeyPrompt"): $KeyPrompt.is_enabled = false
 	$ActiveSound.stop()
 	super()
 #endregion
