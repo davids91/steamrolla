@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cvv22ltuc6u6s"
-path.s3tc="res://.godot/imported/color-with-lines.png-98d53f33a554e5febe4475a4c24fc7c9.s3tc.ctex"
+uid="uid://cs8gx2g2dltim"
+path.s3tc="res://.godot/imported/terrain_albedo_image.png-52276d0087a1e8cdb581a65b447fdb0c.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://levels/parking-lot/color-with-lines.png"
-dest_files=["res://.godot/imported/color-with-lines.png-98d53f33a554e5febe4475a4c24fc7c9.s3tc.ctex"]
+source_file="res://levels/0_1parking_lot/terrain_albedo_image.png"
+dest_files=["res://.godot/imported/terrain_albedo_image.png-52276d0087a1e8cdb581a65b447fdb0c.s3tc.ctex"]
 
 [params]
 

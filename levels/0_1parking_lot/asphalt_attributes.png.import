@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cvv22ltuc6u6s"
-path.s3tc="res://.godot/imported/color-with-lines.png-98d53f33a554e5febe4475a4c24fc7c9.s3tc.ctex"
+uid="uid://mbxvkfffotgq"
+path.s3tc="res://.godot/imported/asphalt_attributes.png-025e1fff5930f94e4d809b1902f2e2b2.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://levels/parking-lot/color-with-lines.png"
-dest_files=["res://.godot/imported/color-with-lines.png-98d53f33a554e5febe4475a4c24fc7c9.s3tc.ctex"]
+source_file="res://levels/0_1parking_lot/asphalt_attributes.png"
+dest_files=["res://.godot/imported/asphalt_attributes.png-025e1fff5930f94e4d809b1902f2e2b2.s3tc.ctex"]
 
 [params]
 

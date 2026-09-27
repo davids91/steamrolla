@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c8qn4c5715jq0"
-path="res://.godot/imported/asphalt-allowed.png-f474293fd8adab963e19f10b4dc248bb.ctex"
+uid="uid://cq4stiak53mrp"
+path="res://.godot/imported/start_asphalt_state.png-56b985f438c81edb3f5eeeacdab01fa9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://levels/parking-lot/asphalt-allowed.png"
-dest_files=["res://.godot/imported/asphalt-allowed.png-f474293fd8adab963e19f10b4dc248bb.ctex"]
+source_file="res://levels/parking-lot/start_asphalt_state.png"
+dest_files=["res://.godot/imported/start_asphalt_state.png-56b985f438c81edb3f5eeeacdab01fa9.ctex"]
 
 [params]
 

@@ -159,6 +159,10 @@ func _change_data_mode() -> void:
 
 		# Unpack color channels
 		for x in level_resolution.x: for y in level_resolution.y:
+			if( # OOB check for the image
+				x > terrain_heightmap.get_width() or y > terrain_heightmap.get_height()
+				or x > asphalt_attributes.get_width() or y > asphalt_attributes.get_height()
+			): return
 			raw_terrain_heightmap.set_pixel(x,y, Color(terrain_heightmap.get_pixel(x,y).r, 0., 0.))
 			raw_terrain_crackmap.set_pixel(x,y, Color(terrain_heightmap.get_pixel(x,y).g, 0., 0.))
 			raw_asphalt_presence.set_pixel(x,y, Color(asphalt_attributes.get_pixel(x,y).r, 0., 0.))
@@ -220,6 +224,7 @@ func _change_data_mode() -> void:
 			else: push_error("Unable to convert level data from raw to packaged format!")
 		)
 	else: push_error("Level data is in undefined state")
+	notify_property_list_changed()
 
 @export_tool_button("Load/Refresh Level Data", "Load") var load_level_data: Callable = _load_level_data
 func _load_level_data() -> void:

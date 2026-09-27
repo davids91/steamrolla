@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cvv22ltuc6u6s"
-path.s3tc="res://.godot/imported/color-with-lines.png-98d53f33a554e5febe4475a4c24fc7c9.s3tc.ctex"
+uid="uid://b7nie6m0d4sh0"
+path.s3tc="res://.godot/imported/terrain_heightmap.png-e565ccdf9310c91f2512c9bf9ca74b81.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://levels/parking-lot/color-with-lines.png"
-dest_files=["res://.godot/imported/color-with-lines.png-98d53f33a554e5febe4475a4c24fc7c9.s3tc.ctex"]
+source_file="res://levels/0_1parking_lot/terrain_heightmap.png"
+dest_files=["res://.godot/imported/terrain_heightmap.png-e565ccdf9310c91f2512c9bf9ca74b81.s3tc.ctex"]
 
 [params]
 
