@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://l00v8wyjwjmc"]
+
+[ext_resource type="Texture2D" uid="uid://ctddl8vco40sl" path="res://textures/ui/indicator_spritesheet.png" id="1_wembi"]
+[ext_resource type="Script" uid="uid://bm7sxglrsvhqn" path="res://core/UI/tool_bubble_indicator/tool_bubble_indicator.gd" id="1_yvn4g"]
+
+[sub_resource type="Animation" id="Animation_av7ad"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="Animation" id="Animation_knaq5"]
+resource_name = "show"
+length = 0.2
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0, 1, 2]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xklxo"]
+_data = {
+&"RESET": SubResource("Animation_av7ad"),
+&"show": SubResource("Animation_knaq5")
+}
+
+[node name="ToolBubbleIndicator" type="Sprite3D" unique_id=135928248]
+billboard = 1
+texture = ExtResource("1_wembi")
+hframes = 3
+frame = 1
+script = ExtResource("1_yvn4g")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1679736294]
+libraries/ = SubResource("AnimationLibrary_xklxo")
