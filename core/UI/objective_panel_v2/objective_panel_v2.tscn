@@ -1,0 +1,280 @@
+[gd_scene format=3 uid="uid://de7pi2unbrosp"]
+
+[ext_resource type="Script" uid="uid://74ipgbe03nmu" path="res://core/UI/objective_panel_v2/objective_panel_v_2.gd" id="1_f5uni"]
+[ext_resource type="Texture2D" uid="uid://blugq7cy8aigr" path="res://textures/ui/objective_file.png" id="2_s24m1"]
+[ext_resource type="PackedScene" uid="uid://clmicnni140y4" path="res://core/UI/objective_panel_v2/task_item_v2.tscn" id="2_t62cb"]
+[ext_resource type="Texture2D" uid="uid://bkxkeud204h5d" path="res://textures/ui/bookmark.png" id="3_t62cb"]
+[ext_resource type="FontFile" uid="uid://df8mh6h3se6l3" path="res://textures/ui/font/RubikSprayPaint-Regular.ttf" id="4_x132q"]
+[ext_resource type="FontFile" uid="uid://c5h6m001q5o7w" path="res://textures/ui/font/CaveatBrush-Regular.ttf" id="5_wnyoo"]
+[ext_resource type="Texture2D" uid="uid://b6hee81ihnf85" path="res://textures/ui/photo_print.png" id="6_67hv0"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_34amj"]
+font = ExtResource("4_x132q")
+font_size = 24
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_3avjn"]
+font = ExtResource("4_x132q")
+font_size = 37
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_aig6x"]
+font = ExtResource("5_wnyoo")
+font_size = 28
+font_color = Color(0, 0, 0, 0.47843137)
+
+[sub_resource type="Animation" id="Animation_s24m1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Base:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Base:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Base/PanelButton/Label:text")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["OBJECTIVE"]
+}
+
+[sub_resource type="Animation" id="Animation_t62cb"]
+resource_name = "slide"
+length = 0.5
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Base:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-900, 20)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Base:rotation")
+tracks/1/interp = 4
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -0.05235988]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Base/PanelButton/Label:text")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": ["OBJECTIVE", "CLOSE"]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_x132q"]
+_data = {
+&"RESET": SubResource("Animation_s24m1"),
+&"slide": SubResource("Animation_t62cb")
+}
+
+[node name="ObjectivePanel" type="Control" unique_id=1415146818]
+layout_mode = 3
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+script = ExtResource("1_f5uni")
+task_item_scn = ExtResource("2_t62cb")
+
+[node name="Base" type="TextureRect" parent="." unique_id=1000093450]
+unique_name_in_owner = true
+layout_mode = 1
+offset_right = 959.13354
+offset_bottom = 787.0
+pivot_offset = Vector2(480, 360)
+texture = ExtResource("2_s24m1")
+expand_mode = 1
+
+[node name="PanelButton" type="TextureButton" parent="Base" unique_id=11750239]
+layout_mode = 1
+offset_left = -57.0
+offset_top = 59.0
+offset_right = 31.000061
+offset_bottom = 239.82259
+toggle_mode = true
+texture_normal = ExtResource("3_t62cb")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="Base/PanelButton" unique_id=333449799]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -30.0
+offset_top = 69.58871
+offset_right = 114.0
+offset_bottom = 98.58871
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -1.5707964
+text = "OBJECTIVE"
+label_settings = SubResource("LabelSettings_34amj")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Base" unique_id=698818420]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 60
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Base/MarginContainer" unique_id=149312490]
+layout_mode = 2
+
+[node name="ObjectivesContainer" type="MarginContainer" parent="Base/MarginContainer/HBoxContainer" unique_id=895669253]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Base/MarginContainer/HBoxContainer/ObjectivesContainer" unique_id=420696711]
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="Header" type="VBoxContainer" parent="Base/MarginContainer/HBoxContainer/ObjectivesContainer/VBoxContainer" unique_id=1530411124]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="Base/MarginContainer/HBoxContainer/ObjectivesContainer/VBoxContainer/Header" unique_id=516034332]
+layout_mode = 2
+text = "OBJECTIVES"
+label_settings = SubResource("LabelSettings_3avjn")
+
+[node name="LevelIntroLabel" type="Label" parent="Base/MarginContainer/HBoxContainer/ObjectivesContainer/VBoxContainer/Header" unique_id=505634614]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Some short intro about this level"
+label_settings = SubResource("LabelSettings_aig6x")
+
+[node name="TaskList" type="VBoxContainer" parent="Base/MarginContainer/HBoxContainer/ObjectivesContainer/VBoxContainer" unique_id=1664586946]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TaskItem" parent="Base/MarginContainer/HBoxContainer/ObjectivesContainer/VBoxContainer/TaskList" unique_id=2116951307 instance=ExtResource("2_t62cb")]
+layout_mode = 2
+
+[node name="FieldPhotoContainer" type="Control" parent="Base/MarginContainer/HBoxContainer" unique_id=382543185]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Photo2" type="TextureRect" parent="Base/MarginContainer/HBoxContainer/FieldPhotoContainer" unique_id=2095940192]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 56.0
+offset_top = 299.2771
+offset_right = 367.01056
+offset_bottom = 590.8496
+rotation = 0.10471976
+scale = Vector2(0.89627916, 0.89627916)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("6_67hv0")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Image" type="TextureRect" parent="Base/MarginContainer/HBoxContainer/FieldPhotoContainer/Photo2" unique_id=1540114018]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -138.32813
+offset_top = -130.8061
+offset_right = 134.20996
+offset_bottom = 101.441086
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Photo1" type="TextureRect" parent="Base/MarginContainer/HBoxContainer/FieldPhotoContainer" unique_id=949021827]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -46.0
+offset_top = 64.277054
+offset_right = 265.011
+offset_bottom = 355.84906
+rotation = -0.05235988
+scale = Vector2(0.89627916, 0.89627916)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("6_67hv0")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Image" type="TextureRect" parent="Base/MarginContainer/HBoxContainer/FieldPhotoContainer/Photo1" unique_id=1976617557]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -136.39246
+offset_top = -129.18636
+offset_right = 134.15466
+offset_bottom = 103.79805
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=166639410]
+libraries/ = SubResource("AnimationLibrary_x132q")
+
+[connection signal="toggled" from="Base/PanelButton" to="." method="_on_panel_button_toggled"]
