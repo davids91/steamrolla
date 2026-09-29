@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cj6g3b5lr0rdt"]
+
+[ext_resource type="Texture2D" uid="uid://cmnh0fyc2xe6e" path="res://textures/soda-can.png" id="1_b5fe8"]
+
+[resource]
+albedo_texture = ExtResource("1_b5fe8")

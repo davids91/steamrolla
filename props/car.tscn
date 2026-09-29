@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cgt8pdj2hnchc"]
 
 [ext_resource type="PackedScene" uid="uid://dhkwukcpc1lc2" path="res://models/car.fbx" id="1_ivf8e"]
-[ext_resource type="Script" uid="uid://cikqo65ryta4n" path="res://actors/car.gd" id="2_m2co2"]
+[ext_resource type="Script" uid="uid://cikqo65ryta4n" path="res://actors/crushable_prop.gd" id="2_m2co2"]
 [ext_resource type="Material" uid="uid://bowh8im433dol" path="res://materials/smoke-material.tres" id="3_mrneq"]
 [ext_resource type="AudioStream" uid="uid://6pls8sr6go3e" path="res://audio/car-crush.ogg" id="4_ppud8"]
 

@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bg02t1nc2gx0y"]
+
+[ext_resource type="PackedScene" uid="uid://b15xsc1uyk8lg" path="res://models/trash-can.fbx" id="1_qmlp7"]
+[ext_resource type="Script" uid="uid://cikqo65ryta4n" path="res://actors/crushable_prop.gd" id="2_mypm6"]
+
+[node name="trash-can" unique_id=193315065 instance=ExtResource("1_qmlp7")]
+script = ExtResource("2_mypm6")
+crush_distance = 1.0

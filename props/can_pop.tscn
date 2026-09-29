@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://dd2arxcakch7t"]
+
+[ext_resource type="PackedScene" uid="uid://7gfjx42wtcsh" path="res://models/soda-can.fbx" id="1_81few"]
+[ext_resource type="Script" uid="uid://cikqo65ryta4n" path="res://actors/crushable_prop.gd" id="2_8tajf"]
+[ext_resource type="Material" uid="uid://b7mgqap2rcei8" path="res://materials/pop-can.tres" id="3_81few"]
+
+[node name="pop-can" unique_id=2075471072 instance=ExtResource("1_81few")]
+script = ExtResource("2_8tajf")
+crush_distance = 1.0
+
+[node name="can" parent="." index="0" unique_id=1924172594]
+transform = Transform3D(-0.4297955, -7.454002, -6.6523027, -9.9834175, 0.57564086, -2.0115593e-08, 0.38293374, 6.6412716, -7.4663825, 0, 0.05, 0)
+surface_material_override/0 = ExtResource("3_81few")
