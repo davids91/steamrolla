@@ -64,7 +64,6 @@ size = Vector3(0.73950195, 1.1490536, 0.72537994)
 
 [node name="FireHydrant" type="Node3D" unique_id=2124233241]
 script = ExtResource("1_g740w")
-water_broke = true
 
 [node name="fire_hydrant" parent="." unique_id=1933406828 instance=ExtResource("1_jop2m")]
 

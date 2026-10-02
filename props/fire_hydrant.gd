@@ -1,17 +1,17 @@
 @tool
 extends Node3D
 
+signal water_spouts()
+
 @export var water_broke: bool = false:
 	set(v):
+		if not water_broke and v: water_spouts.emit()
 		water_broke = v
 		if get_node_or_null("WaterSpurt"): $WaterSpurt.emitting = v
 
 @export var flying_time: float = 2.0
 @export var flying_distance: float = 5.0
 @export_range(0., TAU) var flying_angle_speed: float = PI/2.
-
-func _ready() -> void:
-	pass
 
 @onready var already_crushed: bool = false:
 	set(v):
