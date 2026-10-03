@@ -1,3 +1,4 @@
+class_name ObjectiveItemv2
 extends HBoxContainer
 
 @export var uncompleted_region: Rect2

@@ -1,23 +1,23 @@
 [gd_scene format=3 uid="uid://clmicnni140y4"]
 
-[ext_resource type="Script" uid="uid://c23smf7fp13wj" path="res://core/UI/objective_panel_v2/task_item_v_2.gd" id="1_iiaek"]
-[ext_resource type="Texture2D" uid="uid://bhgnfbin4tjd3" path="res://textures/ui/checkbox.png" id="1_we3xu"]
-[ext_resource type="Texture2D" uid="uid://bgb1cnldjg1it" path="res://textures/ui/checkmark.png" id="2_qe371"]
-[ext_resource type="FontFile" uid="uid://c5h6m001q5o7w" path="res://textures/ui/font/CaveatBrush-Regular.ttf" id="3_eoamu"]
+[ext_resource type="Script" uid="uid://c23smf7fp13wj" path="res://core/UI/objective_panel/task_item.gd" id="1_3c7i2"]
+[ext_resource type="Texture2D" uid="uid://bhgnfbin4tjd3" path="res://textures/ui/checkbox.png" id="2_pe5gt"]
+[ext_resource type="Texture2D" uid="uid://bgb1cnldjg1it" path="res://textures/ui/checkmark.png" id="3_c6jwd"]
+[ext_resource type="FontFile" uid="uid://c5h6m001q5o7w" path="res://textures/ui/font/CaveatBrush-Regular.ttf" id="4_dynbk"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_2l65a"]
-font = ExtResource("3_eoamu")
+font = ExtResource("4_dynbk")
 font_size = 32
 font_color = Color(0, 0, 0, 1)
 
 [node name="TaskItem" type="HBoxContainer" unique_id=2116951307]
 theme_override_constants/separation = 15
-script = ExtResource("1_iiaek")
+script = ExtResource("1_3c7i2")
 
 [node name="Checkbox" type="TextureRect" parent="." unique_id=646830137]
 layout_mode = 2
 size_flags_vertical = 4
-texture = ExtResource("1_we3xu")
+texture = ExtResource("2_pe5gt")
 
 [node name="Checkmark" type="TextureRect" parent="Checkbox" unique_id=719326247]
 unique_name_in_owner = true
@@ -31,10 +31,10 @@ offset_top = -58.0
 offset_right = 58.0
 offset_bottom = -4.0
 grow_vertical = 0
-texture = ExtResource("2_qe371")
+texture = ExtResource("3_c6jwd")
 
 [node name="TaskLabel" type="Label" parent="." unique_id=1925298060]
 layout_mode = 2
-text = "smooth the road"
+text = "Asphalt Perfection"
 label_settings = SubResource("LabelSettings_2l65a")
 vertical_alignment = 1
