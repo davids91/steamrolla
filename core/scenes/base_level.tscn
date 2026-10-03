@@ -30,7 +30,7 @@ _limits = [0.0, 1.25, 0.0, 1.0]
 _data = [Vector2(0, 0), 0.0, 4.295519, 0, 0, Vector2(0.7030201, 1.0452518), 2.8887992, 2.8887992, 0, 0, Vector2(1, 1), -1.4652756, 0.0, 0, 0]
 point_count = 3
 
-[node name="Level" type="Node3D" unique_id=1539626438]
+[node name="Level3" type="Node3D" unique_id=1539626438]
 script = ExtResource("1_0iqqk")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1708251831]
@@ -45,7 +45,7 @@ shadow_bias = 0.0
 transform = Transform3D(0.0017408282, 0, -0.99999845, 0, 1, 0, 0.99999845, 0, 0.0017408282, 13.073471, 0.87625206, -59.401245)
 
 [node name="PlayerView" parent="." unique_id=1504134869 node_paths=PackedStringArray("cursor") instance=ExtResource("1_0oa8v")]
-transform = Transform3D(0.11978244, 0.54834604, -0.8276284, -0.07854364, 0.8362515, 0.54269177, 0.98968834, 0, 0.14323734, -18.784536, 15.911701, 8.004426)
+transform = Transform3D(0.11978244, 0.54834604, -0.8276284, -0.07854364, 0.8362515, 0.54269177, 0.98968834, 0, 0.14323734, -30.867188, 15.911701, 8.004426)
 visible = true
 cursor = NodePath("../PlayerCursor")
 make_current_on_start = false

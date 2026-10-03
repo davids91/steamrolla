@@ -264,8 +264,7 @@ func _load_level_data() -> void:
 	else: %RoadChunk.initialize(_level_resource_path())
 
 @export_tool_button("Save Level Data", "Save") var save_level_data: Callable = _save_level_data
-func _save_level_data():
-	if not Engine.is_editor_hint(): return
+func _save_level_data() -> void:
 	if not get_node_or_null("%RoadChunk"): return
 	if not _is_level_data_in_packaged_format(): return
 	if not _level_resource_exists(): $RoadChunk.level_data = RoadChunkData.new()
@@ -283,7 +282,7 @@ func _save_level_data():
 		minified_image.resize(64, 64, Image.INTERPOLATE_LANCZOS)
 		minified_image.save_png(_level_mini_image_path(img))
 	
-	EditorInterface.get_resource_filesystem().scan()
+	if Engine.is_editor_hint(): EditorInterface.get_resource_filesystem().scan()
 	get_tree().create_timer(0.5).timeout.connect(func(): # Update resource, set the updated fields and save it!
 		for img in LevelStructure.final_image_names: %RoadChunk.level_data.set(img, load(_level_image_path(img)))
 		ResourceSaver.save(%RoadChunk.level_data, _level_resource_path())
@@ -381,21 +380,9 @@ func _snap_asphalt_to_reference() -> void:
 	)
 	snap.tween_callback(func(): %RoadChunk.snap_to_reference(0.))
 
-@export var accepted_deviation: float = 0.001
-var won_game: bool = false
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_select") and not won_game and not %RoadChunk.scan_in_progress():
-		%RoadChunk.initiate_scan(func():
-			var deviation: float = %RoadChunk.get_deviation_from_target()
-			if(abs(deviation - 0.5) < accepted_deviation):
-				won_game = true
-				var winning_animation: Tween = create_tween()
-				_snap_asphalt_to_reference()
-				winning_animation.tween_method(func(w: float): %RoadChunk.set_highlight(sin(w)), 0., PI, 1.3)
-				winning_animation.tween_method(func(w: float): %RoadChunk.set_highlight(sin(w)), 0., PI, 0.15)
-				winning_animation.tween_method(func(w: float): %RoadChunk.set_highlight(sin(w)), 0., PI, 0.15)
-				#winning_animation.tween_callback(_have_road_paint_appear)
-		)
+	if event.is_action_pressed("debug"):
+		_save_level_data()
 
 func _ready() -> void:
 	_load_level_data()

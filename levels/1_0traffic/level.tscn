@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://2hit3gutpl5r"]
+
+[ext_resource type="PackedScene" uid="uid://cfb8we0g6l50f" path="res://core/scenes/base_level.tscn" id="1_g7gl7"]
+[ext_resource type="Resource" uid="uid://b5vmeorrbj54m" path="res://levels/1_0traffic/level_data.res" id="2_vncl3"]
+
+[node name="Level3" unique_id=1539626438 instance=ExtResource("1_g7gl7")]
+level_objectives = Dictionary[String, String]({
+"asphalt_done": "Fix road surface",
+"cars": "There's a traffic jam!"
+})
+
+[node name="RoadChunk" parent="." index="7" unique_id=716876623]
+level_data = ExtResource("2_vncl3")
+height_unit = 5.0
+
+[node name="ToolController" parent="." index="8" unique_id=129265235 node_paths=PackedStringArray("runways", "tool_nodes")]
+runways = {
+0: NodePath("RollerRunway"),
+1: NodePath("RollerRunway")
+}
+tool_nodes = {
+0: NodePath("Roller"),
+1: NodePath("AsphaltPaver"),
+3: NodePath("Compactor"),
+4: NodePath("Shovel")
+}
