@@ -13,10 +13,6 @@ func set_color(color: Color) -> void:
 func set_angle_from_prev_pos(prev_pos: Vector3) -> void:
 	look_at(global_position - (global_position - prev_pos))
 
-func start_working() -> void:
-	if controlled_by == RoadworkTool.ControlMethods.PILOTED: $OrbitCamera.make_current()
-	super()
-
 func stop_working() -> void:
 	$SqueezeSound.stop()
 	super()

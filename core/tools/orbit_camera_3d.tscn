@@ -1,10 +1,28 @@
 [gd_scene format=3 uid="uid://bb24gus88qx5r"]
 
 [ext_resource type="Script" uid="uid://cofhehyx1ccv7" path="res://core/tools/level_overview_camera.gd" id="1_57ci8"]
+[ext_resource type="AudioStream" uid="uid://cmdxs57s2fsn5" path="res://audio/whoosh-02.wav" id="2_rtx0w"]
+[ext_resource type="AudioStream" uid="uid://biubtqey8vd1w" path="res://audio/whoosh-03.wav" id="3_6crw2"]
+[ext_resource type="AudioStream" uid="uid://i5e682j5kfny" path="res://audio/whoosh-04.wav" id="4_7jrxi"]
+[ext_resource type="AudioStream" uid="uid://b0p7w2gk8yqdp" path="res://audio/whoosh-05.wav" id="5_yykdo"]
+[ext_resource type="AudioStream" uid="uid://b6hsjsn4yaw4" path="res://audio/whoosh-06.wav" id="6_dhhlv"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_8jg5c"]
+random_pitch = 1.0304921
+random_volume_offset_db = 0.85
+streams_count = 5
+stream_0/stream = ExtResource("2_rtx0w")
+stream_1/stream = ExtResource("3_6crw2")
+stream_2/stream = ExtResource("4_7jrxi")
+stream_3/stream = ExtResource("5_yykdo")
+stream_4/stream = ExtResource("6_dhhlv")
 
 [node name="OrbitCamera" type="Node3D" unique_id=1504134869]
 visible = false
 script = ExtResource("1_57ci8")
+
+[node name="TransitionSound" type="AudioStreamPlayer" parent="." unique_id=623040685]
+stream = SubResource("AudioStreamRandomizer_8jg5c")
 
 [node name="Pitch" type="Marker3D" parent="." unique_id=134302189]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

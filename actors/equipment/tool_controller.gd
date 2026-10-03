@@ -31,11 +31,21 @@ func _ready() -> void:
 		runways[r].payload_left.connect(func():
 			if not deployed_tools.has(active_tool):
 				deployed_tools.push_back(active_tool)
+				if( # Camera transition from level overview if tool camera is available
+						view.get_current()
+						and tool_nodes[active_tool].get_node_or_null("OrbitCamera")
+						and tool_nodes[active_tool].controlled_by == RoadworkTool.ControlMethods.PILOTED
+				): view.transition_to(tool_nodes[active_tool].get_node("OrbitCamera"))
 				deployment_changed.emit(active_tool, true)
 		)
 		runways[r].payload_entered.connect(func():
 			tool_session_ongoing = false
 			runways[r].stop_deployment()
+			if( # Camera transition from piloted camera to player view if the tool camera is active
+				tool_nodes[active_tool].get_node_or_null("OrbitCamera")
+				and tool_nodes[active_tool].get_node("OrbitCamera").get_current()
+				and tool_nodes[active_tool].controlled_by == RoadworkTool.ControlMethods.PILOTED
+			): (tool_nodes[active_tool].get_node("OrbitCamera") as OrbitCamera3D).transition_to(view)
 			deployed_tools.erase(active_tool)
 			deployment_changed.emit(active_tool, false)
 			select_tool(active_tool)
@@ -84,7 +94,6 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 			trajectory.trajectory_drawn.connect(tool_nodes[tool].trajectory_drawn)
 
 	# Cleanup after previously used tool
-	view.make_current()
 	if runways.has(active_tool):
 		tool_nodes[active_tool].stop_working()
 		runways[active_tool].stop_deployment()
@@ -92,12 +101,19 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 		if tool != active_tool and not deployed_tools.has(active_tool):
 			tool_nodes[active_tool].set_color(Color.TRANSPARENT)
 	if tool_nodes.has(active_tool) and tool_nodes[active_tool] and tool != active_tool:
+
 		# Rewire driver intention changed
 		tool_nodes[active_tool].driver_intention_changed.disconnect(piloted_tool_driver_intention_changed)
 		tool_nodes[active_tool].driver_intention_changed.connect(piloted_tool_driver_intention_changed)
 
 		# Hide undeployed tool
 		if not deployed_tools.has(active_tool): tool_nodes[active_tool].set_color(Color.TRANSPARENT)
+
+		if( # Camera transition from the piloted tool to level overview
+			tool_nodes[active_tool].get_node_or_null("OrbitCamera")
+			and tool_nodes[active_tool].get_node("OrbitCamera").get_current()
+			and tool_nodes[active_tool].controlled_by == RoadworkTool.ControlMethods.PILOTED
+		): tool_nodes[active_tool].get_node("OrbitCamera").transition_to(view)
 
 	# Initiate runway logic
 	if( #  if runway is available, it's not deployed already
@@ -119,7 +135,13 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 		if( # Also resume work on Drawn and Piloted tools
 			tool_nodes[tool].controlled_by == RoadworkTool.ControlMethods.DRAWN
 			or tool_nodes[tool].controlled_by == RoadworkTool.ControlMethods.PILOTED
-		): tool_nodes[tool].start_working()
+		):
+			tool_nodes[tool].start_working()
+			if( # Camera transition from level overview if tool camera is available
+				view.get_current()
+				and tool_nodes[tool].get_node_or_null("OrbitCamera")
+				and tool_nodes[tool].controlled_by == RoadworkTool.ControlMethods.PILOTED
+			): view.transition_to(tool_nodes[tool].get_node("OrbitCamera"))
 
 		if trajectory:
 			trajectory.is_enabled = tool_nodes[tool].controlled_by == RoadworkTool.ControlMethods.DRAWN
@@ -177,9 +199,15 @@ func _unhandled_input(event: InputEvent) -> void:
 		if tool_nodes.has(active_tool):
 			asphalt_delta = tool_nodes[active_tool].tool_strength
 		view.lock_view(event.is_pressed())
-		if tool_nodes.has(active_tool) and tool_nodes[active_tool].controlled_by == RoadworkTool.ControlMethods.DRAGGED:
-			if event.is_pressed(): tool_nodes[active_tool].start_working()
-			else: tool_nodes[active_tool].stop_working()
+		if tool_nodes.has(active_tool):
+			if tool_nodes[active_tool].controlled_by == RoadworkTool.ControlMethods.DRAGGED:
+				if event.is_pressed(): tool_nodes[active_tool].start_working()
+				else: tool_nodes[active_tool].stop_working()
+			elif(
+				tool_nodes[active_tool].controlled_by == RoadworkTool.ControlMethods.PILOTED
+				and tool_nodes[active_tool].get_node_or_null("OrbitCamera")
+				and view.get_current() and event.is_pressed()
+			): view.transition_to(tool_nodes[active_tool].get_node("OrbitCamera"))
 
 const VALUE_EPSILON: float = 0.001;
 func _process(delta: float) -> void:
