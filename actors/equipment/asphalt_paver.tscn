@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cglj5nsrr7ntb" path="res://models/asphalt-paver_0.png" id="1_0d3me"]
 [ext_resource type="Script" uid="uid://d1tbgsojf2nr5" path="res://actors/equipment/asphalt_paver.gd" id="1_pogr6"]
+[ext_resource type="PackedScene" uid="uid://l00v8wyjwjmc" path="res://core/UI/tool_bubble_indicator/tool_bubble_indicator_billboard.tscn" id="2_llrrr"]
 [ext_resource type="PackedScene" uid="uid://bb24gus88qx5r" path="res://core/tools/orbit_camera_3d.tscn" id="2_tthve"]
 [ext_resource type="AudioStream" uid="uid://d1n0nybaatu7w" path="res://audio/paver.wav" id="4_ww7qr"]
 [ext_resource type="Shader" uid="uid://trnxwrt5vs7p" path="res://actors/equipment/asphalt_pile.gdshader" id="5_b1e0e"]
@@ -100,6 +101,9 @@ tool_angle = 3.142
 tool_strength = 3.0
 has_payload = true
 
+[node name="ToolBubbleIndicator" parent="." unique_id=135928248 instance=ExtResource("2_llrrr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.1034093, 0)
+
 [node name="OrbitCamera" parent="." unique_id=1504134869 instance=ExtResource("2_tthve")]
 transform = Transform3D(-0.9089847, 0, 0.41682938, 0, 1, 0, -0.41682938, 0, -0.9089847, 3.2651744, 4.8342853, -6.400869)
 
@@ -131,5 +135,7 @@ billboard = 1
 texture = SubResource("AtlasTexture_8jg5c")
 script = ExtResource("8_f1fbw")
 
+[connection signal="area_entered" from="BodyRepresentation" to="." method="_on_body_representation_area_entered"]
+[connection signal="area_exited" from="BodyRepresentation" to="." method="_on_body_representation_area_exited"]
 [connection signal="body_entered" from="BodyRepresentation" to="." method="_on_body_representation_body_entered"]
 [connection signal="body_exited" from="BodyRepresentation" to="." method="_on_body_representation_body_exited"]

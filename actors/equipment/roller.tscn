@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://dr7xbirpqj8e6"]
 
 [ext_resource type="Script" uid="uid://kpioyx2nil4v" path="res://actors/equipment/roller_controller.gd" id="1_vq81g"]
+[ext_resource type="PackedScene" uid="uid://l00v8wyjwjmc" path="res://core/UI/tool_bubble_indicator/tool_bubble_indicator_billboard.tscn" id="2_ojn7k"]
 [ext_resource type="PackedScene" uid="uid://cw8sj3nlo8tjc" path="res://models/roller.fbx" id="2_qrjta"]
 [ext_resource type="Texture2D" uid="uid://b866nkjmqwwlj" path="res://models/textures/color-palette.png" id="3_cja5l"]
 [ext_resource type="AudioStream" uid="uid://d0rlod5od3nxo" path="res://audio/smush_asphault.wav" id="3_qrjta"]
@@ -67,6 +68,9 @@ normalized_size = Vector2(0.058, 0.038)
 controlled_by = 2
 speed = 8.0
 
+[node name="ToolBubbleIndicator" parent="." unique_id=135928248 instance=ExtResource("2_ojn7k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.1034093, 0)
+
 [node name="OrbitCamera" parent="." unique_id=1504134869 instance=ExtResource("5_haft6")]
 transform = Transform3D(-0.9089847, 0, 0.41682938, 0, 1, 0, -0.41682938, 0, -0.9089847, 3.2651744, 4.8342853, -6.400869)
 
@@ -93,6 +97,8 @@ unique_name_in_owner = true
 stream = SubResource("AudioStreamRandomizer_qrjta")
 volume_db = -7.5
 
+[connection signal="area_entered" from="BodyRepresentation" to="." method="_on_body_representation_area_entered"]
+[connection signal="area_exited" from="BodyRepresentation" to="." method="_on_body_representation_area_exited"]
 [connection signal="body_entered" from="AsphaltDetector" to="." method="_on_asphalt_detector_body_entered"]
 [connection signal="body_exited" from="AsphaltDetector" to="." method="_on_asphalt_detector_body_exited"]
 

@@ -2,7 +2,7 @@ extends Sprite3D
 
 var is_showing = false
 
-func show_tooltip(should_show):
+func show_tooltip(should_show: bool) -> void:
 	if should_show and not is_showing:
 		$AnimationPlayer.play("show")
 		is_showing = true

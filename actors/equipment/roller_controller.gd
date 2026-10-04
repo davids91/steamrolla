@@ -13,7 +13,12 @@ func set_color(color: Color) -> void:
 func set_angle_from_prev_pos(prev_pos: Vector3) -> void:
 	look_at(global_position - (global_position - prev_pos))
 
+func start_working() -> void:
+	$ToolBubbleIndicator.visible = false
+	super()
+
 func stop_working() -> void:
+	$ToolBubbleIndicator.visible = true
 	$SqueezeSound.stop()
 	super()
 
@@ -72,3 +77,11 @@ func _physics_process(delta: float) -> void:
 		global_position + Vector3(0.0, 100., 0.0), global_position - Vector3(0.0, 100., 0.0)
 	))
 	if "position" in raycast_result: global_position.y = raycast_result.position.y
+
+func _on_body_representation_area_entered(area: Area3D) -> void:
+	if area.name == "PlayerCursorBody" and area.get_parent().visible and not is_working:
+		$ToolBubbleIndicator.show_tooltip(true)
+
+func _on_body_representation_area_exited(area: Area3D) -> void:
+	if area.name == "PlayerCursorBody" and area.get_parent().visible:
+		$ToolBubbleIndicator.show_tooltip(false)

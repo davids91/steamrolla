@@ -25,11 +25,13 @@ func set_transform_based_on(target_position: Vector3) -> void:
 
 func start_working() -> void:
 	if get_node_or_null("KeyPrompt"): $KeyPrompt.is_enabled = true
+	$ToolBubbleIndicator.visible = false
 	super()
 
 func stop_working() -> void:
 	if get_node_or_null("KeyPrompt"): $KeyPrompt.is_enabled = false
 	$ActiveSound.stop()
+	$ToolBubbleIndicator.visible = true
 	super()
 #endregion
 
@@ -63,3 +65,11 @@ func _physics_process(delta: float) -> void:
 		global_position + Vector3(0.0, 100., 0.0), global_position - Vector3(0.0, 100., 0.0)
 	))
 	if "position" in raycast_result: global_position.y = lerp(global_position.y, raycast_result.position.y, dynamism)
+
+func _on_body_representation_area_entered(area: Area3D) -> void:
+	if area.name == "PlayerCursorBody" and area.get_parent().visible and not is_working:
+		$ToolBubbleIndicator.show_tooltip(true)
+
+func _on_body_representation_area_exited(area: Area3D) -> void:
+	if area.name == "PlayerCursorBody" and area.get_parent().visible:
+		$ToolBubbleIndicator.show_tooltip(false)
