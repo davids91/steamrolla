@@ -1,8 +1,7 @@
 extends ABird
 class_name Pigeon
 
-
-func _on_caution_entered(body: Node3D):
+func _on_caution_entered(body: Node3D) -> void:
 	if body.is_in_group(BIRD_REACTABLE_GROUP_NAME):
 		if debug: print("%s has entered and activated caution area of %s" %[body.name, name])
 		if not is_instance_valid(_active_threat):
@@ -11,9 +10,7 @@ func _on_caution_entered(body: Node3D):
 			if debug: print("%s has entered" % body.name,)
 			_is_loitering = false
 
-		
-
-func _on_caution_exited(body: Node3D):
+func _on_caution_exited(body: Node3D) -> void:
 	if body == _active_threat:
 		if debug: print("%s has exited the caution area of %s" %[body.name, name])
 		_active_threat = null
@@ -22,19 +19,16 @@ func _on_caution_exited(body: Node3D):
 	
 	if not _is_loitering: _is_loitering = true
 
-
-func _on_flyaway_entered(body: Node3D):
+func _on_flyaway_entered(body: Node3D) -> void:
 	if body == _active_threat:
 		if debug: print("Because of %s. %s has activated flyaway " %[body.name, name])
 		change_state(State.FLYING)
-		
 
-
-func _asses_threat():
+func _asses_threat() -> void:
 	if not _active_threat: return
 	if global_position.distance_squared_to(_active_threat.global_position) > bird_data.tolerable_distance_for_threat: return
-	
-func _make_decision():
+
+func _make_decision() -> void:
 	match current_state:
 		State.ONGROUND:
 			_process_loiter()
@@ -43,49 +37,40 @@ func _make_decision():
 		State.FLYING:
 			_process_fly()
 
-func _process_loiter():
-	if not _is_loitering: _snap_to_ground(); return
+func _process_loiter() -> void:
+	if not _is_loitering: return
 	if debug: print("%s is Loitering" % name)
 	_do_brain_delay()
-	var ground = _snap_to_ground()
 	var half_time = bird_data.loiter_slowness / 2.0
-	var original_pos = global_position
 	var tween = create_tween()
-	if global_position.length() > _spawn_pos.length() + bird_data._loiter_max_dist:
+	if (global_position - _spawn_pos).length() >= bird_data._loiter_max_dist:
 		tween.tween_property(
-		self,"position",original_pos, half_time) \
+		self,"global_position",_spawn_pos, half_time) \
 		.set_trans(Tween.TRANS_BACK) \
 		.set_ease(Tween.EASE_OUT)
 		return
 	tween.tween_property(
-		self,"position:y",ground.y + randf_range(
+		self,"global_position:y", global_position.y + randf_range(
 			bird_data.lotier_jump_height,
 			bird_data.lotier_jump_height + randf_range(0, .5)), 
 		half_time) \
 			.set_trans(Tween.TRANS_BACK) \
 			.set_ease(Tween.EASE_OUT)
-	
 	tween.tween_property(
-		self,"position:x",ground.x + randf_range(
+		self,"global_position:x", global_position.x + randf_range(
 			bird_data.lotier_jump_height,
 			bird_data.lotier_jump_height + randf_range(-.7, .7)), 
 		half_time) \
 			.set_trans(Tween.TRANS_BACK) \
 			.set_ease(Tween.EASE_OUT)
-		
 	tween.tween_property(
-		self,"position:z",ground.z + randf_range(
+		self,"global_position:z", global_position.z + randf_range(
 			bird_data.lotier_jump_height,
 			bird_data.lotier_jump_height + randf_range(-.7, .7)), 
 		half_time) \
 			.set_trans(Tween.TRANS_BACK) \
 			.set_ease(Tween.EASE_OUT)
-	
-	
-	tween.tween_property(self,"position:y",original_pos.y, half_time).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
-	
-
-	
+	tween.tween_property(self,"global_position:y",_spawn_pos.y, half_time).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
 
 func _process_evade():
 	if not is_instance_valid(_active_threat):

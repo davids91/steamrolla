@@ -10,17 +10,17 @@ var flocking_points: Array[Marker3D]
 var birds: Array[ABird]
 @onready var birds_node: Node3D = %Birds
 
-var max_birds: int = 0
+@export var max_birds: int = 0
 
 #is used in bird abstract script
-func register(bird: ABird):
+func register(bird: ABird) -> void:
 	birds.append(bird)
-func unregister(bird: ABird):
+func unregister(bird: ABird) -> void:
 	birds.erase(bird)
 
 var _time_passed: float = 1.0
 
-func spawn_new_birds():
+func spawn_new_birds() -> void:
 	if bird_type.size() == 0: push_error("Forgot to assign bird types and their scenes"); return
 	for i in range(max_birds):
 		var scenes:Array[PackedScene] = bird_type.values()
@@ -43,7 +43,6 @@ func spawn_new_birds():
 		birds_node.add_child.call_deferred(bird_instance)
 		bird_instance.set_deferred("global_position", target_pos)
 		call_deferred("_setup_new_bird", bird_instance)
-		print("Spawned a new bird")
 
 func _setup_new_bird(bird: ABird) -> ABird:
 	bird.despawn.connect(_on_bird_despawn)
@@ -56,8 +55,6 @@ func _ready() -> void:
 		_setup_new_bird(b)
 	max_birds = len(birds)
 
-
-
 func _physics_process(delta: float) -> void:
 	if len(birds) == 0: return
 	_time_passed += delta
@@ -67,8 +64,6 @@ func _physics_process(delta: float) -> void:
 		for bird in birds:
 			bird.think(time_per_tick)
 
-
 func _on_bird_despawn():
-	print("bird has despawed")
 	if len(birds) == 0:
 		spawn_new_birds()

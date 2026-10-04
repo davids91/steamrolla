@@ -71,6 +71,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		for attr in LevelStructure.level_attribute_list(selected_chunk.used_base_dir):
 			if LevelStructure.level_attribute_present(selected_chunk.used_base_dir, attr):
 				LevelStructure.level_attribute_reset(selected_chunk.used_base_dir, attr)
+		LevelStructure.level_attribute_reset(selected_chunk.used_base_dir, "tool_positions")
+		LevelStructure.level_attribute_reset(selected_chunk.used_base_dir, "shown_complete_screen")
 
 func _ready() -> void:
 	_load_level_data()

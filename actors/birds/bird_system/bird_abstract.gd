@@ -51,18 +51,6 @@ func think(_delta: float) -> void:
 	_asses_threat()
 	_make_decision()
 
-
-func _create_floor_raycast() -> void:
-	_floor_detector = RayCast3D.new()
-	_floor_detector.target_position = Vector3(0.0, -10.0 ,0.0)
-	add_child(_floor_detector)
-
-func _snap_to_ground() -> Vector3:
-	_floor_detector.force_raycast_update()
-	if _floor_detector.is_colliding():
-		var ground_pos = _floor_detector.get_collision_point()
-		global_position.y = ground_pos.y
-	return global_position
 func _ready() -> void:
 	bird_system = get_tree().get_first_node_in_group("BirdSystem")
 	if bird_system == null: printerr("CRITICAL: Can't find the Bird System on " + name)
@@ -76,9 +64,6 @@ func _ready() -> void:
 	caution_area.area_entered.connect(_on_caution_entered)
 	caution_area.area_exited.connect(_on_caution_exited)
 	flyaway_area.area_entered.connect(_on_flyaway_entered)
-
-	_create_floor_raycast()
-	_snap_to_ground()
 
 	_spawn_pos = global_position
 

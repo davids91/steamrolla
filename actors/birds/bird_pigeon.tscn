@@ -30,6 +30,7 @@ debug_color = Color(0.37805167, 0.4749431, 1, 0.41960785)
 [node name="FlyawayArea3D" type="Area3D" parent="." unique_id=1119165557]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FlyawayArea3D" unique_id=1717311688]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9350283, 0)
 shape = SubResource("CylinderShape3D_k3ppl")
 debug_color = Color(0.8942123, 0.26387596, 0.46660817, 0.41960785)
 

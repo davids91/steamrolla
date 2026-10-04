@@ -13,7 +13,7 @@ func _process(delta: float) -> void:
 		time_left_to_check_sec = objective_check_interval_sec
 		(func():
 			var asphalt_height: float = await %RoadChunk.get_asphalt_quantity_at($Pipe.global_position)
-			if asphalt_height > 0.2:
+			if asphalt_height > 0.15:
 				LevelStructure.level_attribute_store(base_dir, "pipe_covered")
 				$Pipe/WaterSpurt.emitting = false
 				%RoadChunk.save_user_data(base_dir)

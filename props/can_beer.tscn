@@ -8,6 +8,6 @@
 script = ExtResource("2_7aohs")
 crush_distance = 1.0
 
-[node name="can" parent="." index="0" unique_id=1924172594]
+[node name="can" parent="." index="0" unique_id=401999141]
 transform = Transform3D(5.21883, 0.61307174, 8.508111, 1.1667075, -9.931706, 4.4506336e-08, 8.4500065, 0.9926477, -5.2547164, 0, 0.05, 0)
 surface_material_override/0 = ExtResource("3_xqgd1")

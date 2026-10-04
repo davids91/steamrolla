@@ -1,18 +1,65 @@
+David:
+===
+- Asphalt, Dirt and Gravel Dynamic Surface system(with shiny asphalt, editor, save system)
+- Road chunk level structure with LOD(heightmap, attributes, road crack and water systems, water and height properties, start and target states)
+- Runway model, and follow behavior
+- Deployment of tools through the runway
+- Base scene for levels
+- Level select scene with transition animations(populated automatically from available levels)
+- Level Objective and attribute system System with automated completion check
+- User data storage(objective completion, level attributes and tool positions)
+- Automatic detection of asphalt reaching target level
+- Road paint animation system
+- Unfinished parts of asphalt flashing red
+- Title screen
+- Level Editor(level data structure, template generation, packing data in compact form)
+- Roadwork tool control system (generic control with mouse drag, keyboard or drawn trajectory)
+- Paver with asphalt storage and release trigger; behavior, sounds and UI key prompt
+- Drawn Trajectory System
+- Smooth camera transitions betwen level overview and tools with sound
+- Broken pipe objective in intersection level
+- Scenery museum with automated camera walkthrough
+- Traffic level
+- Parking lot starting state image
+- Parking lot level scene
+- Roundabout level structure
+- Tool selection UI panel
+- Concrete bed of flowers(+ springing to life trigger and animation)
+- Animated Ratrick in a trash container
+- Road paint in intersection level
+- Color palette
+- Sky texture ( cloudy sky )
+- Water Spurt Particle system
+- Soda/beer breaking out of cans
+- Roller control with left click
+- Roller Squeeze sound
+- Unfinished road tool sound
+- Conversion from raw images to level designs for various levels
+- Integrated UI elements into HUD
+- Minor updates in levels
+- Minor scene and resource misalignment fixes
+- various bugfixes
+- adjustments to inner systems(orbit camera usage with roller, using gravel and dirt textures)
+- Gravel road, River and Pond test scenes
+
 Christer:
 ===
 - Title music
 - Sky-dome with clouds
 - Asphalt paver model
 - Seamless gravel and dirt textures(albedo and normal)
-- Open/Closable Dumpster model
-- Car model with crushed animation and particle effects
-- Office Building with stairs and foundation
 - Intersection level (and polish)
 - Maze level terrain and design
 - Roundabout level terrain
 - Switchback level terrain
 - Suburbia level terrain
-- parking lot level terrain
+- Farmer field level terrain
+- Parking lot level terrain
+- Open/Closable Dumpster model
+- Trash can
+- Crushable Soda cans
+- Car model with crushed animation and particle effects
+- Office Building with stairs and foundation
 - Road Cunstruction Sign
 - Imported Ratrick model
 - Compactor sound
@@ -36,8 +83,9 @@ Demi:
 Milicen:
 ===
 - UI and design guidance
+- Objective panel
+- Tool bubble indicator
 - Base of Level complete panel[WIP]
-
 
 Michael Gunn:
 ===
@@ -50,10 +98,10 @@ Michael Gunn:
 Juan Luiz R:
 ===
 - Concept art overview map structure
-- Cityscape concept art
-- Cityscape concert art rework
+- Cityscape concept art(multiple iterations)
+- Mountain range concept art
 - Countryside Gravel Roads concept art
-- Mountain range concept art ( WIP )
+- Playtesting
 
 Hunter:
 ===
@@ -70,39 +118,3 @@ Roei:
 Reuben:
 ===
 - Compactor concept art(completed)
-
-David:
-===
-- Asphalt, Dirt and Gravel Dynamic Surface system(with shiny asphalt, editor, save system)
-- Road chunk level structure with LOD(heightmap, attributes, road crack system, water and height properties, start and target states)
-- Water system and display
-- Runway model, behavior, game loop system and bugfixes
-- Level select scene with transition animations(populated automatically from available levels)
-- Level Objective and attribute system System with automated completion check
-- Automatic detection of asphalt reaching target level
-- Road paint animation system
-- Unfinished parts of asphalt flashing red
-- Title screen
-- Level Editor(level data structure, template generation, packing data in compact form)
-- Roadwork tool control system (generic control with mouse drag, keyboard or drawn trajectory)
-- Paver with asphalt storage and release trigger; behavior and sounds
-- Road paint animation system
-- Water Spurt Particle system
-- Drawn Trajectory System
-- Scenery museum with automated camera walkthrough
-- Roundabout level structure
-- Objective Panel UI
-- Tool seelction UI panel
-- Animated Ratrick in a trash container
-- Road paint in intersection level
-- Color palette
-- Sky texture ( cloudy sky )
-- User data save and load
-- Gravel road, River and Pond test scenes
-- Roller control with left click
-- Roller Squeeze sound
-- Laser tool sound
-- Minor updates in intersection level
-- minor scene and resource fixes
-- various bugfixes
-- adjustments to inner systems(orbit camera usage with roller, using gravel and dirt textures)
