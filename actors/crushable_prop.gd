@@ -18,6 +18,8 @@ func _process(delta: float) -> void:
 			scale.y = lerp(scale.y, crush_scale, delta) # lol
 			if (smoke): smoke.emitting = true
 			if get_node_or_null("CarCrush") and not $CarCrush.playing: $CarCrush.play()
+			if get_node_or_null("WaterStream") and not $WaterStream.emitting:
+				$WaterStream.emitting = true
 			# crushSound.volume_db = linear_to_db(1-(dist/crush_distance))
 		else:
 			if (smoke): smoke.emitting = false

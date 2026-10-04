@@ -50,6 +50,7 @@ hue_variation_max = 0.019999977
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tf578"]
 transparency = 4
 vertex_color_use_as_albedo = true
+albedo_color = Color(0.3137255, 0.6627451, 0.80784315, 1)
 albedo_texture = ExtResource("2_wirqx")
 billboard_mode = 2
 billboard_keep_scale = true

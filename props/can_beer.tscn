@@ -2,12 +2,78 @@
 
 [ext_resource type="PackedScene" uid="uid://7gfjx42wtcsh" path="res://models/soda-can.fbx" id="1_fl3qc"]
 [ext_resource type="Script" uid="uid://cikqo65ryta4n" path="res://actors/crushable_prop.gd" id="2_7aohs"]
+[ext_resource type="Texture2D" uid="uid://ce7n7n6w38pnc" path="res://textures/water_particle.png" id="3_7aohs"]
 [ext_resource type="Material" uid="uid://ddsiaak3lbrme" path="res://materials/beer-can.tres" id="3_xqgd1"]
+
+[sub_resource type="Curve" id="Curve_xqgd1"]
+_data = [Vector2(0, 1), 0.0, -0.10305185, 0, 0, Vector2(0.8733459, 0.06818187), -0.116349414, -0.116349414, 0, 0, Vector2(1, 0), -1.6646843, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_g740w"]
+curve = SubResource("Curve_xqgd1")
+
+[sub_resource type="Curve" id="Curve_mj4ay"]
+_data = [Vector2(0, 0.05454552), 0.0, 0.0, 0, 0, Vector2(0.6011342, 0.08636367), 0.0975295, 0.0975295, 0, 0, Vector2(0.83553874, 0.71818185), 12.022713, 12.022713, 0, 0, Vector2(0.8695652, 0), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="Curve" id="Curve_rdci5"]
+_data = [Vector2(0, 0.98636365), 0.0, 0.0, 0, 0, Vector2(1e-05, 0.100000024), 0.0, 0.0, 0, 0, Vector2(0.88090736, 0.07727277), 0.0, 0.0, 0, 0, Vector2(1, 0.113636434), 1.1577443, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_1m8na"]
+curve_x = SubResource("Curve_mj4ay")
+curve_y = SubResource("Curve_rdci5")
+
+[sub_resource type="Curve" id="Curve_x2pnu"]
+_data = [Vector2(0, 0.9257143), 0.0, 1.2315961, 0, 0, Vector2(1, 0), -0.054442484, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_j5dhp"]
+curve = SubResource("Curve_x2pnu")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_vqr6x"]
+angle_min = -99.99999
+angle_max = 100.000015
+direction = Vector3(0, 1, 0)
+spread = 6.0
+initial_velocity_min = 2.0
+initial_velocity_max = 6.0
+directional_velocity_min = -10.000016
+directional_velocity_max = 9.999984
+directional_velocity_curve = SubResource("CurveXYZTexture_1m8na")
+gravity = Vector3(0, 0, 0)
+scale_min = 1.5
+scale_max = 2.5
+scale_curve = SubResource("CurveTexture_j5dhp")
+alpha_curve = SubResource("CurveTexture_g740w")
+hue_variation_min = -0.020000022
+hue_variation_max = 0.019999977
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tf578"]
+transparency = 4
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 0.95400006, 0.31, 1)
+albedo_texture = ExtResource("3_7aohs")
+billboard_mode = 2
+billboard_keep_scale = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_twsdo"]
+material = SubResource("StandardMaterial3D_tf578")
+size = Vector2(1, 1)
+orientation = 2
 
 [node name="beer-can" unique_id=2075471072 instance=ExtResource("1_fl3qc")]
 script = ExtResource("2_7aohs")
 crush_distance = 1.0
 
-[node name="can" parent="." index="0" unique_id=401999141]
+[node name="WaterStream" type="GPUParticles3D" parent="." index="0" unique_id=1066586748]
+transform = Transform3D(-4.425801, -4.2172785, -7.9137125, -3.0016131, 9.012725, -3.1242769, 8.4500065, 0.9926477, -5.2547164, 0, 0.05, 0)
+emitting = false
+amount = 64
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_vqr6x")
+draw_pass_1 = SubResource("PlaneMesh_twsdo")
+
+[node name="can" parent="." index="1" unique_id=401999141]
 transform = Transform3D(5.21883, 0.61307174, 8.508111, 1.1667075, -9.931706, 4.4506336e-08, 8.4500065, 0.9926477, -5.2547164, 0, 0.05, 0)
 surface_material_override/0 = ExtResource("3_xqgd1")
