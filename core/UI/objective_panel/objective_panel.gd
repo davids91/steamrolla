@@ -27,7 +27,10 @@ func _on_panel_button_toggled(toggled_on: bool) -> void:
 
 ## Set objectives to display and check for automatically
 ## Objective structure: {"objective identifier": "objective text"}
+var used_base_dir: String = ""
 func set_objectives(objectives_to_do: Dictionary[String, String], base_dir: String) -> void:
+	used_base_dir = base_dir
+
 	# Clear all objectives except "asphalt_done"
 	for o in objectives: if o.name != "AsphaltDoneTaskItem": o.queue_free()
 	objective_paths.clear()
@@ -74,6 +77,7 @@ func _process(delta: float) -> void:
 			%AsphaltProgress.value = 1. - level.get_deviation_from_target() * 10.
 			if level.is_state_in_target() and not is_completed("asphalt_done"):
 				set_completed("asphalt_done")
+				LevelStructure.level_attribute_store(used_base_dir, "asphalt_done")
 
 		# Check for the other named objectives completion
 		for i in range(1, objective_paths.size()):

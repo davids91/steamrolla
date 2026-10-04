@@ -1,13 +1,42 @@
 [gd_scene format=3 uid="uid://gkla30eu20j8"]
 
-[ext_resource type="Texture2D" uid="uid://dnvigyyxfjp0k" path="res://levels/2_1intersection/terrain_albedo_image_minified.png" id="1_6lrjc"]
-[ext_resource type="Theme" uid="uid://cjbyaermnkf75" path="res://core/UI/main_menu/title_style.tres" id="1_o4dpg"]
-[ext_resource type="PackedScene" uid="uid://dc8fban4hbc8f" path="res://core/UI/objective_item.tscn" id="2_yem36"]
-[ext_resource type="Theme" uid="uid://d1tgwdb3grjhr" path="res://core/UI/main_menu/menu_button_style.tres" id="3_cqva8"]
+[ext_resource type="Script" uid="uid://bxhboogklaol5" path="res://core/UI/level_complete_panel.gd" id="1_h5yh1"]
+[ext_resource type="Theme" uid="uid://cjbyaermnkf75" path="res://core/scenes/menus/title_style.tres" id="1_o4dpg"]
+[ext_resource type="Shader" uid="uid://cestwc0w0cjw1" path="res://core/UI/decorated_text.gdshader" id="2_6lrjc"]
+[ext_resource type="Theme" uid="uid://d1tgwdb3grjhr" path="res://core/scenes/menus/menu_button_style.tres" id="3_cqva8"]
+[ext_resource type="Script" uid="uid://cg84stsjvuo03" path="res://core/UI/decorated_text.gd" id="4_h5yh1"]
 
-[node name="LevelCompletePanel" type="CanvasLayer" unique_id=1544193920]
+[sub_resource type="Gradient" id="Gradient_aqvre"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.5083933)
+colors = PackedColorArray(0.9254902, 0.9098039, 0.101960786, 1, 0.088666655, 0.0784, 0.14, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_k5p64"]
+gradient = SubResource("Gradient_aqvre")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2ie5f"]
+resource_local_to_scene = true
+shader = ExtResource("2_6lrjc")
+shader_parameter/color_gradient = SubResource("GradientTexture1D_k5p64")
+shader_parameter/stripes_angle = -1.305
+shader_parameter/vibration_angle = 0.785
+shader_parameter/stripes_spread = 45.0
+shader_parameter/stripes_edge = 0.001
+
+[sub_resource type="LabelSettings" id="LabelSettings_8jg5c"]
+font_size = 75
+
+[node name="LevelCompletePanel" type="Control" unique_id=145193494]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_h5yh1")
 
 [node name="Overlay" type="ColorRect" parent="." unique_id=2060406121]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -15,72 +44,69 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.39607844)
 
-[node name="CenterContainer" type="CenterContainer" parent="." unique_id=648509208]
+[node name="CenterContainer" type="VBoxContainer" parent="." unique_id=606432793]
 propagate_maximum_size = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Panel" type="Panel" parent="CenterContainer" unique_id=63247827]
-custom_minimum_size = Vector2(1080, 450)
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/Panel" unique_id=2032865438]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer2" type="MarginContainer" parent="CenterContainer" unique_id=1665424645]
+layout_mode = 2
 theme_override_constants/margin_left = 30
 theme_override_constants/margin_top = 30
 theme_override_constants/margin_right = 30
 theme_override_constants/margin_bottom = 30
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/Panel/MarginContainer" unique_id=1982440072]
+[node name="ProgressBar" type="ProgressBar" parent="CenterContainer/MarginContainer2" unique_id=1405936881]
+modulate = Color(0.8826667, 1, 0.36, 1)
+custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
+value = 50.0
+show_percentage = false
 
-[node name="LevelIcon" type="TextureRect" parent="CenterContainer/Panel/MarginContainer/HBoxContainer" unique_id=2102299048]
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer" unique_id=2032865438]
 layout_mode = 2
-size_flags_horizontal = 3
-texture = ExtResource("1_6lrjc")
-stretch_mode = 5
+size_flags_vertical = 3
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Panel/MarginContainer/HBoxContainer" unique_id=131813691]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/MarginContainer" unique_id=131813691]
 layout_mode = 2
-size_flags_horizontal = 6
+size_flags_horizontal = 4
+size_flags_vertical = 0
 theme_override_constants/separation = 32
 alignment = 1
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CenterContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=2006440459]
+[node name="RichTextLabel" type="Label" parent="CenterContainer/MarginContainer/VBoxContainer" unique_id=470324182]
+material = SubResource("ShaderMaterial_2ie5f")
 layout_mode = 2
 theme = ExtResource("1_o4dpg")
-theme_override_font_sizes/normal_font_size = 40
 text = "Level Completed!"
-fit_content = true
-scroll_active = false
-autowrap_mode = 0
+label_settings = SubResource("LabelSettings_8jg5c")
 horizontal_alignment = 1
 vertical_alignment = 1
+script = ExtResource("4_h5yh1")
 
-[node name="ObjectiveList" type="VBoxContainer" parent="CenterContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=481300421]
-layout_mode = 2
-theme_override_constants/separation = 16
-
-[node name="ObjectiveItem" parent="CenterContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/ObjectiveList" unique_id=1521236591 instance=ExtResource("2_yem36")]
-layout_mode = 2
-
-[node name="ObjectiveItem2" parent="CenterContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/ObjectiveList" unique_id=1066345456 instance=ExtResource("2_yem36")]
-layout_mode = 2
-
-[node name="ObjectiveItem3" parent="CenterContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/ObjectiveList" unique_id=1567715575 instance=ExtResource("2_yem36")]
-layout_mode = 2
-
-[node name="Button" type="Button" parent="CenterContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=354698346]
+[node name="StayButton" type="Button" parent="CenterContainer/MarginContainer/VBoxContainer" unique_id=65451995]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 theme = ExtResource("3_cqva8")
 theme_override_font_sizes/font_size = 30
-text = "Next level"
+text = "Stay
+"
+
+[node name="LevelSelectButton" type="Button" parent="CenterContainer/MarginContainer/VBoxContainer" unique_id=354698346]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme = ExtResource("3_cqva8")
+theme_override_font_sizes/font_size = 30
+text = "Level Select"
+
+[connection signal="pressed" from="CenterContainer/MarginContainer/VBoxContainer/StayButton" to="." method="_on_stay_button_pressed"]
+[connection signal="pressed" from="CenterContainer/MarginContainer/VBoxContainer/LevelSelectButton" to="." method="_on_level_select_button_pressed"]

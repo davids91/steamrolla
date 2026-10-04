@@ -10,14 +10,15 @@ extends Node3D
 func _ready() -> void:
 	# Handle Objectives
 	LevelStructure.level_attribute_list_overwrite(base_dir, level_objectives)
-	$HUD.set_objectives(level_objectives, base_dir)
+
+	# Setup HUD
+	$HUD.base_dir = base_dir
+	$HUD.set_objectives(level_objectives)
+	$HUD.exit_scene.connect(func(): create_tween().tween_property(%ScreenBlocker, "modulate", Color.WHITE, transition_time_sec))
 
 	# Handle Screen blocker
 	%ScreenBlocker.modulate = Color.WHITE
 	create_tween().tween_property(%ScreenBlocker, "modulate", Color.TRANSPARENT, transition_time_sec)
-	$HUD.exit_scene.connect(func():
-		create_tween().tween_property(%ScreenBlocker, "modulate", Color.WHITE, transition_time_sec)
-	)
 
 var victory_tween: Tween:
 	set(v):
