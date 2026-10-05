@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://dmjslec1jpt1u"]
+
+[ext_resource type="ArrayMesh" uid="uid://dg2ox52dc0xpu" path="res://models/skeleton-tiny.obj" id="1_52win"]
+
+[node name="skeleton" type="Node3D" unique_id=500975832]
+
+[node name="SkeletonTiny" type="MeshInstance3D" parent="." unique_id=612736095]
+transform = Transform3D(0.25, 0, 0, 0, -1.0927847e-08, 0.25, 0, -0.25, -1.0927847e-08, 0, 0, 0.5)
+mesh = ExtResource("1_52win")
