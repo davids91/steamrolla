@@ -75,6 +75,6 @@ one_shot = true
 process_material = SubResource("ParticleProcessMaterial_vuami")
 draw_pass_1 = SubResource("PlaneMesh_bnc5p")
 
-[node name="can" parent="." index="1" unique_id=401999141]
-transform = Transform3D(-0.4297955, -7.454002, -6.6523027, -9.9834175, 0.57564086, -2.0115593e-08, 0.38293374, 6.6412716, -7.4663825, 0, 0.05, 0)
+[node name="can" parent="." index="1" unique_id=1924172594]
+transform = Transform3D(-0.859591, -14.908004, -13.3046055, -19.966835, 1.1512817, 1.9274626e-08, 0.7658675, 13.282543, -14.932765, 0, 0.1, 0)
 surface_material_override/0 = ExtResource("3_81few")
