@@ -48,7 +48,6 @@ func _ready() -> void:
 			): (tool_nodes[active_tool].get_node("OrbitCamera") as OrbitCamera3D).transition_to(view)
 			deployed_tools.erase(active_tool)
 			deployment_changed.emit(active_tool, false)
-			select_tool(active_tool)
 		)
 
 	# Storage and retrieval of the positions of the deployed tools
@@ -183,8 +182,6 @@ func dig_shovel_into(target_position: Vector3) -> void:
 
 var asphalt_delta: float = 0.
 func _unhandled_input(event: InputEvent) -> void:
-	if active_tool == ToolPanel.Tools.UNKNOWN: return
-
 	# Handle releasing the payload
 	if Input.is_action_just_pressed("deploy_payload"):
 		tool_nodes[active_tool].payload_triggered = true
@@ -193,12 +190,16 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	# Handle dragged control method and shovel
 	if event is InputEventMouseButton:
+		# Select desired(pointed at) tool
+		if UsageIndicator.displayed and UsageIndicator.displayed.get_parent() is RoadworkTool:
+			select_tool(UsageIndicator.displayed.get_parent().tool_enum)
+		view.lock_view(event.is_pressed() and tool_nodes.has(active_tool) and tool_nodes[active_tool].controlled_by == RoadworkTool.ControlMethods.DRAGGED)
+
 		if active_tool == ToolPanel.Tools.SHOVEL and event.pressed:
 			$ShovelSound.play()
 			dig_shovel_into(view.cursor.global_position)
 		if tool_nodes.has(active_tool):
 			asphalt_delta = tool_nodes[active_tool].tool_strength
-		view.lock_view(event.is_pressed())
 		if tool_nodes.has(active_tool):
 			if tool_nodes[active_tool].controlled_by == RoadworkTool.ControlMethods.DRAGGED:
 				if event.is_pressed(): tool_nodes[active_tool].start_working()
@@ -223,3 +224,7 @@ func _process(delta: float) -> void:
 		else:
 			asphalt_delta *= (1. - tool_nodes[active_tool].tool_responsiveness)
 			if abs(asphalt_delta) < VALUE_EPSILON: asphalt_delta = 0.
+
+func _on_hud_exit_scene() -> void:
+	# Call deferred to ensure order of execution, HUD::exit_scene has many listeners
+	select_tool.call_deferred(ToolPanel.Tools.UNKNOWN)
