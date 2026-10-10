@@ -31,10 +31,11 @@ const hidden_depth: float = -500;
 var tools_may_be_outside_bounds: Array[RoadworkTool]
 func _physics_process(_delta: float) -> void:
 	# Calculate Horizontal trajectory of the runway
-	var x_bound_min: float = level.global_position.x - level.get_size().x / 2. - $Shape.shape.size.x / 2.
-	var x_bound_max: float = level.global_position.x + level.get_size().x / 2. + $Shape.shape.size.x / 2.
-	var z_bound_min: float = level.global_position.z - level.get_size().z / 2. - $Shape.shape.size.z / 2.
-	var z_bound_max: float = level.global_position.z + level.get_size().z / 2. + $Shape.shape.size.z / 2.
+	var level_size: Vector3 = level.get_size()
+	var x_bound_min: float = level.global_position.x - level_size.x / 2. - $Shape.shape.size.x / 2.
+	var x_bound_max: float = level.global_position.x + level_size.x / 2. + $Shape.shape.size.x / 2.
+	var z_bound_min: float = level.global_position.z - level_size.z / 2. - $Shape.shape.size.z / 2.
+	var z_bound_max: float = level.global_position.z + level_size.z / 2. + $Shape.shape.size.z / 2.
 
 	if( # If the followed object is within level bounds
 		following
@@ -80,7 +81,7 @@ func _physics_process(_delta: float) -> void:
 
 	# Move towards target position and look at the center of the level always
 	var next_transform: Transform3D = global_transform
-	next_transform.origin = lerp(global_position, target_global_position, 0.3)
+	next_transform.origin = lerp(global_position, target_global_position, 0.75)
 	var center_x_dif: float = next_transform.origin.x - level.global_position.x
 	var center_z_dif: float = next_transform.origin.z - level.global_position.z
 	var next_global_orientation_target: Vector3 = next_transform.origin + (

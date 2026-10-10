@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://1qygtkaelkou" path="res://actors/equipment/compactor.gd" id="1_1b380"]
 [ext_resource type="Texture2D" uid="uid://b6i820kn0nl8g" path="res://source_assets/models/bloke_skin.png" id="2_1b380"]
+[ext_resource type="PackedScene" uid="uid://bb24gus88qx5r" path="res://core/tools/orbit_camera_3d.tscn" id="2_7imx7"]
 [ext_resource type="Script" uid="uid://bpfus5xg6xcga" path="res://addons/jigglebones/jigglebone.gd" id="2_lekfh"]
 [ext_resource type="Texture2D" uid="uid://celpnphf3sy1p" path="res://source_assets/models/compactor_skin.png" id="4_ukknc"]
 [ext_resource type="AudioStream" uid="uid://8wf5r8kj4wv8" path="res://audio/compactor.wav" id="5_5lgew"]
@@ -279,7 +280,17 @@ stream_0/stream = ExtResource("5_5lgew")
 script = ExtResource("1_1b380")
 vibration_extent = 0.11
 tool_enum = 3
-tool_radius = 0.075
+normalized_size = Vector2(0.05, 0.05)
+tool_strength = 0.34999999999999964
+tool_radius = 0.035
+controlled_by = 2
+speed = 15.0
+steering_angle = 10.0
+turning_speed = 0.5
+
+[node name="OrbitCamera" parent="." unique_id=1504134869 instance=ExtResource("2_7imx7")]
+transform = Transform3D(-0.9973146, -0.025289025, 0.06873356, 0, 0.938493, 0.3452982, -0.073238224, 0.34437087, -0.93597263, 0, 0, 0)
+control_disabled = true
 
 [node name="BodyRepresentation" type="Area3D" parent="." unique_id=1789476627 groups=["BirdReactable", "BombActivator"]]
 
@@ -287,17 +298,19 @@ tool_radius = 0.075
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.029174805, 1.3768725, -0.42316818)
 shape = SubResource("BoxShape3D_5lgew")
 
-[node name="Bloke" type="Node3D" parent="." unique_id=1862325032]
+[node name="SpinnyPart" type="Node3D" parent="." unique_id=1481064053]
+
+[node name="Bloke" type="Node3D" parent="SpinnyPart" unique_id=1862325032]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 0.9451258, -0.3267066, 0, 0.3267066, 0.9451258, -0.03, 0.6920736, -2.2555497)
 
-[node name="metarig" type="Node3D" parent="Bloke" unique_id=297512267]
+[node name="metarig" type="Node3D" parent="SpinnyPart/Bloke" unique_id=297512267]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.23186135, 0.61224794)
 metadata/extras = {
 "booleans": {}
 }
 
-[node name="Skeleton3D" type="Skeleton3D" parent="Bloke/metarig" unique_id=706420140]
+[node name="Skeleton3D" type="Skeleton3D" parent="SpinnyPart/Bloke/metarig" unique_id=706420140]
 bones/0/name = "spine"
 bones/0/parent = -1
 bones/0/rest = Transform3D(1, -1.065814e-14, 2.3841848e-07, 5.9518683e-08, 0.9683388, -0.24963945, -2.308699e-07, 0.24963947, 0.9683387, 0, 0.78580993, -0.0552)
@@ -446,7 +459,7 @@ bones/20/position = Vector3(1.6007107e-09, 0.46293902, -2.561137e-09)
 bones/20/rotation = Quaternion(0.050852917, -0.014699416, -0.088110976, 0.9947032)
 bones/20/scale = Vector3(0.9999999, 0.9999998, 0.99999994)
 
-[node name="bloke" type="MeshInstance3D" parent="Bloke/metarig/Skeleton3D" unique_id=1969795242]
+[node name="bloke" type="MeshInstance3D" parent="SpinnyPart/Bloke/metarig/Skeleton3D" unique_id=1969795242]
 mesh = SubResource("ArrayMesh_7pmv6")
 skin = SubResource("Skin_7gbcu")
 skeleton = NodePath("..")
@@ -454,7 +467,7 @@ metadata/extras = {
 "booleans": {}
 }
 
-[node name="hat" type="MeshInstance3D" parent="Bloke/metarig/Skeleton3D" unique_id=511401531]
+[node name="hat" type="MeshInstance3D" parent="SpinnyPart/Bloke/metarig/Skeleton3D" unique_id=511401531]
 mesh = SubResource("ArrayMesh_c5455")
 skin = SubResource("Skin_7gbcu")
 skeleton = NodePath("..")
@@ -462,7 +475,7 @@ metadata/extras = {
 "booleans": {}
 }
 
-[node name="hat2" type="Node3D" parent="Bloke/metarig/Skeleton3D" unique_id=488922783]
+[node name="hat2" type="Node3D" parent="SpinnyPart/Bloke/metarig/Skeleton3D" unique_id=488922783]
 transform = Transform3D(1, -1.893538e-09, -1.3192285e-08, -2.528443e-09, 0.94492394, -0.3272889, 1.3085453e-08, 0.32728896, 0.94492376, -0.029999945, 2.8807483, -1.88311)
 top_level = true
 script = ExtResource("2_lekfh")
@@ -470,7 +483,7 @@ bone_name = "spine.006"
 stiffness = 0.1
 metadata/_custom_type_script = "uid://bpfus5xg6xcga"
 
-[node name="ThighL" type="Node3D" parent="Bloke/metarig/Skeleton3D" unique_id=1884936789]
+[node name="ThighL" type="Node3D" parent="SpinnyPart/Bloke/metarig/Skeleton3D" unique_id=1884936789]
 transform = Transform3D(0.9840423, 0.17677683, -0.020300899, 0.17267404, -0.92114425, 0.3488232, 0.042963773, -0.34676158, -0.93696994, 0.08828248, 1.1681166, -0.3987611)
 top_level = true
 script = ExtResource("2_lekfh")
@@ -478,7 +491,7 @@ bone_name = "thigh.L"
 stiffness = 0.1
 metadata/_custom_type_script = "uid://bpfus5xg6xcga"
 
-[node name="ThighR" type="Node3D" parent="Bloke/metarig/Skeleton3D" unique_id=1344752242]
+[node name="ThighR" type="Node3D" parent="SpinnyPart/Bloke/metarig/Skeleton3D" unique_id=1344752242]
 transform = Transform3D(0.98404205, -0.17677684, 0.020301396, -0.17267424, -0.92114407, 0.348823, -0.04296329, -0.3467614, -0.93697, -0.14828265, 1.1681168, -0.39876097)
 top_level = true
 script = ExtResource("2_lekfh")
@@ -486,7 +499,7 @@ bone_name = "thigh.R"
 stiffness = 0.1
 metadata/_custom_type_script = "uid://bpfus5xg6xcga"
 
-[node name="Spine" type="Node3D" parent="Bloke/metarig/Skeleton3D" unique_id=927189058]
+[node name="Spine" type="Node3D" parent="SpinnyPart/Bloke/metarig/Skeleton3D" unique_id=927189058]
 transform = Transform3D(1, 1.0509925e-11, 2.7009643e-08, 1.0592971e-08, 0.91973054, -0.39255, -2.4845725e-08, 0.39255, 0.91973054, -0.030000057, 1.9910822, -2.2323656)
 top_level = true
 script = ExtResource("2_lekfh")
@@ -494,13 +507,13 @@ bone_name = "spine.001"
 stiffness = 0.1
 metadata/_custom_type_script = "uid://bpfus5xg6xcga"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Bloke" unique_id=1326352400]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="SpinnyPart/Bloke" unique_id=1326352400]
 libraries/ = SubResource("AnimationLibrary_4lo3i")
 
-[node name="compactor" type="Node3D" parent="." unique_id=1669002766]
+[node name="compactor" type="Node3D" parent="SpinnyPart" unique_id=1669002766]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.029547542, 0, 0.12847447)
 
-[node name="Cube_001" type="MeshInstance3D" parent="compactor" unique_id=1822433363]
+[node name="Cube_001" type="MeshInstance3D" parent="SpinnyPart/compactor" unique_id=1822433363]
 transform = Transform3D(-0.40514937, 0, 0, 0, 0.4994345, 0.014978884, 0, -0.16925624, 0.044199087, 0, 0.7773752, -0.7184156)
 mesh = SubResource("ArrayMesh_2gveg")
 metadata/extras = {
@@ -513,6 +526,13 @@ volume_db = -5.0
 
 [node name="ToolBubbleIndicator" parent="." unique_id=135928248 instance=ExtResource("6_f3p5u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.1034093, 0)
+
+[node name="ForwardRayCast" type="RayCast3D" parent="." unique_id=1818242534]
+target_position = Vector3(0, 0, 2)
+
+[node name="FloorRaycast" type="RayCast3D" parent="." unique_id=1485868472]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 0)
+target_position = Vector3(0, -100, 0)
 
 [connection signal="area_entered" from="BodyRepresentation" to="." method="_on_body_representation_area_entered"]
 [connection signal="area_exited" from="BodyRepresentation" to="." method="_on_body_representation_area_exited"]

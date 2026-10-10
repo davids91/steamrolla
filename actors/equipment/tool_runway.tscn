@@ -48,7 +48,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_n8dst")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5j0fq"]
-size = Vector3(2, 5, 2)
+size = Vector3(2, 195.31027, 2)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fj4hn"]
 resource_name = "Material.002"
@@ -111,7 +111,7 @@ mesh = SubResource("ArrayMesh_wi1cl")
 [node name="DeploymentArea" type="Area3D" parent="." unique_id=1816332539]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DeploymentArea" unique_id=936140518]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.19799805, 1.6763458, 0.070892334)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.19799805, 51.90976, 0.070892334)
 shape = SubResource("BoxShape3D_5j0fq")
 
 [node name="RollerParkingSpot" type="Marker3D" parent="." unique_id=473792489]

@@ -28,11 +28,6 @@ func _ready() -> void:
 	runway.payload_left.connect(func():
 		if not tool_nodes.has(active_tool) or deployed_tools.has(active_tool): return
 		deployed_tools.push_back(active_tool)
-		if( # Camera transition from level overview if tool camera is available
-				view.get_current()
-				and tool_nodes[active_tool].get_node_or_null("OrbitCamera")
-				and tool_nodes[active_tool].controlled_by == RoadworkTool.ControlMethods.PILOTED
-		): view.transition_to(tool_nodes[active_tool].get_node("OrbitCamera"))
 	)
 	runway.payload_entered.connect(func():
 		if not tool_nodes.has(active_tool): return
@@ -106,7 +101,9 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 
 	# Early exit if no tools are selected
 	if tool == ToolPanel.Tools.UNKNOWN:
+		active_tool = ToolPanel.Tools.UNKNOWN
 		view.cursor.visible = true
+		runway.following = null
 		return
 
 	if tool_nodes.has(tool): # Configure tool for level and runway
@@ -126,7 +123,13 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 				view.get_current()
 				and tool_nodes[tool].get_node_or_null("OrbitCamera")
 				and tool_nodes[tool].controlled_by == RoadworkTool.ControlMethods.PILOTED
-			): view.transition_to(tool_nodes[tool].get_node("OrbitCamera"))
+			):
+				if "camera_transition_duration_sec" in tool_nodes[tool]:
+					view.transition_to(
+						tool_nodes[tool].get_node("OrbitCamera"),
+						tool_nodes[tool].camera_transition_duration_sec
+					)
+				else: view.transition_to(tool_nodes[tool].get_node("OrbitCamera"))
 	active_tool = tool
 
 @export_range(0., 5.) var shovel_icon_duration_sec: float = 1.
@@ -171,14 +174,18 @@ func _unhandled_input(event: InputEvent) -> void:
 		tool_nodes[active_tool].payload_triggered = false
 
 	# Handle dragged control method and shovel
-	if event is InputEventMouseButton and event.button_index != MOUSE_BUTTON_MIDDLE:
+	if(
+		event is InputEventMouseButton
+		and event.button_index != MOUSE_BUTTON_MIDDLE
+		and event.button_index != MOUSE_BUTTON_WHEEL_UP
+		and event.button_index != MOUSE_BUTTON_WHEEL_DOWN
+	):
 		if event.is_pressed():
 			# Select desired(pointed at) tool and deactivate selection, confirm deployment if ready!
 			if UsageIndicator.displayed and UsageIndicator.displayed.get_parent() is RoadworkTool:
 				select_tool(UsageIndicator.displayed.get_parent().tool_enum)
 				UsageIndicator.displayed = null
 			elif runway.ready_to_deploy(): select_tool(active_tool)
-
 
 			# Lock View if the currently active tool is controlled by mouse drag
 			view.lock_view(
@@ -214,6 +221,8 @@ func _process(delta: float) -> void:
 			if abs(asphalt_delta) < VALUE_EPSILON: asphalt_delta = 0.
 
 func _on_hud_exit_scene() -> void:
+	if tool_nodes.has(active_tool):
+		runway.tools_may_be_outside_bounds.push_back(tool_nodes[active_tool])
+
 	# Call deferred to ensure order of execution, HUD::exit_scene has many listeners
-	runway.tools_may_be_outside_bounds.push_back(tool_nodes[active_tool])
 	select_tool.call_deferred(ToolPanel.Tools.UNKNOWN)
