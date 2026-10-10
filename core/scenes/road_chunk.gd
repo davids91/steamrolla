@@ -87,6 +87,14 @@ func snap_to_reference(amount: float) -> void:
 
 func get_size() -> Vector3: return Vector3($Ground.mesh.size.x, height_unit, $Ground.mesh.size.y)
 
+func is_within_bounds(pos: Vector3) -> bool:
+	return(
+		pos.x >= global_position.x - $Ground.mesh.size.x / 2.
+		and pos.x <= global_position.x + $Ground.mesh.size.x / 2.
+		and pos.z >= global_position.z - $Ground.mesh.size.y / 2.
+		and pos.z <= global_position.z + $Ground.mesh.size.y / 2.
+	)
+
 func get_tex_position_from(pos: Vector3) -> Vector2:
 	var flat_chunk_size: Vector2 = Vector2($Ground.mesh.size.x, $Ground.mesh.size.y)
 	return (
@@ -440,6 +448,8 @@ func _ready() -> void:
 	if not is_stub:
 		$Ground.get_active_material(0).set_shader_parameter("level_tool_strength", 0.)
 		initialize(LevelStructure.resource_path_in_dir(used_base_dir))
+	if is_stub and not is_minified:
+		$Ground.get_active_material(0).set_shader_parameter("level_tool_strength", 0.)
 
 func _process(delta: float) -> void:
 	time_since_last_update += delta

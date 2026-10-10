@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://bpfus5xg6xcga" path="res://addons/jigglebones/jigglebone.gd" id="2_lekfh"]
 [ext_resource type="Texture2D" uid="uid://celpnphf3sy1p" path="res://source_assets/models/compactor_skin.png" id="4_ukknc"]
 [ext_resource type="AudioStream" uid="uid://8wf5r8kj4wv8" path="res://audio/compactor.wav" id="5_5lgew"]
+[ext_resource type="PackedScene" uid="uid://l00v8wyjwjmc" path="res://core/UI/tool_bubble_indicator/tool_bubble_indicator_billboard.tscn" id="6_f3p5u"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5lgew"]
 size = Vector3(1.0891113, 2.7536497, 2.5981522)
@@ -509,3 +510,9 @@ metadata/extras = {
 [node name="Sound" type="AudioStreamPlayer3D" parent="." unique_id=1187652055]
 stream = SubResource("AudioStreamRandomizer_8jg5c")
 volume_db = -5.0
+
+[node name="ToolBubbleIndicator" parent="." unique_id=135928248 instance=ExtResource("6_f3p5u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.1034093, 0)
+
+[connection signal="area_entered" from="BodyRepresentation" to="." method="_on_body_representation_area_entered"]
+[connection signal="area_exited" from="BodyRepresentation" to="." method="_on_body_representation_area_exited"]

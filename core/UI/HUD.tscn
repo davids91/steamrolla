@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://dqycmm121dtol" path="res://core/UI/hud.gd" id="1_ygh00"]
 [ext_resource type="PackedScene" uid="uid://de7pi2unbrosp" path="res://core/UI/objective_panel/objective_panel.tscn" id="3_ygh00"]
-[ext_resource type="PackedScene" uid="uid://cay2iy3mi03c4" path="res://core/UI/tool_panel.tscn" id="4_hyk35"]
 [ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="5_ygh00"]
 [ext_resource type="AudioStream" uid="uid://dvhgxea4thtal" path="res://audio/botch.wav" id="6_k5p64"]
 [ext_resource type="AudioStream" uid="uid://dif8avwftb7wi" path="res://audio/success.wav" id="7_ej2ga"]
@@ -24,9 +23,6 @@ region = Rect2(772.883, 121.768, 128, 137.545)
 
 [node name="HUD" type="CanvasLayer" unique_id=920709406]
 script = ExtResource("1_ygh00")
-
-[node name="ToolPanel" parent="." unique_id=120026210 instance=ExtResource("4_hyk35")]
-available_tools = Array[int]([0, 1, 3, 4, 5])
 
 [node name="ObjectivePanel" parent="." unique_id=1415146818 instance=ExtResource("3_ygh00")]
 
@@ -57,7 +53,6 @@ stream = ExtResource("7_ej2ga")
 visible = false
 modulate = Color(1, 1, 1, 0)
 
-[connection signal="selected_tool" from="ToolPanel" to="." method="_on_tool_panel_selected_tool"]
 [connection signal="objective_completed" from="ObjectivePanel" to="." method="_on_objective_panel_objective_completed"]
 [connection signal="pressed" from="ExitBtn" to="." method="_on_exit_btn_pressed"]
 [connection signal="exit_scene" from="LevelCompletePanel" to="." method="_on_exit_btn_pressed"]

@@ -11,17 +11,14 @@ func set_angle_from_prev_pos(prev_pos: Vector3) -> void:
 
 func stop_working() -> void:
 	super()
-	set_color(Color.TRANSPARENT)
 	$Sound.stop()
 
 func work_at_cursor(target_position: Vector3) -> void:
 	super(target_position)
-	set_color(default_color)
 	$Sound.play()
 #endregion Common Interface For Roadwork Tools
 
 func _ready() -> void:
-	set_color(Color.TRANSPARENT)
 	$Bloke/AnimationPlayer.current_animation = "default"
 
 @export var vibration_speed: float = 100.
@@ -31,3 +28,11 @@ func _process(delta: float) -> void:
 	elapsed_time += delta
 	$compactor.position += $compactor.basis.y * sin(elapsed_time * vibration_speed) * vibration_extent
 	$Bloke.position += $Bloke.basis.y * sin(elapsed_time * vibration_speed) * vibration_extent
+
+func _on_body_representation_area_entered(area: Area3D) -> void:
+	if area.name == "PlayerCursorBody" and area.get_parent().visible and not is_working:
+		$ToolBubbleIndicator.show_tooltip(true)
+
+func _on_body_representation_area_exited(area: Area3D) -> void:
+	if area.name == "PlayerCursorBody" and area.get_parent().visible:
+		$ToolBubbleIndicator.show_tooltip(false)
