@@ -254,11 +254,11 @@ size_flags_horizontal = 3
 [node name="Photo2" type="TextureRect" parent="Base/MarginContainer/HBoxContainer/FieldPhotoContainer" unique_id=2095940192]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 56.0
-offset_top = 299.2771
-offset_right = 367.01056
-offset_bottom = 590.8496
-rotation = 0.10471976
+offset_left = 26.0
+offset_top = 308.0
+offset_right = 337.01056
+offset_bottom = 599.5725
+rotation = 0.10779285
 scale = Vector2(0.89627916, 0.89627916)
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -282,13 +282,75 @@ grow_vertical = 2
 expand_mode = 1
 stretch_mode = 6
 
+[node name="Photo3" type="TextureRect" parent="Base/MarginContainer/HBoxContainer/FieldPhotoContainer" unique_id=1357856127]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 191.0
+offset_top = 125.0
+offset_right = 502.01056
+offset_bottom = 416.5725
+rotation = 0.10471976
+scale = Vector2(0.89627916, 0.89627916)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("6_67hv0")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Image" type="TextureRect" parent="Base/MarginContainer/HBoxContainer/FieldPhotoContainer/Photo3" unique_id=1132577044]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -138.32813
+offset_top = -130.8061
+offset_right = 134.20996
+offset_bottom = 101.441086
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Photo4" type="TextureRect" parent="Base/MarginContainer/HBoxContainer/FieldPhotoContainer" unique_id=1900521188]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 108.0
+offset_top = 488.0
+offset_right = 419.01056
+offset_bottom = 779.5725
+rotation = -0.3571192
+scale = Vector2(0.89627916, 0.89627916)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("6_67hv0")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Image" type="TextureRect" parent="Base/MarginContainer/HBoxContainer/FieldPhotoContainer/Photo4" unique_id=773004454]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -138.32813
+offset_top = -130.8061
+offset_right = 134.20996
+offset_bottom = 101.441086
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 6
+
 [node name="Photo1" type="TextureRect" parent="Base/MarginContainer/HBoxContainer/FieldPhotoContainer" unique_id=949021827]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = -46.0
-offset_top = 64.277054
-offset_right = 265.011
-offset_bottom = 355.84906
+offset_left = 1.0
+offset_top = 57.0
+offset_right = 312.011
+offset_bottom = 348.57202
 rotation = -0.05235988
 scale = Vector2(0.89627916, 0.89627916)
 size_flags_horizontal = 0

@@ -5,6 +5,8 @@ extends Node3D
 	"asphalt_done": "Fix road surface",
 }
 
+@export var level_objective_photos: Array[Texture] = []
+
 @export var transition_time_sec: float = 0.5
 @onready var base_dir: String = LevelStructure.get_base_dir_for_scene(self)
 func _ready() -> void:
@@ -13,7 +15,7 @@ func _ready() -> void:
 
 	# Setup HUD
 	$HUD.base_dir = base_dir
-	$HUD.set_objectives(level_objectives)
+	$HUD.set_objectives(level_objectives, level_objective_photos)
 
 	# Handle Screen blocker
 	%ScreenBlocker.modulate = Color.WHITE

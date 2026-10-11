@@ -2,6 +2,17 @@ extends Control
 
 signal objective_completed(objective_name: String)
 
+@export var photos: Array[Texture] = []:
+	set(v):
+		photos = v
+		if photos.size() > 0: %Photo1/Image.texture = photos[0]
+		else: %Photo1.visible = false
+		if photos.size() > 1: %Photo2/Image.texture = photos[1]
+		else: %Photo2.visible = false
+		if photos.size() > 2: %Photo3/Image.texture = photos[2]
+		else: %Photo3.visible = false
+		if photos.size() > 3: %Photo4/Image.texture = photos[3]
+		else: %Photo4.visible = false
 @export var task_item_scn: PackedScene
 @export var level: RoadChunk
 
