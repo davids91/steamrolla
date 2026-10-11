@@ -387,8 +387,4 @@ func _unhandled_input(event: InputEvent) -> void:
 func _ready() -> void:
 	_load_level_data()
 	%ToolPanel.call_deferred("select", ToolPanel.Tools.PAVER)
-	for tool in $ToolController.get_children(): if tool is RoadworkTool:
-		tool.set_color(Color.TRANSPARENT)
-	get_tree().create_timer(0.5).timeout.connect(func():
-		%RoadChunk.rotation = Vector3.ZERO # The chunk is a stub so it might rotate on ready
-	)
+	get_tree().create_timer(0.5).timeout.connect(func(): %RoadChunk.rotation = Vector3.ZERO) # The chunk is a stub so it might rotate on ready

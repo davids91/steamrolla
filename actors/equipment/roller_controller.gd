@@ -55,28 +55,28 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	super(delta)
-	(func():
+	(func(): # Handle asphalt detection
 		if connected_chunk:
 			var asphalt_quantity: float = await connected_chunk.get_asphalt_quantity_at(global_position)
 			is_on_asphalt = 0. < asphalt_quantity
+			if(
+				is_reversing != (direction.z > 0.0) or is_moving != (direction.z != 0.0)
+				or was_on_asphalt != is_on_asphalt
+			):
+				var sound_should_be_playing: bool = (direction.z != 0.0) and is_on_asphalt
+				if sound_should_be_playing: # Play from a random time within the length of the audio stream if not already playing
+					if not $SqueezeSound.playing:
+						$SqueezeSound.play(randf() * 1.89)
+				else: $SqueezeSound.stop()
+			was_on_asphalt = is_on_asphalt
 	).call_deferred()
 
-	if(
-		is_reversing != (direction.z > 0.0) or is_moving != (direction.z != 0.0)
-		or was_on_asphalt != is_on_asphalt
-	):
-		var sound_should_be_playing: bool = (direction.z != 0.0) and is_on_asphalt
-		if sound_should_be_playing: # Play from a random time within the length of the audio stream if not already playing
-			if not $SqueezeSound.playing:
-				$SqueezeSound.play(randf() * 1.89)
-		else: $SqueezeSound.stop()
-	was_on_asphalt = is_on_asphalt
-
-	var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
-	var raycast_result: Dictionary = space_state.intersect_ray(PhysicsRayQueryParameters3D.create(
-		global_position + Vector3(0.0, 100., 0.0), global_position - Vector3(0.0, 100., 0.0)
-	))
-	if "position" in raycast_result: global_position.y = raycast_result.position.y
+	if is_working: # Stick to the ground
+		var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+		var raycast_result: Dictionary = space_state.intersect_ray(PhysicsRayQueryParameters3D.create(
+			global_position + Vector3(0.0, 100., 0.0), global_position - Vector3(0.0, 100., 0.0)
+		))
+		if "position" in raycast_result: global_position.y = raycast_result.position.y
 
 func _on_body_representation_area_entered(area: Area3D) -> void:
 	if area.name == "PlayerCursorBody" and area.get_parent().visible and not is_working:

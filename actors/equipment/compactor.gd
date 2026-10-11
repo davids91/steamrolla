@@ -4,9 +4,9 @@ extends RoadworkTool
 
 #region Common Interface For Roadwork Tools
 func set_color(color: Color) -> void:
-	create_tween().tween_property($Bloke/metarig/Skeleton3D/bloke.get_active_material(0), "albedo_color", color, 0.5)
-	create_tween().tween_property($Bloke/metarig/Skeleton3D/hat.get_active_material(0), "albedo_color", color, 0.5)
-	create_tween().tween_property($compactor/Cube_001.get_active_material(0), "albedo_color", color, 0.5)
+	create_tween().tween_property($SpinnyPart/Bloke/metarig/Skeleton3D/bloke.get_active_material(0), "albedo_color", color, 0.5)
+	create_tween().tween_property($SpinnyPart/Bloke/metarig/Skeleton3D/hat.get_active_material(0), "albedo_color", color, 0.5)
+	create_tween().tween_property($SpinnyPart/compactor/Cube_001.get_active_material(0), "albedo_color", color, 0.5)
 
 func set_angle_from_prev_pos(prev_pos: Vector3) -> void:
 	look_at(prev_pos - global_position)

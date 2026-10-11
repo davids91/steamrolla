@@ -97,31 +97,18 @@ void fragment() {
 			}
 		}else if(used_tool == TOOL_ROLLER) {
 			vec2 prev_pixel_pos = UV - roller_direction * PIXEL_RADIUS;
+			vec2 next_pixel_pos = UV - roller_direction * PIXEL_RADIUS;
 			if( // Check if pixel is within Roller distance
 				(point_in_triangle(roller_bl, roller_tl, roller_tr, UV)|| point_in_triangle(roller_bl, roller_tr, roller_br, UV))
 				// Check for out of bounds
 				&&(all(lessThan(prev_pixel_pos, vec2(1.))) && all(greaterThan(prev_pixel_pos, vec2(0.))))
 			){
-				//// Collect the average value under the roller
-				//float avg_value = 0.;
-				//float sample_count = 0.;
-				//for(float x = UV.x - tool_radius; x < UV.x + tool_radius; x += (tool_radius / 5.)) {
-					//for(float y = UV.y - tool_radius; y < UV.y + tool_radius; y += (tool_radius / 5.)) {
-						//vec2 nearby_px_pos = vec2(x,y);
-						////if(point_in_triangle(roller_bl, roller_tl, roller_tr, nearby_px_pos)|| point_in_triangle(roller_bl, roller_tr, roller_br, nearby_px_pos)){
-							//avg_value += texture(asphalt_state, nearby_px_pos).r;
-							//sample_count += 1.;
-						////}
-					//}
-				//}
-				//avg_value /= sample_count;
-				//asphalt_delta_output = (avg_value - current_asphalt_level) * tool_strength;
-
 				// The below lines are an attempt to simulate roller pressure for each induvidual pixel under the roller
 				// calculate the asphalt being moved forward to the direction of the rolling to the next pixel
-				asphalt_delta_output -= current_asphalt_level * tool_strength;
+				if(texture(asphalt_attributes, next_pixel_pos).r > 0.)
+					asphalt_delta_output -= current_asphalt_level * tool_strength;
 				// calcualte the asphalt being moved into this pixel from a neighbouring pixel opposite of the rolling direction
-				asphalt_delta_output += texture(asphalt_state, prev_pixel_pos).r * tool_strength;
+				asphalt_delta_output += max(0., texture(asphalt_state, prev_pixel_pos).r) * tool_strength;
 			}
 		}
 	}

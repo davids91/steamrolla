@@ -24,22 +24,22 @@ func _ready() -> void:
 			and c.has_signal("driver_intention_changed")
 		): c.driver_intention_changed.connect(piloted_tool_driver_intention_changed)
 
-	# Runway deployment signals
-	runway.payload_left.connect(func():
-		if not tool_nodes.has(active_tool) or deployed_tools.has(active_tool): return
-		deployed_tools.push_back(active_tool)
-	)
-	runway.payload_entered.connect(func():
-		if not tool_nodes.has(active_tool): return
-		runway.tools_may_be_outside_bounds.push_back(tool_nodes[active_tool])
-		if( # Camera transition from piloted camera to player view if the tool camera is active
-			tool_nodes[active_tool].get_node_or_null("OrbitCamera")
-			and tool_nodes[active_tool].get_node("OrbitCamera").get_current()
-			and tool_nodes[active_tool].controlled_by == RoadworkTool.ControlMethods.PILOTED
-		): (tool_nodes[active_tool].get_node("OrbitCamera") as OrbitCamera3D).transition_to(view)
-		deployed_tools.erase(active_tool)
-		select_tool(ToolPanel.Tools.UNKNOWN)
-	)
+	if runway: # Runway deployment signals
+		runway.payload_left.connect(func():
+			if not tool_nodes.has(active_tool) or deployed_tools.has(active_tool): return
+			deployed_tools.push_back(active_tool)
+		)
+		runway.payload_entered.connect(func():
+			if not tool_nodes.has(active_tool): return
+			runway.tools_may_be_outside_bounds.push_back(tool_nodes[active_tool])
+			if( # Camera transition from piloted camera to player view if the tool camera is active
+				tool_nodes[active_tool].get_node_or_null("OrbitCamera")
+				and tool_nodes[active_tool].get_node("OrbitCamera").get_current()
+				and tool_nodes[active_tool].controlled_by == RoadworkTool.ControlMethods.PILOTED
+			): (tool_nodes[active_tool].get_node("OrbitCamera") as OrbitCamera3D).transition_to(view)
+			deployed_tools.erase(active_tool)
+			select_tool(ToolPanel.Tools.UNKNOWN)
+		)
 
 	# Storage and retrieval of the positions of the deployed tools
 	level.user_data_saved.connect(func(): LevelStructure.level_attribute_store(
@@ -77,7 +77,8 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 	if tool_nodes.has(active_tool) and tool_nodes[active_tool] and tool != active_tool:
 		tool_nodes[active_tool].stop_working()
 		tool_nodes[active_tool].prepare_for_runway()
-		runway.tools_may_be_outside_bounds.push_back(tool_nodes[active_tool])
+		if runway:
+			runway.tools_may_be_outside_bounds.push_back(tool_nodes[active_tool])
 
 		# Rewire driver intention changed
 		if tool_nodes[active_tool].driver_intention_changed.is_connected(piloted_tool_driver_intention_changed):
@@ -103,18 +104,20 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 	if tool == ToolPanel.Tools.UNKNOWN:
 		active_tool = ToolPanel.Tools.UNKNOWN
 		view.cursor.visible = true
-		runway.following = null
+		if runway: runway.following = null
 		return
 
 	if tool_nodes.has(tool): # Configure tool for level and runway
-		var ready_to_deploy = runway.ready_to_deploy()
-		runway.call_twice_to_deploy(tool_nodes[tool])
-		if (
-			tool_nodes[tool].controlled_by == RoadworkTool.ControlMethods.DRAGGED
-			or level.is_within_bounds(tool_nodes[tool].global_position)
-		): # Deploy drawn tools and tools within the level from the get go
+		var ready_to_deploy = true
+		if runway:
+			ready_to_deploy = runway.ready_to_deploy()
 			runway.call_twice_to_deploy(tool_nodes[tool])
-			ready_to_deploy = true
+			if (
+				tool_nodes[tool].controlled_by == RoadworkTool.ControlMethods.DRAGGED
+				or level.is_within_bounds(tool_nodes[tool].global_position)
+			): # Deploy drawn tools and tools within the level from the get go
+				runway.call_twice_to_deploy(tool_nodes[tool])
+				ready_to_deploy = true
 		if level and ready_to_deploy:
 			asphalt_delta = tool_nodes[tool].tool_strength
 			level.configure_to(tool_nodes[tool]) # Configure tool
@@ -185,7 +188,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			if UsageIndicator.displayed and UsageIndicator.displayed.get_parent() is RoadworkTool:
 				select_tool(UsageIndicator.displayed.get_parent().tool_enum)
 				UsageIndicator.displayed = null
-			elif runway.ready_to_deploy(): select_tool(active_tool)
+			elif runway and runway.ready_to_deploy(): select_tool(active_tool)
 
 			# Lock View if the currently active tool is controlled by mouse drag
 			view.lock_view(

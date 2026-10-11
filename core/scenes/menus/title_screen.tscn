@@ -11,11 +11,13 @@
 [ext_resource type="PackedScene" uid="uid://yiyute5quljt" path="res://props/dumpster.tscn" id="7_7qqah"]
 [ext_resource type="PackedScene" uid="uid://cnarqk06h326x" path="res://props/fire_hydrant.tscn" id="8_aohd5"]
 [ext_resource type="PackedScene" uid="uid://cgt8pdj2hnchc" path="res://props/car.tscn" id="9_2fu0v"]
-[ext_resource type="PackedScene" uid="uid://cllh5pum6y1p3" path="res://models/ratrick.fbx" id="10_lhip2"]
 [ext_resource type="PackedScene" uid="uid://bddyob4r1ofis" path="res://props/office_building.tscn" id="11_feaqs"]
 [ext_resource type="PackedScene" uid="uid://cnaqspcql1woq" path="res://models/sign-road-work-ahead.fbx" id="12_nfvon"]
 [ext_resource type="PackedScene" uid="uid://cw8sj3nlo8tjc" path="res://models/roller.fbx" id="13_58eve"]
 [ext_resource type="Texture2D" uid="uid://b866nkjmqwwlj" path="res://models/textures/color-palette.png" id="14_fqq3r"]
+[ext_resource type="PackedScene" uid="uid://clhwaefy5o32a" path="res://models/ratrick-opaque.tscn" id="16_cw08j"]
+[ext_resource type="Texture2D" uid="uid://ce7n7n6w38pnc" path="res://textures/water_particle.png" id="17_g68f3"]
+[ext_resource type="PackedScene" uid="uid://bg02t1nc2gx0y" path="res://props/can_trash.tscn" id="18_oixyc"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_58eve"]
 
@@ -26,6 +28,14 @@ sky_material = SubResource("ProceduralSkyMaterial_58eve")
 background_mode = 2
 sky = SubResource("Sky_oi3di")
 ambient_light_color = Color(0, 0.5882353, 0.5647059, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5j0fq"]
+render_priority = -1
+shading_mode = 0
+albedo_color = Color(1, 0.31666666, 0, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_8jg5c"]
+material = SubResource("StandardMaterial3D_5j0fq")
 
 [sub_resource type="Curve" id="Curve_3fny3"]
 _limits = [0.0, 1.25, 0.0, 1.0]
@@ -271,6 +281,62 @@ material = SubResource("StandardMaterial3D_2gtwe")
 size = Vector2(5, 1)
 orientation = 1
 
+[sub_resource type="Curve" id="Curve_oixyc"]
+_data = [Vector2(0, 1), 0.0, -0.10305185, 0, 0, Vector2(0.8733459, 0.06818187), -0.116349414, -0.116349414, 0, 0, Vector2(1, 0), -1.6646843, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_g740w"]
+curve = SubResource("Curve_oixyc")
+
+[sub_resource type="Curve" id="Curve_wten1"]
+_data = [Vector2(0, 0.05454552), 0.0, 0.0, 0, 0, Vector2(0.6011342, 0.08636367), 0.0975295, 0.0975295, 0, 0, Vector2(0.83553874, 0.71818185), 12.022713, 12.022713, 0, 0, Vector2(0.8695652, 0), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="Curve" id="Curve_ii17b"]
+_data = [Vector2(0, 0.98636365), 0.0, 0.0, 0, 0, Vector2(1e-05, 0.100000024), 0.0, 0.0, 0, 0, Vector2(0.88090736, 0.07727277), 0.0, 0.0, 0, 0, Vector2(1, 0.113636434), 1.1577443, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_1m8na"]
+curve_x = SubResource("Curve_wten1")
+curve_y = SubResource("Curve_ii17b")
+
+[sub_resource type="Curve" id="Curve_fbvnd"]
+_data = [Vector2(0, 0.5136364), 0.0, 1.2315961, 0, 0, Vector2(1, 1), -0.054442484, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_j5dhp"]
+curve = SubResource("Curve_fbvnd")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_01lka"]
+angle_min = -99.99999
+angle_max = 100.000015
+direction = Vector3(0, 1, 0)
+spread = 6.0
+initial_velocity_min = 2.0
+initial_velocity_max = 6.0
+directional_velocity_min = -10.000016
+directional_velocity_max = 9.999984
+directional_velocity_curve = SubResource("CurveXYZTexture_1m8na")
+gravity = Vector3(0, 0, 0)
+scale_min = 0.099999994
+scale_curve = SubResource("CurveTexture_j5dhp")
+alpha_curve = SubResource("CurveTexture_g740w")
+hue_variation_min = -0.020000022
+hue_variation_max = 0.019999977
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tf578"]
+transparency = 4
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.3137255, 0.6627451, 0.80784315, 1)
+albedo_texture = ExtResource("17_g68f3")
+billboard_mode = 2
+billboard_keep_scale = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_jb6du"]
+material = SubResource("StandardMaterial3D_tf578")
+size = Vector2(1, 1)
+orientation = 2
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_45vf4"]
 resource_name = "Roller.001"
 transparency = 4
@@ -335,11 +401,15 @@ shadow_bias = 0.0
 environment = SubResource("Environment_fqq3r")
 
 [node name="Camera3D" type="Camera3D" parent="MainTitleEnvironment" unique_id=465931156]
-transform = Transform3D(-0.53435236, 0.12493764, 0.8359774, 0, 0.9890159, -0.1478094, -0.8452618, -0.0789823, -0.528483, 18.255, 4.563, -14.726)
+transform = Transform3D(-0.53435236, 0.2682055, 0.8015818, 0, 0.94832367, -0.31730464, -0.8452618, -0.16955249, -0.506739, 16.255, 3.513, -14.801)
 
-[node name="Sprite3D" type="Sprite3D" parent="MainTitleEnvironment/Camera3D" unique_id=1149124021]
-transform = Transform3D(9.999998, -1.4305115e-06, -7.6293945e-06, 1.3709068e-06, 9.999968, -2.0861626e-07, 0, -1.5497208e-06, 9.999981, 36.78136, 75.80176, -109.90343)
+[node name="ConceptArt" type="Sprite3D" parent="MainTitleEnvironment/Camera3D" unique_id=1149124021]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 38.351, 55.292, -109.903)
 texture = ExtResource("3_658y6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MainTitleEnvironment/Camera3D" unique_id=375307057]
+transform = Transform3D(500, 5.9604645e-06, -3.5527137e-14, -5.9604645e-06, 500, -2.980232e-06, 0, 2.980232e-06, 500, 39.203537, 54.8641, -111.181885)
+mesh = SubResource("QuadMesh_8jg5c")
 
 [node name="Intersection" parent="MainTitleEnvironment" unique_id=716876623 instance=ExtResource("2_58eve")]
 unique_name_in_owner = true
@@ -352,6 +422,7 @@ asphalt_shyniness = 0.05
 [node name="RoadPaint" type="Node3D" parent="MainTitleEnvironment/Intersection" unique_id=1749392337]
 unique_name_in_owner = true
 script = ExtResource("4_658y6")
+hide_paint_on_start = false
 road_paint_animation_curve = SubResource("Curve_3fny3")
 
 [node name="Line2" type="MeshInstance3D" parent="MainTitleEnvironment/Intersection/RoadPaint" unique_id=1429386994]
@@ -531,22 +602,23 @@ transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 10.658649, 
 mesh = SubResource("QuadMesh_y4a08")
 
 [node name="Pipe" parent="MainTitleEnvironment/Intersection" unique_id=159934017 instance=ExtResource("5_5fdls")]
+unique_name_in_owner = true
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 1.958252, 0.23847735, -2.392929)
 
-[node name="dumpster" parent="MainTitleEnvironment/Intersection" unique_id=611624158 instance=ExtResource("7_7qqah")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.8172, 0.42273998, -12.259354)
+[node name="WaterSpurt" type="GPUParticles3D" parent="MainTitleEnvironment/Intersection/Pipe" unique_id=1573104748]
+transform = Transform3D(-9.2231026e-08, 1.674627, 1.2836372, 0, 1.2836372, -1.674627, -2.11, -7.320027e-08, -5.6109563e-08, -1.2913744, 1.3586668, -4.1332407)
+amount = 64
+process_material = SubResource("ParticleProcessMaterial_01lka")
+draw_pass_1 = SubResource("PlaneMesh_jb6du")
 
 [node name="dumpster2" parent="MainTitleEnvironment/Intersection" unique_id=277043679 instance=ExtResource("7_7qqah")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.963579, 1.8656461, 11.149576)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 12.260669, 1.7364619, 10.290813)
 
 [node name="FireHydrant" parent="MainTitleEnvironment/Intersection" unique_id=2124233241 instance=ExtResource("8_aohd5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.064819, 0.65415335, -11.090454)
 
 [node name="car" parent="MainTitleEnvironment/Intersection" unique_id=813375980 instance=ExtResource("9_2fu0v")]
 transform = Transform3D(0.6652312, 0, 0.7466374, 0, 1, 0, -0.7466374, 0, 0.6652312, 10.832033, 1.8035339, -12.696323)
-
-[node name="ratrick" parent="MainTitleEnvironment/Intersection" unique_id=567663992 instance=ExtResource("10_lhip2")]
-transform = Transform3D(0.16, 0, 0, 0, 0.16, 0, 0, 0, 0.16, -10.170883, 22.162867, -18.894794)
 
 [node name="OfficeBuilding" parent="MainTitleEnvironment/Intersection" unique_id=1960340363 instance=ExtResource("11_feaqs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0.5, -23)
@@ -567,12 +639,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27, 0.5, 25)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0.5, 25)
 
 [node name="sign-road-work-ahead" parent="MainTitleEnvironment/Intersection" unique_id=40915174 instance=ExtResource("12_nfvon")]
-transform = Transform3D(0.7145506, 0, 0.6995839, 0, 1, 0, -0.6995839, 0, 0.7145506, 11.076585, 2.2701402, -9.954017)
+transform = Transform3D(0.7145506, 0, 0.6995839, 0, 1, 0, -0.6995839, 0, 0.7145506, 11.076585, 1.9203448, -9.954017)
 
 [node name="roller" parent="MainTitleEnvironment/Intersection" unique_id=1075544632 instance=ExtResource("13_58eve")]
 transform = Transform3D(-0.75467116, 0.1694368, -0.63384736, 0.2846864, 0.9549615, -0.08367783, 0.59112185, -0.243597, -0.7689183, 10.618, 3.642, -13.695)
 
 [node name="Roller" parent="MainTitleEnvironment/Intersection/roller" index="0" unique_id=1261025651]
 mesh = SubResource("ArrayMesh_658y6")
+
+[node name="ratrick2" parent="MainTitleEnvironment/Intersection" unique_id=87839735 instance=ExtResource("16_cw08j")]
+transform = Transform3D(-0.15592712, 2.951325, 5.2216253, -0.12758811, 5.2205753, -2.9545414, -5.996616, -0.18781842, -0.07291257, -10.115316, 23.274176, -19.323)
+
+[node name="trash-can" parent="MainTitleEnvironment/Intersection" unique_id=193315065 instance=ExtResource("18_oixyc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.901562, 1.9154782, -9.61082)
 
 [editable path="MainTitleEnvironment/Intersection/roller"]

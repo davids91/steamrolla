@@ -4,7 +4,7 @@ extends OrbitCamera3D
 @export var cursor: Node3D
 @export var make_current_on_start: bool = false
 
-@onready var camera: Camera3D = $Pitch/Camera3D
+@onready var camera: Camera3D = %Camera3D
 @onready var camera_transform: Transform3D:
 	get(): return camera.global_transform
 	set(v): camera.global_transform = v

@@ -1,11 +1,12 @@
 extends Node3D
 
+@export var hide_paint_on_start: bool = true
 @export var road_paint_animation_curve: Curve
 
 @onready var original_paint_sizes: Dictionary[Node, Vector2] = {}
 @onready var hidden_paints: Array[Node] = []
 func _ready() -> void:
-	for paint in get_children():
+	if hide_paint_on_start: for paint in get_children():
 		original_paint_sizes[paint] = paint.mesh.size
 		paint.mesh.size = Vector2.ZERO
 		paint.visible = false

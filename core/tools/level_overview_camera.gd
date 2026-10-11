@@ -10,7 +10,7 @@ func make_current() -> void: _camera_3d.make_current()
 func get_current() -> bool: return _camera_3d.current
 func get_view_origin() -> Vector3: return _camera_3d.global_position
 
-@onready var camera_transform_before_transition: Transform3D = global_transform
+@onready var camera_transform_before_transition: Transform3D
 var transition_tween: Tween:
 	set(v):
 		if transition_tween: transition_tween.kill()
@@ -19,20 +19,22 @@ var transition_tween: Tween:
 ## Moves the current camera into the place of the given one before it makes it the current
 func transition_to(other: OrbitCamera3D, transition_duration_sec: float = 1.) -> Tween:
 	$TransitionSound.play()
-	camera_transform_before_transition = global_transform
+	camera_transform_before_transition = _camera_3d.transform
 	transition_tween = create_tween()
 	transition_tween.tween_property(_camera_3d, "global_transform", other._camera_3d.global_transform, transition_duration_sec)
 	transition_tween.tween_callback(func():
 		other.make_current()
-		_camera_3d.global_transform = camera_transform_before_transition
+		_camera_3d.transform = camera_transform_before_transition
 	)
 	return transition_tween
 
+@export var control_disabled: bool = false
 func _unhandled_input(event: InputEvent) -> void:
-	if not get_current(): return
+	if not get_current() or control_disabled: return
 	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		var offset: Vector2 = event.screen_relative * orbit_speed
 		_rotate_camera_by(offset)
+
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			_camera_3d.position.z += zoom_speed
@@ -43,7 +45,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		var offset: Vector3 = Vector3(-event.relative.x * panning_speed, event.relative.y * panning_speed, 0)
 		var local_offset_transform: Transform3D = Transform3D(Basis.IDENTITY, offset)
 		set_transform(transform * local_offset_transform)
-		
+
 func _rotate_camera_by(offset: Vector2) -> void:
 	rotation.y -= offset.x
 	rotation.x -= offset.y
