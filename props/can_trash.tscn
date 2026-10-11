@@ -6,3 +6,6 @@
 [node name="trash-can" unique_id=193315065 instance=ExtResource("1_qmlp7")]
 script = ExtResource("2_mypm6")
 crush_distance = 1.0
+
+[node name="CrushSound" type="AudioStreamPlayer3D" parent="." index="2" unique_id=996254573]
+max_distance = 10.0

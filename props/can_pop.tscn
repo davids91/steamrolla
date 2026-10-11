@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://cikqo65ryta4n" path="res://actors/crushable_prop.gd" id="2_8tajf"]
 [ext_resource type="Material" uid="uid://b7mgqap2rcei8" path="res://materials/pop-can.tres" id="3_81few"]
 [ext_resource type="Texture2D" uid="uid://ce7n7n6w38pnc" path="res://textures/water_particle.png" id="3_n3usa"]
+[ext_resource type="AudioStream" uid="uid://bkkru0t6ulwpv" path="res://audio/can_pop.wav" id="5_7x1kh"]
 
 [sub_resource type="Curve" id="Curve_sqiuo"]
 _data = [Vector2(0, 1), 0.0, -0.10305185, 0, 0, Vector2(0.8733459, 0.06818187), -0.116349414, -0.116349414, 0, 0, Vector2(1, 0), -1.6646843, 0.0, 0, 0]
@@ -63,6 +64,11 @@ material = SubResource("StandardMaterial3D_tf578")
 size = Vector2(1, 1)
 orientation = 2
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_5youw"]
+random_pitch = 1.0119116
+streams_count = 1
+stream_0/stream = ExtResource("5_7x1kh")
+
 [node name="pop-can" unique_id=2075471072 instance=ExtResource("1_81few")]
 script = ExtResource("2_8tajf")
 crush_distance = 1.0
@@ -75,6 +81,10 @@ one_shot = true
 process_material = SubResource("ParticleProcessMaterial_vuami")
 draw_pass_1 = SubResource("PlaneMesh_bnc5p")
 
-[node name="can" parent="." index="1" unique_id=1924172594]
+[node name="can" parent="." index="1" unique_id=401999141]
 transform = Transform3D(-0.859591, -14.908004, -13.3046055, -19.966835, 1.1512817, 1.9274626e-08, 0.7658675, 13.282543, -14.932765, 0, 0.1, 0)
 surface_material_override/0 = ExtResource("3_81few")
+
+[node name="CrushSound" type="AudioStreamPlayer3D" parent="." index="2" unique_id=1133755040]
+stream = SubResource("AudioStreamRandomizer_5youw")
+max_distance = 200.0

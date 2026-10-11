@@ -45,5 +45,5 @@ scale_amount_max = 8.0
 scale_amount_curve = SubResource("Curve_g5kjh")
 color_ramp = SubResource("Gradient_n82nu")
 
-[node name="CarCrush" type="AudioStreamPlayer" parent="." index="7" unique_id=399542564]
+[node name="CrushSound" type="AudioStreamPlayer" parent="." index="7" unique_id=399542564]
 stream = ExtResource("4_ppud8")
