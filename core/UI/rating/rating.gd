@@ -1,11 +1,11 @@
 extends Control
 
-@onready var anim = $AnimationPlayer
-
 func show_rating(num): # num corresponds to the rating hand you want to show
-	var animation = "hand_%d" % num
-	anim.play(animation)
+	var hand = "Hand%d" % num
+	var hand_node: Hand = get_node(hand)
+	hand_node.appear()
 
 func hide_rating(num):
-	var animation = "hand_%d" % num
-	anim.play_backwards(animation)
+	var hand = "Hand%d" % num
+	var hand_node: Hand = get_node(hand)
+	hand_node.disappear()
