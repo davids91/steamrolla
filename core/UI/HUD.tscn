@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="5_ygh00"]
 [ext_resource type="AudioStream" uid="uid://dvhgxea4thtal" path="res://audio/botch.wav" id="6_k5p64"]
 [ext_resource type="AudioStream" uid="uid://dif8avwftb7wi" path="res://audio/success.wav" id="7_ej2ga"]
+[ext_resource type="PackedScene" uid="uid://pjyrkj4s2bls" path="res://core/UI/rating/rating.tscn" id="7_i0xoi"]
 [ext_resource type="PackedScene" uid="uid://gkla30eu20j8" path="res://core/UI/level_complete_panel.tscn" id="7_k5p64"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_k5p64"]
@@ -27,12 +28,8 @@ script = ExtResource("1_ygh00")
 [node name="ObjectivePanel" parent="." unique_id=1415146818 instance=ExtResource("3_ygh00")]
 
 [node name="ExitBtn" type="TextureButton" parent="." unique_id=622200269]
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -40.0
-offset_right = 40.0
-grow_vertical = 0
+offset_right = 128.0
+offset_bottom = 128.0
 texture_normal = SubResource("AtlasTexture_k5p64")
 texture_pressed = SubResource("AtlasTexture_ie7id")
 
@@ -52,6 +49,8 @@ stream = ExtResource("7_ej2ga")
 [node name="LevelCompletePanel" parent="." unique_id=145193494 instance=ExtResource("7_k5p64")]
 visible = false
 modulate = Color(1, 1, 1, 0)
+
+[node name="Rating" parent="." unique_id=1421171300 instance=ExtResource("7_i0xoi")]
 
 [connection signal="objective_completed" from="ObjectivePanel" to="." method="_on_objective_panel_objective_completed"]
 [connection signal="pressed" from="ExitBtn" to="." method="_on_exit_btn_pressed"]
