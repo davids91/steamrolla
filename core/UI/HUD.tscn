@@ -53,5 +53,7 @@ modulate = Color(1, 1, 1, 0)
 [node name="Rating" parent="." unique_id=1421171300 instance=ExtResource("7_i0xoi")]
 
 [connection signal="objective_completed" from="ObjectivePanel" to="." method="_on_objective_panel_objective_completed"]
+[connection signal="panel_hidden" from="ObjectivePanel" to="Rating" method="hide_rating"]
+[connection signal="panel_shown" from="ObjectivePanel" to="Rating" method="show_rating"]
 [connection signal="pressed" from="ExitBtn" to="." method="_on_exit_btn_pressed"]
 [connection signal="exit_scene" from="LevelCompletePanel" to="." method="_on_exit_btn_pressed"]
