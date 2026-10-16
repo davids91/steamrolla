@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://c3ps5ohsbiq7y"]
 
 [ext_resource type="PackedScene" uid="uid://de8bs7ebkbnhr" path="res://models/streetlight.fbx" id="1_u58ju"]
+[ext_resource type="PackedScene" uid="uid://cg7n7vmb4isuc" path="res://models/light-beam.fbx" id="2_kti2d"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_kdu0b"]
 height = 16.0
@@ -9,6 +10,9 @@ radius = 0.25
 [node name="streetlight" type="Node3D" unique_id=384071403]
 
 [node name="streetlight" parent="." unique_id=1457920156 instance=ExtResource("1_u58ju")]
+
+[node name="light-beam" parent="." unique_id=928987458 instance=ExtResource("2_kti2d")]
+transform = Transform3D(1, 0, 0, 0, 12, 0, 0, 0, 1, 5.5, 12, 0)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1695950039]
 
