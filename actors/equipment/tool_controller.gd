@@ -76,9 +76,7 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 	# Cleanup after previously used tool
 	if tool_nodes.has(active_tool) and tool_nodes[active_tool] and tool != active_tool:
 		tool_nodes[active_tool].stop_working()
-		tool_nodes[active_tool].prepare_for_runway()
-		if runway:
-			runway.tools_may_be_outside_bounds.push_back(tool_nodes[active_tool])
+		if runway: runway.call_to_park(tool_nodes[active_tool])
 
 		# Rewire driver intention changed
 		if tool_nodes[active_tool].driver_intention_changed.is_connected(piloted_tool_driver_intention_changed):
@@ -170,13 +168,7 @@ func dig_shovel_into(target_position: Vector3) -> void:
 	)
 
 func _unhandled_input(event: InputEvent) -> void:
-	# Handle releasing the payload
-	if Input.is_action_just_pressed("deploy_payload"):
-		tool_nodes[active_tool].payload_triggered = true
-	elif Input.is_action_just_released("deploy_payload"):
-		tool_nodes[active_tool].payload_triggered = false
-
-	# Handle dragged control method and shovel
+	# Handle dragged control and tool selection
 	if(
 		event is InputEventMouseButton
 		and event.button_index != MOUSE_BUTTON_MIDDLE
@@ -208,9 +200,16 @@ func _unhandled_input(event: InputEvent) -> void:
 			tool_nodes[active_tool].stop_working()
 			view.cursor.visible = true
 
+	# Handle releasing the payload
+	if not tool_nodes.has(active_tool): return
+	if Input.is_action_just_pressed("deploy_payload"):
+		tool_nodes[active_tool].payload_triggered = true
+	elif Input.is_action_just_released("deploy_payload"):
+		tool_nodes[active_tool].payload_triggered = false
+
 const VALUE_EPSILON: float = 0.001;
-func _process(delta: float) -> void:
-	# Configure the level to be updated based on the active tool
+# Configure the level to be updated based on the active tool, move tool to cursor
+func _physics_process(delta: float) -> void:
 	if tool_nodes.has(active_tool):
 		if tool_nodes[active_tool].is_working:
 			if (tool_nodes[active_tool].payload_triggered or not tool_nodes[active_tool].has_payload):

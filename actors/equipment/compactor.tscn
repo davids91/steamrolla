@@ -9,6 +9,9 @@
 [ext_resource type="PackedScene" uid="uid://dhcft22d6p1oo" path="res://models/tamper_compactor.glb" id="8_p2bfq"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5lgew"]
+size = Vector3(1.0430298, 3.0577972, 2.5981522)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7imx7"]
 size = Vector3(1.0891113, 2.7536497, 2.5981522)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rfa05"]
@@ -235,29 +238,39 @@ random_pitch = 1.0609941
 streams_count = 1
 stream_0/stream = ExtResource("5_5lgew")
 
-[node name="Compactor" type="Node3D" unique_id=2098416677]
+[node name="Compactor" type="CharacterBody3D" unique_id=1602331192]
+collision_layer = 3
+collision_mask = 2
 script = ExtResource("1_1b380")
-momentum_control_strength = Vector2(0.15, 0.35)
+momentum_controllability = 0.75
+momentum_control_strength = Vector2(0.15, 0.25)
 tool_enum = 3
 normalized_size = Vector2(0.12, 0.12)
-tool_strength = 0.09500000000000064
+tool_strength = 0.03500000000000014
 tool_radius = 0.12
 controlled_by = 2
 speed = 15.0
 steering_angle = 10.0
 turning_speed = 0.5
+momentum_dampening = 1.25
 
 [node name="OrbitCamera" parent="." unique_id=1504134869 instance=ExtResource("2_7imx7")]
 transform = Transform3D(-0.9973146, -0.025289025, 0.06873356, 0, 0.938493, 0.3452982, -0.073238224, 0.34437087, -0.93597263, 0, 0, 0)
 control_disabled = true
 
-[node name="BodyRepresentation" type="Area3D" parent="." unique_id=1789476627 groups=["BirdReactable", "BombActivator"]]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BodyRepresentation" unique_id=1162582284]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.029174805, 1.3768725, -0.42316818)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=394260991]
+transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, -0.006134033, 1.6385012, -0.42316812)
 shape = SubResource("BoxShape3D_5lgew")
 
+[node name="CollisionDetector" type="Area3D" parent="." unique_id=1789476627 groups=["BirdReactable", "BombActivator"]]
+collision_layer = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CollisionDetector" unique_id=1162582284]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.029174805, 1.3768725, -0.42316818)
+shape = SubResource("BoxShape3D_7imx7")
+
 [node name="SpinnyPart" type="Node3D" parent="." unique_id=1481064053]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.092113495, 0)
 
 [node name="Compactor" parent="SpinnyPart" unique_id=1133186004 instance=ExtResource("8_p2bfq")]
 unique_name_in_owner = true
@@ -453,7 +466,7 @@ metadata/extras = {
 }
 
 [node name="hat2" type="Node3D" parent="SpinnyPart/Bloke/metarig/Skeleton3D" unique_id=488922783]
-transform = Transform3D(1, -1.9572106e-09, 3.725126e-08, 2.4188843e-08, 0.79423314, -0.60761243, -2.8396991e-08, 0.60761267, 0.79423285, -0.030000046, 4.7033186, -1.6426976)
+transform = Transform3D(1, -1.9977429e-09, -1.22495925e-08, -5.8428435e-09, 0.7949817, -0.6066329, 1.09501075e-08, 0.60663307, 0.79498154, -0.029999943, 4.795392, -1.6431367)
 top_level = true
 script = ExtResource("2_lekfh")
 bone_name = "spine.006"
@@ -461,7 +474,7 @@ stiffness = 0.1
 metadata/_custom_type_script = "uid://bpfus5xg6xcga"
 
 [node name="ThighL" type="Node3D" parent="SpinnyPart/Bloke/metarig/Skeleton3D" unique_id=1884936789]
-transform = Transform3D(0.98404247, 0.17677732, -0.020287337, 0.15042254, -0.7655465, 0.6255499, 0.0950521, -0.61861825, -0.7799217, 0.08828253, 2.6110315, -0.77165926)
+transform = Transform3D(0.9840427, 0.17677727, -0.020277293, 0.15041591, -0.76554495, 0.6255535, 0.09506043, -0.6186202, -0.77991927, 0.08828252, 2.7031484, -0.77165663)
 top_level = true
 script = ExtResource("2_lekfh")
 bone_name = "thigh.L"
@@ -469,7 +482,7 @@ stiffness = 0.1
 metadata/_custom_type_script = "uid://bpfus5xg6xcga"
 
 [node name="PelvisL" type="Node3D" parent="SpinnyPart/Bloke/metarig/Skeleton3D" unique_id=49961394]
-transform = Transform3D(-0.19085178, 0.6096362, -0.76936257, -0.5795564, 0.562603, 0.58956933, 0.7922687, 0.55840945, 0.24594483, 0.739344, 2.623271, -1.869182)
+transform = Transform3D(-0.19090745, 0.60943437, -0.7695088, -0.5795138, 0.5627577, 0.58946353, 0.7922865, 0.55847394, 0.2457411, 0.73934186, 2.7153807, -1.8691797)
 top_level = true
 script = ExtResource("2_lekfh")
 bone_name = "pelvis.L"
@@ -477,7 +490,7 @@ stiffness = 0.1
 metadata/_custom_type_script = "uid://bpfus5xg6xcga"
 
 [node name="PelvisR" type="Node3D" parent="SpinnyPart/Bloke/metarig/Skeleton3D" unique_id=1225862099]
-transform = Transform3D(-0.19130285, -0.609577, 0.7692973, 0.57921064, 0.56264806, 0.58986574, -0.7924126, 0.5584283, 0.24543741, -0.79934347, 2.6232696, -1.8691804)
+transform = Transform3D(-0.1909097, -0.6094371, 0.769506, 0.5795121, 0.5627553, 0.5894674, -0.7922872, 0.558473, 0.24574077, -0.7993461, 2.7153864, -1.86918)
 top_level = true
 script = ExtResource("2_lekfh")
 bone_name = "pelvis.R"
@@ -485,7 +498,7 @@ stiffness = 0.1
 metadata/_custom_type_script = "uid://bpfus5xg6xcga"
 
 [node name="ThighR" type="Node3D" parent="SpinnyPart/Bloke/metarig/Skeleton3D" unique_id=1344752242]
-transform = Transform3D(0.9840421, -0.17677797, 0.02028812, -0.15042633, -0.76556474, 0.62552667, -0.095047414, -0.6185956, -0.77994037, -0.14828306, 2.6110287, -0.77166146)
+transform = Transform3D(0.9840399, -0.17679022, 0.020288182, -0.15049441, -0.7659434, 0.6250462, -0.09496242, -0.61812276, -0.7803253, -0.14828306, 2.7031424, -0.77166146)
 top_level = true
 script = ExtResource("2_lekfh")
 bone_name = "thigh.R"
@@ -493,7 +506,7 @@ stiffness = 0.1
 metadata/_custom_type_script = "uid://bpfus5xg6xcga"
 
 [node name="Spine" type="Node3D" parent="SpinnyPart/Bloke/metarig/Skeleton3D" unique_id=927189058]
-transform = Transform3D(1, 1.116862e-11, 2.8203337e-08, 1.8652528e-08, 0.7498077, -0.66165566, -2.1154476e-08, 0.66165566, 0.7498077, -0.030000057, 3.968454, -2.2538133)
+transform = Transform3D(1, -1.07740475e-11, 2.83963e-08, 1.8783634e-08, 0.75021225, -0.66119695, -2.1296133e-08, 0.66119695, 0.75021225, -0.030000057, 4.0605865, -2.2537966)
 top_level = true
 script = ExtResource("2_lekfh")
 bone_name = "spine.001"
@@ -554,7 +567,7 @@ target_position = Vector3(0, 0, 2)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 0)
 target_position = Vector3(0, -100, 0)
 
-[connection signal="area_entered" from="BodyRepresentation" to="." method="_on_body_representation_area_entered"]
-[connection signal="area_exited" from="BodyRepresentation" to="." method="_on_body_representation_area_exited"]
+[connection signal="area_entered" from="CollisionDetector" to="." method="_on_body_representation_area_entered"]
+[connection signal="area_exited" from="CollisionDetector" to="." method="_on_body_representation_area_exited"]
 
 [editable path="SpinnyPart/Compactor"]

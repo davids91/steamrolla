@@ -1,7 +1,6 @@
 class_name RoadworkTool
-extends Node3D
+extends CharacterBody3D
 
-#region Common Interface For Roadwork Tools
 enum ControlMethods{
 	## Tool is Dragged by mouse
 	DRAGGED,
@@ -13,6 +12,8 @@ enum ControlMethods{
 	## Tool is controlled by a custom controller
 	PILOTED
 }
+
+signal driver_intention_changed(is_moving: bool, forward: bool)
 
 @export var default_color: Color = Color.WHITE
 @export var tool_enum: ToolPanel.Tools = ToolPanel.Tools.UNKNOWN
@@ -30,10 +31,6 @@ func entered_runway() -> void: pass
 func exited_runway() -> void: pass
 func set_color(_color: Color) -> void: pass
 func reset_color() -> void: set_color(default_color)
-func set_angle_from_prev_pos(_prev_pos: Vector3) -> void: pass
-func set_transform_based_on(target_position: Vector3) -> void:
-	global_position = target_position
-	set_angle_from_prev_pos(previous_position)
 
 func start_working() -> void:
 	is_working = true
@@ -41,18 +38,20 @@ func start_working() -> void:
 func stop_working() -> void:
 	is_working = false
 
-#endregion
-
-#region Interface for Roadwork tools dragged by the mouse
+@export var min_distance_to_move: float = 0.25
+## Interface for Roadwork tools dragged by the mouse
 func work_at_cursor(target_position: Vector3) -> void:
 	if controlled_by != ControlMethods.DRAGGED: return
 	is_working = true
-	set_transform_based_on(target_position)
-#endregion
+	var to_target: Vector3 = (target_position - global_position)
+	if to_target.length() > min_distance_to_move:
+		look_at(target_position)
+		velocity = to_target * speed
+		move_and_slide()
 
-#region Interface for Roadwork tools moved by a drawn trajectory
 var trajectory_tween: Tween
 var trajectory_reference_pos: Vector3
+## Interface for Roadwork tools moved by a drawn trajectory
 func trajectory_drawn(trajectory: PathFollow3D, duration_sec: float, call_when_done: Callable) -> void:
 	# Do not start when not configured for this control, or multiple times at once
 	if controlled_by != ControlMethods.DRAWN or trajectory_tween: return
@@ -67,8 +66,8 @@ func trajectory_drawn(trajectory: PathFollow3D, duration_sec: float, call_when_d
 			func(w: float):
 				trajectory.progress_ratio = w
 				trajectory_reference_pos = lerp(global_position, trajectory_reference_pos, inv_turn_responsiveness)
-				global_position = trajectory.global_position
-				set_angle_from_prev_pos(trajectory_reference_pos),
+				look_at(trajectory_reference_pos)
+				global_position = trajectory.global_position,
 			0., 1., duration_sec
 		).set_ease(Tween.EASE_IN_OUT).finished.connect(func():
 			stop_working()
@@ -76,44 +75,39 @@ func trajectory_drawn(trajectory: PathFollow3D, duration_sec: float, call_when_d
 			call_when_done.call()
 		)
 	)
-#endregion
-
-#region Piloted Roadwork tools
-signal driver_intention_changed(is_moving: bool, forward: bool)
 
 @export_category("Piloted Locomotion")
 @export var speed: float = 5.0
 @export var steering_angle: float = 1.0
 @export var steering_epsilon: float = 0.001
 @export var turning_speed: float = 0.25
+@export var momentum_dampening: float = 0.8
 
 var is_reversing: bool = false
 var is_moving: bool = false
 var movement_intent: Vector2
 var direction: Vector3
 
+## Interface for Piloted Roadwork tools
 func handle_movement(delta: float) -> void:
-	if abs(movement_intent.y) > 0:
-		global_position += basis.z * speed * -movement_intent.y * delta
-
-func handle_turning(delta: float) -> void:
-	if(abs(movement_intent.x) <= steering_epsilon or abs(direction.z) <= 0.1): return
-	rotate(Vector3.UP, signf(direction.z) * steering_angle * movement_intent.x * turning_speed * delta)
+	if not is_working: return
+	if abs(movement_intent.y) > 0: velocity += basis.z * speed * -movement_intent.y * delta
+	else: velocity += -velocity.sign() * velocity.abs() * momentum_dampening * delta
+	move_and_slide()
+	if(abs(movement_intent.x) > steering_epsilon and abs(direction.z) > steering_epsilon):
+		rotate(Vector3.UP, signf(direction.z) * steering_angle * movement_intent.x * turning_speed * delta)
 
 func _physics_process(delta: float) -> void:
 	if controlled_by != ControlMethods.PILOTED and not is_working: return
 	movement_intent = Input.get_vector(&"move_left", &"move_right", &"move_forward", &"move_backwards")
 	direction = Vector3(movement_intent.x, 0, movement_intent.y).normalized()
-
-	handle_turning(delta)
-	handle_movement(delta) 
-
+	handle_movement(delta)
+	move_and_slide()
 	if is_reversing != (direction.z > 0.0) or is_moving != (direction.z != 0.0):
 		driver_intention_changed.emit(direction.z != 0.0, direction.z > 0.0)
 
 	is_reversing = direction.z > 0.0
 	is_moving = direction.z != 0.0
-#endregion
 
 @onready var previous_position: Vector3 = global_position
 @onready var was_working: bool = is_working

@@ -1,6 +1,5 @@
 extends RoadworkTool
 
-#region from @RoadworkTools
 func prepare_for_runway() -> void:
 	asphalt_remaining = asphalt_capacity
 
@@ -15,14 +14,6 @@ func set_color(color: Color) -> void:
 		local_opacity, color.a, 0.5
 	)
 
-func set_angle_from_prev_pos(prev_pos: Vector3) -> void:
-	look_at(global_position + (global_position - prev_pos))
-
-@export_range(0. , 1.) var dynamism: float = 0.1
-func set_transform_based_on(target_position: Vector3) -> void:
-	global_position = lerp(global_position, target_position, dynamism)
-	set_angle_from_prev_pos(previous_position)
-
 func start_working() -> void:
 	if get_node_or_null("KeyPrompt"): $KeyPrompt.is_enabled = true
 	$ToolBubbleIndicator.visible = false
@@ -33,7 +24,6 @@ func stop_working() -> void:
 	$ActiveSound.stop()
 	$ToolBubbleIndicator.visible = true
 	super()
-#endregion
 
 var ground_entered: bool = false
 func _on_body_representation_body_entered(body: Node3D) -> void:
@@ -57,14 +47,6 @@ func _process(delta: float) -> void:
 		if asphalt_remaining == asphalt_capacity: $ActiveSound.play()
 		asphalt_remaining = max(0., asphalt_remaining - asphalt_usage_per_sec * delta)
 	else: $ActiveSound.stop()
-
-func _physics_process(delta: float) -> void:
-	super(delta)
-	var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
-	var raycast_result: Dictionary = space_state.intersect_ray(PhysicsRayQueryParameters3D.create(
-		global_position + Vector3(0.0, 100., 0.0), global_position - Vector3(0.0, 100., 0.0)
-	))
-	if "position" in raycast_result: global_position.y = lerp(global_position.y, raycast_result.position.y, dynamism)
 
 func _on_body_representation_area_entered(area: Area3D) -> void:
 	if area.name == "PlayerCursorBody" and area.get_parent().visible and not is_working:

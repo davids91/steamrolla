@@ -50,6 +50,9 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_tglvp")
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_ojn7k"]
+size = Vector3(3.7458496, 3.670102, 6.5528584)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_c7bb5"]
 size = Vector3(3.6660156, 3.566452, 6.5078735)
 
@@ -61,12 +64,15 @@ random_pitch = 1.1553527
 streams_count = 1
 stream_0/stream = ExtResource("3_qrjta")
 
-[node name="Roller" type="Node3D" unique_id=1510864838]
+[node name="Roller" type="CharacterBody3D" unique_id=50967490]
+collision_layer = 3
+collision_mask = 2
 script = ExtResource("1_vq81g")
 tool_enum = 0
 normalized_size = Vector2(0.058, 0.038)
 controlled_by = 2
-speed = 8.0
+speed = 3.0
+momentum_dampening = 50.0
 
 [node name="ToolBubbleIndicator" parent="." unique_id=135928248 instance=ExtResource("2_ojn7k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.1034093, 0)
@@ -80,13 +86,19 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 1
 [node name="Roller" parent="roller" index="0" unique_id=1261025651]
 mesh = SubResource("ArrayMesh_haft6")
 
-[node name="BodyRepresentation" type="Area3D" parent="." unique_id=581004782 groups=["BirdReactable", "BombActivator"]]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1136952344]
+transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, -0.0076904297, 2.4798095, -2.050059)
+shape = SubResource("BoxShape3D_ojn7k")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BodyRepresentation" unique_id=1931688132]
+[node name="CollisionDetector" type="Area3D" parent="." unique_id=581004782 groups=["BirdReactable", "BombActivator"]]
+collision_layer = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CollisionDetector" unique_id=1931688132]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5340805, -2.0591736)
 shape = SubResource("BoxShape3D_c7bb5")
 
 [node name="AsphaltDetector" type="Area3D" parent="." unique_id=1043122648]
+collision_layer = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AsphaltDetector" unique_id=1799012782]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.023377419, -0.045513153, 0.055648804)
@@ -97,8 +109,12 @@ unique_name_in_owner = true
 stream = SubResource("AudioStreamRandomizer_qrjta")
 volume_db = -7.5
 
-[connection signal="area_entered" from="BodyRepresentation" to="." method="_on_body_representation_area_entered"]
-[connection signal="area_exited" from="BodyRepresentation" to="." method="_on_body_representation_area_exited"]
+[node name="FloorRaycast" type="RayCast3D" parent="." unique_id=1081311701]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 0)
+target_position = Vector3(0, -100, 0)
+
+[connection signal="area_entered" from="CollisionDetector" to="." method="_on_body_representation_area_entered"]
+[connection signal="area_exited" from="CollisionDetector" to="." method="_on_body_representation_area_exited"]
 [connection signal="body_entered" from="AsphaltDetector" to="." method="_on_asphalt_detector_body_entered"]
 [connection signal="body_exited" from="AsphaltDetector" to="." method="_on_asphalt_detector_body_exited"]
 

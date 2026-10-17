@@ -53,6 +53,9 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_v4nxo")
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_llrrr"]
+size = Vector3(3.3399048, 2.8430467, 6.4198313)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_pogr6"]
 size = Vector3(3.6660156, 3.2068634, 6.483719)
 
@@ -93,7 +96,9 @@ subdivide_depth = 16
 atlas = ExtResource("7_vgkag")
 region = Rect2(384, 256, 128, 128)
 
-[node name="AsphaltPaver" type="Node3D" unique_id=655459454]
+[node name="AsphaltPaver" type="CharacterBody3D" unique_id=1082380962]
+collision_layer = 3
+collision_mask = 2
 script = ExtResource("1_pogr6")
 tool_enum = 1
 normalized_size = Vector2(0.05, 0.01)
@@ -111,10 +116,15 @@ transform = Transform3D(-0.9089847, 0, 0.41682938, 0, 1, 0, -0.41682938, 0, -0.9
 transform = Transform3D(-1.0927848e-06, 0, 25.000002, 0, 25, 0, -25.000002, 0, -1.0927848e-06, 0, 0.38728374, -1.5)
 mesh = SubResource("ArrayMesh_llcvb")
 
-[node name="BodyRepresentation" type="Area3D" parent="." unique_id=1561204565 groups=["BirdReactable", "BombActivator"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.34567142, 0.43688107)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=794435545]
+transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0.0113220215, 2.0711296, -1.4805273)
+shape = SubResource("BoxShape3D_llrrr")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BodyRepresentation" unique_id=1865316412]
+[node name="CollisionDetector" type="Area3D" parent="." unique_id=1561204565 groups=["BirdReactable", "BombActivator"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.34567142, 0.43688107)
+collision_layer = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CollisionDetector" unique_id=1865316412]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5928879, -1.9426804)
 shape = SubResource("BoxShape3D_pogr6")
 debug_color = Color(0, 0.6885001, 0.81, 0.9372549)
@@ -135,7 +145,7 @@ billboard = 1
 texture = SubResource("AtlasTexture_8jg5c")
 script = ExtResource("8_f1fbw")
 
-[connection signal="area_entered" from="BodyRepresentation" to="." method="_on_body_representation_area_entered"]
-[connection signal="area_exited" from="BodyRepresentation" to="." method="_on_body_representation_area_exited"]
-[connection signal="body_entered" from="BodyRepresentation" to="." method="_on_body_representation_body_entered"]
-[connection signal="body_exited" from="BodyRepresentation" to="." method="_on_body_representation_body_exited"]
+[connection signal="area_entered" from="CollisionDetector" to="." method="_on_body_representation_area_entered"]
+[connection signal="area_exited" from="CollisionDetector" to="." method="_on_body_representation_area_exited"]
+[connection signal="body_entered" from="CollisionDetector" to="." method="_on_body_representation_body_entered"]
+[connection signal="body_exited" from="CollisionDetector" to="." method="_on_body_representation_body_exited"]

@@ -6,12 +6,8 @@ var target_color: Color = default_color
 var current_color: Color = default_color
 
 @onready var skin: MeshInstance3D = $roller/Roller
-#region from @RoadworkTools
 func set_color(color: Color) -> void:
 	target_color = color
-
-func set_angle_from_prev_pos(prev_pos: Vector3) -> void:
-	look_at(global_position - (global_position - prev_pos))
 
 func start_working() -> void:
 	$ToolBubbleIndicator.visible = false
@@ -22,11 +18,9 @@ func stop_working() -> void:
 	$SqueezeSound.stop()
 	super()
 
-func work_at_cursor(target_position: Vector3) -> void:
-	if not controlled_by == RoadworkTool.ControlMethods.DRAGGED: return
-	if not is_working: $SqueezeSound.play(randf() * 1.89)
-	super(target_position)
-#endregion
+func handle_movement(delta: float) -> void:
+	super(delta)
+	velocity = velocity.limit_length(speed)
 
 var is_on_asphalt: bool = false
 var was_on_asphalt: bool = is_on_asphalt
@@ -65,18 +59,14 @@ func _physics_process(delta: float) -> void:
 			):
 				var sound_should_be_playing: bool = (direction.z != 0.0) and is_on_asphalt
 				if sound_should_be_playing: # Play from a random time within the length of the audio stream if not already playing
-					if not $SqueezeSound.playing:
-						$SqueezeSound.play(randf() * 1.89)
+					if not $SqueezeSound.playing: $SqueezeSound.play(randf() * 1.89)
 				else: $SqueezeSound.stop()
 			was_on_asphalt = is_on_asphalt
 	).call_deferred()
 
-	if is_working: # Stick to the ground
-		var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
-		var raycast_result: Dictionary = space_state.intersect_ray(PhysicsRayQueryParameters3D.create(
-			global_position + Vector3(0.0, 100., 0.0), global_position - Vector3(0.0, 100., 0.0)
-		))
-		if "position" in raycast_result: global_position.y = raycast_result.position.y
+	# Stick to the ground
+	if is_working and $FloorRaycast.get_collision_point():
+		global_position.y = $FloorRaycast.get_collision_point().y
 
 func _on_body_representation_area_entered(area: Area3D) -> void:
 	if area.name == "PlayerCursorBody" and area.get_parent().visible and not is_working:

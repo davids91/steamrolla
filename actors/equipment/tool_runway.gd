@@ -24,6 +24,15 @@ func call_twice_to_deploy(tool: RoadworkTool) -> void:
 		tool_selected_to_deploy = tool
 		parked_tools.erase(tool)
 
+func call_to_park(tool: RoadworkTool) -> void:
+	if parking_spots.has(tool.tool_enum) and not parked_tools.has(tool):
+		tools_may_be_outside_bounds.push_back(tool)
+		tool.prepare_for_runway()
+		if tool_selected_to_deploy == tool:
+			tool_selected_to_deploy = null
+			parked_tools.push_back(tool)
+		following = null
+
 @onready var following: Node3D
 @onready var runway_height: float = global_position.y
 @onready var target_global_position: Vector3 = global_position
@@ -92,6 +101,8 @@ func _physics_process(_delta: float) -> void:
 
 	# Move parked tools together with the runway
 	for t in parked_tools: t.global_transform = parking_spots[t.tool_enum].global_transform
+
+	# Check for tools that may be outside bounds
 	for i in tools_may_be_outside_bounds.size():
 		if i >= tools_may_be_outside_bounds.size(): break
 		var maybe_oob_tool: RoadworkTool = tools_may_be_outside_bounds[i]
@@ -113,14 +124,13 @@ func _physics_process(_delta: float) -> void:
 			tool_selected_to_deploy.global_transform, global_transform, tool_movement_responsiveness
 		)
 
-func _on_deployment_area_area_entered(area: Area3D) -> void:
-	if not tool_selected_to_deploy and area.get_parent() is RoadworkTool:
-		var incoming_tool: RoadworkTool = area.get_parent()
-		if parking_spots.has(incoming_tool.tool_enum): parked_tools.push_back(incoming_tool)
+func _on_deployment_area_body_entered(body: Node3D) -> void:
+	if not tool_selected_to_deploy and body is RoadworkTool and not parked_tools.has(body):
+		if parking_spots.has(body.tool_enum): parked_tools.push_back(body)
 		payload_entered.emit()
 
-func _on_deployment_area_area_exited(area: Area3D) -> void:
-	if tool_selected_to_deploy and tool_selected_to_deploy.is_working and area.get_parent() == tool_selected_to_deploy:
+func _on_deployment_area_body_exited(body: Node3D) -> void:
+	if tool_selected_to_deploy and tool_selected_to_deploy.is_working and body == tool_selected_to_deploy:
 		following = tool_selected_to_deploy
 		parked_tools.erase(tool_selected_to_deploy)
 		tool_selected_to_deploy = null

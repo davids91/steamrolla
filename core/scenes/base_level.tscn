@@ -12,7 +12,6 @@
 [ext_resource type="PackedScene" uid="uid://c6umqesxiecbq" path="res://actors/equipment/tool_runway.tscn" id="8_8or7f"]
 [ext_resource type="PackedScene" uid="uid://de464tly5tid8" path="res://actors/equipment/asphalt_paver.tscn" id="9_eub5e"]
 [ext_resource type="PackedScene" uid="uid://csaxjq3vidpcx" path="res://actors/equipment/compactor.tscn" id="10_0qlnr"]
-[ext_resource type="Script" uid="uid://6yit4f6dscyo" path="res://actors/equipment/roadwork_tool.gd" id="11_bbaub"]
 [ext_resource type="PackedScene" uid="uid://dr7xbirpqj8e6" path="res://actors/equipment/roller.tscn" id="12_vgfd3"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_82otu"]
@@ -78,8 +77,7 @@ runway = NodePath("RollerRunway")
 tool_nodes = {
 0: NodePath("Roller"),
 1: NodePath("AsphaltPaver"),
-3: NodePath("Compactor"),
-4: NodePath("Shovel")
+3: NodePath("Compactor")
 }
 
 [node name="RollerRunway" parent="ToolController" unique_id=328105869 node_paths=PackedStringArray("level", "player_cursor", "parking_spots", "parked_tools") instance=ExtResource("8_8or7f")]
@@ -93,19 +91,14 @@ parking_spots = {
 }
 parked_tools = [NodePath("../AsphaltPaver"), NodePath("../Roller"), NodePath("../Compactor")]
 
-[node name="AsphaltPaver" parent="ToolController" unique_id=655459454 groups=["BirdReactable", "BombActivator"] instance=ExtResource("9_eub5e")]
+[node name="AsphaltPaver" parent="ToolController" unique_id=655459454 groups=["BirdReactable", "BombActivator", "RoadworkTool"] instance=ExtResource("9_eub5e")]
 transform = Transform3D(0.0017408282, 0, -0.99999845, 0, 1, 0, 0.99999845, 0, 0.0017408282, 13.073471, 0.87625206, -59.401245)
 
-[node name="Compactor" parent="ToolController" unique_id=2098416677 groups=["BirdReactable", "BombActivator"] instance=ExtResource("10_0qlnr")]
+[node name="Compactor" parent="ToolController" unique_id=2098416677 groups=["BirdReactable", "BombActivator", "RoadworkTool"] instance=ExtResource("10_0qlnr")]
 transform = Transform3D(0.0017408282, 0, -0.99999845, 0, 1, 0, 0.99999845, 0, 0.0017408282, 25.878357, 1.5274742, -56.18244)
+momentum_controllability = 0.45
 
-[node name="Shovel" type="Node3D" parent="ToolController" unique_id=1584478563 groups=["BirdReactable", "BombActivator"]]
-transform = Transform3D(0.0017408282, 0, -0.99999845, 0, 1, 0, 0.99999845, 0, 0.0017408282, 20.52368, 0.8762511, 5.0524797)
-script = ExtResource("11_bbaub")
-tool_enum = 4
-tool_radius = 0.085
-
-[node name="Roller" parent="ToolController" unique_id=1510864838 groups=["BirdReactable", "BombActivator"] instance=ExtResource("12_vgfd3")]
+[node name="Roller" parent="ToolController" unique_id=1510864838 groups=["BirdReactable", "BombActivator", "RoadworkTool"] instance=ExtResource("12_vgfd3")]
 transform = Transform3D(0.0017408282, 0, -0.99999845, 0, 1, 0, 0.99999845, 0, 0.0017408282, 14.404985, 0.8762511, -50.341175)
 tool_strength = 0.75
 tool_radius = 0.3

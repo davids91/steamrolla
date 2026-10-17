@@ -30,9 +30,14 @@ func _physics_process(_delta: float) -> void:
 	var mouse_screen_position: Vector2 = get_viewport().get_mouse_position()
 	var origin_global_pos: Vector3 = camera.project_ray_origin(mouse_screen_position)
 	var ray_direction: Vector3 = camera.project_ray_normal(mouse_screen_position)
-	var raycast_result: Dictionary = space_state.intersect_ray(PhysicsRayQueryParameters3D.create(
+	var raycast_query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(
 		origin_global_pos, origin_global_pos + ray_direction * 500000.
-	))
+	)
+	var exclude_rids: Array[RID] = []
+	for tool in get_tree().get_nodes_in_group("RoadworkTool"):
+		exclude_rids.push_back(tool.get_rid())
+	raycast_query.exclude = exclude_rids
+	var raycast_result: Dictionary = space_state.intersect_ray(raycast_query)
 	if "position" in raycast_result:
 		if not raycast_result.collider is RoadChunkBody: looking_at_chunk = null
 		else: looking_at_chunk = raycast_result.collider.get_road_chunk()
