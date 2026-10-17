@@ -52,8 +52,9 @@ func handle_movement(delta: float) -> void:
 	var next_point_based_on_momentum: Vector3 = ((momentum - Vector3(0.,momentum.y,0.)).normalized() + Vector3(0., 0.5, 0.)) * 2.
 	$ForwardRayCast.target_position = next_point_based_on_momentum
 	if $ForwardRayCast.get_collider():
-		if not is_zero_approx($ForwardRayCast.get_collision_normal().length()):
-			var impacted_momentum: Vector3 = basis.z.reflect($ForwardRayCast.get_collision_normal()).normalized()
+		var col_normal: Vector3 = $ForwardRayCast.get_collision_normal()
+		if not is_zero_approx(col_normal.length()):
+			var impacted_momentum: Vector3 = basis.z.reflect(col_normal).normalized()
 			impacted_momentum = Vector3(impacted_momentum.x, 0., impacted_momentum.z) * momentum_impact_effect
 			momentum = lerp(momentum, impacted_momentum, momentum_impact_effect)
 	if momentum.length() > minimum_momentum_length:
