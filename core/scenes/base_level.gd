@@ -1,17 +1,18 @@
 class_name BaseLevel
 extends Node3D
 
+@export var accepted_asphalt_deviation: float = 0.005
 @export var level_objectives: Dictionary[String, String] = {
 	"asphalt_done": "Fix road surface",
 }
-
 @export var level_objective_photos: Array[Texture] = []
-
 @export var transition_time_sec: float = 0.5
+
 @onready var base_dir: String = LevelStructure.get_base_dir_for_scene(self)
 func _ready() -> void:
 	# Handle Objectives
 	LevelStructure.level_attribute_list_overwrite(base_dir, level_objectives)
+	%RoadChunk.deviation_threshold = accepted_asphalt_deviation
 
 	# Setup HUD
 	$HUD.base_dir = base_dir
