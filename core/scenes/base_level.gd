@@ -21,6 +21,16 @@ func _ready() -> void:
 	%ScreenBlocker.modulate = Color.WHITE
 	create_tween().tween_property(%ScreenBlocker, "modulate", Color.TRANSPARENT, transition_time_sec)
 
+func periodic_objective_check() -> void: pass # For levels to overwrite!
+
+@export var objective_check_interval_sec : float = 0.5
+var time_left_to_check_sec: float = objective_check_interval_sec
+func _process(delta: float) -> void:
+	time_left_to_check_sec -= delta
+	if 0. > time_left_to_check_sec:
+		time_left_to_check_sec = objective_check_interval_sec
+		periodic_objective_check()
+
 var victory_tween: Tween:
 	set(v):
 		if victory_tween: victory_tween.kill()
