@@ -383,6 +383,8 @@ func _snap_asphalt_to_reference() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("debug"):
 		_save_level_data()
+	if event.is_action_pressed("debug_2"):
+		_snap_asphalt_to_reference()
 
 func _ready() -> void:
 	_load_level_data()

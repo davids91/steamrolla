@@ -8,6 +8,9 @@ signal water_spouts()
 		if not water_broke and v: water_spouts.emit()
 		water_broke = v
 		if get_node_or_null("WaterSpurt"): $WaterSpurt.emitting = v
+		if get_node_or_null("WaterSound"):
+			if v and not $WaterSound.playing: $WaterSound.play()
+			if not v and $WaterSound.playing: $WaterSound.stop()
 
 @export var flying_time: float = 2.0
 @export var flying_distance: float = 5.0

@@ -1,5 +1,7 @@
 extends Control
 
+signal panel_shown()
+signal panel_hidden()
 signal objective_completed(objective_name: String)
 
 @export var photos: Array[Texture] = []:
@@ -32,8 +34,10 @@ func set_field_photos(field_photos_array: Array[Texture]):
 
 func _on_panel_button_toggled(toggled_on: bool) -> void:
 	if toggled_on:
+		panel_shown.emit()
 		$AnimationPlayer.play("slide")
 	else:
+		panel_hidden.emit()
 		$AnimationPlayer.play_backwards("slide")
 
 ## Set objectives to display and check for automatically

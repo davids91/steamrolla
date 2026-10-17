@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cj4e4wfblplx" path="res://props/fire_hydrant.gd" id="1_g740w"]
 [ext_resource type="PackedScene" uid="uid://d22ami84juxxw" path="res://models/fire_hydrant.fbx" id="1_jop2m"]
 [ext_resource type="Texture2D" uid="uid://ce7n7n6w38pnc" path="res://textures/water_particle.png" id="2_wirqx"]
+[ext_resource type="AudioStream" uid="uid://cyvyapl723uev" path="res://audio/firehydrant-splash.wav" id="4_1m8na"]
 
 [sub_resource type="Curve" id="Curve_psbkg"]
 _data = [Vector2(0, 1), 0.0, -0.10305185, 0, 0, Vector2(0.8733459, 0.06818187), -0.116349414, -0.116349414, 0, 0, Vector2(1, 0), -1.6646843, 0.0, 0, 0]
@@ -63,6 +64,11 @@ orientation = 2
 [sub_resource type="BoxShape3D" id="BoxShape3D_g740w"]
 size = Vector3(0.73950195, 1.1490536, 0.72537994)
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_g740w"]
+random_pitch = 1.0119116
+streams_count = 1
+stream_0/stream = ExtResource("4_1m8na")
+
 [node name="FireHydrant" type="Node3D" unique_id=2124233241]
 script = ExtResource("1_g740w")
 
@@ -79,5 +85,9 @@ draw_pass_1 = SubResource("PlaneMesh_5j0fq")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BodyRepresentation" unique_id=1862541351]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0037841797, 0.41231823, 0.017917633)
 shape = SubResource("BoxShape3D_g740w")
+
+[node name="WaterSound" type="AudioStreamPlayer3D" parent="." unique_id=1111589787]
+stream = SubResource("AudioStreamRandomizer_g740w")
+max_distance = 200.0
 
 [connection signal="area_entered" from="BodyRepresentation" to="." method="_on_body_representation_area_entered"]

@@ -4,8 +4,14 @@
 [ext_resource type="Texture2D" uid="uid://destece58mcou" path="res://textures/icon.png" id="2_mcfdt"]
 [ext_resource type="Theme" uid="uid://cjbyaermnkf75" path="res://core/scenes/menus/title_style.tres" id="3_qiho7"]
 [ext_resource type="Theme" uid="uid://d1tgwdb3grjhr" path="res://core/scenes/menus/menu_button_style.tres" id="4_r2fpa"]
+[ext_resource type="AudioStream" uid="uid://dvs77bs0xyv2i" path="res://audio/button_press.wav" id="5_bxaic"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_8jg5c"]
+streams_count = 1
+stream_0/stream = ExtResource("5_bxaic")
 
 [node name="MainMenu" type="MarginContainer" unique_id=1902047703]
+anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_top = -312.0
@@ -61,6 +67,9 @@ layout_mode = 2
 theme = ExtResource("4_r2fpa")
 text = "Credits
 "
+
+[node name="ButtonSound" type="AudioStreamPlayer" parent="." unique_id=307188556]
+stream = SubResource("AudioStreamRandomizer_8jg5c")
 
 [connection signal="pressed" from="VBoxContainer/LevelSelectionBtn" to="." method="_on_level_selection_btn_pressed"]
 [connection signal="pressed" from="VBoxContainer/SceneryMuseumBtn" to="." method="_on_scenery_museum_btn_pressed"]

@@ -2,11 +2,11 @@ David:
 ===
 - Asphalt, Dirt and Gravel Dynamic Surface system(with shiny asphalt, editor, save system)
 - Road chunk level structure with LOD(heightmap, attributes, road crack and water systems, water and height properties, start and target states)
-- Runway model, and follow behavior
-- Deployment of tools through the runway
+- Model of Runway with parking ramps
+- Runway follow and deployment behavior
 - Base scene for levels
 - Level select scene with transition animations(populated automatically from available levels)
-- Level Objective and attribute system System with automated completion check
+- Level Objective and attribute backend system with automated completion check
 - User data storage(objective completion, level attributes and tool positions)
 - Automatic detection of asphalt reaching target level
 - Road paint animation system
@@ -14,6 +14,7 @@ David:
 - Title screen
 - Level Editor(level data structure, template generation, packing data in compact form)
 - Roadwork tool control system (generic control with mouse drag, keyboard or drawn trajectory)
+- Compactor Control scheme
 - Paver with asphalt storage and release trigger; behavior, sounds and UI key prompt
 - Drawn Trajectory System
 - Smooth camera transitions betwen level overview and tools with sound
@@ -23,15 +24,15 @@ David:
 - Parking lot starting state image
 - Parking lot level scene
 - Roundabout level structure
-- Tool selection UI panel
+- Level Objective Clipboard Photos configuration
 - Concrete bed of flowers(+ springing to life trigger and animation)
 - Animated Ratrick in a trash container
 - Road paint in intersection level
+- Tool selection UI panel
 - Color palette
 - Sky texture ( cloudy sky )
 - Water Spurt Particle system
 - Soda/beer breaking out of cans
-- Roller control with left click
 - Roller Squeeze sound
 - Unfinished road tool sound
 - Conversion from raw images to level designs for various levels
@@ -49,15 +50,16 @@ Christer:
 - Asphalt paver model
 - Seamless gravel and dirt textures(albedo and normal)
 - Intersection level (and polish)
-- Maze level terrain and design
 - Roundabout level terrain
 - Switchback level terrain
 - Suburbia level terrain
 - Farmer field level terrain
 - Parking lot level terrain
+- Maze level terrain and design
 - Open/Closable Dumpster model
-- Trash can
+- Skeleton
 - Crushable Soda cans
+- Trash can
 - Car model with crushed animation and particle effects
 - Office Building with stairs and foundation
 - Road Cunstruction Sign
@@ -83,7 +85,7 @@ Demi:
 Milicen:
 ===
 - UI and design guidance
-- Objective panel
+- Animated Objective Clipboard UI
 - Tool bubble indicator
 - Base of Level complete panel[WIP]
 
@@ -102,6 +104,9 @@ Juan Luiz R:
 - Mountain range concept art
 - Countryside Gravel Roads concept art
 - Playtesting
+
+Adgemon:
+- Can pop sound
 
 Hunter:
 ===
