@@ -18,3 +18,7 @@ func _process(delta: float) -> void:
 				$Pipe/WaterSpurt.emitting = false
 				%RoadChunk.save_user_data(base_dir)
 		).call_deferred()
+var crushed_cars: Array[Crushable]
+func _on_car_crushed(me: Crushable) -> void:
+	if not crushed_cars.has(me): crushed_cars.push_back(me)
+	if crushed_cars.size() >= 5: LevelStructure.level_attribute_store(base_dir, "cars")
