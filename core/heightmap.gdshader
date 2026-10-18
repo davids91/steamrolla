@@ -10,7 +10,8 @@ uniform sampler2D asphalt_physics_state;
 uniform sampler2D terrain_normalmap;
 uniform sampler2D terrain_heightmap;
 uniform sampler2D level_tool_reference;
-uniform vec4 unfinished_area_color: source_color;
+uniform vec4 unfinished_area_color_too_low: source_color;
+uniform vec4 unfinished_area_color_too_high: source_color;
 uniform float asphalt_tile_size_ratio = 1.;
 uniform float asphalt_highlight = 1.6;
 uniform float asphalt_minimum_quantity_for_display = 0.005;
@@ -99,11 +100,16 @@ void fragment() {
 	ALBEDO = mix(ALBEDO, highlight_color, hightlight_strength * asphalt_presence);
 
 	// update output for level tool color
+	float target_asphalt_quantity = texture(level_tool_reference, UV).r;
 	ALBEDO = mix(
-		ALBEDO, unfinished_area_color.rgb,
+		ALBEDO,
+		mix(
+			unfinished_area_color_too_high.rgb, unfinished_area_color_too_low.rgb,
+			0.5 + sign(target_asphalt_quantity - asphalt_in_pixel) * 0.5
+		),
 		step(
 			level_tool_tolerance,
-			abs(texture(level_tool_reference, UV).r - asphalt_in_pixel) * asphalt_presence
+			abs(target_asphalt_quantity - asphalt_in_pixel) * asphalt_presence
 		) * level_tool_strength
 	);
 
