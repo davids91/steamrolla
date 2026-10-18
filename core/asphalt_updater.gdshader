@@ -97,7 +97,7 @@ void fragment() {
 			}
 		}else if(used_tool == TOOL_ROLLER) {
 			vec2 prev_pixel_pos = UV - roller_direction * PIXEL_RADIUS;
-			vec2 next_pixel_pos = UV - roller_direction * PIXEL_RADIUS;
+			vec2 next_pixel_pos = UV + roller_direction * PIXEL_RADIUS;
 			if( // Check if pixel is within Roller distance
 				(point_in_triangle(roller_bl, roller_tl, roller_tr, UV)|| point_in_triangle(roller_bl, roller_tr, roller_br, UV))
 				// Check for out of bounds

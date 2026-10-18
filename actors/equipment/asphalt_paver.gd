@@ -2,6 +2,7 @@ extends RoadworkTool
 
 func prepare_for_runway() -> void:
 	asphalt_remaining = asphalt_capacity
+	$ToolBubbleIndicator.visible = false
 
 var opacity: float = 1.
 func set_color(color: Color) -> void:

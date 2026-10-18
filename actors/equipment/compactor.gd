@@ -22,6 +22,7 @@ func start_working() -> void:
 func prepare_for_runway() -> void:
 	velocity = Vector3.ZERO
 	momentum = Vector3.ZERO
+	$ToolBubbleIndicator.visible = false
 
 @export var minimum_momentum_length: float = 0.55
 @export var max_momentum_length_for_jitter: float = 5.05

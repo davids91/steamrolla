@@ -16,3 +16,13 @@ func show_tooltip(should_show: bool) -> void:
 		if displayed == self: displayed = null
 		$AnimationPlayer.play_backwards("show")
 		is_showing = false
+
+func _ready() -> void:
+	show_tooltip(false)
+
+@export var min_px_size: float = 0.07
+@export var max_px_size: float = 0.08
+var elapsed_time: float = 0.
+func _process(delta: float) -> void:
+	elapsed_time += delta
+	pixel_size = min_px_size + (max_px_size - min_px_size) * (1. + sin(elapsed_time))

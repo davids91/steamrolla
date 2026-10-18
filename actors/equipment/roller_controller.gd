@@ -22,6 +22,9 @@ func handle_movement(delta: float) -> void:
 	super(delta)
 	velocity = velocity.limit_length(speed)
 
+func prepare_for_runway() -> void:
+	$ToolBubbleIndicator.visible = false
+
 var is_on_asphalt: bool = false
 var was_on_asphalt: bool = is_on_asphalt
 var connected_chunk: RoadChunk

@@ -42,6 +42,8 @@ _data = {
 }
 
 [node name="ToolBubbleIndicator" type="Sprite3D" unique_id=135928248]
+modulate = Color(1, 1, 1, 0.56078434)
+pixel_size = 0.075
 billboard = 1
 texture = ExtResource("1_wembi")
 hframes = 3

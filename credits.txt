@@ -1,27 +1,30 @@
 David:
 ===
-- Asphalt, Dirt and Gravel Dynamic Surface system(with shiny asphalt, editor, save system)
+- Asphalt, Dirt and Gravel Dynamic Surface system(with shiny asphalt, user save system)
 - Road chunk level structure with LOD(heightmap, attributes, road crack and water systems, water and height properties, start and target states)
 - Model of Runway with parking ramps
-- Runway follow and deployment behavior
-- Base scene for levels
+- Runway follow and deployment behavior with default position and automatic out of bounds deviation
+- Base scene for levels and level specific asphalt deviation threshold
 - Level select scene with transition animations(populated automatically from available levels)
 - Level Objective and attribute backend system with automated completion check
 - User data storage(objective completion, level attributes and tool positions)
 - Automatic detection of asphalt reaching target level
+- Ashpalt deviation from target marker system(unfinished areas glow red)
 - Road paint animation system
 - Unfinished parts of asphalt flashing red
 - Title screen
 - Level Editor(level data structure, template generation, packing data in compact form)
 - Roadwork tool control system (generic control with mouse drag, keyboard or drawn trajectory)
-- Compactor Control scheme
+- Roadwork tools configurable base with physical body(base for roller, compactor, asphalt paver and dumptruck)
+- Compactor control scheme base and responsive model logic
 - Paver with asphalt storage and release trigger; behavior, sounds and UI key prompt
 - Drawn Trajectory System
 - Smooth camera transitions betwen level overview and tools with sound
 - Broken pipe objective in intersection level
 - Scenery museum with automated camera walkthrough
-- Traffic level
+- Traffic level with dynamic stream of cars
 - Parking lot starting state image
+- Implementation of objectives: traffic, skeleton, parked cars
 - Parking lot level scene
 - Roundabout level structure
 - Level Objective Clipboard Photos configuration
@@ -46,25 +49,26 @@ David:
 Christer:
 ===
 - Title music
+- Compactor sound
 - Sky-dome with clouds
 - Asphalt paver model
 - Seamless gravel and dirt textures(albedo and normal)
 - Intersection level (and polish)
+- Open/Closable Dumpster model
+- Skeleton
+- Crushable Soda cans
+- Street light with wires and volumetric light beam
+- Trash can
+- Car model with crushed animation and particle effects
+- Office Building with stairs and foundation
+- Road Cunstruction Sign
+- Maze level terrain and design
 - Roundabout level terrain
 - Switchback level terrain
 - Suburbia level terrain
 - Farmer field level terrain
 - Parking lot level terrain
-- Maze level terrain and design
-- Open/Closable Dumpster model
-- Skeleton
-- Crushable Soda cans
-- Trash can
-- Car model with crushed animation and particle effects
-- Office Building with stairs and foundation
-- Road Cunstruction Sign
 - Imported Ratrick model
-- Compactor sound
 
 Demi:
 ===
@@ -87,7 +91,11 @@ Milicen:
 - UI and design guidance
 - Animated Objective Clipboard UI
 - Tool bubble indicator
+- Thumbs up rating graphics
 - Base of Level complete panel[WIP]
+
+Tarnished Moth:
+	- Bugfix for compactor motion calculation error
 
 Michael Gunn:
 ===
@@ -105,8 +113,14 @@ Juan Luiz R:
 - Countryside Gravel Roads concept art
 - Playtesting
 
+Reuben:
+===
+- Compactor concept art(completed)
+- Tamper Compactor model
+
 Adgemon:
 - Can pop sound
+- Hydrant water erupting sound
 
 Hunter:
 ===
@@ -119,7 +133,3 @@ Mo Shah:
 Roei:
 ===
  - Color palette guidance
-
-Reuben:
-===
-- Compactor concept art(completed)

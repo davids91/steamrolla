@@ -107,7 +107,7 @@ tool_strength = 3.0
 has_payload = true
 
 [node name="ToolBubbleIndicator" parent="." unique_id=135928248 instance=ExtResource("2_llrrr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.1034093, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.2632985, 0)
 
 [node name="OrbitCamera" parent="." unique_id=1504134869 instance=ExtResource("2_tthve")]
 transform = Transform3D(-0.9089847, 0, 0.41682938, 0, 1, 0, -0.41682938, 0, -0.9089847, 3.2651744, 4.8342853, -6.400869)

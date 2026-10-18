@@ -16,6 +16,7 @@ func ready_to_deploy() -> bool:
 var tool_selected_to_deploy: RoadworkTool
 func call_twice_to_deploy(tool: RoadworkTool) -> void:
 	if tool_selected_to_deploy == tool: # Stop runway to help deploy tool
+		tool.prepare_for_runway()
 		following = tool_selected_to_deploy
 		player_cursor.visible = false
 	elif parked_tools.has(tool): # Select tool for deployment if it isn't already
@@ -28,7 +29,6 @@ func call_twice_to_deploy(tool: RoadworkTool) -> void:
 func call_to_park(tool: RoadworkTool) -> void:
 	if parking_spots.has(tool.tool_enum) and not parked_tools.has(tool):
 		tools_may_be_outside_bounds.push_back(tool)
-		tool.prepare_for_runway()
 		if tool_selected_to_deploy == tool:
 			tool_selected_to_deploy = null
 			parked_tools.push_back(tool)

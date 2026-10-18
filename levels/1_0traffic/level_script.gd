@@ -31,16 +31,17 @@ func _process(delta: float) -> void:
 		for car in contained_cars: if car.crashed: crashed_car_count += 1
 		if 0 == crashed_car_count:
 			traffic_objective_complete = true
-			$HUD.objective_complete("asphalt_done") # To make it snap
+			$HUD.objective_complete("asphalt_done") # To make level asphalt snap too
 
 var contained_cars: Array[MovingCar] = []
 func _on_car_launcher_car_launched(car: MovingCar) -> void:
 	contained_cars.push_back(car)
-	if max_cars_count <= contained_cars.size():
-		$CarLauncherTop.is_active = false
-		$CarLauncherBottom.is_active = false
+	$CarLauncherTop.is_active = max_cars_count > contained_cars.size()
+	$CarLauncherBottom.is_active = max_cars_count > contained_cars.size()
 
 func _on_level_proximity_body_exited(body: Node3D) -> void:
 	if body is MovingCar and contained_cars.has(body):
 		contained_cars.erase(body)
 		body.queue_free()
+		$CarLauncherTop.is_active = max_cars_count > contained_cars.size()
+		$CarLauncherBottom.is_active = max_cars_count > contained_cars.size()

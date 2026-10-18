@@ -355,9 +355,9 @@ func _initialize_minified(data_path: String = "") -> void:
 		var mini_image_path: String = LevelStructure.level_mini_image_path(used_base_dir, img)
 
 		if ResourceLoader.exists(mini_image_path):
-			level_data.set(img, ImageTexture.create_from_image(Image.load_from_file(mini_image_path)))
+			level_data.set(img, ImageTexture.create_from_image(ResourceLoader.load(mini_image_path)))
 		elif ResourceLoader.exists(image_path):
-			level_data.set(img, ImageTexture.create_from_image(Image.load_from_file(image_path)))
+			level_data.set(img, ImageTexture.create_from_image(ResourceLoader.load(image_path)))
 		else:
 			level_data.set(img, ImageTexture.create_from_image(Image.create_empty(64, 64, false, Image.FORMAT_RF)))
 
@@ -372,9 +372,9 @@ func _initialize_minified(data_path: String = "") -> void:
 	elif FileAccess.file_exists(user_asphalt_state_path):
 		level_data.start_asphalt_state = ImageTexture.create_from_image(Image.load_from_file(user_asphalt_state_path))
 	elif ResourceLoader.exists(mini_asphalt_state_path):
-		level_data.start_asphalt_state = ImageTexture.create_from_image(Image.load_from_file(mini_asphalt_state_path))
+		level_data.start_asphalt_state = ImageTexture.create_from_image(ResourceLoader.load(mini_asphalt_state_path))
 	elif ResourceLoader.exists(asphalt_state_path):
-		level_data.start_asphalt_state = ImageTexture.create_from_image(Image.load_from_file(asphalt_state_path))
+		level_data.start_asphalt_state = ImageTexture.create_from_image(ResourceLoader.load(asphalt_state_path))
 	_initialize_state()
 
 @onready var used_base_dir: String = get_parent().scene_file_path.get_base_dir() + "/"
