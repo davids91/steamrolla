@@ -23,6 +23,7 @@ func call_twice_to_deploy(tool: RoadworkTool) -> void:
 		player_cursor.visible = true
 		tool_selected_to_deploy = tool
 		parked_tools.erase(tool)
+	else: following = tool
 
 func call_to_park(tool: RoadworkTool) -> void:
 	if parking_spots.has(tool.tool_enum) and not parked_tools.has(tool):
@@ -33,7 +34,13 @@ func call_to_park(tool: RoadworkTool) -> void:
 			parked_tools.push_back(tool)
 		following = null
 
-@onready var following: Node3D
+@onready var following: Node3D:
+	set(v):
+		following = v
+		if not following: following = $OriginalPositionMarker
+func _ready() -> void:
+	$OriginalPositionMarker.global_position = global_position
+
 @onready var runway_height: float = global_position.y
 @onready var target_global_position: Vector3 = global_position
 const hidden_depth: float = -500;
@@ -90,7 +97,7 @@ func _physics_process(_delta: float) -> void:
 
 	# Move towards target position and look at the center of the level always
 	var next_transform: Transform3D = global_transform
-	next_transform.origin = lerp(global_position, target_global_position, 0.75)
+	next_transform.origin = lerp(global_position, target_global_position, 0.35)
 	var center_x_dif: float = next_transform.origin.x - level.global_position.x
 	var center_z_dif: float = next_transform.origin.z - level.global_position.z
 	var next_global_orientation_target: Vector3 = next_transform.origin + (

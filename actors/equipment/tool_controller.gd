@@ -199,6 +199,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		):
 			tool_nodes[active_tool].stop_working()
 			view.cursor.visible = true
+			runway.following = null
 
 	# Handle releasing the payload
 	if not tool_nodes.has(active_tool): return

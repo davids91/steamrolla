@@ -73,15 +73,15 @@ deviation_threshold = 0.003
 [node name="ToolController" parent="." unique_id=129265235 node_paths=PackedStringArray("view", "level", "runway", "tool_nodes") instance=ExtResource("7_gsihx")]
 view = NodePath("../PlayerView")
 level = NodePath("../RoadChunk")
-runway = NodePath("RollerRunway")
+runway = NodePath("Runway")
 tool_nodes = {
 0: NodePath("Roller"),
 1: NodePath("AsphaltPaver"),
 3: NodePath("Compactor")
 }
 
-[node name="RollerRunway" parent="ToolController" unique_id=328105869 node_paths=PackedStringArray("level", "player_cursor", "parking_spots", "parked_tools") instance=ExtResource("8_8or7f")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.3961487, 0, -38.032772)
+[node name="Runway" parent="ToolController" unique_id=328105869 node_paths=PackedStringArray("level", "player_cursor", "parking_spots", "parked_tools") instance=ExtResource("8_8or7f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.183014, 0, -38.032772)
 level = NodePath("../../RoadChunk")
 player_cursor = NodePath("../../PlayerView/PlayerCursor")
 parking_spots = {
