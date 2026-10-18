@@ -3,7 +3,7 @@ extends BaseLevel
 @export var max_cars_count: int = 30
 func _ready():
 	super()
-	if LevelStructure.level_attribute_present(base_dir, "traffic"):
+	if $HUD.is_objective_completed("traffic"):
 		traffic_objective_complete = true
 	var car_transform_readouts = LevelStructure.level_attribute_data_read(base_dir,"contained_cars")
 	if car_transform_readouts is Array[Transform3D]:
@@ -31,7 +31,6 @@ func _process(delta: float) -> void:
 		for car in contained_cars: if car.crashed: crashed_car_count += 1
 		if 0 == crashed_car_count:
 			traffic_objective_complete = true
-			LevelStructure.level_attribute_store(base_dir, "traffic")
 			$HUD.objective_complete("asphalt_done") # To make it snap
 
 var contained_cars: Array[MovingCar] = []

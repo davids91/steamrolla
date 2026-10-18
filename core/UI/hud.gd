@@ -14,8 +14,12 @@ func set_objectives(objectives: Dictionary[String, String], objective_photos: Ar
 	$ObjectivePanel.set_objectives(objectives, base_dir)
 	$ObjectivePanel.photos = objective_photos
 
+func is_objective_completed(objective_name: String) -> void:
+	return LevelStructure.level_attribute_present(base_dir, objective_name)
+
 func objective_complete(objective_name: String) -> void:
 	$ObjectivePanel.set_completed(objective_name) # This also triggers _on_objective_panel_objective_completed
+	LevelStructure.level_attribute_store(base_dir, objective_name)
 
 func _ready() -> void: # Automatically wire the level down to the objective panel
 	if level: $ObjectivePanel.level = level
@@ -30,9 +34,7 @@ func _on_exit_btn_pressed() -> void:
 func _on_objective_panel_objective_completed(objective_name: String) -> void:
 	objective_completed.emit(objective_name)
 	if objective_name == "asphalt_done": $SuccessLevel.play()
-
-	# Check if all objectives are complete
-	if(
+	if( # Check if all objectives are complete to show completed dialouge
 		LevelStructure.level_attribute_completion(base_dir) >= 1.
 		and not LevelStructure.level_attribute_present(base_dir, "shown_complete_screen")
 	):
