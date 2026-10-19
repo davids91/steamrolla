@@ -40,3 +40,8 @@ func _on_body_representation_area_entered(area: Area3D) -> void:
 	if area.get_parent() is RoadworkTool and not already_crushed:
 		object_hitting_hydrant = area.get_parent()
 		already_crushed = true
+
+func _on_body_representation_body_entered(body: Node3D) -> void:
+	if body is RoadworkTool and not already_crushed:
+		object_hitting_hydrant = body
+		already_crushed = true
