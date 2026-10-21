@@ -1,9 +1,9 @@
 [gd_scene format=4 uid="uid://csaxjq3vidpcx"]
 
 [ext_resource type="Script" uid="uid://1qygtkaelkou" path="res://actors/equipment/compactor.gd" id="1_1b380"]
-[ext_resource type="Texture2D" uid="uid://b6i820kn0nl8g" path="res://source_assets/models/bloke_skin.png" id="2_1b380"]
 [ext_resource type="PackedScene" uid="uid://bb24gus88qx5r" path="res://core/tools/orbit_camera_3d.tscn" id="2_7imx7"]
 [ext_resource type="Script" uid="uid://bpfus5xg6xcga" path="res://addons/jigglebones/jigglebone.gd" id="2_lekfh"]
+[ext_resource type="Texture2D" uid="uid://b6i820kn0nl8g" path="res://models/textures/bloke_skin.png" id="4_7imx7"]
 [ext_resource type="AudioStream" uid="uid://8wf5r8kj4wv8" path="res://audio/compactor.wav" id="5_5lgew"]
 [ext_resource type="PackedScene" uid="uid://l00v8wyjwjmc" path="res://core/UI/tool_bubble_indicator/tool_bubble_indicator_billboard.tscn" id="6_f3p5u"]
 [ext_resource type="PackedScene" uid="uid://dhcft22d6p1oo" path="res://models/tamper_compactor.glb" id="8_p2bfq"]
@@ -18,7 +18,7 @@ size = Vector3(1.0891113, 2.7536497, 2.5981522)
 resource_name = "Material"
 transparency = 4
 cull_mode = 2
-albedo_texture = ExtResource("2_1b380")
+albedo_texture = ExtResource("4_7imx7")
 roughness = 0.5
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_7pmv6"]
@@ -276,7 +276,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.092113495, 0)
 unique_name_in_owner = true
 transform = Transform3D(-0.5, 0, -7.54979e-08, 0, 0.5, 0, 7.54979e-08, 0, -0.5, 0, 0, 0)
 
-[node name="Skeleton3D" parent="SpinnyPart/Compactor/rig" parent_id_path=PackedInt32Array(1133186004, 920630493) index="0" unique_id=1253331845]
+[node name="Skeleton3D" parent="SpinnyPart/Compactor/rig" parent_id_path=PackedInt32Array(1133186004, 683086973) index="0" unique_id=520171294]
 bones/2/rotation = Quaternion(0, 4.627107, 0.707107, 0)
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="SpinnyPart/Compactor/rig/Skeleton3D" index="1" unique_id=392415176]
@@ -474,7 +474,7 @@ stiffness = 0.1
 metadata/_custom_type_script = "uid://bpfus5xg6xcga"
 
 [node name="ThighL" type="Node3D" parent="SpinnyPart/Bloke/metarig/Skeleton3D" unique_id=1884936789]
-transform = Transform3D(0.9840427, 0.17677727, -0.020277293, 0.15041591, -0.76554495, 0.6255535, 0.09506043, -0.6186202, -0.77991927, 0.08828266, 2.7031457, -0.7716587)
+transform = Transform3D(0.9840427, 0.17677727, -0.020277293, 0.15041591, -0.76554495, 0.6255535, 0.09506043, -0.6186202, -0.77991927, 0.08828266, 2.7031457, -0.77165866)
 top_level = true
 script = ExtResource("2_lekfh")
 bone_name = "thigh.L"
@@ -490,7 +490,7 @@ stiffness = 0.1
 metadata/_custom_type_script = "uid://bpfus5xg6xcga"
 
 [node name="PelvisR" type="Node3D" parent="SpinnyPart/Bloke/metarig/Skeleton3D" unique_id=1225862099]
-transform = Transform3D(-0.1909097, -0.6094371, 0.769506, 0.5795121, 0.5627553, 0.5894674, -0.7922872, 0.558473, 0.24574077, -0.7993466, 2.7153864, -1.8691785)
+transform = Transform3D(-0.1909097, -0.6094371, 0.769506, 0.5795121, 0.5627553, 0.5894674, -0.7922872, 0.558473, 0.24574077, -0.79934657, 2.7153864, -1.8691785)
 top_level = true
 script = ExtResource("2_lekfh")
 bone_name = "pelvis.R"
