@@ -6,7 +6,6 @@ extends Node3D
 @export var coming_from: String = "" # If set, this makes the camera start from here and zoom into the start camera position
 @export_range(0., 1.) var transition_zoom_amount: float = 0.95
 @onready var start_camera_transform: Transform3D = $PlayerView.camera_transform
-@onready var level_container: Node = get_node("/root/Main/LevelContainer")
 
 func _position_from_dir_name(dir_name: String) -> Vector3:
 	var level_coordinate: Vector2 = LevelStructure.level_position_from_dir_name(dir_name)
@@ -84,12 +83,18 @@ func _process(delta: float) -> void:
 	if 0. < time_left_to_travel and selected_chunk != null:
 		$PlayerView.move_towards_object_by(distance_travel_towards_selected * delta, selected_chunk)
 		time_left_to_travel -= delta
+		
 		if 0. >= time_left_to_travel:
-			for c in level_container.get_children(): c.queue_free()
-			var packed_scene: PackedScene = ResourceLoader.load_threaded_get(scenes[selected_chunk])
-			if not packed_scene: push_error("level select got a null selected scene. ignoring.")
-			else: level_container.add_child(packed_scene.instantiate())
+			if ResourceLoader.get_resource_uid(scenes[selected_chunk]) == -1:
+				push_error("Level select got an invalid selected scene. Ignoring...")
+			else:
+				change_scene_to_selected_chunk()
+
+func change_scene_to_selected_chunk() -> void:
+	#var packed_scene: PackedScene = ResourceLoader.load_threaded_get(scenes[selected_chunk])
+	## This requires some extra code to be a valid use of threaded loading
+	#if not packed_scene: push_error("level select got a null selected scene. ignoring.")
+	SceneManager.change_scene_to_file(scenes[selected_chunk])
 
 func _on_exit_btn_pressed() -> void:
-	for c in level_container.get_children(): c.queue_free()
-	level_container.add_child(load("res://core/scenes/menus/title_screen.tscn").instantiate())
+	SceneManager.return_to_title_screen()

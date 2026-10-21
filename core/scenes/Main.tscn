@@ -1,10 +1,9 @@
 [gd_scene format=3 uid="uid://dio5mdbn1uoef"]
 
-[ext_resource type="PackedScene" uid="uid://dbaycbd46p3op" path="res://core/scenes/menus/title_screen.tscn" id="1_epeqb"]
+[ext_resource type="Script" uid="uid://bw7a7uhdbvuq7" path="res://core/scene_manager.gd" id="1_3dy4c"]
 
 [node name="Main" type="Node" unique_id=574895689]
 
 [node name="LevelContainer" type="Node" parent="." unique_id=815142842]
 unique_name_in_owner = true
-
-[node name="TitleScreen" parent="LevelContainer" unique_id=1389045047 instance=ExtResource("1_epeqb")]
+script = ExtResource("1_3dy4c")

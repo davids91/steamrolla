@@ -68,14 +68,12 @@ func _on_hud_objective_completed(objective_name: String) -> void:
 				await get_tree().create_timer(road_paint_display_pause_sec).timeout
 		)
 
-const LEVEL_SELECT_SCENE_TEMPLATE: PackedScene = preload("res://core/scenes/menus/level_select.tscn")
-@onready var level_container: Node = get_node("/root/Main/LevelContainer")
+
+
 func _on_hud_exit_scene() -> void: # Exit the scene when there's no active tool
 	if $ToolController.active_tool != ToolPanel.Tools.UNKNOWN: return
-	create_tween().tween_property(%ScreenBlocker, "modulate", Color.WHITE, transition_time_sec)
-	get_tree().create_timer(transition_time_sec).timeout.connect(func():
-		for c in level_container.get_children(): c.queue_free()
-		var level_select_scene: LevelSelectScene = LEVEL_SELECT_SCENE_TEMPLATE.instantiate()
-		level_select_scene.coming_from = base_dir.get_file()
-		level_container.add_child(level_select_scene)
-	)
+	var transition = create_tween()
+	transition.tween_property(%ScreenBlocker, "modulate", Color.WHITE, transition_time_sec)
+	transition.tween_callback(
+		SceneManager.return_to_level_select.bind(base_dir)
+		)
