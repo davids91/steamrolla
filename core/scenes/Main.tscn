@@ -1,8 +1,16 @@
 [gd_scene format=3 uid="uid://dio5mdbn1uoef"]
 
 [ext_resource type="Script" uid="uid://bw7a7uhdbvuq7" path="res://core/scene_manager.gd" id="1_3dy4c"]
+[ext_resource type="Script" uid="uid://d1bd1rglht1la" path="res://core/music_manager.gd" id="2_3dy4c"]
+[ext_resource type="AudioStream" uid="uid://bfqbrqjnjxh3" path="res://audio/SteamRolla-Main-Menu-Music-Loop.ogg" id="3_4fnhs"]
 
 [node name="Main" type="Node" unique_id=574895689]
+
+[node name="MusicManager" type="Node" parent="." unique_id=1522722160]
+script = ExtResource("2_3dy4c")
+
+[node name="SteamRollaMainMenuMusicLoop" type="AudioStreamPlayer" parent="MusicManager" unique_id=73611131]
+stream = ExtResource("3_4fnhs")
 
 [node name="LevelContainer" type="Node" parent="." unique_id=815142842]
 unique_name_in_owner = true

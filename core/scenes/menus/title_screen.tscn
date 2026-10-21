@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://doqxefey6s7j7" path="res://core/scenes/menus/title_screen.gd" id="1_58eve"]
 [ext_resource type="PackedScene" uid="uid://ccd6hldeyxwf6" path="res://core/scenes/menus/main_menu.tscn" id="1_r0kk5"]
 [ext_resource type="PackedScene" uid="uid://b7143f1jor1qd" path="res://core/scenes/road_chunk.scn" id="2_58eve"]
-[ext_resource type="AudioStream" uid="uid://bfqbrqjnjxh3" path="res://audio/SteamRolla-Main-Menu-Music-Loop.ogg" id="2_658y6"]
 [ext_resource type="Texture2D" uid="uid://dk0r2hexmx6ad" path="res://textures/map_overview_concept/map_file.png" id="3_658y6"]
 [ext_resource type="Script" uid="uid://bclv735d06io5" path="res://core/tools/road_paint.gd" id="4_658y6"]
 [ext_resource type="PackedScene" uid="uid://xehtklcspjew" path="res://props/pipe.tscn" id="5_5fdls"]
@@ -383,12 +382,7 @@ shadow_mesh = SubResource("ArrayMesh_tglvp")
 [node name="TitleScreen" type="Node3D" unique_id=1389045047]
 script = ExtResource("1_58eve")
 
-[node name="SteamRollaMainMenuMusicLoop" type="AudioStreamPlayer" parent="." unique_id=1493813199]
-stream = ExtResource("2_658y6")
-autoplay = true
-
 [node name="MainMenu" parent="." unique_id=767521340 instance=ExtResource("1_r0kk5")]
-anchors_preset = 2
 
 [node name="MainTitleEnvironment" type="Node3D" parent="." unique_id=1286330709]
 
@@ -644,7 +638,7 @@ transform = Transform3D(0.7145506, 0, 0.6995839, 0, 1, 0, -0.6995839, 0, 0.71455
 [node name="roller" parent="MainTitleEnvironment/Intersection" unique_id=1075544632 instance=ExtResource("13_58eve")]
 transform = Transform3D(-0.75467116, 0.1694368, -0.63384736, 0.2846864, 0.9549615, -0.08367783, 0.59112185, -0.243597, -0.7689183, 10.618, 3.642, -13.695)
 
-[node name="Roller" parent="MainTitleEnvironment/Intersection/roller" index="0" unique_id=1261025651]
+[node name="Roller" parent="MainTitleEnvironment/Intersection/roller" index="0" unique_id=287130010]
 mesh = SubResource("ArrayMesh_658y6")
 
 [node name="ratrick2" parent="MainTitleEnvironment/Intersection" unique_id=87839735 instance=ExtResource("16_cw08j")]

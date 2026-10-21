@@ -7,6 +7,8 @@ extends Node3D
 @export_range(0., 1.) var transition_zoom_amount: float = 0.95
 @onready var start_camera_transform: Transform3D = $PlayerView.camera_transform
 
+var is_scene_changing: bool = false
+
 func _position_from_dir_name(dir_name: String) -> Vector3:
 	var level_coordinate: Vector2 = LevelStructure.level_position_from_dir_name(dir_name)
 	return Vector3(level_coordinate.x * road_chunk_spacing, 0., level_coordinate.y * road_chunk_spacing)
@@ -75,6 +77,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _ready() -> void:
 	_load_level_data()
+	Music.start_music(Music.Track.MAIN_MENU_MUSIC_LOOP)
 
 @export var distance_travel_towards_selected: float = 100.
 @export var transition_time_sec: float = 1.
@@ -91,10 +94,13 @@ func _process(delta: float) -> void:
 				change_scene_to_selected_chunk()
 
 func change_scene_to_selected_chunk() -> void:
+	if is_scene_changing: return
+	is_scene_changing = true
 	#var packed_scene: PackedScene = ResourceLoader.load_threaded_get(scenes[selected_chunk])
-	## This requires some extra code to be a valid use of threaded loading
+	## FIXME (not necessary) This requires some extra code to be a valid use of threaded loading
 	#if not packed_scene: push_error("level select got a null selected scene. ignoring.")
 	SceneManager.change_scene_to_file(scenes[selected_chunk])
+	Music.stop_music()
 
 func _on_exit_btn_pressed() -> void:
 	SceneManager.return_to_title_screen()

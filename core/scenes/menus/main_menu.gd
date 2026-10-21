@@ -1,11 +1,11 @@
 extends Control
 
+func _ready() -> void:
+	Music.start_music(Music.Track.MAIN_MENU_MUSIC_LOOP)
+
 func _on_level_selection_btn_pressed() -> void:
 	$ButtonSound.play()
-	
-	SceneManager.change_scene_to_packed(
-		preload("res://core/scenes/menus/level_select.tscn")
-		)
+	SceneManager.return_to_level_select()
 
 func _on_scenery_museum_btn_pressed() -> void:
 	$ButtonSound.play()

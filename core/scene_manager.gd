@@ -52,7 +52,7 @@ static func change_scene_to_node(scene: Node) -> void:
 	get_instance()._change_scene_to_node(scene)
 
 
-static func return_to_level_select(coming_from: String) -> void:
+static func return_to_level_select(coming_from: String = "") -> void:
 	var level_select_scene: LevelSelectScene = load(SCENE_LEVEL_SELECT).instantiate()
 	level_select_scene.coming_from = coming_from
 	get_instance()._change_scene_to_node(level_select_scene)
