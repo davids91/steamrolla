@@ -44,7 +44,7 @@ func _physics_process(_delta: float) -> void:
 		cursor.global_position = raycast_result.position
 		# this check avoids a godot warning message about colinear vectors
 		if cursor.global_position.direction_to(raycast_result.position + raycast_result.normal).is_equal_approx(Vector3.UP):
-			cursor.look_at(cursor.position + Vector3.UP)
+			cursor.look_at(cursor.position + Vector3.FORWARD) ## was originally cursor.look_at(cursor.position + Vector3.UP) if that was important?? couldn't find any behavior that *depended* on this
 		else:
 			cursor.look_at(raycast_result.position + raycast_result.normal)
 	else: looking_at_chunk = null
