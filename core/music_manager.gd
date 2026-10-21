@@ -50,7 +50,7 @@ static func start_music(track: Track, fade_in_duration: float = 2.0) -> void:
 			was_fading = true
 			tweens[player].kill()
 		else:
-			push_warning("Music is already playing, ignoring...")
+			#push_warning("Music is already playing, ignoring...")
 			return
 	
 	if fade_in_duration > 0.05:
