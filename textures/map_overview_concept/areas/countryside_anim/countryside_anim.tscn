@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://djves1argxhy3"]
+
+[ext_resource type="Texture2D" uid="uid://bl65qycs2e2b5" path="res://textures/map_overview_concept/areas/countryside_anim/quadro0000.png" id="1_3qsw4"]
+[ext_resource type="Texture2D" uid="uid://js21mvcackan" path="res://textures/map_overview_concept/areas/countryside_anim/quadro0001.png" id="2_x02t3"]
+[ext_resource type="Texture2D" uid="uid://cysvgaxmv1elx" path="res://textures/map_overview_concept/areas/countryside_anim/quadro0002.png" id="3_p1vdb"]
+[ext_resource type="Texture2D" uid="uid://cjaymgo5t6gm7" path="res://textures/map_overview_concept/areas/countryside_anim/quadro0003.png" id="4_pd87b"]
+[ext_resource type="Texture2D" uid="uid://m55sq25lcsst" path="res://textures/map_overview_concept/areas/countryside_anim/quadro0004.png" id="5_0j3dr"]
+[ext_resource type="Texture2D" uid="uid://brv0gvxaq5qsq" path="res://textures/map_overview_concept/areas/countryside_anim/quadro0005.png" id="6_qes15"]
+[ext_resource type="Texture2D" uid="uid://c33mf4tsffhk3" path="res://textures/map_overview_concept/areas/countryside_anim/quadro0006.png" id="7_83n6v"]
+[ext_resource type="Texture2D" uid="uid://b172cf8kk7hfk" path="res://textures/map_overview_concept/areas/countryside_anim/quadro0007.png" id="8_drmmv"]
+[ext_resource type="Texture2D" uid="uid://bup34k43toqkj" path="res://textures/map_overview_concept/areas/countryside_anim/quadro0008.png" id="9_h7qr7"]
+[ext_resource type="Texture2D" uid="uid://ckc7wksyki1hp" path="res://textures/map_overview_concept/areas/countryside_anim/quadro0009.png" id="10_7f032"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_g4v7s"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_3qsw4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_x02t3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_p1vdb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_pd87b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_0j3dr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_qes15")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_83n6v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_drmmv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_h7qr7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_7f032")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="countryside_anim" type="AnimatedSprite2D" unique_id=1101253007]
+sprite_frames = SubResource("SpriteFrames_g4v7s")
+frame_progress = 0.026402077

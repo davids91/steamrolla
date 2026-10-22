@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://dta7h0owg04dw"]
+
+[ext_resource type="Texture2D" uid="uid://bsuwn28ni6agd" path="res://textures/map_overview_concept/areas/mountain_anim/mountain0000.png" id="1_1i1ic"]
+[ext_resource type="Texture2D" uid="uid://dwdlrr4jmvham" path="res://textures/map_overview_concept/areas/mountain_anim/mountain0001.png" id="2_0ic7b"]
+[ext_resource type="Texture2D" uid="uid://cgxr2tvvugm11" path="res://textures/map_overview_concept/areas/mountain_anim/mountain0002.png" id="3_j8t6q"]
+[ext_resource type="Texture2D" uid="uid://b6wn74l5msfaj" path="res://textures/map_overview_concept/areas/mountain_anim/mountain0003.png" id="4_h21x6"]
+[ext_resource type="Texture2D" uid="uid://c7pqe5x0octth" path="res://textures/map_overview_concept/areas/mountain_anim/mountain0004.png" id="5_7h0db"]
+[ext_resource type="Texture2D" uid="uid://bgov00ht0vqj0" path="res://textures/map_overview_concept/areas/mountain_anim/mountain0005.png" id="6_k31r6"]
+[ext_resource type="Texture2D" uid="uid://bgf8hao1ebind" path="res://textures/map_overview_concept/areas/mountain_anim/mountain0006.png" id="7_i2js3"]
+[ext_resource type="Texture2D" uid="uid://ydl7xrwblyc5" path="res://textures/map_overview_concept/areas/mountain_anim/mountain0007.png" id="8_yldb4"]
+[ext_resource type="Texture2D" uid="uid://4mb8po4obpx4" path="res://textures/map_overview_concept/areas/mountain_anim/mountain0008.png" id="9_rgsu4"]
+[ext_resource type="Texture2D" uid="uid://bgryv6wtvjxqd" path="res://textures/map_overview_concept/areas/mountain_anim/mountain0009.png" id="10_e6omy"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_g4v7s"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_1i1ic")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_0ic7b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_j8t6q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_h21x6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_7h0db")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_k31r6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_i2js3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_yldb4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_rgsu4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_e6omy")
+}],
+"loop": 1,
+"name": &"anim",
+"speed": 5.0
+}]
+
+[node name="mountain_anim" type="AnimatedSprite2D" unique_id=1101253007]
+sprite_frames = SubResource("SpriteFrames_g4v7s")
+animation = &"anim"
+frame_progress = 0.02371143

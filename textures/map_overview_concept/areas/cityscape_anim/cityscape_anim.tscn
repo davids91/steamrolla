@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://ds8qq42qhwtu5"]
+
+[ext_resource type="Texture2D" uid="uid://8tocktk40kf1" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0000.png" id="1_g2vlq"]
+[ext_resource type="Texture2D" uid="uid://coj3u22e41byx" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0001.png" id="2_vs8jc"]
+[ext_resource type="Texture2D" uid="uid://w5ooms1fjfnk" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0002.png" id="3_xytu4"]
+[ext_resource type="Texture2D" uid="uid://dsphf4qxk7x3r" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0003.png" id="4_d2wd7"]
+[ext_resource type="Texture2D" uid="uid://cdfif0u7n6nv0" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0004.png" id="5_dba3p"]
+[ext_resource type="Texture2D" uid="uid://bhfw0ff3ne2a8" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0005.png" id="6_sb3gf"]
+[ext_resource type="Texture2D" uid="uid://b6cdub2bmubjm" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0006.png" id="7_q0jxn"]
+[ext_resource type="Texture2D" uid="uid://bxkux75pdtkn1" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0007.png" id="8_qaj8v"]
+[ext_resource type="Texture2D" uid="uid://bk2vda81pvj3k" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0008.png" id="9_sj2l1"]
+[ext_resource type="Texture2D" uid="uid://2lyue4nd7h0d" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0009.png" id="10_oa4pw"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_g4v7s"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_g2vlq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_vs8jc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_xytu4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_d2wd7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_dba3p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_sb3gf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_q0jxn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_qaj8v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_sj2l1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_oa4pw")
+}],
+"loop": 1,
+"name": &"anim",
+"speed": 5.0
+}]
+
+[node name="cityscape_anim" type="AnimatedSprite2D" unique_id=1101253007]
+sprite_frames = SubResource("SpriteFrames_g4v7s")
+animation = &"anim"
+frame_progress = 0.82167464
