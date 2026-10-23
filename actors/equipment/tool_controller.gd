@@ -170,10 +170,16 @@ func dig_shovel_into(target_position: Vector3) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	# Handle dragged control and tool selection
 	if(
-		event is InputEventMouseButton
-		and event.button_index != MOUSE_BUTTON_MIDDLE
-		and event.button_index != MOUSE_BUTTON_WHEEL_UP
-		and event.button_index != MOUSE_BUTTON_WHEEL_DOWN
+		(
+			event is InputEventMouseButton
+			and event.button_index != MOUSE_BUTTON_MIDDLE
+			and event.button_index != MOUSE_BUTTON_WHEEL_UP
+			and event.button_index != MOUSE_BUTTON_WHEEL_DOWN
+		)
+		or event.is_action_pressed("move_forward")
+		or event.is_action_pressed("move_backwards")
+		or event.is_action_pressed("move_left")
+		or event.is_action_pressed("move_right")
 	):
 		if event.is_pressed():
 			# Select desired(pointed at) tool and deactivate selection, confirm deployment if ready!
@@ -229,3 +235,6 @@ func _on_hud_exit_scene() -> void:
 
 	# Call deferred to ensure order of execution, HUD::exit_scene has many listeners
 	select_tool.call_deferred(ToolPanel.Tools.UNKNOWN)
+
+func _on_runway_payload_reset(tool_enum: ToolPanel.Tools) -> void:
+	if active_tool == tool_enum: select_tool(ToolPanel.Tools.UNKNOWN)

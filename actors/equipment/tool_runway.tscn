@@ -92,8 +92,8 @@ shadow_mesh = SubResource("ArrayMesh_wuaud")
 [sub_resource type="BoxShape3D" id="BoxShape3D_3oeo6"]
 size = Vector3(10.481201, 1, 7.2979736)
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_8jg5c"]
-radius = 75.0
+[sub_resource type="BoxShape3D" id="BoxShape3D_873li"]
+size = Vector3(80, 64, 80)
 
 [node name="Runway" type="AnimatableBody3D" unique_id=328105869 node_paths=PackedStringArray("parking_spots")]
 collision_mask = 3
@@ -149,10 +149,12 @@ transform = Transform3D(0.6836479, -0.27148244, 0.67743844, 0.3690729, 0.9294004
 shape = SubResource("BoxShape3D_3oeo6")
 
 [node name="OutOfBoundsChecker" type="Area3D" parent="." unique_id=1818476023]
+top_level = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="OutOfBoundsChecker" unique_id=1423631171]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 45.691467)
-shape = SubResource("SphereShape3D_8jg5c")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3842392, 0, 0.6565399)
+shape = SubResource("BoxShape3D_873li")
+debug_color = Color(0.7, 0, 0.011666489, 0.41960785)
 
 [connection signal="body_entered" from="DeploymentArea" to="." method="_on_deployment_area_body_entered"]
 [connection signal="body_exited" from="DeploymentArea" to="." method="_on_deployment_area_body_exited"]

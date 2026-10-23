@@ -30,6 +30,7 @@ script = ExtResource("1_ygh00")
 [node name="ExitBtn" type="TextureButton" parent="." unique_id=622200269]
 offset_right = 128.0
 offset_bottom = 128.0
+focus_mode = 0
 texture_normal = SubResource("AtlasTexture_k5p64")
 texture_pressed = SubResource("AtlasTexture_ie7id")
 

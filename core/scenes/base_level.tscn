@@ -110,3 +110,4 @@ turning_speed = 0.5
 [connection signal="exit_scene" from="HUD" to="ToolController" method="_on_hud_exit_scene"]
 [connection signal="objective_completed" from="HUD" to="." method="_on_hud_objective_completed"]
 [connection signal="selected" from="HUD" to="ToolController" method="select_tool"]
+[connection signal="payload_reset" from="ToolController/Runway" to="ToolController" method="_on_runway_payload_reset"]

@@ -14,7 +14,6 @@ var shine_up_tween: Tween
 func water_me() -> void:
 	if shine_up_tween: shine_up_tween.kill()
 	shine_up_tween = create_tween()
-	shine_up_tween.tween_property($Bush, "modulate", Color.GREEN, shine_up_time_sec / 2.)
 	shine_up_tween.tween_method(
 		func(w: Color): $Bush.get_active_material(0).albedo_color = w,
 		dried_bush_color, lively_bush_color, shine_up_time_sec / 2.
@@ -27,7 +26,6 @@ func water_me() -> void:
 func dry_me(duration_sec: float = shine_up_time_sec) -> void:
 	if shine_up_tween: shine_up_tween.kill()
 	shine_up_tween = create_tween()
-	shine_up_tween.tween_property($Bush, "modulate", Color.GREEN, shine_up_time_sec / 2.)
 	shine_up_tween.tween_method(
 		func(w: Color): $Bush.get_active_material(0).albedo_color = w,
 		lively_bush_color, dried_bush_color, duration_sec / 2.

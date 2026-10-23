@@ -32,12 +32,17 @@ func set_field_photos(field_photos_array: Array[Texture]):
 		var photo: TextureRect = get_node("%Photo%d/Image" % (i+1) )
 		photo.texture = field_photos_array[i]
 
-func _on_panel_button_toggled(toggled_on: bool) -> void:
-	if toggled_on:
+func clicked_away() -> void:
+	_on_panel_button_toggled(false)
+
+func _on_panel_button_toggled(_toggled_on: bool) -> void:
+	if not $ClickAwayRect.visible:
+		$ClickAwayRect.visible = true
 		panel_shown.emit()
 		$AnimationPlayer.play("slide")
 	else:
 		panel_hidden.emit()
+		$ClickAwayRect.visible = false
 		$AnimationPlayer.play_backwards("slide")
 
 ## Set objectives to display and check for automatically

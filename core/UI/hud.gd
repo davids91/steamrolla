@@ -14,7 +14,7 @@ func set_objectives(objectives: Dictionary[String, String], objective_photos: Ar
 	$ObjectivePanel.set_objectives(objectives, base_dir)
 	$ObjectivePanel.photos = objective_photos
 
-func is_objective_completed(objective_name: String) -> void:
+func is_objective_completed(objective_name: String) -> bool:
 	return LevelStructure.level_attribute_present(base_dir, objective_name)
 
 func objective_complete(objective_name: String) -> void:

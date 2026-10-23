@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://74ipgbe03nmu" path="res://core/UI/objective_panel/objective_panel.gd" id="1_f5uni"]
 [ext_resource type="Texture2D" uid="uid://blugq7cy8aigr" path="res://textures/ui/objective_file.png" id="2_s24m1"]
 [ext_resource type="PackedScene" uid="uid://clmicnni140y4" path="res://core/UI/objective_panel/task_item.tscn" id="2_t62cb"]
+[ext_resource type="Script" uid="uid://bkbgy5rue6ynw" path="res://core/UI/click_away_rect.gd" id="3_873li"]
 [ext_resource type="Texture2D" uid="uid://bkxkeud204h5d" path="res://textures/ui/bookmark.png" id="3_t62cb"]
 [ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="4_t62cb"]
 [ext_resource type="FontFile" uid="uid://df8mh6h3se6l3" path="res://textures/ui/font/RubikSprayPaint-Regular.ttf" id="4_x132q"]
@@ -148,6 +149,7 @@ offset_left = -135.0
 offset_top = 245.0
 offset_right = -7.0
 offset_bottom = 373.0
+focus_mode = 0
 texture_normal = SubResource("AtlasTexture_x132q")
 texture_pressed = SubResource("AtlasTexture_wnyoo")
 
@@ -164,6 +166,7 @@ offset_left = -57.0
 offset_top = 59.0
 offset_right = 31.000061
 offset_bottom = 239.82259
+focus_mode = 0
 toggle_mode = true
 texture_normal = ExtResource("3_t62cb")
 ignore_texture_size = true
@@ -377,6 +380,20 @@ stretch_mode = 6
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=166639410]
 libraries/ = SubResource("AnimationLibrary_x132q")
+
+[node name="ClickAwayRect" type="ColorRect" parent="." unique_id=1992336597]
+visible = false
+custom_minimum_size = Vector2(4096, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2048.0
+offset_right = 6144.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
+script = ExtResource("3_873li")
 
 [connection signal="pressed" from="Base/CheckBtn" to="." method="_on_check_btn_pressed"]
 [connection signal="toggled" from="Base/PanelButton" to="." method="_on_panel_button_toggled"]

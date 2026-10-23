@@ -1,6 +1,7 @@
 class_name Runway
 extends Node3D
 
+signal payload_reset(tool_enum: ToolPanel.Tools)
 signal payload_left()
 signal payload_entered()
 
@@ -40,6 +41,7 @@ func call_to_park(tool: RoadworkTool) -> void:
 		if not following: following = $OriginalPositionMarker
 func _ready() -> void:
 	$OriginalPositionMarker.global_position = global_position
+	if level: $OutOfBoundsChecker.global_position = level.global_position
 
 @onready var runway_height: float = global_position.y
 @onready var target_global_position: Vector3 = global_position
@@ -121,17 +123,19 @@ func _physics_process(_delta: float) -> void:
 				maybe_oob_tool.global_position.x < x_bound_min or maybe_oob_tool.global_position.x >= x_bound_max
 				or maybe_oob_tool.global_position.y < y_bound_min or maybe_oob_tool.global_position.y >= y_bound_max
 				or maybe_oob_tool.global_position.z < z_bound_min or maybe_oob_tool.global_position.z >= z_bound_max
-			): maybe_oob_tool.global_transform = lerp(
-				maybe_oob_tool.global_transform,
-				parking_spots[maybe_oob_tool.tool_enum].global_transform,
-				tool_movement_responsiveness
-			)
+			):
+				maybe_oob_tool.global_transform = lerp(
+					maybe_oob_tool.global_transform,
+					parking_spots[maybe_oob_tool.tool_enum].global_transform,
+					tool_movement_responsiveness
+				)
 			if (maybe_oob_tool.global_position - parking_spots[maybe_oob_tool.tool_enum].global_position).length() < 5.:
 				if "velocity" in tools_may_be_outside_bounds[i]:
 					tools_may_be_outside_bounds[i].velocity = Vector3.ZERO
 				if "momentum" in tools_may_be_outside_bounds[i]:
 					tools_may_be_outside_bounds[i].momentum = Vector3.ZERO
 				tools_may_be_outside_bounds.remove_at(i)
+				payload_reset.emit(maybe_oob_tool.tool_enum)
 		else: tools_may_be_outside_bounds.remove_at(i)
 
 	if tool_selected_to_deploy and not tool_selected_to_deploy.is_working:
@@ -141,7 +145,7 @@ func _physics_process(_delta: float) -> void:
 
 func _on_deployment_area_body_entered(body: Node3D) -> void:
 	if not tool_selected_to_deploy and body is RoadworkTool and not parked_tools.has(body):
-		if parking_spots.has(body.tool_enum): parked_tools.push_back(body)
+		call_to_park(body)
 		payload_entered.emit()
 
 func _on_deployment_area_body_exited(body: Node3D) -> void:
@@ -150,7 +154,6 @@ func _on_deployment_area_body_exited(body: Node3D) -> void:
 		parked_tools.erase(tool_selected_to_deploy)
 		tool_selected_to_deploy = null
 		payload_left.emit()
-
 
 func _on_out_of_bounds_checker_body_exited(body: Node3D) -> void:
 	if body is RoadworkTool: tools_may_be_outside_bounds.push_back(body)
