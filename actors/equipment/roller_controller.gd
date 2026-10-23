@@ -50,6 +50,7 @@ func _process(delta: float) -> void:
 	)
 	skin.get_active_material(0).albedo_color = current_color
 
+@export var forward_collision_dampening: float = 0.95
 func _physics_process(delta: float) -> void:
 	super(delta)
 	(func(): # Handle asphalt detection
@@ -70,6 +71,10 @@ func _physics_process(delta: float) -> void:
 	# Stick to the ground
 	if is_working and $FloorRaycast.get_collision_point():
 		global_position.y = $FloorRaycast.get_collision_point().y
+
+	# Slow down roller when there's anything in front
+	if is_working and $ForwardShapeCast.is_colliding() and not is_reversing:
+		velocity = velocity.limit_length(velocity.length() * forward_collision_dampening)
 
 func _on_body_representation_area_entered(area: Area3D) -> void:
 	if area.name == "PlayerCursorBody" and area.get_parent().visible and not is_working:

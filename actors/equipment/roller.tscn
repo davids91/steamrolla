@@ -64,6 +64,9 @@ random_pitch = 1.1553527
 streams_count = 1
 stream_0/stream = ExtResource("3_qrjta")
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_5j0fq"]
+size = Vector3(3, 0.345, 1.125)
+
 [node name="Roller" type="CharacterBody3D" unique_id=50967490]
 collision_layer = 3
 collision_mask = 2
@@ -97,10 +100,10 @@ collision_layer = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5340805, -2.0591736)
 shape = SubResource("BoxShape3D_c7bb5")
 
-[node name="AsphaltDetector" type="Area3D" parent="." unique_id=1043122648]
+[node name="AsphaltDetectorBottom" type="Area3D" parent="." unique_id=1043122648]
 collision_layer = 0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="AsphaltDetector" unique_id=1799012782]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AsphaltDetectorBottom" unique_id=1799012782]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.023377419, -0.045513153, 0.055648804)
 shape = SubResource("BoxShape3D_qrjta")
 
@@ -113,9 +116,13 @@ volume_db = -7.5
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 0)
 target_position = Vector3(0, -100, 0)
 
+[node name="ForwardShapeCast" type="ShapeCast3D" parent="." unique_id=1327038590]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0.721)
+shape = SubResource("BoxShape3D_5j0fq")
+
 [connection signal="area_entered" from="CollisionDetector" to="." method="_on_body_representation_area_entered"]
 [connection signal="area_exited" from="CollisionDetector" to="." method="_on_body_representation_area_exited"]
-[connection signal="body_entered" from="AsphaltDetector" to="." method="_on_asphalt_detector_body_entered"]
-[connection signal="body_exited" from="AsphaltDetector" to="." method="_on_asphalt_detector_body_exited"]
+[connection signal="body_entered" from="AsphaltDetectorBottom" to="." method="_on_asphalt_detector_body_entered"]
+[connection signal="body_exited" from="AsphaltDetectorBottom" to="." method="_on_asphalt_detector_body_exited"]
 
 [editable path="roller"]
