@@ -43,18 +43,18 @@ var selected_chunk: RoadChunk = null
 func _unhandled_input(event: InputEvent) -> void:
 	# Select road chunk on hover
 	if event is InputEventMouseButton or event is InputEventMouseMotion:
-		if $PlayerView.looking_at_chunk:
-			if scenes.has($PlayerView.looking_at_chunk): $Highlight.modulate = Color.WHITE
+		if $PlayerView.looking_at is RoadChunk:
+			if scenes.has($PlayerView.looking_at): $Highlight.modulate = Color.WHITE
 			else: $Highlight.modulate = Color.RED
 			$Highlight.visible = true
-			$Highlight.global_position = $PlayerView.looking_at_chunk.global_position
+			$Highlight.global_position = $PlayerView.looking_at.global_position
 			if(
 				event is InputEventMouseButton and event.is_pressed()
-				and selected_chunk == $PlayerView.looking_at_chunk and scenes.has(selected_chunk)
+				and selected_chunk == $PlayerView.looking_at and scenes.has(selected_chunk)
 			):
 				traveling_towards_selected_chunk = true
 				time_left_to_travel = transition_time_sec
-				selected_chunk = $PlayerView.looking_at_chunk
+				selected_chunk = $PlayerView.looking_at
 				var target_transform : Transform3D = $PlayerView.camera_transform
 				var previous_target_origin: Vector3 = target_transform.origin
 				target_transform.origin = lerp(target_transform.origin, selected_chunk.global_position, transition_zoom_amount)
@@ -64,7 +64,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				ResourceLoader.load_threaded_request(scenes[selected_chunk])
 		else: $Highlight.visible = false
 		if not traveling_towards_selected_chunk:
-			selected_chunk = $PlayerView.looking_at_chunk
+			selected_chunk = $PlayerView.looking_at
 
 	# Erase attribute and user state from selected level
 	if selected_chunk and event.is_action_pressed("debug"):

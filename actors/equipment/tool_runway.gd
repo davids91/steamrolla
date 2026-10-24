@@ -6,7 +6,7 @@ signal payload_left()
 signal payload_entered()
 
 @export var level: RoadChunk
-@export var player_cursor: Node3D
+@export var player_view: PlayerView
 @export var parking_spots: Dictionary[ToolPanel.Tools, Marker3D]
 @export var parked_tools: Array[RoadworkTool]
 @export var tool_movement_responsiveness: float = 0.9
@@ -19,10 +19,10 @@ func call_twice_to_deploy(tool: RoadworkTool) -> void:
 	if tool_selected_to_deploy == tool: # Stop runway to help deploy tool
 		tool.prepare_for_runway()
 		following = tool_selected_to_deploy
-		player_cursor.visible = false
+		player_view.cursor.visible = false
 	elif parked_tools.has(tool): # Select tool for deployment if it isn't already
-		following = player_cursor
-		player_cursor.visible = true
+		following = player_view.cursor
+		player_view.cursor.visible = true
 		tool_selected_to_deploy = tool
 		parked_tools.erase(tool)
 	else: following = tool
@@ -35,10 +35,23 @@ func call_to_park(tool: RoadworkTool) -> void:
 			parked_tools.push_back(tool)
 		following = null
 
-@onready var following: Node3D:
+@onready var following: Node3D = $OriginalPositionMarker:
 	set(v):
 		following = v
 		if not following: following = $OriginalPositionMarker
+
+var locked_view: bool = false
+func _unhandled_input(event: InputEvent) -> void:
+	if player_view and player_view.looking_at and player_view.looking_at is Runway:
+		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+			if event is InputEventMouseMotion: $OriginalPositionMarker.global_position = player_view.cursor.global_position
+			if following == $OriginalPositionMarker and not locked_view:
+				locked_view = true
+				player_view.lock_view(self, true)
+		elif locked_view:
+			locked_view = false
+			player_view.lock_view(self, false)
+
 func _ready() -> void:
 	$OriginalPositionMarker.global_position = global_position
 	if level: $OutOfBoundsChecker.global_position = level.global_position
@@ -59,10 +72,12 @@ func _physics_process(_delta: float) -> void:
 
 	if( # If the followed object is within level bounds
 		following
-		and (
-			following.global_position.x >= x_bound_min and following.global_position.x < x_bound_max
-			and following.global_position.y >= y_bound_min and following.global_position.y < y_bound_max
-			and following.global_position.z >= z_bound_min and following.global_position.z < z_bound_max
+		and(
+			(
+				following.global_position.x >= x_bound_min and following.global_position.x < x_bound_max
+				and following.global_position.y >= y_bound_min and following.global_position.y < y_bound_max
+				and following.global_position.z >= z_bound_min and following.global_position.z < z_bound_max
+			) or following == $OriginalPositionMarker
 		)
 	):
 		# Check which positions at the levels edge would be best for the runway

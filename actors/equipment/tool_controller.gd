@@ -190,6 +190,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 			# Lock View if the currently active tool is controlled by mouse drag
 			view.lock_view(
+				self,
 				event.is_pressed() and tool_nodes.has(active_tool)
 				and tool_nodes[active_tool].controlled_by == RoadworkTool.ControlMethods.DRAGGED
 			)

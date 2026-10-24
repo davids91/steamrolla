@@ -80,10 +80,10 @@ tool_nodes = {
 3: NodePath("Compactor")
 }
 
-[node name="Runway" parent="ToolController" unique_id=328105869 node_paths=PackedStringArray("level", "player_cursor", "parking_spots", "parked_tools") instance=ExtResource("8_8or7f")]
+[node name="Runway" parent="ToolController" unique_id=328105869 node_paths=PackedStringArray("level", "player_view", "parking_spots", "parked_tools") instance=ExtResource("8_8or7f")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.183014, 0, -38.032772)
 level = NodePath("../../RoadChunk")
-player_cursor = NodePath("../../PlayerView/PlayerCursor")
+player_view = NodePath("../../PlayerView")
 parking_spots = {
 0: NodePath("RollerParkingSpot"),
 1: NodePath("PaverParkingSpot"),
