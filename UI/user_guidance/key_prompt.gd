@@ -1,6 +1,6 @@
 extends Sprite3D
 
-@export var action: String = "deploy_payload"
+@export var actions: Array[String] = ["deploy_payload"]
 @export var time_to_disappear_sec: float = 1.7
 @export var time_to_switch_frame_sec: float = 0.7
 @export var frame_delta: Vector2 = Vector2(0., 128.)
@@ -10,22 +10,27 @@ extends Sprite3D
 @onready var original_region: Rect2 = texture.region
 var displays_left: int = show_tooltip_count
 func _ready() -> void:
-	if LevelStructure.level_attribute_present("key_prompt", action):
-		var readout = LevelStructure.level_attribute_data_read("key_prompt", action)
+	# Any action triggers prompt erasure, but only the first action indicatior is stored
+	if LevelStructure.level_attribute_present("key_prompt", actions[0]):
+		var readout = LevelStructure.level_attribute_data_read("key_prompt", actions[0])
 		if readout is int: displays_left = int(readout)
 		if displays_left <= 0: queue_free()
-	else: LevelStructure.level_attribute_store("key_prompt", action, displays_left)
+	else: LevelStructure.level_attribute_store("key_prompt", actions[0], displays_left)
 
 var is_enabled: bool = false
 var already_activated: bool = false
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed(action) and not already_activated:
-		already_activated = true
-		displays_left = max(0, displays_left - 1)
-		LevelStructure.level_attribute_store("key_prompt", action, displays_left)
-		create_tween().tween_property(self, "modulate", Color.TRANSPARENT, time_to_disappear_sec).finished.connect(
-			func(): queue_free()
-		)
+	for action in actions:
+		if event.is_action_pressed(action) and not already_activated:
+			already_activated = true
+			displays_left = max(0, displays_left - 1)
+			LevelStructure.level_attribute_store("key_prompt", actions[0], displays_left)
+			create_tween().tween_property(self, "modulate", Color.TRANSPARENT, time_to_disappear_sec).finished.connect(
+				func(): queue_free()
+			)
+			print(action, " activated!")
+			break;
+
 
 var current_frame: int = 0
 var time_left_sec: float = 0.

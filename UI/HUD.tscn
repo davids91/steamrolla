@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://chrk1hugag81m"]
 
-[ext_resource type="Script" uid="uid://dqycmm121dtol" path="res://core/UI/hud.gd" id="1_ygh00"]
-[ext_resource type="PackedScene" uid="uid://de7pi2unbrosp" path="res://core/UI/objective_panel/objective_panel.tscn" id="3_ygh00"]
+[ext_resource type="Script" uid="uid://dqycmm121dtol" path="res://UI/hud.gd" id="1_ygh00"]
+[ext_resource type="PackedScene" uid="uid://de7pi2unbrosp" path="res://UI/panels/objective_panel.tscn" id="3_ygh00"]
 [ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="5_ygh00"]
 [ext_resource type="AudioStream" uid="uid://dvhgxea4thtal" path="res://audio/botch.wav" id="6_k5p64"]
 [ext_resource type="AudioStream" uid="uid://dif8avwftb7wi" path="res://audio/success.wav" id="7_ej2ga"]
-[ext_resource type="PackedScene" uid="uid://pjyrkj4s2bls" path="res://core/UI/rating/rating.tscn" id="7_i0xoi"]
-[ext_resource type="PackedScene" uid="uid://gkla30eu20j8" path="res://core/UI/level_complete_panel.tscn" id="7_k5p64"]
+[ext_resource type="PackedScene" uid="uid://pjyrkj4s2bls" path="res://UI/visual_elements/rating.tscn" id="7_i0xoi"]
+[ext_resource type="PackedScene" uid="uid://gkla30eu20j8" path="res://UI/panels/level_complete_panel.tscn" id="7_k5p64"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_k5p64"]
 atlas = ExtResource("5_ygh00")
@@ -20,7 +20,8 @@ region = Rect2(897.618, 125.676, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ygh00"]
 atlas = ExtResource("5_ygh00")
-region = Rect2(772.883, 121.768, 128, 137.545)
+region = Rect2(768.488, 122.233, 129.995, 138.655)
+margin = Rect2(25, 12.32, 54.195, 27.46)
 
 [node name="HUD" type="CanvasLayer" unique_id=920709406]
 script = ExtResource("1_ygh00")

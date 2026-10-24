@@ -1,11 +1,13 @@
 [gd_scene format=4 uid="uid://dr7xbirpqj8e6"]
 
 [ext_resource type="Script" uid="uid://kpioyx2nil4v" path="res://actors/equipment/roller_controller.gd" id="1_vq81g"]
-[ext_resource type="PackedScene" uid="uid://l00v8wyjwjmc" path="res://core/UI/tool_bubble_indicator/tool_bubble_indicator_billboard.tscn" id="2_ojn7k"]
+[ext_resource type="PackedScene" uid="uid://l00v8wyjwjmc" path="res://UI/user_guidance/tool_bubble_indicator_billboard.tscn" id="2_ojn7k"]
 [ext_resource type="PackedScene" uid="uid://cw8sj3nlo8tjc" path="res://models/roller.fbx" id="2_qrjta"]
 [ext_resource type="Texture2D" uid="uid://b866nkjmqwwlj" path="res://models/textures/color-palette.png" id="3_cja5l"]
 [ext_resource type="AudioStream" uid="uid://d0rlod5od3nxo" path="res://audio/smush_asphault.wav" id="3_qrjta"]
 [ext_resource type="PackedScene" uid="uid://bb24gus88qx5r" path="res://core/tools/orbit_camera_3d.tscn" id="5_haft6"]
+[ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="7_gqtbw"]
+[ext_resource type="Script" uid="uid://m7cns5r4uxhp" path="res://UI/user_guidance/key_prompt.gd" id="8_28c14"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_45vf4"]
 resource_name = "Roller.001"
@@ -67,6 +69,10 @@ stream_0/stream = ExtResource("3_qrjta")
 [sub_resource type="BoxShape3D" id="BoxShape3D_5j0fq"]
 size = Vector3(3, 0.345, 1.125)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_xljjs"]
+atlas = ExtResource("7_gqtbw")
+region = Rect2(255, 438, 110, 76)
+
 [node name="Roller" type="CharacterBody3D" unique_id=50967490]
 collision_layer = 3
 collision_mask = 2
@@ -119,6 +125,18 @@ target_position = Vector3(0, -100, 0)
 [node name="ForwardShapeCast" type="ShapeCast3D" parent="." unique_id=1327038590]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0.721)
 shape = SubResource("BoxShape3D_5j0fq")
+
+[node name="KeyPrompt" type="Sprite3D" parent="." unique_id=1478709250]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.526642, 0)
+modulate = Color(1, 1, 1, 0.53333336)
+pixel_size = 0.05
+billboard = 1
+texture = SubResource("AtlasTexture_xljjs")
+script = ExtResource("8_28c14")
+actions = Array[String](["move_left", "move_right", "move_forward", "move_backwards"])
+time_to_switch_frame_sec = 0.3
+frame_delta = Vector2(128, 0)
+frame_count = 4
 
 [connection signal="area_entered" from="CollisionDetector" to="." method="_on_body_representation_area_entered"]
 [connection signal="area_exited" from="CollisionDetector" to="." method="_on_body_representation_area_exited"]

@@ -11,7 +11,6 @@ streams_count = 1
 stream_0/stream = ExtResource("5_bxaic")
 
 [node name="MainMenu" type="MarginContainer" unique_id=1902047703]
-anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_top = -312.0

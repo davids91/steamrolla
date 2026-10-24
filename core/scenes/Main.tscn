@@ -3,8 +3,18 @@
 [ext_resource type="Script" uid="uid://bw7a7uhdbvuq7" path="res://core/scene_manager.gd" id="1_3dy4c"]
 [ext_resource type="Script" uid="uid://d1bd1rglht1la" path="res://core/music_manager.gd" id="2_3dy4c"]
 [ext_resource type="AudioStream" uid="uid://bfqbrqjnjxh3" path="res://audio/SteamRolla-Main-Menu-Music-Loop.ogg" id="3_4fnhs"]
+[ext_resource type="Script" uid="uid://krhjyxjj4pxa" path="res://core/game_difficulty.gd" id="4_4pl23"]
+
+[sub_resource type="Curve" id="Curve_k5p64"]
+_limits = [0.0, 5.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 11.730926, 0, 0, Vector2(0.8229376, 2.9512196), 2.2552488, 2.2552488, 0, 0, Vector2(1, 5), 10.101622, 0.0, 0, 0]
+point_count = 3
 
 [node name="Main" type="Node" unique_id=574895689]
+
+[node name="GameDifficulty" type="Node" parent="." unique_id=1180770837]
+script = ExtResource("4_4pl23")
+completion_to_rating = SubResource("Curve_k5p64")
 
 [node name="MusicManager" type="Node" parent="." unique_id=1522722160]
 script = ExtResource("2_3dy4c")

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cay2iy3mi03c4"]
 
-[ext_resource type="Script" uid="uid://djon2ggh6gj55" path="res://core/UI/tool_panel.gd" id="1_m6t0c"]
+[ext_resource type="Script" uid="uid://djon2ggh6gj55" path="res://UI/panels/tool_panel.gd" id="1_m6t0c"]
 [ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="1_m515l"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8jg5c"]

@@ -1,9 +1,16 @@
 [gd_scene format=3 uid="uid://clmicnni140y4"]
 
-[ext_resource type="Script" uid="uid://c23smf7fp13wj" path="res://core/UI/objective_panel/task_item.gd" id="1_3c7i2"]
-[ext_resource type="Texture2D" uid="uid://bhgnfbin4tjd3" path="res://textures/ui/checkbox.png" id="2_pe5gt"]
-[ext_resource type="Texture2D" uid="uid://bgb1cnldjg1it" path="res://textures/ui/checkmark.png" id="3_c6jwd"]
-[ext_resource type="FontFile" uid="uid://c5h6m001q5o7w" path="res://textures/ui/font/CaveatBrush-Regular.ttf" id="4_dynbk"]
+[ext_resource type="Script" uid="uid://c23smf7fp13wj" path="res://UI/panels/task_item.gd" id="1_3c7i2"]
+[ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="2_v0ehy"]
+[ext_resource type="FontFile" uid="uid://c5h6m001q5o7w" path="res://UI/font/CaveatBrush-Regular.ttf" id="4_dynbk"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_roh68"]
+atlas = ExtResource("2_v0ehy")
+region = Rect2(708.385, 203.125, 45, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5o6fp"]
+atlas = ExtResource("2_v0ehy")
+region = Rect2(713.692, 147.269, 46.133, 48.152)
 
 [sub_resource type="LabelSettings" id="LabelSettings_2l65a"]
 font = ExtResource("4_dynbk")
@@ -17,7 +24,7 @@ script = ExtResource("1_3c7i2")
 [node name="Checkbox" type="TextureRect" parent="." unique_id=646830137]
 layout_mode = 2
 size_flags_vertical = 4
-texture = ExtResource("2_pe5gt")
+texture = SubResource("AtlasTexture_roh68")
 
 [node name="Checkmark" type="TextureRect" parent="Checkbox" unique_id=719326247]
 unique_name_in_owner = true
@@ -31,7 +38,7 @@ offset_top = -58.0
 offset_right = 58.0
 offset_bottom = -4.0
 grow_vertical = 0
-texture = ExtResource("3_c6jwd")
+texture = SubResource("AtlasTexture_5o6fp")
 
 [node name="TaskLabel" type="Label" parent="." unique_id=1925298060]
 layout_mode = 2

@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://bpfus5xg6xcga" path="res://addons/jigglebones/jigglebone.gd" id="2_lekfh"]
 [ext_resource type="Texture2D" uid="uid://b6i820kn0nl8g" path="res://models/textures/bloke_skin.png" id="4_7imx7"]
 [ext_resource type="AudioStream" uid="uid://8wf5r8kj4wv8" path="res://audio/compactor.wav" id="5_5lgew"]
-[ext_resource type="PackedScene" uid="uid://l00v8wyjwjmc" path="res://core/UI/tool_bubble_indicator/tool_bubble_indicator_billboard.tscn" id="6_f3p5u"]
+[ext_resource type="PackedScene" uid="uid://l00v8wyjwjmc" path="res://UI/user_guidance/tool_bubble_indicator_billboard.tscn" id="6_f3p5u"]
 [ext_resource type="PackedScene" uid="uid://dhcft22d6p1oo" path="res://models/tamper_compactor.glb" id="8_p2bfq"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5lgew"]

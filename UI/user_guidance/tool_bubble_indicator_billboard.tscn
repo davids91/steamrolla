@@ -1,7 +1,11 @@
 [gd_scene format=3 uid="uid://l00v8wyjwjmc"]
 
-[ext_resource type="Texture2D" uid="uid://ctddl8vco40sl" path="res://textures/ui/indicator_spritesheet.png" id="1_wembi"]
-[ext_resource type="Script" uid="uid://bm7sxglrsvhqn" path="res://core/UI/tool_bubble_indicator/tool_bubble_indicator.gd" id="1_yvn4g"]
+[ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="1_171rt"]
+[ext_resource type="Script" uid="uid://bm7sxglrsvhqn" path="res://UI/user_guidance/tool_bubble_indicator.gd" id="2_fyatt"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k5p64"]
+atlas = ExtResource("1_171rt")
+region = Rect2(274.29, 526.88, 441, 67)
 
 [sub_resource type="Animation" id="Animation_av7ad"]
 length = 0.001
@@ -45,10 +49,10 @@ _data = {
 modulate = Color(1, 1, 1, 0.56078434)
 pixel_size = 0.075
 billboard = 1
-texture = ExtResource("1_wembi")
+texture = SubResource("AtlasTexture_k5p64")
 hframes = 3
 frame = 1
-script = ExtResource("1_yvn4g")
+script = ExtResource("2_fyatt")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1679736294]
 libraries/ = SubResource("AnimationLibrary_xklxo")

@@ -2,13 +2,13 @@
 
 [ext_resource type="Texture2D" uid="uid://cglj5nsrr7ntb" path="res://models/asphalt-paver_0.png" id="1_0d3me"]
 [ext_resource type="Script" uid="uid://d1tbgsojf2nr5" path="res://actors/equipment/asphalt_paver.gd" id="1_pogr6"]
-[ext_resource type="PackedScene" uid="uid://l00v8wyjwjmc" path="res://core/UI/tool_bubble_indicator/tool_bubble_indicator_billboard.tscn" id="2_llrrr"]
+[ext_resource type="PackedScene" uid="uid://l00v8wyjwjmc" path="res://UI/user_guidance/tool_bubble_indicator_billboard.tscn" id="2_llrrr"]
 [ext_resource type="PackedScene" uid="uid://bb24gus88qx5r" path="res://core/tools/orbit_camera_3d.tscn" id="2_tthve"]
 [ext_resource type="AudioStream" uid="uid://d1n0nybaatu7w" path="res://audio/paver.wav" id="4_ww7qr"]
 [ext_resource type="Shader" uid="uid://trnxwrt5vs7p" path="res://actors/equipment/asphalt_pile.gdshader" id="5_b1e0e"]
 [ext_resource type="Texture2D" uid="uid://b8jol13gu6v18" path="res://textures/asphalt_tile_seamless.png" id="6_tqasd"]
 [ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="7_vgkag"]
-[ext_resource type="Script" uid="uid://m7cns5r4uxhp" path="res://core/UI/key_prompt.gd" id="8_f1fbw"]
+[ext_resource type="Script" uid="uid://m7cns5r4uxhp" path="res://UI/user_guidance/key_prompt.gd" id="8_f1fbw"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_srf32"]
 resource_name = "palette"
@@ -94,7 +94,7 @@ subdivide_depth = 16
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8jg5c"]
 atlas = ExtResource("7_vgkag")
-region = Rect2(384, 256, 128, 128)
+region = Rect2(382.025, 258, 128, 32)
 
 [node name="AsphaltPaver" type="CharacterBody3D" unique_id=1082380962]
 collision_layer = 3
@@ -144,6 +144,7 @@ pixel_size = 0.05
 billboard = 1
 texture = SubResource("AtlasTexture_8jg5c")
 script = ExtResource("8_f1fbw")
+frame_delta = Vector2(0, 34)
 
 [connection signal="area_entered" from="CollisionDetector" to="." method="_on_body_representation_area_entered"]
 [connection signal="area_exited" from="CollisionDetector" to="." method="_on_body_representation_area_exited"]

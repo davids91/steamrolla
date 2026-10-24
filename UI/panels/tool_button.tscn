@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://bymgsjpitlgah"]
 
-[ext_resource type="Script" uid="uid://c23sbydt4m7ko" path="res://core/UI/tool_button.gd" id="1_krd3q"]
+[ext_resource type="Script" uid="uid://c23sbydt4m7ko" path="res://UI/panels/tool_button.gd" id="1_krd3q"]
 [ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="2_0jvag"]
-[ext_resource type="Shader" uid="uid://cestwc0w0cjw1" path="res://core/UI/decorated_text.gdshader" id="2_pmmbx"]
+[ext_resource type="Shader" uid="uid://cestwc0w0cjw1" path="res://UI/visual_elements/decorated_text.gdshader" id="2_pmmbx"]
 
 [sub_resource type="Gradient" id="Gradient_aqvre"]
 interpolation_mode = 1

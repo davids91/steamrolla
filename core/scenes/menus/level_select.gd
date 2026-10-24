@@ -13,8 +13,11 @@ func _position_from_dir_name(dir_name: String) -> Vector3:
 	var level_coordinate: Vector2 = LevelStructure.level_position_from_dir_name(dir_name)
 	return Vector3(level_coordinate.x * road_chunk_spacing, 0., level_coordinate.y * road_chunk_spacing)
 
+@export var rating_delay_sec: float = 0.7
+@export var rating_delay_randomness_ratio: float = 0.75
 @export_tool_button("Load Level Data", "CheckBox") var create_level_data: Callable = _load_level_data
 const road_chunk_template: PackedScene = preload("res://core/scenes/road_chunk.scn")
+const rating_decoration_template: PackedScene = preload("res://UI/visual_elements/rating_decoration.tscn")
 var scenes: Dictionary[RoadChunk, String] = {}
 func _load_level_data() -> void:
 	for c in $Chunks.get_children(): if c is RoadChunk: c.queue_free()
@@ -26,9 +29,20 @@ func _load_level_data() -> void:
 		$Chunks.add_child(road_chunk)
 		road_chunk.used_base_dir = LevelStructure.base_dir_of(d)
 		road_chunk.global_position = _position_from_dir_name(d)
-		road_chunk.initialize(LevelStructure.resource_path_in_dir(LevelStructure.base_dir_of(d)))
+		road_chunk.initialize(LevelStructure.resource_path_in_dir(road_chunk.used_base_dir))
 		if FileAccess.file_exists(LevelStructure.scene_path_in_levels(d)):
 			scenes[road_chunk] = LevelStructure.scene_path_in_levels(d)
+
+		# Add rating decoration
+		var rating_decor: RatingDecoration = rating_decoration_template.instantiate()
+		rating_decor.current_completion_percentage = LevelStructure.level_attribute_completion(road_chunk.used_base_dir)
+		rating_decor.position = Vector3(0., 25., 0.)
+		road_chunk.add_child(rating_decor)
+		get_tree().create_timer(
+			rating_delay_sec + randf_range(-1., 1.) * rating_delay_randomness_ratio * rating_delay_sec
+		).timeout.connect(
+			func(): rating_decor.show_rating()
+		)
 
 		# Set position of player camera
 		if d == coming_from:

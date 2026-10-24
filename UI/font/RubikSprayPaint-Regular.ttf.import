@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://c5h6m001q5o7w"
-path="res://.godot/imported/CaveatBrush-Regular.ttf-a5a92846ce1aa20024717f3ebd8a9562.fontdata"
+uid="uid://df8mh6h3se6l3"
+path="res://.godot/imported/RubikSprayPaint-Regular.ttf-50caa96b59aad30af694880065bcca17.fontdata"
 
 [deps]
 
-source_file="res://textures/ui/font/CaveatBrush-Regular.ttf"
-dest_files=["res://.godot/imported/CaveatBrush-Regular.ttf-a5a92846ce1aa20024717f3ebd8a9562.fontdata"]
+source_file="res://UI/font/RubikSprayPaint-Regular.ttf"
+dest_files=["res://.godot/imported/RubikSprayPaint-Regular.ttf-50caa96b59aad30af694880065bcca17.fontdata"]
 
 [params]
 

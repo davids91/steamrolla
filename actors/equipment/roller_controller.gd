@@ -10,10 +10,12 @@ func set_color(color: Color) -> void:
 	target_color = color
 
 func start_working() -> void:
+	if get_node_or_null("KeyPrompt"): $KeyPrompt.is_enabled = true
 	$ToolBubbleIndicator.visible = false
 	super()
 
 func stop_working() -> void:
+	if get_node_or_null("KeyPrompt"): $KeyPrompt.is_enabled = false
 	$ToolBubbleIndicator.visible = true
 	$SqueezeSound.stop()
 	super()

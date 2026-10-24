@@ -30,7 +30,7 @@ func set_deployed(tool: Tools, deployed: bool) -> void:
 		return
 	tool_buttons[tool].deployed = deployed
 
-const TOOL_BUTTON_TEMPLATE: PackedScene = preload("res://core/UI/tool_button.tscn")
+const TOOL_BUTTON_TEMPLATE: PackedScene = preload("res://UI/panels/tool_button.tscn")
 func _refresh_buttons() -> void:
 	tool_buttons.clear()
 	for c in $Tools.get_children(): queue_free()

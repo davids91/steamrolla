@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://gkla30eu20j8"]
 
-[ext_resource type="Script" uid="uid://bxhboogklaol5" path="res://core/UI/level_complete_panel.gd" id="1_h5yh1"]
+[ext_resource type="Script" uid="uid://bxhboogklaol5" path="res://UI/panels/level_complete_panel.gd" id="1_h5yh1"]
 [ext_resource type="Theme" uid="uid://cjbyaermnkf75" path="res://core/scenes/menus/title_style.tres" id="1_o4dpg"]
-[ext_resource type="Shader" uid="uid://cestwc0w0cjw1" path="res://core/UI/decorated_text.gdshader" id="2_6lrjc"]
+[ext_resource type="Shader" uid="uid://cestwc0w0cjw1" path="res://UI/visual_elements/decorated_text.gdshader" id="2_6lrjc"]
 [ext_resource type="Theme" uid="uid://d1tgwdb3grjhr" path="res://core/scenes/menus/menu_button_style.tres" id="3_cqva8"]
-[ext_resource type="Script" uid="uid://cg84stsjvuo03" path="res://core/UI/decorated_text.gd" id="4_h5yh1"]
+[ext_resource type="Script" uid="uid://cg84stsjvuo03" path="res://UI/visual_elements/decorated_text.gd" id="4_h5yh1"]
 
 [sub_resource type="Gradient" id="Gradient_aqvre"]
 interpolation_mode = 1

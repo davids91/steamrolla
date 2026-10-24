@@ -1,0 +1,137 @@
+[gd_scene format=3 uid="uid://pjyrkj4s2bls"]
+
+[ext_resource type="Script" uid="uid://drhyhr35mtvwb" path="res://UI/visual_elements/rating.gd" id="1_le4ie"]
+[ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="2_uopqv"]
+[ext_resource type="Script" uid="uid://bwr24v1gx8qkc" path="res://UI/visual_elements/hand.gd" id="3_uopqv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gnifc"]
+atlas = ExtResource("2_uopqv")
+region = Rect2(775.135, 267.369, 137, 337)
+
+[node name="Rating" type="Control" unique_id=1421171300]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0000005
+offset_top = -1.0
+offset_right = 290.0
+offset_bottom = 39.0
+grow_vertical = 0
+scale = Vector2(0.7, 0.7)
+script = ExtResource("1_le4ie")
+current_rating = 5
+
+[node name="Hand0" type="TextureRect" parent="." unique_id=1038270710]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -25.428581
+offset_top = -264.42862
+offset_right = 111.57141
+offset_bottom = 72.57138
+grow_horizontal = 2
+grow_vertical = 0
+rotation = -0.19367476
+offset_transform_enabled = true
+offset_transform_position = Vector2(100, 300)
+offset_transform_rotation = -0.17453292
+offset_transform_pivot = Vector2(0, 200)
+texture = SubResource("AtlasTexture_gnifc")
+script = ExtResource("3_uopqv")
+target_pos = Vector2(0, 20)
+hide_pos = Vector2(100, 300)
+
+[node name="Hand1" type="TextureRect" parent="." unique_id=1622695684]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 73.14284
+offset_top = -344.28574
+offset_right = 210.14285
+offset_bottom = -7.285736
+grow_horizontal = 2
+grow_vertical = 0
+offset_transform_enabled = true
+offset_transform_position = Vector2(100, 300)
+offset_transform_rotation = -0.17453292
+offset_transform_pivot = Vector2(0, 200)
+texture = SubResource("AtlasTexture_gnifc")
+script = ExtResource("3_uopqv")
+target_pos = Vector2(0, 20)
+hide_pos = Vector2(100, 300)
+
+[node name="Hand2" type="TextureRect" parent="." unique_id=586715825]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 163.14285
+offset_top = -338.57147
+offset_right = 300.14285
+offset_bottom = -1.5714722
+grow_horizontal = 2
+grow_vertical = 0
+rotation = 0.37943935
+offset_transform_enabled = true
+offset_transform_position = Vector2(40, 300)
+offset_transform_rotation = 0.08726646
+offset_transform_pivot = Vector2(0, 200)
+texture = SubResource("AtlasTexture_gnifc")
+script = ExtResource("3_uopqv")
+target_pos = Vector2(70, 0)
+hide_pos = Vector2(40, 300)
+
+[node name="Hand3" type="TextureRect" parent="." unique_id=1923710347]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -139.7143
+offset_top = -230.00003
+offset_right = -2.7142944
+offset_bottom = 106.99997
+grow_horizontal = 2
+grow_vertical = 0
+rotation = -0.35292685
+offset_transform_enabled = true
+offset_transform_position = Vector2(-100, 300)
+offset_transform_rotation = 0.5235988
+offset_transform_pivot = Vector2(0, 200)
+texture = SubResource("AtlasTexture_gnifc")
+script = ExtResource("3_uopqv")
+target_pos = Vector2(90, 30)
+hide_pos = Vector2(-100, 300)
+
+[node name="Hand4" type="TextureRect" parent="." unique_id=1694578693]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 64.571396
+offset_top = -300.00003
+offset_right = 201.57141
+offset_bottom = 36.99997
+grow_horizontal = 2
+grow_vertical = 0
+rotation = 0.06502131
+offset_transform_enabled = true
+offset_transform_position = Vector2(-100, 300)
+offset_transform_rotation = 0.5235988
+offset_transform_pivot = Vector2(0, 200)
+texture = SubResource("AtlasTexture_gnifc")
+script = ExtResource("3_uopqv")
+target_pos = Vector2(90, 30)
+hide_pos = Vector2(-100, 300)

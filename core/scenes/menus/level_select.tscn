@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://ccyo8n18hat0m" path="res://props/highlight.gd" id="4_ohvno"]
 [ext_resource type="PackedScene" uid="uid://biysx7wem6d8s" path="res://props/panorama_sphere.tscn" id="5_335hl"]
 [ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="5_rltma"]
-[ext_resource type="PackedScene" uid="uid://dnqtesccg76t7" path="res://core/UI/screen_blocker.tscn" id="6_0pojg"]
+[ext_resource type="PackedScene" uid="uid://dnqtesccg76t7" path="res://UI/visual_elements/screen_blocker.tscn" id="6_0pojg"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hm68f"]
 
@@ -36,9 +36,10 @@ region = Rect2(897.618, -2.324, 128, 128)
 atlas = SubResource("CompressedTexture2D_ie7id")
 region = Rect2(897.618, 125.676, 128, 128)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ffkug"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ygh00"]
 atlas = ExtResource("5_rltma")
-region = Rect2(772.883, 121.768, 128, 137.545)
+region = Rect2(768.488, 122.233, 129.995, 138.655)
+margin = Rect2(25, 12.32, 54.195, 27.46)
 
 [node name="LevelSelect" type="Node3D" unique_id=2110132494]
 script = ExtResource("1_esh0k")
@@ -111,7 +112,7 @@ texture_pressed = SubResource("AtlasTexture_668k5")
 layout_mode = 0
 offset_right = 129.0
 offset_bottom = 124.0
-texture = SubResource("AtlasTexture_ffkug")
+texture = SubResource("AtlasTexture_ygh00")
 expand_mode = 3
 
 [node name="ScreenBlocker" parent="CanvasLayer" unique_id=991935671 instance=ExtResource("6_0pojg")]

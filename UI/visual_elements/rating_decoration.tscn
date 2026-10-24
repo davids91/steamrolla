@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://2qsljpd8vq4e"]
+
+[ext_resource type="PackedScene" uid="uid://pjyrkj4s2bls" path="res://UI/visual_elements/rating.tscn" id="1_lcksw"]
+[ext_resource type="Script" uid="uid://bi4r1rajxp53s" path="res://UI/visual_elements/rating_decoration.gd" id="1_vjmx4"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_8jg5c"]
+viewport_path = NodePath("SubViewport")
+
+[node name="RatingDecoration" type="Sprite3D" unique_id=2041423734]
+sorting_offset = -45.0
+pixel_size = 0.25
+billboard = 1
+no_depth_test = true
+texture = SubResource("ViewportTexture_8jg5c")
+script = ExtResource("1_vjmx4")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=1940837104]
+transparent_bg = true
+size = Vector2i(512, 256)
+render_target_update_mode = 4
+
+[node name="Rating" parent="SubViewport" unique_id=1421171300 instance=ExtResource("1_lcksw")]
+unique_name_in_owner = true
+z_index = -5
+offset_top = -62.104996
+offset_bottom = -22.104965

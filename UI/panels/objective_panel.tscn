@@ -1,14 +1,12 @@
 [gd_scene format=3 uid="uid://de7pi2unbrosp"]
 
-[ext_resource type="Script" uid="uid://74ipgbe03nmu" path="res://core/UI/objective_panel/objective_panel.gd" id="1_f5uni"]
-[ext_resource type="Texture2D" uid="uid://blugq7cy8aigr" path="res://textures/ui/objective_file.png" id="2_s24m1"]
-[ext_resource type="PackedScene" uid="uid://clmicnni140y4" path="res://core/UI/objective_panel/task_item.tscn" id="2_t62cb"]
-[ext_resource type="Script" uid="uid://bkbgy5rue6ynw" path="res://core/UI/click_away_rect.gd" id="3_873li"]
-[ext_resource type="Texture2D" uid="uid://bkxkeud204h5d" path="res://textures/ui/bookmark.png" id="3_t62cb"]
+[ext_resource type="Script" uid="uid://74ipgbe03nmu" path="res://UI/panels/objective_panel.gd" id="1_f5uni"]
+[ext_resource type="Texture2D" uid="uid://blugq7cy8aigr" path="res://textures/objective_file.png" id="2_s24m1"]
+[ext_resource type="PackedScene" uid="uid://clmicnni140y4" path="res://UI/panels/task_item.tscn" id="2_t62cb"]
+[ext_resource type="Script" uid="uid://bkbgy5rue6ynw" path="res://UI/visual_elements/click_away_rect.gd" id="3_873li"]
 [ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="4_t62cb"]
-[ext_resource type="FontFile" uid="uid://df8mh6h3se6l3" path="res://textures/ui/font/RubikSprayPaint-Regular.ttf" id="4_x132q"]
-[ext_resource type="FontFile" uid="uid://c5h6m001q5o7w" path="res://textures/ui/font/CaveatBrush-Regular.ttf" id="5_wnyoo"]
-[ext_resource type="Texture2D" uid="uid://b6hee81ihnf85" path="res://textures/ui/photo_print.png" id="6_67hv0"]
+[ext_resource type="FontFile" uid="uid://df8mh6h3se6l3" path="res://UI/font/RubikSprayPaint-Regular.ttf" id="4_x132q"]
+[ext_resource type="FontFile" uid="uid://c5h6m001q5o7w" path="res://UI/font/CaveatBrush-Regular.ttf" id="5_wnyoo"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_x132q"]
 atlas = ExtResource("4_t62cb")
@@ -21,6 +19,10 @@ region = Rect2(897.618, 125.676, 128, 128)
 [sub_resource type="AtlasTexture" id="AtlasTexture_67hv0"]
 atlas = ExtResource("4_t62cb")
 region = Rect2(631.808, 2.943, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_je3tt"]
+atlas = ExtResource("4_t62cb")
+region = Rect2(770.5, 646, 124, 303)
 
 [sub_resource type="LabelSettings" id="LabelSettings_34amj"]
 font = ExtResource("4_x132q")
@@ -36,6 +38,10 @@ font_color = Color(0, 0, 0, 1)
 font = ExtResource("5_wnyoo")
 font_size = 28
 font_color = Color(0, 0, 0, 0.47843137)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2v0qv"]
+atlas = ExtResource("4_t62cb")
+region = Rect2(273.16, 599.54, 440, 415)
 
 [sub_resource type="Animation" id="Animation_s24m1"]
 length = 0.001
@@ -168,7 +174,7 @@ offset_right = 31.000061
 offset_bottom = 239.82259
 focus_mode = 0
 toggle_mode = true
-texture_normal = ExtResource("3_t62cb")
+texture_normal = SubResource("AtlasTexture_je3tt")
 ignore_texture_size = true
 stretch_mode = 0
 
@@ -265,7 +271,7 @@ rotation = 0.10779285
 scale = Vector2(0.89627916, 0.89627916)
 size_flags_horizontal = 0
 size_flags_vertical = 0
-texture = ExtResource("6_67hv0")
+texture = SubResource("AtlasTexture_2v0qv")
 expand_mode = 1
 stretch_mode = 4
 
@@ -296,7 +302,7 @@ rotation = 0.10471976
 scale = Vector2(0.89627916, 0.89627916)
 size_flags_horizontal = 0
 size_flags_vertical = 0
-texture = ExtResource("6_67hv0")
+texture = SubResource("AtlasTexture_2v0qv")
 expand_mode = 1
 stretch_mode = 4
 
@@ -327,7 +333,7 @@ rotation = -0.3571192
 scale = Vector2(0.89627916, 0.89627916)
 size_flags_horizontal = 0
 size_flags_vertical = 0
-texture = ExtResource("6_67hv0")
+texture = SubResource("AtlasTexture_2v0qv")
 expand_mode = 1
 stretch_mode = 4
 
@@ -358,7 +364,7 @@ rotation = -0.05235988
 scale = Vector2(0.89627916, 0.89627916)
 size_flags_horizontal = 0
 size_flags_vertical = 0
-texture = ExtResource("6_67hv0")
+texture = SubResource("AtlasTexture_2v0qv")
 expand_mode = 1
 stretch_mode = 4
 
