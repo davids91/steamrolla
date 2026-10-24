@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dc8ipn7x0iinb"
-path.s3tc="res://.godot/imported/maze-target-state.png-1f6055acc855ea5fb54f13fc303743b8.s3tc.ctex"
+uid="uid://ckvy7qh0lpdyf"
+path.s3tc="res://.godot/imported/start_asphalt_state.png-bded1a3dd2cffb4416d5991c8b7ceecf.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://levels/maze/maze-target-state.png"
-dest_files=["res://.godot/imported/maze-target-state.png-1f6055acc855ea5fb54f13fc303743b8.s3tc.ctex"]
+source_file="res://levels/1_3maze/start_asphalt_state.png"
+dest_files=["res://.godot/imported/start_asphalt_state.png-bded1a3dd2cffb4416d5991c8b7ceecf.s3tc.ctex"]
 
 [params]
 
