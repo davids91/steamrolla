@@ -117,7 +117,10 @@ static func level_attribute_list_path(base_dir: String) -> String:
 ## Reads and provides the stored attributes for the given level base directory
 static func level_attribute_list(base_dir: String) -> Dictionary[String, String]:
 	var file: FileAccess = FileAccess.open(level_attribute_list_path(base_dir), FileAccess.READ)
-	return file.get_var()
+	if file == null: return {}
+	var readout = file.get_var()
+	if readout == null: return {}
+	return readout
 
 ## Updates the stored objective attributes for the given level base directory
 ## Meaning: attributes required to be set for the level to be completed.

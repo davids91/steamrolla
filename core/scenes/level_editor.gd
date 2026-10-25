@@ -52,7 +52,9 @@ func _get_map_region_for_coordinate() -> Rect2i:
 		if(
 			Engine.is_editor_hint()
 			and (_is_level_data_in_packaged_format() or _is_level_data_in_raw_format())
-		): _load_level_data()
+		):
+			%RoadChunk.used_base_dir = _level_base_dir()
+			_load_level_data()
 		notify_property_list_changed()
 
 ## The name of the folder under the given coordinate, no zeroes as padding, just the raw numbers
@@ -228,16 +230,18 @@ func _change_data_mode() -> void:
 
 @export_tool_button("Load/Refresh Level Data", "Load") var load_level_data: Callable = _load_level_data
 func _load_level_data() -> void:
+	if Engine.is_editor_hint():
+		EditorInterface.get_resource_filesystem().scan()
 	var resource_updated: bool = false
 	if not _level_folder_exists(): DirAccess.make_dir_absolute(_level_base_dir())
-	if _level_resource_exists(): %RoadChunk.level_data = load(_level_resource_path())
+	if _level_resource_exists(): %RoadChunk.level_data = ResourceLoader.load(_level_resource_path())
 	else:
 		%RoadChunk.level_data = RoadChunkData.new()
 		resource_updated = true
 	%RoadChunk.used_base_dir = _level_base_dir()
 	if _is_level_data_in_packaged_format():
 		for img in LevelStructure.final_image_names:
-			%RoadChunk.level_data.set(img, load(_level_image_path(img)))
+			%RoadChunk.level_data.set(img, ResourceLoader.load(_level_image_path(img)))
 		_set_data_mode_packaged()
 	else: # create empty image for every image that is not available
 		for img in LevelStructure.raw_image_names:
@@ -254,9 +258,8 @@ func _load_level_data() -> void:
 
 	# For each field in the resource: if the field is not set but the image is available, connect them
 	for img in LevelStructure.final_image_names: if not %RoadChunk.get(img) and _level_image_exists(img):
-		%RoadChunk.level_data.set(img, load(_level_image_path(img)))
+		%RoadChunk.level_data.set(img, ResourceLoader.load(_level_image_path(img)))
 		resource_updated = true
-
 	if resource_updated and Engine.is_editor_hint():
 		ResourceSaver.save(%RoadChunk.level_data, _level_resource_path())
 		EditorInterface.get_resource_filesystem().scan()
@@ -385,6 +388,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		_save_level_data()
 	if event.is_action_pressed("debug_2"):
 		_snap_asphalt_to_reference()
+	if event.is_action_pressed("debug_3"):
+		set_asphalt_to_reference_height.call()
 
 func _ready() -> void:
 	_load_level_data()

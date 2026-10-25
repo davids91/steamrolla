@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bw7a7uhdbvuq7" path="res://core/scene_manager.gd" id="1_3dy4c"]
 [ext_resource type="Script" uid="uid://d1bd1rglht1la" path="res://core/music_manager.gd" id="2_3dy4c"]
 [ext_resource type="AudioStream" uid="uid://bfqbrqjnjxh3" path="res://audio/SteamRolla-Main-Menu-Music-Loop.ogg" id="3_4fnhs"]
-[ext_resource type="Script" uid="uid://krhjyxjj4pxa" path="res://core/game_difficulty.gd" id="4_4pl23"]
+[ext_resource type="Script" uid="uid://naso1d5e7mle" path="res://core/game_difficulty.gd" id="4_4pl23"]
 
 [sub_resource type="Curve" id="Curve_k5p64"]
 _limits = [0.0, 5.0, 0.0, 1.0]
