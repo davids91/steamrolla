@@ -45,7 +45,7 @@ func _load_level_data() -> void:
 		)
 
 		# Set position of player camera
-		if d == coming_from:
+		if road_chunk.used_base_dir == coming_from:
 			$PlayerView.camera_transform.origin = lerp($PlayerView.camera_transform.origin, road_chunk.global_position, transition_zoom_amount)
 			$PlayerView.look_at(road_chunk.global_position)
 			%ScreenBlocker.modulate = Color.WHITE

@@ -92,12 +92,8 @@ texture = SubResource("GradientTexture2D_8jg5c")
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1403548672]
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=46391299]
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -178.0
 offset_right = 178.0
-grow_vertical = 0
+offset_bottom = 178.0
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25

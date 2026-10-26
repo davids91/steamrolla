@@ -93,7 +93,7 @@ shadow_mesh = SubResource("ArrayMesh_wuaud")
 size = Vector3(10.481201, 1, 7.2979736)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_873li"]
-size = Vector3(80, 64, 80)
+size = Vector3(100, 64, 100)
 
 [node name="Runway" type="AnimatableBody3D" unique_id=328105869 node_paths=PackedStringArray("parking_spots")]
 collision_mask = 3
@@ -158,4 +158,4 @@ debug_color = Color(0.7, 0, 0.011666489, 0.41960785)
 
 [connection signal="body_entered" from="DeploymentArea" to="." method="_on_deployment_area_body_entered"]
 [connection signal="body_exited" from="DeploymentArea" to="." method="_on_deployment_area_body_exited"]
-[connection signal="body_exited" from="OutOfBoundsChecker" to="." method="_on_out_of_bounds_checker_body_exited"]
+[connection signal="body_exited" from="OutOfBoundsChecker" to="." method="may_be_outside_bounds"]

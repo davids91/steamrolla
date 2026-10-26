@@ -15,24 +15,31 @@ func ready_to_deploy() -> bool:
 	return tool_selected_to_deploy != null
 
 var tool_selected_to_deploy: RoadworkTool
+var dragged_tool_exiting: bool = false
 func call_twice_to_deploy(tool: RoadworkTool) -> void:
 	if tool_selected_to_deploy == tool: # Stop runway to help deploy tool
 		tool.prepare_for_runway()
 		following = tool_selected_to_deploy
 		player_view.cursor.visible = false
 	elif parked_tools.has(tool): # Select tool for deployment if it isn't already
+		if tool.controlled_by == RoadworkTool.ControlMethods.DRAGGED:
+			dragged_tool_exiting = true
 		following = player_view.cursor
 		player_view.cursor.visible = true
 		tool_selected_to_deploy = tool
 		parked_tools.erase(tool)
 	else: following = tool
 
+func may_be_outside_bounds(body: Node3D) -> void:
+	if body is RoadworkTool:
+		tools_may_be_outside_bounds[body as RoadworkTool] = 0
+
 func call_to_park(tool: RoadworkTool) -> void:
 	if parking_spots.has(tool.tool_enum) and not parked_tools.has(tool):
-		tools_may_be_outside_bounds.push_back(tool)
-		if tool_selected_to_deploy == tool:
-			tool_selected_to_deploy = null
-			parked_tools.push_back(tool)
+		may_be_outside_bounds(tool)
+		tool.stop_working()
+		tool_selected_to_deploy = null
+		parked_tools.push_back(tool)
 		following = null
 
 @onready var following: Node3D = $OriginalPositionMarker:
@@ -59,7 +66,7 @@ func _ready() -> void:
 @onready var runway_height: float = global_position.y
 @onready var target_global_position: Vector3 = global_position
 const hidden_depth: float = -500;
-var tools_may_be_outside_bounds: Array[RoadworkTool]
+var tools_may_be_outside_bounds: Dictionary[RoadworkTool, int] # Tool and the number of updates applied to its position
 func _physics_process(_delta: float) -> void:
 	# Calculate Horizontal trajectory of the runway
 	var level_size: Vector3 = level.get_size()
@@ -130,28 +137,30 @@ func _physics_process(_delta: float) -> void:
 	for t in parked_tools: t.global_transform = parking_spots[t.tool_enum].global_transform
 
 	# Check for tools that may be outside bounds
-	for i in tools_may_be_outside_bounds.size():
-		if i >= tools_may_be_outside_bounds.size(): break
-		var maybe_oob_tool: RoadworkTool = tools_may_be_outside_bounds[i]
-		if parking_spots.has(maybe_oob_tool.tool_enum):
+	var tools_inside_bounds: Array[RoadworkTool] = []
+	for tool in tools_may_be_outside_bounds.keys():
+		if parking_spots.has(tool.tool_enum):
 			if( # Move roadwork tool to parking spot if it's outside bounds
-				maybe_oob_tool.global_position.x < x_bound_min or maybe_oob_tool.global_position.x >= x_bound_max
-				or maybe_oob_tool.global_position.y < y_bound_min or maybe_oob_tool.global_position.y >= y_bound_max
-				or maybe_oob_tool.global_position.z < z_bound_min or maybe_oob_tool.global_position.z >= z_bound_max
+				tool.global_position.x < x_bound_min or tool.global_position.x >= x_bound_max
+				or tool.global_position.y < y_bound_min or tool.global_position.y >= y_bound_max
+				or tool.global_position.z < z_bound_min or tool.global_position.z >= z_bound_max
 			):
-				maybe_oob_tool.global_transform = lerp(
-					maybe_oob_tool.global_transform,
-					parking_spots[maybe_oob_tool.tool_enum].global_transform,
+				tool.global_transform = lerp(
+					tool.global_transform,
+					parking_spots[tool.tool_enum].global_transform,
 					tool_movement_responsiveness
 				)
-			if (maybe_oob_tool.global_position - parking_spots[maybe_oob_tool.tool_enum].global_position).length() < 5.:
-				if "velocity" in tools_may_be_outside_bounds[i]:
-					tools_may_be_outside_bounds[i].velocity = Vector3.ZERO
-				if "momentum" in tools_may_be_outside_bounds[i]:
-					tools_may_be_outside_bounds[i].momentum = Vector3.ZERO
-				tools_may_be_outside_bounds.remove_at(i)
-				payload_reset.emit(maybe_oob_tool.tool_enum)
-		else: tools_may_be_outside_bounds.remove_at(i)
+				tools_may_be_outside_bounds[tool] += 1
+			if(
+				(tool.global_position - parking_spots[tool.tool_enum].global_position).length() < 5. #TechDebt: magic number is for adequate distance from parking spot
+				and 10 < tools_may_be_outside_bounds[tool] #TechDebt: Magic number for the number of updates required to count tool as moved back into bounds
+			):
+				if "velocity" in tool: tool.velocity = Vector3.ZERO
+				if "momentum" in tool: tool.momentum = Vector3.ZERO
+				tools_inside_bounds.push_back(tool)
+				payload_reset.emit(tool.tool_enum)
+		else: tools_inside_bounds.push_back(tool)
+	for tool in tools_inside_bounds: tools_may_be_outside_bounds.erase(tool)
 
 	if tool_selected_to_deploy and not tool_selected_to_deploy.is_working:
 		tool_selected_to_deploy.global_transform = lerp(
@@ -159,9 +168,10 @@ func _physics_process(_delta: float) -> void:
 		)
 
 func _on_deployment_area_body_entered(body: Node3D) -> void:
-	if not tool_selected_to_deploy and body is RoadworkTool and not parked_tools.has(body):
+	if not dragged_tool_exiting and not tool_selected_to_deploy and body is RoadworkTool and not parked_tools.has(body):
 		call_to_park(body)
 		payload_entered.emit()
+	dragged_tool_exiting = false
 
 func _on_deployment_area_body_exited(body: Node3D) -> void:
 	if tool_selected_to_deploy and tool_selected_to_deploy.is_working and body == tool_selected_to_deploy:
@@ -169,6 +179,3 @@ func _on_deployment_area_body_exited(body: Node3D) -> void:
 		parked_tools.erase(tool_selected_to_deploy)
 		tool_selected_to_deploy = null
 		payload_left.emit()
-
-func _on_out_of_bounds_checker_body_exited(body: Node3D) -> void:
-	if body is RoadworkTool: tools_may_be_outside_bounds.push_back(body)

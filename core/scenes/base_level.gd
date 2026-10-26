@@ -68,12 +68,11 @@ func _on_hud_objective_completed(objective_name: String) -> void:
 				await get_tree().create_timer(road_paint_display_pause_sec).timeout
 		)
 
-
-
 func _on_hud_exit_scene() -> void: # Exit the scene when there's no active tool
-	if $ToolController.active_tool != ToolPanel.Tools.UNKNOWN: return
+	if(
+		$ToolController.active_tool != ToolPanel.Tools.UNKNOWN
+		and $ToolController.tool_nodes[$ToolController.active_tool].controlled_by == RoadworkTool.ControlMethods.DRAGGED
+	): return
 	var transition = create_tween()
 	transition.tween_property(%ScreenBlocker, "modulate", Color.WHITE, transition_time_sec)
-	transition.tween_callback(
-		SceneManager.return_to_level_select.bind(base_dir)
-		)
+	transition.tween_callback(SceneManager.return_to_level_select.bind(base_dir))

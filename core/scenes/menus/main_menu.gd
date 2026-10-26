@@ -9,9 +9,7 @@ func _on_level_selection_btn_pressed() -> void:
 
 func _on_scenery_museum_btn_pressed() -> void:
 	$ButtonSound.play()
-	SceneManager.change_scene_to_file(
-		"res://core/scenes/scenery_museum.scn"
-		)
+	SceneManager.change_scene_to_file("res://core/scenes/scenery_museum.scn")
 
 func _on_option_btn_pressed() -> void:
 	$ButtonSound.play()

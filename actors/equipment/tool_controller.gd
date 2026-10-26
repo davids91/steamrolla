@@ -17,8 +17,7 @@ extends Node3D
 ## Tools deployed by the runway (if the given tool has an assigned runway)
 var deployed_tools: Array[ToolPanel.Tools] = []
 func _ready() -> void:
-	# Connect driver intention changed signals for piloted tools
-	for c in get_children():
+	for c in get_children(): # Connect driver intention changed signals for piloted tools
 		if(
 			"controlled_by" in c and c.controlled_by == RoadworkTool.ControlMethods.PILOTED
 			and c.has_signal("driver_intention_changed")
@@ -31,7 +30,7 @@ func _ready() -> void:
 		)
 		runway.payload_entered.connect(func():
 			if not tool_nodes.has(active_tool): return
-			runway.tools_may_be_outside_bounds.push_back(tool_nodes[active_tool])
+			runway.may_be_outside_bounds(tool_nodes[active_tool])
 			if( # Camera transition from piloted camera to player view if the tool camera is active
 				tool_nodes[active_tool].get_node_or_null("OrbitCamera")
 				and tool_nodes[active_tool].get_node("OrbitCamera").get_current()
@@ -50,10 +49,12 @@ func _ready() -> void:
 	if readout is Dictionary[ToolPanel.Tools, Transform3D]: tool_transforms = readout
 
 	if tool_transforms: # If any positions are stored, update the tools based on them
-		for c in get_children(): if c is RoadworkTool:
-			if tool_transforms.has(c.tool_enum):
-				deployed_tools.push_back(c.tool_enum)
-				c.global_transform = tool_transforms[c.tool_enum]
+		for tool in get_children(): if tool is RoadworkTool:
+			if tool_transforms.has(tool.tool_enum):
+				deployed_tools.push_back(tool.tool_enum)
+				tool.global_transform = tool_transforms[tool.tool_enum]
+				if runway and runway.parked_tools.has(tool):
+					runway.parked_tools.erase(tool)
 
 func piloted_tool_driver_intention_changed(is_moving: bool, forward: bool) -> void:
 	if ( # Update angle of piloted tool based on driver intention
@@ -75,8 +76,8 @@ var active_tool: ToolPanel.Tools = ToolPanel.Tools.UNKNOWN
 func select_tool(tool: ToolPanel.Tools) -> void:
 	# Cleanup after previously used tool
 	if tool_nodes.has(active_tool) and tool_nodes[active_tool] and tool != active_tool:
-		tool_nodes[active_tool].stop_working()
-		if runway: runway.call_to_park(tool_nodes[active_tool])
+		if tool_nodes[active_tool].controlled_by != RoadworkTool.ControlMethods.DRAGGED:
+			tool_nodes[active_tool].stop_working()
 
 		# Rewire driver intention changed
 		if tool_nodes[active_tool].driver_intention_changed.is_connected(piloted_tool_driver_intention_changed):
@@ -230,8 +231,8 @@ func _physics_process(delta: float) -> void:
 			if abs(asphalt_delta) < VALUE_EPSILON: asphalt_delta = 0.
 
 func _on_hud_exit_scene() -> void:
-	if tool_nodes.has(active_tool):
-		runway.tools_may_be_outside_bounds.push_back(tool_nodes[active_tool])
+	if runway and tool_nodes.has(active_tool):
+		runway.may_be_outside_bounds(tool_nodes[active_tool])
 
 	# Call deferred to ensure order of execution, HUD::exit_scene has many listeners
 	select_tool.call_deferred(ToolPanel.Tools.UNKNOWN)

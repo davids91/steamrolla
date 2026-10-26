@@ -28,14 +28,21 @@ script = ExtResource("1_ygh00")
 
 [node name="ObjectivePanel" parent="." unique_id=1415146818 instance=ExtResource("3_ygh00")]
 
-[node name="ExitBtn" type="TextureButton" parent="." unique_id=622200269]
-offset_right = 128.0
-offset_bottom = 128.0
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=721767978]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="ExitBtn" type="TextureButton" parent="MarginContainer" unique_id=622200269]
+layout_mode = 2
 focus_mode = 0
 texture_normal = SubResource("AtlasTexture_k5p64")
 texture_pressed = SubResource("AtlasTexture_ie7id")
 
-[node name="TextureRect" type="TextureRect" parent="ExitBtn" unique_id=176742937]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/ExitBtn" unique_id=176742937]
 layout_mode = 0
 offset_right = 129.0
 offset_bottom = 124.0
@@ -57,5 +64,5 @@ modulate = Color(1, 1, 1, 0)
 [connection signal="objective_completed" from="ObjectivePanel" to="." method="_on_objective_panel_objective_completed"]
 [connection signal="panel_hidden" from="ObjectivePanel" to="Rating" method="hide_rating"]
 [connection signal="panel_shown" from="ObjectivePanel" to="Rating" method="show_rating"]
-[connection signal="pressed" from="ExitBtn" to="." method="_on_exit_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/ExitBtn" to="." method="_on_exit_btn_pressed"]
 [connection signal="exit_scene" from="LevelCompletePanel" to="." method="_on_exit_btn_pressed"]

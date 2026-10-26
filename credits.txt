@@ -128,6 +128,7 @@ Reuben:
 Adgemon:
 - Can pop sound
 - Hydrant water erupting sound
+- Car alarm sound
 
 Hunter:
 ===

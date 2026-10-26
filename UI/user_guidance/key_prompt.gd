@@ -28,7 +28,6 @@ func _unhandled_input(event: InputEvent) -> void:
 			create_tween().tween_property(self, "modulate", Color.TRANSPARENT, time_to_disappear_sec).finished.connect(
 				func(): queue_free()
 			)
-			print(action, " activated!")
 			break;
 
 
