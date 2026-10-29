@@ -1,0 +1,90 @@
+[gd_scene format=3 uid="uid://3obqw4aq4blv"]
+
+[ext_resource type="Material" uid="uid://dahsnt3vphwe3" path="res://materials/building-foundation-material.tres" id="1_rvk26"]
+[ext_resource type="Script" uid="uid://ci8mtj7ygr3xx" path="res://props/give_children_physics.gd" id="1_y87r6"]
+[ext_resource type="Material" uid="uid://itb2j3ws4kgu" path="res://materials/building-windows-material.tres" id="2_y87r6"]
+[ext_resource type="Material" uid="uid://cf2ngj02plug0" path="res://materials/building-roof-material.tres" id="3_4blmh"]
+[ext_resource type="ArrayMesh" uid="uid://dg2ox52dc0xpu" path="res://models/skeleton-tiny.obj" id="5_4blmh"]
+
+[node name="OfficeBuilding" type="Node3D" unique_id=1960340363]
+
+[node name="BuildingMeshCSG" type="CSGMesh3D" parent="." unique_id=181649029]
+script = ExtResource("1_y87r6")
+
+[node name="foundations" type="CSGBox3D" parent="BuildingMeshCSG" unique_id=1240881889]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+size = Vector3(9, 2, 9)
+material = ExtResource("1_rvk26")
+
+[node name="windows" type="CSGBox3D" parent="BuildingMeshCSG" unique_id=1014778181]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7, 0)
+size = Vector3(10, 10, 10)
+material = ExtResource("2_y87r6")
+
+[node name="floor" type="CSGBox3D" parent="BuildingMeshCSG" unique_id=2068990202]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8000002, 0)
+size = Vector3(10.25, 0.35, 10.25)
+material = ExtResource("2_y87r6")
+
+[node name="floor2" type="CSGBox3D" parent="BuildingMeshCSG" unique_id=1374624264]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8000002, 0)
+size = Vector3(10.25, 0.35, 10.25)
+material = ExtResource("2_y87r6")
+
+[node name="floor3" type="CSGBox3D" parent="BuildingMeshCSG" unique_id=1762706783]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.8, 0)
+size = Vector3(10.25, 0.35, 10.25)
+material = ExtResource("2_y87r6")
+
+[node name="floor4" type="CSGBox3D" parent="BuildingMeshCSG" unique_id=412948327]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.8, 0)
+size = Vector3(10.25, 0.35, 10.25)
+material = ExtResource("2_y87r6")
+
+[node name="floor5" type="CSGBox3D" parent="BuildingMeshCSG" unique_id=505777167]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.8, 0)
+size = Vector3(10.25, 0.35, 10.25)
+material = ExtResource("2_y87r6")
+
+[node name="floor6" type="CSGBox3D" parent="BuildingMeshCSG" unique_id=1509455105]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.8, 0)
+size = Vector3(10.25, 0.5, 10.25)
+material = ExtResource("2_y87r6")
+
+[node name="roof" type="CSGBox3D" parent="BuildingMeshCSG" unique_id=193381360]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.25, 0)
+operation = 2
+size = Vector3(9.5, 1, 9.5)
+material = ExtResource("3_4blmh")
+
+[node name="CHOP" type="CSGBox3D" parent="BuildingMeshCSG" unique_id=338105070]
+transform = Transform3D(0.94677013, 0.07512102, -0.31302255, 0, 0.9723904, 0.23336005, 0.32191038, -0.22093832, 0.9206302, 0, 7, 0)
+size = Vector3(20, 20, 0.01)
+
+[node name="CHOP2" type="CSGBox3D" parent="BuildingMeshCSG" unique_id=1165439849]
+transform = Transform3D(0.9839017, -0.06484496, -0.16653122, 0.1787107, 0.3570075, 0.9168469, 0, -0.93184805, 0.36284876, 0, 7, 0)
+size = Vector3(20, 20, 0.01)
+
+[node name="CHOP3" type="CSGBox3D" parent="BuildingMeshCSG" unique_id=1167451734]
+transform = Transform3D(0.76372206, -0.6201675, 0.17922276, 0.17576426, 0.4669072, 0.86666274, -0.62115675, -0.63038844, 0.46559075, 0, 11.3256855, 4.820612)
+size = Vector3(20, 20, 0.01)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BuildingMeshCSG" unique_id=2024931315]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 21.000845, 0)
+mesh = ExtResource("5_4blmh")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="BuildingMeshCSG" unique_id=1429208827]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 21.000845, 2.2368135)
+mesh = ExtResource("5_4blmh")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="BuildingMeshCSG" unique_id=647450379]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 21.000845, -2.2393441)
+mesh = ExtResource("5_4blmh")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="BuildingMeshCSG" unique_id=1438905515]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 21.000845, 4.414925)
+mesh = ExtResource("5_4blmh")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="BuildingMeshCSG" unique_id=2069575638]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 21.000845, -4.8829226)
+mesh = ExtResource("5_4blmh")
