@@ -1,6 +1,9 @@
 [gd_resource type="Theme" format=3 uid="uid://d1tgwdb3grjhr"]
 
+[ext_resource type="Texture2D" uid="uid://b654h1ecq2pyd" path="res://textures/ui_button_hover.png" id="1_cjksa"]
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_awcvu"]
+texture = ExtResource("1_cjksa")
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
