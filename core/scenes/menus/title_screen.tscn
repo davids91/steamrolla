@@ -3,20 +3,50 @@
 [ext_resource type="Script" uid="uid://doqxefey6s7j7" path="res://core/scenes/menus/title_screen.gd" id="1_58eve"]
 [ext_resource type="PackedScene" uid="uid://ccd6hldeyxwf6" path="res://core/scenes/menus/main_menu.tscn" id="1_r0kk5"]
 [ext_resource type="PackedScene" uid="uid://b7143f1jor1qd" path="res://core/scenes/road_chunk.scn" id="2_58eve"]
-[ext_resource type="Texture2D" uid="uid://dk0r2hexmx6ad" path="res://textures/map_overview_concept/map_file.png" id="3_658y6"]
+[ext_resource type="Texture2D" uid="uid://8tocktk40kf1" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0000.png" id="3_8wkry"]
 [ext_resource type="Script" uid="uid://bclv735d06io5" path="res://core/tools/road_paint.gd" id="4_658y6"]
+[ext_resource type="Texture2D" uid="uid://coj3u22e41byx" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0001.png" id="4_j1khx"]
 [ext_resource type="PackedScene" uid="uid://xehtklcspjew" path="res://props/pipe.tscn" id="5_5fdls"]
+[ext_resource type="Texture2D" uid="uid://w5ooms1fjfnk" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0002.png" id="5_b4f7l"]
 [ext_resource type="Resource" uid="uid://b2dbwi2ryh3oc" path="res://levels/2_1intersection/level_data.res" id="6_658y6"]
+[ext_resource type="Texture2D" uid="uid://dsphf4qxk7x3r" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0003.png" id="6_ijohm"]
 [ext_resource type="PackedScene" uid="uid://yiyute5quljt" path="res://props/dumpster.tscn" id="7_7qqah"]
+[ext_resource type="Texture2D" uid="uid://cdfif0u7n6nv0" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0004.png" id="7_cfgtw"]
 [ext_resource type="PackedScene" uid="uid://cnarqk06h326x" path="res://props/fire_hydrant.tscn" id="8_aohd5"]
+[ext_resource type="Texture2D" uid="uid://bhfw0ff3ne2a8" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0005.png" id="8_yklbf"]
 [ext_resource type="PackedScene" uid="uid://cgt8pdj2hnchc" path="res://props/car.tscn" id="9_2fu0v"]
+[ext_resource type="Texture2D" uid="uid://b6cdub2bmubjm" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0006.png" id="9_3kuib"]
+[ext_resource type="Texture2D" uid="uid://bxkux75pdtkn1" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0007.png" id="10_71ip1"]
+[ext_resource type="Texture2D" uid="uid://bk2vda81pvj3k" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0008.png" id="11_a6d0f"]
 [ext_resource type="PackedScene" uid="uid://bddyob4r1ofis" path="res://props/office_building.tscn" id="11_feaqs"]
+[ext_resource type="Texture2D" uid="uid://2lyue4nd7h0d" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0009.png" id="12_aefwx"]
 [ext_resource type="PackedScene" uid="uid://cnaqspcql1woq" path="res://models/sign-road-work-ahead.fbx" id="12_nfvon"]
+[ext_resource type="Texture2D" uid="uid://bsuwn28ni6agd" path="res://textures/map_overview_concept/areas/mountain_anim/mountain0000.png" id="13_8kufh"]
 [ext_resource type="PackedScene" uid="uid://cw8sj3nlo8tjc" path="res://models/roller.fbx" id="13_58eve"]
+[ext_resource type="Script" uid="uid://dy65gwlm0y7n1" path="res://UI/visual_elements/hovering_up_and_down.gd" id="13_j1khx"]
 [ext_resource type="Texture2D" uid="uid://b866nkjmqwwlj" path="res://models/textures/color-palette.png" id="14_fqq3r"]
+[ext_resource type="Texture2D" uid="uid://dwdlrr4jmvham" path="res://textures/map_overview_concept/areas/mountain_anim/mountain0001.png" id="14_gkxx0"]
+[ext_resource type="Texture2D" uid="uid://cgxr2tvvugm11" path="res://textures/map_overview_concept/areas/mountain_anim/mountain0002.png" id="15_f0r0i"]
+[ext_resource type="Texture2D" uid="uid://b6wn74l5msfaj" path="res://textures/map_overview_concept/areas/mountain_anim/mountain0003.png" id="16_70yb5"]
 [ext_resource type="PackedScene" uid="uid://clhwaefy5o32a" path="res://models/ratrick-opaque.tscn" id="16_cw08j"]
+[ext_resource type="Texture2D" uid="uid://c7pqe5x0octth" path="res://textures/map_overview_concept/areas/mountain_anim/mountain0004.png" id="17_2n6og"]
 [ext_resource type="Texture2D" uid="uid://ce7n7n6w38pnc" path="res://textures/water_particle.png" id="17_g68f3"]
+[ext_resource type="Texture2D" uid="uid://bgov00ht0vqj0" path="res://textures/map_overview_concept/areas/mountain_anim/mountain0005.png" id="18_da52j"]
 [ext_resource type="PackedScene" uid="uid://bg02t1nc2gx0y" path="res://props/can_trash.tscn" id="18_oixyc"]
+[ext_resource type="Texture2D" uid="uid://bgf8hao1ebind" path="res://textures/map_overview_concept/areas/mountain_anim/mountain0006.png" id="19_wanb0"]
+[ext_resource type="Texture2D" uid="uid://ydl7xrwblyc5" path="res://textures/map_overview_concept/areas/mountain_anim/mountain0007.png" id="20_t1mvv"]
+[ext_resource type="Texture2D" uid="uid://4mb8po4obpx4" path="res://textures/map_overview_concept/areas/mountain_anim/mountain0008.png" id="21_0r6ch"]
+[ext_resource type="Texture2D" uid="uid://bgryv6wtvjxqd" path="res://textures/map_overview_concept/areas/mountain_anim/mountain0009.png" id="22_m7jj3"]
+[ext_resource type="Texture2D" uid="uid://bl65qycs2e2b5" path="res://textures/map_overview_concept/areas/countryside_anim/quadro0000.png" id="23_bf1x8"]
+[ext_resource type="Texture2D" uid="uid://js21mvcackan" path="res://textures/map_overview_concept/areas/countryside_anim/quadro0001.png" id="24_r87m3"]
+[ext_resource type="Texture2D" uid="uid://cysvgaxmv1elx" path="res://textures/map_overview_concept/areas/countryside_anim/quadro0002.png" id="25_spxly"]
+[ext_resource type="Texture2D" uid="uid://cjaymgo5t6gm7" path="res://textures/map_overview_concept/areas/countryside_anim/quadro0003.png" id="26_j03ih"]
+[ext_resource type="Texture2D" uid="uid://m55sq25lcsst" path="res://textures/map_overview_concept/areas/countryside_anim/quadro0004.png" id="27_ulcyj"]
+[ext_resource type="Texture2D" uid="uid://brv0gvxaq5qsq" path="res://textures/map_overview_concept/areas/countryside_anim/quadro0005.png" id="28_q3avv"]
+[ext_resource type="Texture2D" uid="uid://c33mf4tsffhk3" path="res://textures/map_overview_concept/areas/countryside_anim/quadro0006.png" id="29_cwkhi"]
+[ext_resource type="Texture2D" uid="uid://b172cf8kk7hfk" path="res://textures/map_overview_concept/areas/countryside_anim/quadro0007.png" id="30_q62ox"]
+[ext_resource type="Texture2D" uid="uid://bup34k43toqkj" path="res://textures/map_overview_concept/areas/countryside_anim/quadro0008.png" id="31_8bkyr"]
+[ext_resource type="Texture2D" uid="uid://ckc7wksyki1hp" path="res://textures/map_overview_concept/areas/countryside_anim/quadro0009.png" id="32_lmw8k"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_58eve"]
 
@@ -28,6 +58,120 @@ background_mode = 2
 sky = SubResource("Sky_oi3di")
 ambient_light_color = Color(0, 0.5882353, 0.5647059, 1)
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_g4v7s"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_8wkry")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_j1khx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_b4f7l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ijohm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_cfgtw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_yklbf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_3kuib")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_71ip1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_a6d0f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_aefwx")
+}],
+"loop": 1,
+"name": &"anim",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_pctkd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_8kufh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_gkxx0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_f0r0i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_70yb5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_2n6og")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_da52j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_wanb0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_t1mvv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_0r6ch")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_m7jj3")
+}],
+"loop": 1,
+"name": &"anim",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lje6y"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("23_bf1x8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_r87m3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_spxly")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_j03ih")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_ulcyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_q3avv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_cwkhi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_q62ox")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_8bkyr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_lmw8k")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5j0fq"]
 render_priority = -1
 shading_mode = 0
@@ -35,6 +179,7 @@ albedo_color = Color(1, 0.31666666, 0, 1)
 
 [sub_resource type="QuadMesh" id="QuadMesh_8jg5c"]
 material = SubResource("StandardMaterial3D_5j0fq")
+size = Vector2(1000, 1000)
 
 [sub_resource type="Curve" id="Curve_3fny3"]
 _limits = [0.0, 1.25, 0.0, 1.0]
@@ -383,6 +528,7 @@ shadow_mesh = SubResource("ArrayMesh_tglvp")
 script = ExtResource("1_58eve")
 
 [node name="MainMenu" parent="." unique_id=767521340 instance=ExtResource("1_r0kk5")]
+anchors_preset = 2
 
 [node name="MainTitleEnvironment" type="Node3D" parent="." unique_id=1286330709]
 
@@ -397,12 +543,31 @@ environment = SubResource("Environment_fqq3r")
 [node name="Camera3D" type="Camera3D" parent="MainTitleEnvironment" unique_id=465931156]
 transform = Transform3D(-0.53435236, 0.2682055, 0.8015818, 0, 0.94832367, -0.31730464, -0.8452618, -0.16955249, -0.506739, 16.255, 3.513, -14.801)
 
-[node name="ConceptArt" type="Sprite3D" parent="MainTitleEnvironment/Camera3D" unique_id=1149124021]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 38.351, 55.292, -109.903)
-texture = ExtResource("3_658y6")
+[node name="ConceptArtCity" type="AnimatedSprite3D" parent="MainTitleEnvironment/Camera3D" unique_id=1258355952]
+transform = Transform3D(10, 1.1920929e-07, 0, -5.9604645e-07, 10.000003, -5.9604645e-08, 0, 5.364418e-07, 10, -76.11057, 1.7716742, -90.35097)
+sprite_frames = SubResource("SpriteFrames_g4v7s")
+animation = &"anim"
+autoplay = "anim"
+frame_progress = 0.71239156
+script = ExtResource("13_j1khx")
+
+[node name="ConceptArtMountain" type="AnimatedSprite3D" parent="MainTitleEnvironment/Camera3D" unique_id=1649083991]
+transform = Transform3D(10, 1.1920929e-07, 0, -5.9604645e-07, 10.000003, -5.9604645e-08, 0, 5.364418e-07, 10, -21.9217, 112.48615, -105.88951)
+sprite_frames = SubResource("SpriteFrames_pctkd")
+animation = &"anim"
+autoplay = "anim"
+frame_progress = 0.65420383
+script = ExtResource("13_j1khx")
+
+[node name="ConceptArtCountryside" type="AnimatedSprite3D" parent="MainTitleEnvironment/Camera3D" unique_id=586094924]
+transform = Transform3D(10, 1.1920929e-07, 0, -5.9604645e-07, 10.000003, -5.9604645e-08, 0, 5.364418e-07, 10, 34.109955, 38.836258, -110.50949)
+sprite_frames = SubResource("SpriteFrames_lje6y")
+autoplay = "default"
+frame_progress = 0.19505109
+script = ExtResource("13_j1khx")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="MainTitleEnvironment/Camera3D" unique_id=375307057]
-transform = Transform3D(500, 5.9604645e-06, -3.5527137e-14, -5.9604645e-06, 500, -2.980232e-06, 0, 2.980232e-06, 500, 39.203537, 54.8641, -111.181885)
+transform = Transform3D(500.00003, 0, 0, 0, 500.00003, 0, 1.5258789e-05, 7.6293945e-06, 500.00003, 41.06205, -64.6064, -468.2416)
 mesh = SubResource("QuadMesh_8jg5c")
 
 [node name="Intersection" parent="MainTitleEnvironment" unique_id=716876623 instance=ExtResource("2_58eve")]
@@ -638,7 +803,7 @@ transform = Transform3D(0.7145506, 0, 0.6995839, 0, 1, 0, -0.6995839, 0, 0.71455
 [node name="roller" parent="MainTitleEnvironment/Intersection" unique_id=1075544632 instance=ExtResource("13_58eve")]
 transform = Transform3D(-0.75467116, 0.1694368, -0.63384736, 0.2846864, 0.9549615, -0.08367783, 0.59112185, -0.243597, -0.7689183, 10.618, 3.642, -13.695)
 
-[node name="Roller" parent="MainTitleEnvironment/Intersection/roller" index="0" unique_id=287130010]
+[node name="Roller" parent="MainTitleEnvironment/Intersection/roller" index="0" unique_id=1261025651]
 mesh = SubResource("ArrayMesh_658y6")
 
 [node name="ratrick2" parent="MainTitleEnvironment/Intersection" unique_id=87839735 instance=ExtResource("16_cw08j")]
