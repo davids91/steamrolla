@@ -5,10 +5,11 @@ class_name OrbitCamera3D extends Node3D
 @export var panning_speed: float = 0.01
 
 @onready var _camera_3d: Camera3D = %Camera3D
+@onready var camera_anchor: Node3D = $CameraAnchor
 
 func make_current() -> void: _camera_3d.make_current()
 func get_current() -> bool: return _camera_3d.current
-func get_view_origin() -> Vector3: return _camera_3d.global_position
+func get_view_origin() -> Vector3: return camera_anchor.global_position
 
 @onready var camera_transform_before_transition: Transform3D
 var transition_tween: Tween:
@@ -19,12 +20,12 @@ var transition_tween: Tween:
 ## Moves the current camera into the place of the given one before it makes it the current
 func transition_to(other: OrbitCamera3D, transition_duration_sec: float = 1.) -> Tween:
 	$TransitionSound.play()
-	camera_transform_before_transition = _camera_3d.transform
+	camera_transform_before_transition = camera_anchor.transform
 	transition_tween = create_tween()
-	transition_tween.tween_property(_camera_3d, "global_transform", other._camera_3d.global_transform, transition_duration_sec)
+	transition_tween.tween_property(camera_anchor, "global_transform", other.camera_anchor.global_transform, transition_duration_sec)
 	transition_tween.tween_callback(func():
 		other.make_current()
-		_camera_3d.transform = camera_transform_before_transition
+		camera_anchor.transform = camera_transform_before_transition
 	)
 	return transition_tween
 
@@ -37,9 +38,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			_camera_3d.position.z += zoom_speed
+			camera_anchor.position.z += zoom_speed
 		elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			_camera_3d.position.z -= zoom_speed
+			camera_anchor.position.z -= zoom_speed
 			
 	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 		var offset: Vector3 = Vector3(-event.relative.x * panning_speed, event.relative.y * panning_speed, 0)
@@ -50,3 +51,21 @@ func _rotate_camera_by(offset: Vector2) -> void:
 	rotation.y -= offset.x
 	rotation.x -= offset.y
 	rotation.y = wrapf(rotation.y, -PI, PI)
+
+#TODO: play sound when crash
+@export var min_crash_for_shake: float = 1.
+@export var max_crash_amount: float = 3.
+@export var crash_shake_displacement: float = 1.4
+@onready var crash_trajectory = Vector3.ZERO
+func _process(_delta: float) -> void:
+	crash_trajectory = crash_trajectory.limit_length(max_crash_amount)
+	if crash_trajectory.length() >= min_crash_for_shake:
+		_camera_3d.position = lerp(
+			_camera_3d.position,
+			Vector3(
+				randf() * crash_trajectory.x * crash_shake_displacement,
+				randf() * crash_trajectory.y * crash_shake_displacement,
+				randf() * crash_trajectory.z * crash_shake_displacement,
+			),
+			0.8
+		)

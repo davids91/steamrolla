@@ -76,6 +76,14 @@ func trajectory_drawn(trajectory: PathFollow3D, duration_sec: float, call_when_d
 		)
 	)
 
+@export_category("Camera shake from crash")
+@export_range(0., 1.) var crash_decrease_percentage: float = 0.1
+@export_range(0., 1.) var crash_responsiveness: float = 0.75
+@export var crash_shake_displacement: float = 0.15
+@onready var crash_trajectory: Vector3 = Vector3.ZERO
+func crashed(body: Node3D, force: float) -> void:
+	crash_trajectory += lerp(crash_trajectory, (global_position - body.global_position) * force, crash_responsiveness)
+
 @export_category("Piloted Locomotion")
 @export var speed: float = 5.0
 @export var steering_angle: float = 1.0
@@ -108,6 +116,12 @@ func _physics_process(delta: float) -> void:
 
 	is_reversing = direction.z > 0.0
 	is_moving = direction.z != 0.0
+
+	# Handle crash detection
+	var crash_intensity: float = crash_trajectory.length()
+	crash_trajectory = crash_trajectory.limit_length(crash_intensity - crash_intensity * crash_decrease_percentage)
+	if has_node("OrbitCamera"):
+		$OrbitCamera.crash_trajectory = crash_trajectory * crash_shake_displacement
 
 @onready var previous_position: Vector3 = global_position
 @onready var was_working: bool = is_working

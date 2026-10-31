@@ -215,6 +215,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif Input.is_action_just_released("deploy_payload"):
 		tool_nodes[active_tool].payload_triggered = false
 
+func _process(_delta: float) -> void:
+	if(
+		tool_nodes.has(active_tool) and tool_nodes[active_tool].has_node("OrbitCamera")
+		and tool_nodes[active_tool].controlled_by == RoadworkTool.ControlMethods.DRAGGED
+	): view.crash_trajectory = tool_nodes[active_tool].get_node("OrbitCamera").crash_trajectory
+	else: view.crash_trajectory = lerp(view.crash_trajectory, Vector3.ZERO, 0.5)
+
 const VALUE_EPSILON: float = 0.001;
 # Configure the level to be updated based on the active tool, move tool to cursor
 func _physics_process(delta: float) -> void:

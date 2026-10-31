@@ -5,7 +5,7 @@ signal car_launched(car: MovingCar)
 @export var is_active: bool = true
 @export var car_template: PackedScene = preload("res://actors/moving_car.tscn")
 @export var cars_per_minute: float = 5.
-@export var car_launch_force: float = 25.
+@export var car_launch_force: float = 45.
 @export_range(0., 1.) var cars_frequency_variance_percentage: float = 0.2
 @export_range(0., 1.) var cars_start_force_variance_percentage: float = 0.2
 

@@ -206,6 +206,8 @@ size = Vector3(1.7314453, 1.3309896, 4.97435)
 
 [node name="MovingCar" type="RigidBody3D" unique_id=896635733]
 continuous_cd = true
+contact_monitor = true
+max_contacts_reported = 3
 script = ExtResource("1_ujrer")
 
 [node name="car-body" type="MeshInstance3D" parent="." unique_id=1723279456]
@@ -231,3 +233,5 @@ mesh = SubResource("ArrayMesh_qhdhn")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=548532615]
 transform = Transform3D(1, 0, 0, 0, 1, 7.5497894e-08, 0, -7.5497894e-08, 1, 0.24658203, 0.73031616, -0.004936273)
 shape = SubResource("BoxShape3D_xonvl")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -30,3 +30,7 @@ func _physics_process(_delta: float) -> void:
 		crashed = true
 		force_strength = 0.
 	previous_velocity = linear_velocity
+
+func _on_body_entered(body: Node) -> void:
+	if body.has_method("crashed") and not crashed:
+		body.crashed(self, linear_velocity.length())
