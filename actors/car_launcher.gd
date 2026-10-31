@@ -12,6 +12,9 @@ signal car_launched(car: MovingCar)
 func _sample_time_to_next_car_sec() -> float:
 	return 60. / (cars_per_minute + (randf_range(-1., 1.) * cars_per_minute * cars_frequency_variance_percentage))
 
+func _ready() -> void:
+	if not is_in_group("TrafficMakers"): add_to_group("TrafficMakers")
+
 @onready var car_start_position: Transform3D
 @onready var time_to_launch_car_sec: float = _sample_time_to_next_car_sec()
 func _process(delta: float) -> void:

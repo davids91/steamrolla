@@ -93,6 +93,10 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 			and tool_nodes[active_tool].controlled_by == RoadworkTool.ControlMethods.PILOTED
 		): tool_nodes[active_tool].get_node("OrbitCamera").transition_to(view)
 
+		# Put to parking if not within level bounds
+		if not level.is_within_bounds(tool_nodes[active_tool].global_position):
+			runway.call_to_park(tool_nodes[active_tool])
+
 	# Rewire trajectory drawn signal if a drawn trajectory is available
 	if trajectory:
 		if tool_nodes.has(active_tool) and tool_nodes[active_tool] and tool_nodes[active_tool].controlled_by == RoadworkTool.ControlMethods.DRAWN:

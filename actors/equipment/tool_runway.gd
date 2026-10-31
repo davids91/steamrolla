@@ -30,9 +30,8 @@ func call_twice_to_deploy(tool: RoadworkTool) -> void:
 		parked_tools.erase(tool)
 	else: following = tool
 
-func may_be_outside_bounds(body: Node3D) -> void:
-	if body is RoadworkTool:
-		tools_may_be_outside_bounds[body as RoadworkTool] = 0
+func may_be_outside_bounds(body: RoadworkTool) -> void:
+	tools_may_be_outside_bounds[body as RoadworkTool] = 0
 
 func call_to_park(tool: RoadworkTool) -> void:
 	if parking_spots.has(tool.tool_enum) and not parked_tools.has(tool):
@@ -61,7 +60,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _ready() -> void:
 	$OriginalPositionMarker.global_position = global_position
-	if level: $OutOfBoundsChecker.global_position = level.global_position
 
 @onready var runway_height: float = global_position.y
 @onready var target_global_position: Vector3 = global_position

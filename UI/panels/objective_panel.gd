@@ -16,7 +16,8 @@ signal objective_completed(objective_name: String)
 		if photos.size() > 3: %Photo4/Image.texture = photos[3]
 		else: %Photo4.visible = false
 @export var task_item_scn: PackedScene
-@export var level: RoadChunk
+@export var road_chunk: RoadChunk
+@export var level: BaseLevel
 
 ## The level objectives and the "asphalt_done" objective at the end of the array
 @onready var objectives: Array[ObjectiveItemv2] = [%AsphaltDoneTaskItem]
@@ -83,24 +84,43 @@ func revert_completed(objective_name: String) -> void:
 	objectives[objective_names.find(objective_name)].completed = false
 
 func _on_check_btn_pressed() -> void:
-	if level: level.initiate_scan()
+	if road_chunk: road_chunk.initiate_scan()
+
+func _ready() -> void:
+	if is_completed("traffic"):
+		traffic_objective_complete = true
 
 @export var objective_check_interval_sec : float = 0.5
 var time_left_to_check_sec: float = objective_check_interval_sec
+@export var traffic_objective_delay_sec: float = 25.
+var time_to_check_traffic_objective_sec: float = traffic_objective_delay_sec
+var traffic_objective_complete: bool = false
 func _process(delta: float) -> void:
 	time_left_to_check_sec -= delta
-	if 0. > time_left_to_check_sec:
-		time_left_to_check_sec = objective_check_interval_sec
-
-		# Check for asphalt state objective completion
-		if level:
-			%AsphaltProgress.value = 1. - level.get_deviation_from_target() * 10.
-			if level.is_state_in_target() and not is_completed("asphalt_done"):
+	time_to_check_traffic_objective_sec -= delta
+	if road_chunk:
+		if time_left_to_check_sec < 0.:
+			time_left_to_check_sec = objective_check_interval_sec
+			# Check for asphalt state objective completion
+			%AsphaltProgress.value = 1. - road_chunk.get_deviation_from_target() * 10.
+			if road_chunk.is_state_in_target() and not is_completed("asphalt_done"):
 				set_completed("asphalt_done")
 				LevelStructure.level_attribute_store(used_base_dir, "asphalt_done")
 
-		# Check for the other named objectives completion
-		for i in range(1, objective_paths.size()):
-			if LevelStructure.level_attribute_under_path_present(objective_paths[i]):
-				if not is_completed(objective_names[i]): set_completed(objective_names[i])
-			elif is_completed(objective_names[i]): revert_completed(objective_names[i])
+		if( # Check for crashes in traffic
+			not traffic_objective_complete
+			and time_left_to_check_sec < objective_check_interval_sec * 0.5
+			and time_to_check_traffic_objective_sec < 0.
+		):
+			time_to_check_traffic_objective_sec = objective_check_interval_sec * 0.6
+			var crashed_car_count: int = 0
+			for car in level.contained_traffic: if car.crashed: crashed_car_count += 1
+			if 0 == crashed_car_count:
+				traffic_objective_complete = true
+				set_completed("traffic_ok")
+
+			# Check for the other named objectives completion
+			for i in range(1, objective_paths.size()):
+				if LevelStructure.level_attribute_under_path_present(objective_paths[i]):
+					if not is_completed(objective_names[i]): set_completed(objective_names[i])
+				elif is_completed(objective_names[i]): revert_completed(objective_names[i])

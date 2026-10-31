@@ -8,7 +8,8 @@ signal exit_tool()
 
 static var MAIN_COLOR_GREEN: Color = Color.from_string("#36a947", Color.WEB_GREEN)
 @export var asphalt_check_interval_sec: float = 0.5
-@export var level: RoadChunk
+@export var road_chunk: RoadChunk
+@export var level: BaseLevel
 @export var base_dir: String = ""
 
 func set_objectives(objectives: Dictionary[String, String], objective_photos: Array[Texture] = []) -> void:
@@ -24,6 +25,7 @@ func objective_complete(objective_name: String) -> void:
 
 func _ready() -> void: # Automatically wire the level down to the objective panel
 	if level: $ObjectivePanel.level = level
+	if road_chunk: $ObjectivePanel.road_chunk = road_chunk
 
 func _on_tool_panel_selected_tool(tool: ToolPanel.Tools) -> void:
 	selected.emit(tool)

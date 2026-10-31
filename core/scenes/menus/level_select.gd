@@ -88,6 +88,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				LevelStructure.level_attribute_reset(selected_chunk.used_base_dir, attr)
 		LevelStructure.level_attribute_reset(selected_chunk.used_base_dir, "tool_positions")
 		LevelStructure.level_attribute_reset(selected_chunk.used_base_dir, "shown_complete_screen")
+		LevelStructure.level_attribute_reset(selected_chunk.used_base_dir, "contained_cars")
 
 func _ready() -> void:
 	_load_level_data()

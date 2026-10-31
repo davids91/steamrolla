@@ -29,6 +29,9 @@ _limits = [0.0, 1.25, 0.0, 1.0]
 _data = [Vector2(0, 0), 0.0, 4.295519, 0, 0, Vector2(0.7030201, 1.0452518), 2.8887992, 2.8887992, 0, 0, Vector2(1, 1), -1.4652756, 0.0, 0, 0]
 point_count = 3
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_0iqqk"]
+size = Vector3(100, 64, 100)
+
 [node name="Level3" type="Node3D" unique_id=1539626438]
 script = ExtResource("1_0iqqk")
 
@@ -56,8 +59,9 @@ transform = Transform3D(0.119782455, -0.07854363, 0.9896885, 0.54834616, 0.83625
 script = ExtResource("3_dph8v")
 road_paint_animation_curve = SubResource("Curve_gij5m")
 
-[node name="HUD" parent="." unique_id=920709406 node_paths=PackedStringArray("level") instance=ExtResource("4_onofa")]
-level = NodePath("../RoadChunk")
+[node name="HUD" parent="." unique_id=920709406 node_paths=PackedStringArray("road_chunk", "level") instance=ExtResource("4_onofa")]
+road_chunk = NodePath("../RoadChunk")
+level = NodePath("..")
 
 [node name="ScreenBlocker" parent="HUD" unique_id=991935671 instance=ExtResource("5_g0uno")]
 unique_name_in_owner = true
@@ -105,6 +109,13 @@ tool_radius = 0.3
 speed = 7.5
 turning_speed = 0.5
 
+[node name="OutOfBoundsChecker" type="Area3D" parent="." unique_id=2079540405]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OutOfBoundsChecker" unique_id=1705940073]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3842392, 0, 0.6565399)
+shape = SubResource("BoxShape3D_0iqqk")
+debug_color = Color(0.7, 0, 0.011666489, 0.41960785)
+
 [connection signal="exit_scene" from="HUD" to="." method="_on_hud_exit_scene"]
 [connection signal="exit_scene" from="HUD" to="RoadChunk" method="save_user_data"]
 [connection signal="exit_tool" from="HUD" to="ToolController" method="_on_hud_exit_tool"]
@@ -112,3 +123,5 @@ turning_speed = 0.5
 [connection signal="selected" from="HUD" to="ToolController" method="select_tool"]
 [connection signal="tool_switch" from="ToolController" to="HUD" method="_on_tool_controller_tool_switch"]
 [connection signal="payload_reset" from="ToolController/Runway" to="ToolController" method="_on_runway_payload_reset"]
+[connection signal="body_entered" from="OutOfBoundsChecker" to="." method="_on_out_of_bounds_checker_body_entered"]
+[connection signal="body_exited" from="OutOfBoundsChecker" to="." method="_on_out_of_bounds_checker_body_exited"]

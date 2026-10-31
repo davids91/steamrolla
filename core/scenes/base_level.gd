@@ -3,13 +3,23 @@ extends Node3D
 
 @export var accepted_asphalt_deviation: float = 0.005
 @export var level_objectives: Dictionary[String, String] = {
-	"asphalt_done": "Fix road surface",
+	"asphalt_done": "Fix road surface", "traffic_ok": "No crashed cars",
 }
 @export var level_objective_photos: Array[Texture] = []
 @export var transition_time_sec: float = 0.5
+@export var max_cars_count: int = 30
 
 @onready var base_dir: String = LevelStructure.get_base_dir_for_scene(self)
 func _ready() -> void:
+	# Handle permanent objects
+	var car_transform_readouts = LevelStructure.level_attribute_data_read(base_dir,"contained_cars")
+	if car_transform_readouts is Array[Transform3D]:
+		for t in car_transform_readouts:
+			var car: MovingCar = preload("res://actors/moving_car.tscn").instantiate()
+			add_child(car)
+			car.global_transform = t
+			car.crashed = true
+
 	# Handle Objectives
 	LevelStructure.level_attribute_list_overwrite(base_dir, level_objectives)
 	%RoadChunk.deviation_threshold = accepted_asphalt_deviation
@@ -68,11 +78,34 @@ func _on_hud_objective_completed(objective_name: String) -> void:
 				await get_tree().create_timer(road_paint_display_pause_sec).timeout
 		)
 
+var contained_traffic: Array[MovingCar] = []
 func _on_hud_exit_scene() -> void: # Exit the scene when there's no active tool
 	if(
 		$ToolController.active_tool != ToolPanel.Tools.UNKNOWN
 		and $ToolController.tool_nodes[$ToolController.active_tool].controlled_by == RoadworkTool.ControlMethods.DRAGGED
 	): return
+
+	# Save permanent objects
+	var car_transforms: Array[Transform3D] = []
+	for car in contained_traffic: car_transforms.push_back(car.global_transform)
+	LevelStructure.level_attribute_store(base_dir, "contained_cars", car_transforms)
+
+	# Start exit transition
 	var transition = create_tween()
 	transition.tween_property(%ScreenBlocker, "modulate", Color.WHITE, transition_time_sec)
 	transition.tween_callback(SceneManager.return_to_level_select.bind(base_dir))
+
+func _on_out_of_bounds_checker_body_entered(body: Node3D) -> void:
+	if body is MovingCar:
+		contained_traffic.push_back(body)
+		for m in get_tree().get_nodes_in_group("TrafficMakers"):
+			m.is_active = max_cars_count > contained_traffic.size()
+
+func _on_out_of_bounds_checker_body_exited(body: Node3D) -> void:
+	if body is MovingCar:
+		contained_traffic.erase(body)
+		body.queue_free()
+		for m in get_tree().get_nodes_in_group("TrafficMakers"):
+			m.is_active = max_cars_count > contained_traffic.size()
+	elif body is RoadworkTool:
+		$ToolController/Runway.may_be_outside_bounds(body)
