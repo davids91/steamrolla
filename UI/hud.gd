@@ -4,6 +4,7 @@ extends CanvasLayer
 signal selected(tool: ToolPanel.Tools)
 signal objective_completed(objective_name: String)
 signal exit_scene()
+signal exit_tool()
 
 static var MAIN_COLOR_GREEN: Color = Color.from_string("#36a947", Color.WEB_GREEN)
 @export var asphalt_check_interval_sec: float = 0.5
@@ -28,8 +29,10 @@ func _on_tool_panel_selected_tool(tool: ToolPanel.Tools) -> void:
 	selected.emit(tool)
 
 @export var transition_time_sec: float = 0.5
+var is_selected_tool_piloted: bool = false
 func _on_exit_btn_pressed() -> void:
-	exit_scene.emit()
+	if is_selected_tool_piloted: exit_tool.emit()
+	else: exit_scene.emit()
 
 func _on_objective_panel_objective_completed(objective_name: String) -> void:
 	objective_completed.emit(objective_name)
@@ -44,3 +47,10 @@ func _on_objective_panel_objective_completed(objective_name: String) -> void:
 		$LevelCompletePanel.visible = true
 		create_tween().tween_property($LevelCompletePanel, "modulate", Color.WHITE, transition_time_sec)
 		LevelStructure.level_attribute_store(base_dir, "shown_complete_screen")
+
+@export var exit_btn_normal_region: Rect2
+@export var exit_btn_tool_region: Rect2
+func _on_tool_controller_tool_switch(_from: RoadworkTool, to: RoadworkTool) -> void:
+	is_selected_tool_piloted = to and to.controlled_by == RoadworkTool.ControlMethods.PILOTED
+	if is_selected_tool_piloted: %ExitBtn/TextureRect.texture.region = exit_btn_tool_region
+	else: %ExitBtn/TextureRect.texture.region = exit_btn_normal_region

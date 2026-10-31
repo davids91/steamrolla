@@ -1,5 +1,8 @@
 extends Node3D
 
+# Each tool might be null!
+signal tool_switch(from: RoadworkTool, to: RoadworkTool)
+
 @export var trajectory: Trajectory
 @export var view: PlayerView
 @export var level: RoadChunk
@@ -98,6 +101,11 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 			trajectory.is_enabled = tool_nodes[tool].controlled_by == RoadworkTool.ControlMethods.DRAWN
 			if tool_nodes[tool].controlled_by == RoadworkTool.ControlMethods.DRAWN:
 				trajectory.trajectory_drawn.connect(tool_nodes[tool].trajectory_drawn)
+
+	tool_switch.emit(
+		null if not tool_nodes.has(active_tool) else tool_nodes[active_tool],
+		null if not tool_nodes.has(tool) else tool_nodes[tool]
+	)
 
 	# Early exit if no tools are selected
 	if tool == ToolPanel.Tools.UNKNOWN:
@@ -237,12 +245,10 @@ func _physics_process(delta: float) -> void:
 			asphalt_delta *= (1. - tool_nodes[active_tool].tool_responsiveness)
 			if abs(asphalt_delta) < VALUE_EPSILON: asphalt_delta = 0.
 
-func _on_hud_exit_scene() -> void:
+func _on_hud_exit_tool() -> void:
 	if runway and tool_nodes.has(active_tool):
 		runway.may_be_outside_bounds(tool_nodes[active_tool])
-
-	# Call deferred to ensure order of execution, HUD::exit_scene has many listeners
-	select_tool.call_deferred(ToolPanel.Tools.UNKNOWN)
+	select_tool(ToolPanel.Tools.UNKNOWN)
 
 func _on_runway_payload_reset(tool_enum: ToolPanel.Tools) -> void:
 	if active_tool == tool_enum: select_tool(ToolPanel.Tools.UNKNOWN)

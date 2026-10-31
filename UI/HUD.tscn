@@ -25,6 +25,8 @@ margin = Rect2(25, 12.32, 54.195, 27.46)
 
 [node name="HUD" type="CanvasLayer" unique_id=920709406]
 script = ExtResource("1_ygh00")
+exit_btn_normal_region = Rect2(768.488, 122.233, 129.995, 138.655)
+exit_btn_tool_region = Rect2(883.9836, 506.08176, 129.995, 138.655)
 
 [node name="ObjectivePanel" parent="." unique_id=1415146818 instance=ExtResource("3_ygh00")]
 
@@ -37,6 +39,7 @@ theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
 [node name="ExitBtn" type="TextureButton" parent="MarginContainer" unique_id=622200269]
+unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 texture_normal = SubResource("AtlasTexture_k5p64")

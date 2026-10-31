@@ -107,7 +107,8 @@ turning_speed = 0.5
 
 [connection signal="exit_scene" from="HUD" to="." method="_on_hud_exit_scene"]
 [connection signal="exit_scene" from="HUD" to="RoadChunk" method="save_user_data"]
-[connection signal="exit_scene" from="HUD" to="ToolController" method="_on_hud_exit_scene"]
+[connection signal="exit_tool" from="HUD" to="ToolController" method="_on_hud_exit_tool"]
 [connection signal="objective_completed" from="HUD" to="." method="_on_hud_objective_completed"]
 [connection signal="selected" from="HUD" to="ToolController" method="select_tool"]
+[connection signal="tool_switch" from="ToolController" to="HUD" method="_on_tool_controller_tool_switch"]
 [connection signal="payload_reset" from="ToolController/Runway" to="ToolController" method="_on_runway_payload_reset"]
