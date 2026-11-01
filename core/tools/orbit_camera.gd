@@ -52,10 +52,10 @@ func _rotate_camera_by(offset: Vector2) -> void:
 	rotation.x -= offset.y
 	rotation.y = wrapf(rotation.y, -PI, PI)
 
-#TODO: play sound when crash
 @export var min_crash_for_shake: float = 1.
 @export var max_crash_amount: float = 3.
 @export var crash_shake_displacement: float = 1.4
+@export var crash_smoothness: float = 0.8
 @onready var crash_trajectory = Vector3.ZERO
 func _process(_delta: float) -> void:
 	crash_trajectory = crash_trajectory.limit_length(max_crash_amount)
@@ -67,5 +67,6 @@ func _process(_delta: float) -> void:
 				randf() * crash_trajectory.y * crash_shake_displacement,
 				randf() * crash_trajectory.z * crash_shake_displacement,
 			),
-			0.8
+			crash_smoothness
 		)
+	else: _camera_3d.position = lerp(_camera_3d.position, Vector3.ZERO, crash_smoothness)

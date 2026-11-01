@@ -77,6 +77,7 @@ region = Rect2(255, 438, 110, 76)
 collision_layer = 3
 collision_mask = 2
 script = ExtResource("1_vq81g")
+forward_collision_dampening = 0.85
 tool_enum = 0
 normalized_size = Vector2(0.058, 0.038)
 controlled_by = 2

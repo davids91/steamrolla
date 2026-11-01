@@ -33,18 +33,19 @@ func _on_tool_panel_selected_tool(tool: ToolPanel.Tools) -> void:
 @export var transition_time_sec: float = 0.5
 var is_selected_tool_piloted: bool = false
 func _on_exit_btn_pressed() -> void:
-	if is_selected_tool_piloted: exit_tool.emit()
+	if is_selected_tool_piloted and not level_completed: exit_tool.emit()
 	else: exit_scene.emit()
 
+var level_completed: bool = false
 func _on_objective_panel_objective_completed(objective_name: String) -> void:
 	objective_completed.emit(objective_name)
 	if objective_name == "asphalt_done": $SuccessLevel.play()
 	var level_completion_percentage: float = LevelStructure.level_attribute_completion(base_dir)
 	$Rating.current_rating = round(GameDifficulty.instance.completion_to_rating.sample(level_completion_percentage))
-	if( # Check if all objectives are complete to show completed dialouge
-		level_completion_percentage >= 1.
-		and not LevelStructure.level_attribute_present(base_dir, "shown_complete_screen")
-	):
+	level_completed = level_completion_percentage >= 1.
+
+	# Check if all objectives are complete to show completed dialouge
+	if level_completed and not LevelStructure.level_attribute_present(base_dir, "shown_complete_screen"):
 		$Rating.show_rating()
 		$LevelCompletePanel.visible = true
 		create_tween().tween_property($LevelCompletePanel, "modulate", Color.WHITE, transition_time_sec)

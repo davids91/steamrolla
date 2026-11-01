@@ -2,8 +2,8 @@ class_name Runway
 extends Node3D
 
 signal payload_reset(tool_enum: ToolPanel.Tools)
-signal payload_left()
-signal payload_entered()
+signal payload_left(tool: RoadworkTool)
+signal payload_entered(tool: RoadworkTool)
 
 @export var level: RoadChunk
 @export var player_view: PlayerView
@@ -18,7 +18,6 @@ var tool_selected_to_deploy: RoadworkTool
 var dragged_tool_exiting: bool = false
 func call_twice_to_deploy(tool: RoadworkTool) -> void:
 	if tool_selected_to_deploy == tool: # Stop runway to help deploy tool
-		tool.prepare_for_runway()
 		following = tool_selected_to_deploy
 		player_view.cursor.visible = false
 	elif parked_tools.has(tool): # Select tool for deployment if it isn't already
@@ -30,6 +29,10 @@ func call_twice_to_deploy(tool: RoadworkTool) -> void:
 		parked_tools.erase(tool)
 	else: following = tool
 
+func register(tool: RoadworkTool) -> void:
+	if parking_spots.has(tool.tool_enum) and tools_in_proximity.has(tool): call_to_park(tool)
+	else: parked_tools.erase(tool)
+
 func may_be_outside_bounds(body: RoadworkTool) -> void:
 	tools_may_be_outside_bounds[body as RoadworkTool] = 0
 
@@ -37,6 +40,7 @@ func call_to_park(tool: RoadworkTool) -> void:
 	if parking_spots.has(tool.tool_enum) and not parked_tools.has(tool):
 		may_be_outside_bounds(tool)
 		tool.stop_working()
+		tool.prepare_for_runway()
 		tool_selected_to_deploy = null
 		parked_tools.push_back(tool)
 		following = null
@@ -149,6 +153,7 @@ func _physics_process(_delta: float) -> void:
 					tool_movement_responsiveness
 				)
 				tools_may_be_outside_bounds[tool] += 1
+			else: tools_inside_bounds.push_back(tool)
 			if(
 				(tool.global_position - parking_spots[tool.tool_enum].global_position).length() < 5. #TechDebt: magic number is for adequate distance from parking spot
 				and 10 < tools_may_be_outside_bounds[tool] #TechDebt: Magic number for the number of updates required to count tool as moved back into bounds
@@ -166,14 +171,21 @@ func _physics_process(_delta: float) -> void:
 		)
 
 func _on_deployment_area_body_entered(body: Node3D) -> void:
-	if not dragged_tool_exiting and not tool_selected_to_deploy and body is RoadworkTool and not parked_tools.has(body):
+	if body is RoadworkTool and not dragged_tool_exiting and not tool_selected_to_deploy and not parked_tools.has(body):
 		call_to_park(body)
-		payload_entered.emit()
+		payload_entered.emit(body)
 	dragged_tool_exiting = false
 
 func _on_deployment_area_body_exited(body: Node3D) -> void:
-	if tool_selected_to_deploy and tool_selected_to_deploy.is_working and body == tool_selected_to_deploy:
+	if body is RoadworkTool and body == tool_selected_to_deploy and tool_selected_to_deploy and tool_selected_to_deploy.is_working:
 		following = tool_selected_to_deploy
 		parked_tools.erase(tool_selected_to_deploy)
 		tool_selected_to_deploy = null
-		payload_left.emit()
+		payload_left.emit(following)
+
+var tools_in_proximity: Array[RoadworkTool] = []
+func _on_proximity_detector_body_entered(body: Node3D) -> void:
+	if body is RoadworkTool: tools_in_proximity.push_back(body)
+
+func _on_proximity_detector_body_exited(body: Node3D) -> void:
+	if body is RoadworkTool: tools_in_proximity.erase(body)

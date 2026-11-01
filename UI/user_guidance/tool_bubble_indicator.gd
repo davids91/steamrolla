@@ -6,7 +6,7 @@ static var displayed: UsageIndicator:
 		if v and displayed and v != displayed: displayed.show_tooltip(false)
 		displayed = v
 
-@onready var is_showing = false
+@onready var is_showing = true
 func show_tooltip(should_show: bool) -> void:
 	if should_show and not is_showing:
 		$AnimationPlayer.play("show")

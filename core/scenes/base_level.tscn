@@ -72,11 +72,12 @@ unique_name_in_owner = true
 height_unit = 2.0
 surface = 0
 asphalt_shyniness = 0.05
+physical_height = null
 deviation_threshold = 0.003
 
-[node name="ToolController" parent="." unique_id=129265235 node_paths=PackedStringArray("view", "level", "runway", "tool_nodes") instance=ExtResource("7_gsihx")]
+[node name="ToolController" parent="." unique_id=129265235 node_paths=PackedStringArray("view", "road_chunk", "runway", "tool_nodes") instance=ExtResource("7_gsihx")]
 view = NodePath("../PlayerView")
-level = NodePath("../RoadChunk")
+road_chunk = NodePath("../RoadChunk")
 runway = NodePath("Runway")
 tool_nodes = {
 0: NodePath("Roller"),
@@ -122,6 +123,7 @@ debug_color = Color(0.7, 0, 0.011666489, 0.41960785)
 [connection signal="objective_completed" from="HUD" to="." method="_on_hud_objective_completed"]
 [connection signal="selected" from="HUD" to="ToolController" method="select_tool"]
 [connection signal="tool_switch" from="ToolController" to="HUD" method="_on_tool_controller_tool_switch"]
-[connection signal="payload_reset" from="ToolController/Runway" to="ToolController" method="_on_runway_payload_reset"]
+[connection signal="payload_entered" from="ToolController/Runway" to="." method="_on_runway_payload_entered"]
+[connection signal="payload_left" from="ToolController/Runway" to="." method="_on_runway_payload_left"]
 [connection signal="body_entered" from="OutOfBoundsChecker" to="." method="_on_out_of_bounds_checker_body_entered"]
 [connection signal="body_exited" from="OutOfBoundsChecker" to="." method="_on_out_of_bounds_checker_body_exited"]

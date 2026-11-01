@@ -84,8 +84,8 @@ func snap_to_reference(amount: float) -> void:
 	%AsphaltTransformer.material.set_shader_parameter("set_to_reference", amount)
 
 #endregion Asphalt setters
-
-func get_size() -> Vector3: return Vector3($Ground.mesh.size.x, height_unit, $Ground.mesh.size.y)
+@export var play_area_height: float = 32.
+func get_size() -> Vector3: return Vector3($Ground.mesh.size.x, height_unit * play_area_height, $Ground.mesh.size.y)
 
 func is_within_bounds(pos: Vector3) -> bool:
 	return(
@@ -185,6 +185,12 @@ var tool_radius: float = 0.:
 		tool_radius = amount
 		%AsphaltUpdater.material.set_shader_parameter("tool_radius", amount)
 
+## normalized value for tools without a defined tool shape ( e.g. a rectangle )
+var tool_current_normalized_height: float = 0.:
+	set(h):
+		tool_current_normalized_height = h
+		%AsphaltUpdater.material.set_shader_parameter("tool_current_normalized_height", h)
+
 ## Updates the brush based on the provided global coordinates
 var tool_center: Vector2 = Vector2.ONE * 0.5:
 	set(pos):
@@ -193,6 +199,7 @@ var tool_center: Vector2 = Vector2.ONE * 0.5:
 
 func set_update_brush_center(global_center: Vector3) -> void:
 	tool_center = get_tex_position_from(global_center)
+	tool_current_normalized_height = (global_center.y - global_position.y) / height_unit
 
 ## Normalized size of the tool updating the level: width and height
 var tool_size: Vector2 = Vector2.ONE * 0.5:

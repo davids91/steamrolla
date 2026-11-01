@@ -5,7 +5,7 @@ signal tool_switch(from: RoadworkTool, to: RoadworkTool)
 
 @export var trajectory: Trajectory
 @export var view: PlayerView
-@export var level: RoadChunk
+@export var road_chunk: RoadChunk
 @export var runway: Runway
 @export var tool_nodes: Dictionary[ToolPanel.Tools, RoadworkTool]
 
@@ -15,10 +15,9 @@ signal tool_switch(from: RoadworkTool, to: RoadworkTool)
 @export_range(0., 1.) var draw_radius: float = 0.03:
 	set(v):
 		draw_radius = v
-		if level: level.update_brush_radius = draw_radius
+		if road_chunk: road_chunk.update_brush_radius = draw_radius
 
 ## Tools deployed by the runway (if the given tool has an assigned runway)
-var deployed_tools: Array[ToolPanel.Tools] = []
 func _ready() -> void:
 	for c in get_children(): # Connect driver intention changed signals for piloted tools
 		if(
@@ -26,53 +25,13 @@ func _ready() -> void:
 			and c.has_signal("driver_intention_changed")
 		): c.driver_intention_changed.connect(piloted_tool_driver_intention_changed)
 
-	if runway: # Runway deployment signals
-		runway.payload_left.connect(func():
-			if not tool_nodes.has(active_tool) or deployed_tools.has(active_tool): return
-			deployed_tools.push_back(active_tool)
-		)
-		runway.payload_entered.connect(func():
-			if not tool_nodes.has(active_tool): return
-			runway.may_be_outside_bounds(tool_nodes[active_tool])
-			if( # Camera transition from piloted camera to player view if the tool camera is active
-				tool_nodes[active_tool].get_node_or_null("OrbitCamera")
-				and tool_nodes[active_tool].get_node("OrbitCamera").get_current()
-				and tool_nodes[active_tool].controlled_by == RoadworkTool.ControlMethods.PILOTED
-			): (tool_nodes[active_tool].get_node("OrbitCamera") as OrbitCamera3D).transition_to(view)
-			deployed_tools.erase(active_tool)
-			select_tool(ToolPanel.Tools.UNKNOWN)
-		)
-
-	# Storage and retrieval of the positions of the deployed tools
-	level.user_data_saved.connect(func(): LevelStructure.level_attribute_store(
-		level.used_base_dir, "tool_positions", get_deployed_tool_positions()
-	))
-	var readout = LevelStructure.level_attribute_data_read(level.used_base_dir, "tool_positions")
-	var tool_transforms: Dictionary[ToolPanel.Tools, Transform3D]
-	if readout is Dictionary[ToolPanel.Tools, Transform3D]: tool_transforms = readout
-
-	if tool_transforms: # If any positions are stored, update the tools based on them
-		for tool in get_children(): if tool is RoadworkTool:
-			if tool_transforms.has(tool.tool_enum):
-				deployed_tools.push_back(tool.tool_enum)
-				tool.global_transform = tool_transforms[tool.tool_enum]
-				if runway and runway.parked_tools.has(tool):
-					runway.parked_tools.erase(tool)
-
 func piloted_tool_driver_intention_changed(is_moving: bool, forward: bool) -> void:
 	if ( # Update angle of piloted tool based on driver intention
 		is_moving and tool_nodes.has(active_tool) and tool_nodes[active_tool]
 		and tool_nodes[active_tool].controlled_by == RoadworkTool.ControlMethods.PILOTED
 	):
-		if forward: level.tool_angle_offset = tool_nodes[active_tool].tool_angle
-		else: level.tool_angle_offset = tool_nodes[active_tool].tool_angle + PI
-
-## Provide the positions of the deployed tools
-func get_deployed_tool_positions() -> Dictionary[ToolPanel.Tools, Transform3D]:
-	var positions: Dictionary[ToolPanel.Tools, Transform3D]
-	for c in get_children(): if c is RoadworkTool and deployed_tools.has(c.tool_enum):
-		positions[c.tool_enum] = c.global_transform
-	return positions
+		if forward: road_chunk.tool_angle_offset = tool_nodes[active_tool].tool_angle
+		else: road_chunk.tool_angle_offset = tool_nodes[active_tool].tool_angle + PI
 
 var asphalt_delta: float = 0.
 var active_tool: ToolPanel.Tools = ToolPanel.Tools.UNKNOWN
@@ -94,7 +53,7 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 		): tool_nodes[active_tool].get_node("OrbitCamera").transition_to(view)
 
 		# Put to parking if not within level bounds
-		if not level.is_within_bounds(tool_nodes[active_tool].global_position):
+		if not road_chunk.is_within_bounds(tool_nodes[active_tool].global_position):
 			runway.call_to_park(tool_nodes[active_tool])
 
 	# Rewire trajectory drawn signal if a drawn trajectory is available
@@ -125,13 +84,13 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 			runway.call_twice_to_deploy(tool_nodes[tool])
 			if (
 				tool_nodes[tool].controlled_by == RoadworkTool.ControlMethods.DRAGGED
-				or level.is_within_bounds(tool_nodes[tool].global_position)
+				or road_chunk.is_within_bounds(tool_nodes[tool].global_position)
 			): # Deploy drawn tools and tools within the level from the get go
 				runway.call_twice_to_deploy(tool_nodes[tool])
 				ready_to_deploy = true
-		if level and ready_to_deploy:
+		if road_chunk and ready_to_deploy:
 			asphalt_delta = tool_nodes[tool].tool_strength
-			level.configure_to(tool_nodes[tool]) # Configure tool
+			road_chunk.configure_to(tool_nodes[tool]) # Configure tool
 			tool_nodes[tool].start_working()
 			if( # Camera transition from level overview if tool camera is available
 				view.get_current()
@@ -240,11 +199,11 @@ func _physics_process(delta: float) -> void:
 	if tool_nodes.has(active_tool):
 		if tool_nodes[active_tool].is_working:
 			if (tool_nodes[active_tool].payload_triggered or not tool_nodes[active_tool].has_payload):
-				level.asphalt_delta = asphalt_delta * delta
-				level.update_asphalt()
+				road_chunk.asphalt_delta = asphalt_delta * delta
+				road_chunk.update_asphalt()
 			tool_nodes[active_tool].work_at_cursor(view.cursor.global_position)
-			level.set_update_brush_center(tool_nodes[active_tool].global_position)
-			level.tool_angle = Vector2(-tool_nodes[active_tool].basis.z.x, -tool_nodes[active_tool].basis.z.z).angle()
+			road_chunk.set_update_brush_center(tool_nodes[active_tool].global_position)
+			road_chunk.tool_angle = Vector2(-tool_nodes[active_tool].basis.z.x, -tool_nodes[active_tool].basis.z.z).angle()
 		else:
 			asphalt_delta *= (1. - tool_nodes[active_tool].tool_responsiveness)
 			if abs(asphalt_delta) < VALUE_EPSILON: asphalt_delta = 0.

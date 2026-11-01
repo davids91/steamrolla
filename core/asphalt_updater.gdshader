@@ -8,6 +8,7 @@ uniform float asphalt_delta = 0.; // Addition / removal of asphalt under brush
 uniform float paver_overflow_min: hint_range(0.0, 1.) = 0.1;
 uniform float paver_overflow_max: hint_range(0.0, 1.) = 0.1;
 
+uniform float tool_current_normalized_height = 0.;
 uniform vec2 tool_center = vec2(0.5); 
 uniform vec2 tool_size = vec2(0.3, 0.2); // size for rectangle shaped tools
 uniform float tool_radius = 0.01; // radius for tools without a defined shape
@@ -23,7 +24,7 @@ const int TOOL_SHOVEL = 4;
 
 const float CONTROL_EPSILON = 0.005;
 const float VALUE_EPSILON = 0.001;
-const float PIXEL_RADIUS = 0.002; // 1. / 512. because asphalt quantity texture is of resolution 512x512
+const float PIXEL_RADIUS = 0.00390625; // 1. / 256. because asphalt display is of subdivision 256x256
 
 // https://github.com/SebLague/Gamedev-Maths/blob/master/PointInTriangle.cs
 bool point_in_triangle(vec2 a, vec2 b, vec2 c, vec2 p) {
@@ -98,15 +99,20 @@ void fragment() {
 		}else if(used_tool == TOOL_ROLLER) {
 			vec2 prev_pixel_pos = UV - roller_direction * PIXEL_RADIUS;
 			vec2 next_pixel_pos = UV + roller_direction * PIXEL_RADIUS;
-			if( // Check if pixel is within Roller distance
-				(point_in_triangle(roller_bl, roller_tl, roller_tr, UV)|| point_in_triangle(roller_bl, roller_tr, roller_br, UV))
+			if(
+				current_asphalt_level > tool_current_normalized_height
+				// Check if pixel is within Roller distance
+				&&(point_in_triangle(roller_bl, roller_tl, roller_tr, UV)|| point_in_triangle(roller_bl, roller_tr, roller_br, UV))
 				// Check for out of bounds
 				&&(all(lessThan(prev_pixel_pos, vec2(1.))) && all(greaterThan(prev_pixel_pos, vec2(0.))))
 			){
 				// The below lines are an attempt to simulate roller pressure for each induvidual pixel under the roller
 				// calculate the asphalt being moved forward to the direction of the rolling to the next pixel
-				if(texture(asphalt_attributes, next_pixel_pos).r > 0.)
-					asphalt_delta_output -= current_asphalt_level * tool_strength;
+				vec3 next_pixel_attribute = texture(asphalt_attributes, next_pixel_pos).rgb;
+				// But only if the next pixel is within the editable asphalt area
+				if(next_pixel_attribute.r > 0. && next_pixel_attribute.g > 0.)
+					asphalt_delta_output -= max(0., current_asphalt_level * tool_strength);
+
 				// calcualte the asphalt being moved into this pixel from a neighbouring pixel opposite of the rolling direction
 				asphalt_delta_output += max(0., texture(asphalt_state, prev_pixel_pos).r) * tool_strength;
 			}
