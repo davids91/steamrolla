@@ -242,17 +242,18 @@ stream_0/stream = ExtResource("5_5lgew")
 collision_layer = 3
 collision_mask = 2
 script = ExtResource("1_1b380")
-momentum_controllability = 0.75
-momentum_control_strength = Vector2(0.15, 0.25)
+start_velo = 15.0
+max_velocity_length_for_jitter = 25.0
 tool_enum = 3
 normalized_size = Vector2(0.12, 0.12)
-tool_strength = 0.03500000000000014
+tool_strength = 0.07000000000000028
 tool_radius = 0.12
 controlled_by = 2
-speed = 15.0
-steering_angle = 10.0
+speed = 2.0
+steering_angle = 0.157
+steering_epsilon = 0.01
 turning_speed = 0.5
-momentum_dampening = 1.25
+momentum_dampening = 2.0
 
 [node name="OrbitCamera" parent="." unique_id=1504134869 instance=ExtResource("2_7imx7")]
 transform = Transform3D(-0.9973146, -0.025289025, 0.06873356, 0, 0.938493, 0.3452982, -0.073238224, 0.34437087, -0.93597263, 0, 0, 0)
@@ -276,7 +277,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.092113495, 0)
 unique_name_in_owner = true
 transform = Transform3D(-0.5, 0, -7.54979e-08, 0, 0.5, 0, 7.54979e-08, 0, -0.5, 0, 0, 0)
 
-[node name="Skeleton3D" parent="SpinnyPart/Compactor/rig" parent_id_path=PackedInt32Array(1133186004, 683086973) index="0" unique_id=520171294]
+[node name="Skeleton3D" parent="SpinnyPart/Compactor/rig" parent_id_path=PackedInt32Array(1133186004, 920630493) index="0" unique_id=1253331845]
 bones/2/rotation = Quaternion(0, 4.627107, 0.707107, 0)
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="SpinnyPart/Compactor/rig/Skeleton3D" index="1" unique_id=392415176]
