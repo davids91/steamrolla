@@ -419,6 +419,7 @@ func _initialize(data: RoadChunkData, data_path: String = "") -> void:
 	_initialize_state()
 
 func initialize(data_path: String) -> void:
+	if not FileAccess.file_exists(data_path): print("level_select.initialize: missing file: "+data_path)
 	level_data = ResourceLoader.load(data_path)
 	_initialize(level_data, data_path)
 
