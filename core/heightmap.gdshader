@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode cull_disabled, depth_prepass_alpha;
+stencil_mode write, compare_always, 1;
 
 uniform sampler2D road_colormap;
 uniform sampler2D asphalt_texture;
@@ -118,6 +119,8 @@ void fragment() {
 
 	// TechDebt: Setting alpha to shader confuses render order
 	// https://github.com/godotengine/godot/issues/98217
+	// Writing to alpha also puts the mesh into the same transparent pipeline
+	// as the thumbs up rating on the level overview scene, so it can be hidden behind the chunks 
 	//ALPHA = texture(road_colormap, UV).a;
 }
 

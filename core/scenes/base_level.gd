@@ -2,6 +2,7 @@ class_name BaseLevel
 extends Node3D
 
 @export var accepted_asphalt_deviation: float = 0.005
+@export var accepted_crashed_cars: int = 0
 @export var level_objectives: Dictionary[String, String] = {"asphalt_done": "Fix road surface", "traffic_ok": "No crashed cars"}
 @export var level_objective_photos: Array[Texture] = []
 @export var transition_time_sec: float = 0.5
@@ -22,15 +23,10 @@ func _ready() -> void:
 	var tool_transforms: Dictionary[ToolPanel.Tools, Transform3D]
 	if readout is Dictionary[ToolPanel.Tools, Transform3D]: tool_transforms = readout
 	if tool_transforms: # If any positions are stored, update the tools based on them
-		for tool in get_children(): if tool is RoadworkTool and tool_transforms.has(tool.tool_enum):
+		for tool in $ToolController.get_children(): if tool is RoadworkTool and tool_transforms.has(tool.tool_enum):
 			deployed_tools.push_back(tool.tool_enum)
 			tool.global_transform = tool_transforms[tool.tool_enum]
 			$ToolController/Runway.register(tool)
-
-	# Wire level behavior
-	$RoadChunk.user_data_saved.connect(func(): LevelStructure.level_attribute_store(
-		base_dir, "tool_positions", get_deployed_tool_positions()
-	))
 
 	# Handle Objectives
 	LevelStructure.level_attribute_list_overwrite(base_dir, level_objectives)
@@ -47,7 +43,7 @@ func _ready() -> void:
 ## Provide the positions of the deployed tools
 func get_deployed_tool_positions() -> Dictionary[ToolPanel.Tools, Transform3D]:
 	var positions: Dictionary[ToolPanel.Tools, Transform3D]
-	for c in get_children(): if c is RoadworkTool and deployed_tools.has(c.tool_enum):
+	for c in $ToolController.get_children(): if c is RoadworkTool and deployed_tools.has(c.tool_enum):
 		positions[c.tool_enum] = c.global_transform
 	return positions
 
@@ -99,15 +95,12 @@ func _on_hud_objective_completed(objective_name: String) -> void:
 
 var contained_traffic: Array[MovingCar] = []
 func _on_hud_exit_scene() -> void: # Exit the scene when there's no active tool
-	if(
-		$ToolController.active_tool != ToolPanel.Tools.UNKNOWN
-		and $ToolController.tool_nodes[$ToolController.active_tool].controlled_by == RoadworkTool.ControlMethods.DRAGGED
-	): return
-
 	# Save permanent objects
+	%RoadChunk.save_user_data(base_dir)
 	var car_transforms: Array[Transform3D] = []
 	for car in contained_traffic: car_transforms.push_back(car.global_transform)
 	LevelStructure.level_attribute_store(base_dir, "contained_cars", car_transforms)
+	LevelStructure.level_attribute_store(base_dir, "tool_positions", get_deployed_tool_positions())
 
 	# Start exit transition
 	var transition = create_tween()
@@ -128,6 +121,8 @@ func _on_out_of_bounds_checker_body_exited(body: Node3D) -> void:
 			m.is_active = max_cars_count > contained_traffic.size()
 	elif body is RoadworkTool:
 		$ToolController/Runway.may_be_outside_bounds(body)
+		if not $RoadChunk.is_within_bounds(body.global_position) and $ToolController.active_tool == body.tool_enum:
+			$ToolController.select_tool(ToolPanel.Tools.UNKNOWN)
 
 func _on_runway_payload_left(tool: RoadworkTool) -> void:
 	if not deployed_tools.has(tool.tool_enum): deployed_tools.push_back(tool.tool_enum)
@@ -138,5 +133,5 @@ func _on_runway_payload_entered(tool: RoadworkTool) -> void:
 		tool.get_node_or_null("OrbitCamera") and tool.get_node("OrbitCamera").get_current()
 		and tool.controlled_by == RoadworkTool.ControlMethods.PILOTED
 	): tool.get_node("OrbitCamera").transition_to($PlayerView)
-	deployed_tools.erase(tool)
+	deployed_tools.erase(tool.tool_enum)
 	$ToolController.select_tool(ToolPanel.Tools.UNKNOWN)

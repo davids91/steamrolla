@@ -134,5 +134,24 @@ func _physics_process(delta: float) -> void:
 
 @export_range(0., 1.) var inv_turn_responsiveness: float = 0.25
 
+static var highlighted_tools: Array[RoadworkTool] = [] # All highlighted tools are stored here
+static var highlight_handler_chosen: bool
+func _set_highlight(highlighted: bool) -> void:
+	if not highlighted:
+		highlighted_tools.erase(self)
+		$ToolBubbleIndicator.show_tooltip(false)
+	elif not highlighted_tools.has(self): highlighted_tools.push_back(self)
+
+var is_highlighted: bool = false
+func _on_body_representation_area_entered(area: Area3D) -> void:
+	if area.name == "PlayerCursorBody" and area.get_parent().visible and not is_working:
+		is_highlighted = true
+		_set_highlight(is_highlighted)
+
+func _on_body_representation_area_exited(area: Area3D) -> void:
+	if area.name == "PlayerCursorBody" and area.get_parent().visible:
+		is_highlighted = false
+		_set_highlight(is_highlighted)
+
 func _process(_delta: float) -> void:
 	previous_position = lerp(previous_position, global_position, inv_turn_responsiveness)

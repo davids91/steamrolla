@@ -12,7 +12,7 @@
 size = Vector3(1.0430298, 3.0577972, 2.5981522)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7imx7"]
-size = Vector3(1.0891113, 2.7536497, 2.5981522)
+size = Vector3(6.1, 6, 6.027)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rfa05"]
 resource_name = "Material"
@@ -246,7 +246,7 @@ start_velo = 15.0
 max_velocity_length_for_jitter = 25.0
 tool_enum = 3
 normalized_size = Vector2(0.12, 0.12)
-tool_strength = 0.07000000000000028
+tool_strength = 0.0600000000000005
 tool_radius = 0.12
 controlled_by = 2
 speed = 2.0
@@ -263,11 +263,11 @@ control_disabled = true
 transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, -0.006134033, 1.6385012, -0.42316812)
 shape = SubResource("BoxShape3D_5lgew")
 
-[node name="CollisionDetector" type="Area3D" parent="." unique_id=1789476627 groups=["BirdReactable", "BombActivator"]]
+[node name="SelectableArea" type="Area3D" parent="." unique_id=1789476627 groups=["BirdReactable", "BombActivator"]]
 collision_layer = 0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CollisionDetector" unique_id=1162582284]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.029174805, 1.3768725, -0.42316818)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SelectableArea" unique_id=1162582284]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0730896, 3.097823, -0.28852367)
 shape = SubResource("BoxShape3D_7imx7")
 
 [node name="SpinnyPart" type="Node3D" parent="." unique_id=1481064053]
@@ -561,14 +561,11 @@ volume_db = -5.0
 [node name="ToolBubbleIndicator" parent="." unique_id=135928248 instance=ExtResource("6_f3p5u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.827988, 0)
 
-[node name="ForwardRayCast" type="RayCast3D" parent="." unique_id=1818242534]
-target_position = Vector3(0, 0, 2)
-
 [node name="FloorRaycast" type="RayCast3D" parent="." unique_id=1485868472]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 0)
 target_position = Vector3(0, -100, 0)
 
-[connection signal="area_entered" from="CollisionDetector" to="." method="_on_body_representation_area_entered"]
-[connection signal="area_exited" from="CollisionDetector" to="." method="_on_body_representation_area_exited"]
+[connection signal="area_entered" from="SelectableArea" to="." method="_on_body_representation_area_entered"]
+[connection signal="area_exited" from="SelectableArea" to="." method="_on_body_representation_area_exited"]
 
 [editable path="SpinnyPart/Compactor"]

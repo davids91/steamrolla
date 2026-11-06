@@ -44,7 +44,6 @@ margin = Rect2(25, 12.32, 54.195, 27.46)
 [node name="LevelSelect" type="Node3D" unique_id=2110132494]
 script = ExtResource("1_esh0k")
 road_chunk_spacing = 100.0
-distance_travel_towards_selected = 0.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=308553165]
 environment = SubResource("Environment_lnrnj")

@@ -87,40 +87,45 @@ func _on_check_btn_pressed() -> void:
 	if road_chunk: road_chunk.initiate_scan()
 
 func _ready() -> void:
-	if is_completed("traffic"):
+	if is_completed("traffic_ok"):
 		traffic_objective_complete = true
 
 @export var objective_check_interval_sec : float = 0.5
 var time_left_to_check_sec: float = objective_check_interval_sec
-@export var traffic_objective_delay_sec: float = 25.
+@export var traffic_objective_delay_sec: float = 15.
 var time_to_check_traffic_objective_sec: float = traffic_objective_delay_sec
 var traffic_objective_complete: bool = false
 func _process(delta: float) -> void:
 	time_left_to_check_sec -= delta
 	time_to_check_traffic_objective_sec -= delta
-	if road_chunk:
+	if level and road_chunk:
 		if time_left_to_check_sec < 0.:
 			time_left_to_check_sec = objective_check_interval_sec
+
 			# Check for asphalt state objective completion
-			%AsphaltProgress.value = 1. - road_chunk.get_deviation_from_target() * 10.
+			%AsphaltProgress.value = (
+				level.accepted_asphalt_deviation
+				/ max(road_chunk.get_deviation_from_target(), 0.001)
+			)
 			if road_chunk.is_state_in_target() and not is_completed("asphalt_done"):
 				set_completed("asphalt_done")
 				LevelStructure.level_attribute_store(used_base_dir, "asphalt_done")
 
-		if( # Check for crashes in traffic
-			not traffic_objective_complete
-			and time_left_to_check_sec < objective_check_interval_sec * 0.5
-			and time_to_check_traffic_objective_sec < 0.
-		):
-			time_to_check_traffic_objective_sec = objective_check_interval_sec * 0.6
+		# Check for crashes in traffic
+		if not traffic_objective_complete and time_to_check_traffic_objective_sec < 0.:
+			time_to_check_traffic_objective_sec = objective_check_interval_sec * 1.1
 			var crashed_car_count: int = 0
 			for car in level.contained_traffic: if car.crashed: crashed_car_count += 1
-			if 0 == crashed_car_count:
+			if level.accepted_crashed_cars >= crashed_car_count:
 				traffic_objective_complete = true
 				set_completed("traffic_ok")
+				LevelStructure.level_attribute_store(used_base_dir, "traffic_ok")
 
-			# Check for the other named objectives completion
-			for i in range(1, objective_paths.size()):
-				if LevelStructure.level_attribute_under_path_present(objective_paths[i]):
-					if not is_completed(objective_names[i]): set_completed(objective_names[i])
-				elif is_completed(objective_names[i]): revert_completed(objective_names[i])
+		if time_to_check_traffic_objective_sec < 0.:
+			time_to_check_traffic_objective_sec = objective_check_interval_sec * 0.6
+
+		# Check for the other named objectives completion
+		for i in range(1, objective_paths.size()):
+			if LevelStructure.level_attribute_under_path_present(objective_paths[i]):
+				if not is_completed(objective_names[i]): set_completed(objective_names[i])
+			elif is_completed(objective_names[i]): revert_completed(objective_names[i])

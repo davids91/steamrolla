@@ -33,7 +33,8 @@ func _on_tool_panel_selected_tool(tool: ToolPanel.Tools) -> void:
 @export var transition_time_sec: float = 0.5
 var is_selected_tool_piloted: bool = false
 func _on_exit_btn_pressed() -> void:
-	if is_selected_tool_piloted and not level_completed: exit_tool.emit()
+	if is_selected_tool_piloted and (not level_completed or not $LevelCompletePanel.visible):
+		exit_tool.emit()
 	else: exit_scene.emit()
 
 var level_completed: bool = false

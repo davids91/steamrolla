@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://c3ps5ohsbiq7y"]
 
+[ext_resource type="Script" uid="uid://c4aohgbpjkw3a" path="res://props/light_beam_toggle.gd" id="1_gga3r"]
 [ext_resource type="PackedScene" uid="uid://de8bs7ebkbnhr" path="res://models/streetlight.fbx" id="1_u58ju"]
 [ext_resource type="PackedScene" uid="uid://cg7n7vmb4isuc" path="res://models/light-beam.fbx" id="2_kti2d"]
 
@@ -8,6 +9,7 @@ height = 16.0
 radius = 0.25
 
 [node name="streetlight" type="Node3D" unique_id=384071403]
+script = ExtResource("1_gga3r")
 
 [node name="streetlight" parent="." unique_id=1457920156 instance=ExtResource("1_u58ju")]
 

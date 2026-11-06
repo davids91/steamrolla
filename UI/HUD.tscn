@@ -26,7 +26,7 @@ margin = Rect2(25, 12.32, 54.195, 27.46)
 [node name="HUD" type="CanvasLayer" unique_id=920709406]
 script = ExtResource("1_ygh00")
 exit_btn_normal_region = Rect2(768.488, 122.233, 129.995, 138.655)
-exit_btn_tool_region = Rect2(883.9836, 506.08176, 129.995, 138.655)
+exit_btn_tool_region = Rect2(895, 635, 128, 128)
 
 [node name="ObjectivePanel" parent="." unique_id=1415146818 instance=ExtResource("3_ygh00")]
 

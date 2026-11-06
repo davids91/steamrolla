@@ -41,10 +41,12 @@ func _on_asphalt_detector_body_exited(body: Node3D) -> void:
 var moving_transparency_modifier: float = 0.
 func _process(delta: float) -> void:
 	super(delta)
-	if not $OrbitCamera.get_current(): return
+
+	# Handle transparency setting when the pilot camera is active
 	var movement_direction: Vector3 = (basis.z * -movement_intent.y).normalized()
 	var camera_direction: Vector3 = ($OrbitCamera.get_view_origin() - global_position)
-	if 0. > movement_direction.dot(camera_direction): moving_transparency_modifier = -(1. - transparency_while_moving)
+	if (0. > movement_direction.dot(camera_direction) and is_working and $OrbitCamera.get_current()):
+		moving_transparency_modifier = -(1. - transparency_while_moving)
 	else: moving_transparency_modifier = 0.
 	current_color = lerp(
 		current_color, Color(target_color.r, target_color.g, target_color.b, target_color.a + moving_transparency_modifier),
@@ -77,11 +79,3 @@ func _physics_process(delta: float) -> void:
 	# Slow down roller when there's anything in front
 	if is_working and $ForwardShapeCast.is_colliding() and not is_reversing:
 		velocity = velocity.limit_length(velocity.length() * forward_collision_dampening)
-
-func _on_body_representation_area_entered(area: Area3D) -> void:
-	if area.name == "PlayerCursorBody" and area.get_parent().visible and not is_working:
-		$ToolBubbleIndicator.show_tooltip(true)
-
-func _on_body_representation_area_exited(area: Area3D) -> void:
-	if area.name == "PlayerCursorBody" and area.get_parent().visible:
-		$ToolBubbleIndicator.show_tooltip(false)

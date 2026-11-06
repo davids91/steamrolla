@@ -36,7 +36,7 @@ func _load_level_data() -> void:
 		# Add rating decoration
 		var rating_decor: RatingDecoration = rating_decoration_template.instantiate()
 		rating_decor.current_completion_percentage = LevelStructure.level_attribute_completion(road_chunk.used_base_dir)
-		rating_decor.position = Vector3(0., 25., 0.)
+		rating_decor.position = Vector3(0., non_highlighted_decoration_pos_y, 10.)
 		road_chunk.add_child(rating_decor)
 		get_tree().create_timer(
 			rating_delay_sec + randf_range(-1., 1.) * rating_delay_randomness_ratio * rating_delay_sec
@@ -52,6 +52,15 @@ func _load_level_data() -> void:
 			create_tween().tween_property($PlayerView, "camera_transform", start_camera_transform, transition_time_sec)
 			create_tween().tween_property(%ScreenBlocker, "modulate", Color.TRANSPARENT, transition_time_sec)
 
+@export var highlighted_decoration_pos_y: float = 35.
+@export var non_highlighted_decoration_pos_y: float = 25.
+var highlighted_decoration: RatingDecoration = null:
+	set(v):
+		if v and v != highlighted_decoration:
+			create_tween().tween_property(v, "position:y", highlighted_decoration_pos_y, 0.3)
+		if highlighted_decoration and v != highlighted_decoration:
+			create_tween().tween_property(highlighted_decoration, "position:y", non_highlighted_decoration_pos_y, 0.3)
+		highlighted_decoration = v
 var traveling_towards_selected_chunk: bool = false
 var selected_chunk: RoadChunk = null
 func _unhandled_input(event: InputEvent) -> void:
@@ -62,6 +71,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			else: $Highlight.modulate = Color.RED
 			$Highlight.visible = true
 			$Highlight.global_position = $PlayerView.looking_at.global_position
+			highlighted_decoration = $PlayerView.looking_at.get_node("RatingDecoration")
 			if(
 				event is InputEventMouseButton and event.is_pressed()
 				and selected_chunk == $PlayerView.looking_at and scenes.has(selected_chunk)
@@ -76,7 +86,9 @@ func _unhandled_input(event: InputEvent) -> void:
 				create_tween().tween_property($PlayerView, "camera_transform", target_transform, transition_time_sec)
 				create_tween().tween_property(%ScreenBlocker, "modulate", Color.WHITE, transition_time_sec)
 				ResourceLoader.load_threaded_request(scenes[selected_chunk])
-		else: $Highlight.visible = false
+		else:
+			$Highlight.visible = false
+			highlighted_decoration = null
 		if not traveling_towards_selected_chunk:
 			selected_chunk = $PlayerView.looking_at
 

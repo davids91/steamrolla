@@ -10,11 +10,18 @@ extends RigidBody3D
 @export var large_velocity_dot_threshold_for_crash: float = 15.
 @export var mid_velocity_delta_threshold_for_crash: float = 10.
 @export var mid_velocity_dot_threshold_for_crash: float = 100.
+@export var velocity_standstill_epsilon: float = 0.1
+@export var velocity_standstill_threshold_sec: float = 1.
 @onready var crashed: bool = false
 @onready var previous_velocity: Vector3 = linear_velocity
-func _physics_process(_delta: float) -> void:
+@onready var standing_still_since: float = 0.
+func _physics_process(delta: float) -> void:
 	var velocity_delta: float = (previous_velocity - linear_velocity).length()
 	var velocity_dot_abs: float = abs(previous_velocity.dot(linear_velocity))
+	if velocity_delta < velocity_standstill_epsilon:
+		standing_still_since += delta
+		if not crashed and standing_still_since >= velocity_standstill_threshold_sec:
+			crashed = true
 	if(
 		not crashed # Not crashed already
 		and linear_velocity.length() > crash_min_velocity_threshold

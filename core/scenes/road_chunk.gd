@@ -354,6 +354,10 @@ func _initialize_state() -> void:
 ## Loads the minified version of the roadchunk, level data is expected to be in packaged format!
 func _initialize_minified(data_path: String = "") -> void:
 	assert(data_path.length() > 0) # The base data is supposed to exist in res:// somewhere!
+
+	# Set modified material
+	$Ground.material_override = preload("res://core/terrain_material_with_alpha.tres").duplicate()
+
 	for img in LevelStructure.final_image_names:
 		if img == "start_asphalt_state":
 			level_data.start_asphalt_state = ImageTexture.create_from_image(Image.create_empty(64, 64, false, Image.FORMAT_RF))
@@ -453,11 +457,11 @@ func _on_asphalt_bomb_explode(explosion_pos: Vector3, explode_radius: float, amo
 #endregion
 
 func _ready() -> void:
-	if not is_stub:
-		$Ground.get_active_material(0).set_shader_parameter("level_tool_strength", 0.)
-		initialize(LevelStructure.resource_path_in_dir(used_base_dir))
-	if is_stub and not is_minified:
-		$Ground.get_active_material(0).set_shader_parameter("level_tool_strength", 0.)
+	initialize(LevelStructure.resource_path_in_dir(used_base_dir))
+	var ground_material = $Ground.get_active_material(0)
+	ground_material.set_shader_parameter("level_tool_strength", 1.)
+	if not is_stub: ground_material.set_shader_parameter("level_tool_strength", 0.)
+	if is_stub and not is_minified: ground_material.set_shader_parameter("level_tool_strength", 0.)
 
 func _process(delta: float) -> void:
 	time_since_last_update += delta

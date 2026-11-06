@@ -46,7 +46,9 @@ func handle_movement(delta: float) -> void:
 		if $FloorRaycast.get_collision_point().y < global_position.y:
 			velocity += gravity
 			tool_strength = max(0., tool_strength - delta * 10.)
-		else: tool_strength = lerp(tool_strength, original_tool_strength, 0.9)
+		else:
+			tool_strength = lerp(tool_strength, original_tool_strength, 0.9)
+			velocity.y = lerp(velocity.y, 0., 0.9)
 		global_position.y = max(global_position.y, $FloorRaycast.get_collision_point().y)
 		$SpinnyPart.look_at(basis.x.cross($FloorRaycast.get_collision_normal()))
 
@@ -65,14 +67,7 @@ func handle_movement(delta: float) -> void:
 		+ vibration_extent_max_delta * smoothstep(0., max_velocity_length_for_jitter, velocity.length())
 	)
 
-	# Handle forward collisions
-	$ForwardRayCast.target_position = next_point_based_on_velocity
-	if $ForwardRayCast.get_collider():
-		var col_normal: Vector3 = $ForwardRayCast.get_collision_normal()
-		if not is_zero_approx(col_normal.length()):
-			var impacted_momentum: Vector3 = basis.z.reflect(col_normal).normalized()
-			impacted_momentum = Vector3(impacted_momentum.x, 0., impacted_momentum.z) * momentum_impact_effect
-			velocity = lerp(velocity, impacted_momentum, momentum_impact_effect)
+	# Handle velocity dampening
 	if velocity.length() > minimum_velo_length:
 		velocity -= velocity.normalized() * momentum_dampening * delta
 
@@ -121,11 +116,3 @@ func _physics_process(delta: float) -> void:
 	)
 	current_quaternion.y = lerp(current_quaternion.y, handle_start_angle_y, handle_positional_strength)
 	%Compactor/rig/Skeleton3D.set_bone_pose_rotation(handle_bone_id, current_quaternion)
-
-func _on_body_representation_area_entered(area: Area3D) -> void:
-	if area.name == "PlayerCursorBody" and area.get_parent().visible and not is_working:
-		$ToolBubbleIndicator.show_tooltip(true)
-
-func _on_body_representation_area_exited(area: Area3D) -> void:
-	if area.name == "PlayerCursorBody" and area.get_parent().visible:
-		$ToolBubbleIndicator.show_tooltip(false)

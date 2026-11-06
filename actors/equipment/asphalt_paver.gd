@@ -48,11 +48,3 @@ func _process(delta: float) -> void:
 		if asphalt_remaining == asphalt_capacity: $ActiveSound.play()
 		asphalt_remaining = max(0., asphalt_remaining - asphalt_usage_per_sec * delta)
 	else: $ActiveSound.stop()
-
-func _on_body_representation_area_entered(area: Area3D) -> void:
-	if area.name == "PlayerCursorBody" and area.get_parent().visible and not is_working:
-		$ToolBubbleIndicator.show_tooltip(true)
-
-func _on_body_representation_area_exited(area: Area3D) -> void:
-	if area.name == "PlayerCursorBody" and area.get_parent().visible:
-		$ToolBubbleIndicator.show_tooltip(false)

@@ -56,7 +56,7 @@ shadow_mesh = SubResource("ArrayMesh_tglvp")
 size = Vector3(3.7458496, 3.670102, 6.5528584)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c7bb5"]
-size = Vector3(3.6660156, 3.566452, 6.5078735)
+size = Vector3(15, 7.5, 15)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qrjta"]
 size = Vector3(0.13275337, 0.4393921, 2.415619)
@@ -100,11 +100,11 @@ mesh = SubResource("ArrayMesh_haft6")
 transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, -0.0076904297, 2.4798095, -2.050059)
 shape = SubResource("BoxShape3D_ojn7k")
 
-[node name="CollisionDetector" type="Area3D" parent="." unique_id=581004782 groups=["BirdReactable", "BombActivator"]]
+[node name="SelectableArea" type="Area3D" parent="." unique_id=581004782 groups=["BirdReactable", "BombActivator"]]
 collision_layer = 0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CollisionDetector" unique_id=1931688132]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5340805, -2.0591736)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SelectableArea" unique_id=1931688132]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.014925003, 3.7303581, -1.7147236)
 shape = SubResource("BoxShape3D_c7bb5")
 
 [node name="AsphaltDetectorBottom" type="Area3D" parent="." unique_id=1043122648]
@@ -139,8 +139,8 @@ time_to_switch_frame_sec = 0.3
 frame_delta = Vector2(128, 0)
 frame_count = 4
 
-[connection signal="area_entered" from="CollisionDetector" to="." method="_on_body_representation_area_entered"]
-[connection signal="area_exited" from="CollisionDetector" to="." method="_on_body_representation_area_exited"]
+[connection signal="area_entered" from="SelectableArea" to="." method="_on_body_representation_area_entered"]
+[connection signal="area_exited" from="SelectableArea" to="." method="_on_body_representation_area_exited"]
 [connection signal="body_entered" from="AsphaltDetectorBottom" to="." method="_on_asphalt_detector_body_entered"]
 [connection signal="body_exited" from="AsphaltDetectorBottom" to="." method="_on_asphalt_detector_body_exited"]
 

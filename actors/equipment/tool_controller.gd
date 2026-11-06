@@ -193,6 +193,19 @@ func _process(_delta: float) -> void:
 	): view.crash_trajectory = tool_nodes[active_tool].get_node("OrbitCamera").crash_trajectory
 	else: view.crash_trajectory = lerp(view.crash_trajectory, Vector3.ZERO, 0.5)
 
+	# Decide if a tool is being hightlighted
+	var highlighted_tool: RoadworkTool = null
+	if view: for tool in RoadworkTool.highlighted_tools:
+		if(
+			not highlighted_tool
+			or(
+				tool.global_position.distance_to(view.cursor.global_position)
+				< highlighted_tool.global_position.distance_to(view.cursor.global_position)
+			)
+		): highlighted_tool = tool
+	if highlighted_tool and highlighted_tool.has_node("ToolBubbleIndicator"):
+		highlighted_tool.get_node("ToolBubbleIndicator").show_tooltip(true)
+
 const VALUE_EPSILON: float = 0.001;
 # Configure the level to be updated based on the active tool, move tool to cursor
 func _physics_process(delta: float) -> void:

@@ -5,7 +5,7 @@ signal payload_reset(tool_enum: ToolPanel.Tools)
 signal payload_left(tool: RoadworkTool)
 signal payload_entered(tool: RoadworkTool)
 
-@export var level: RoadChunk
+@export var road_chunk: RoadChunk
 @export var player_view: PlayerView
 @export var parking_spots: Dictionary[ToolPanel.Tools, Marker3D]
 @export var parked_tools: Array[RoadworkTool]
@@ -14,12 +14,17 @@ signal payload_entered(tool: RoadworkTool)
 func ready_to_deploy() -> bool:
 	return tool_selected_to_deploy != null
 
+@export var runway_drag_guard_length_sec: float = 1.
 var tool_selected_to_deploy: RoadworkTool
 var dragged_tool_exiting: bool = false
 func call_twice_to_deploy(tool: RoadworkTool) -> void:
 	if tool_selected_to_deploy == tool: # Stop runway to help deploy tool
 		following = tool_selected_to_deploy
 		player_view.cursor.visible = false
+		can_drag_runway = false
+		get_tree().create_timer(runway_drag_guard_length_sec).timeout.connect(
+			func(): can_drag_runway = true
+		)
 	elif parked_tools.has(tool): # Select tool for deployment if it isn't already
 		if tool.controlled_by == RoadworkTool.ControlMethods.DRAGGED:
 			dragged_tool_exiting = true
@@ -51,8 +56,9 @@ func call_to_park(tool: RoadworkTool) -> void:
 		if not following: following = $OriginalPositionMarker
 
 var locked_view: bool = false
+var can_drag_runway: bool = true
 func _unhandled_input(event: InputEvent) -> void:
-	if player_view and player_view.looking_at and player_view.looking_at is Runway:
+	if can_drag_runway and player_view and player_view.looking_at and player_view.looking_at is Runway:
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 			if event is InputEventMouseMotion: $OriginalPositionMarker.global_position = player_view.cursor.global_position
 			if following == $OriginalPositionMarker and not locked_view:
@@ -71,22 +77,19 @@ const hidden_depth: float = -500;
 var tools_may_be_outside_bounds: Dictionary[RoadworkTool, int] # Tool and the number of updates applied to its position
 func _physics_process(_delta: float) -> void:
 	# Calculate Horizontal trajectory of the runway
-	var level_size: Vector3 = level.get_size()
-	var x_bound_min: float = level.global_position.x - level_size.x / 2. - $Shape.shape.size.x / 2.
-	var x_bound_max: float = level.global_position.x + level_size.x / 2. + $Shape.shape.size.x / 2.
-	var y_bound_min: float = level.global_position.y - level_size.y / 2.
-	var y_bound_max: float = level.global_position.y + level_size.y / 2.
-	var z_bound_min: float = level.global_position.z - level_size.z / 2. - $Shape.shape.size.z / 2.
-	var z_bound_max: float = level.global_position.z + level_size.z / 2. + $Shape.shape.size.z / 2.
+	var level_size: Vector3 = road_chunk.get_size()
+	var x_bound_min: float = road_chunk.global_position.x - level_size.x / 2. - $Shape.shape.size.x / 2.
+	var x_bound_max: float = road_chunk.global_position.x + level_size.x / 2. + $Shape.shape.size.x / 2.
+	var y_bound_min: float = road_chunk.global_position.y - level_size.y / 2.
+	var y_bound_max: float = road_chunk.global_position.y + level_size.y / 2.
+	var z_bound_min: float = road_chunk.global_position.z - level_size.z / 2. - $Shape.shape.size.z / 2.
+	var z_bound_max: float = road_chunk.global_position.z + level_size.z / 2. + $Shape.shape.size.z / 2.
 
-	if( # If the followed object is within level bounds
+	if( # Handle runway movement
 		following
-		and(
-			(
-				following.global_position.x >= x_bound_min and following.global_position.x < x_bound_max
-				and following.global_position.y >= y_bound_min and following.global_position.y < y_bound_max
-				and following.global_position.z >= z_bound_min and following.global_position.z < z_bound_max
-			) or following == $OriginalPositionMarker
+		and( # If the followed object is within level bounds
+			road_chunk.is_within_bounds(following.global_position)
+			or following == $OriginalPositionMarker
 		)
 	):
 		# Check which positions at the levels edge would be best for the runway
@@ -127,8 +130,8 @@ func _physics_process(_delta: float) -> void:
 	# Move towards target position and look at the center of the level always
 	var next_transform: Transform3D = global_transform
 	next_transform.origin = lerp(global_position, target_global_position, 0.35)
-	var center_x_dif: float = next_transform.origin.x - level.global_position.x
-	var center_z_dif: float = next_transform.origin.z - level.global_position.z
+	var center_x_dif: float = next_transform.origin.x - road_chunk.global_position.x
+	var center_z_dif: float = next_transform.origin.z - road_chunk.global_position.z
 	var next_global_orientation_target: Vector3 = next_transform.origin + (
 		Vector3(center_x_dif, 0., 0.) if abs(center_x_dif) > abs(center_z_dif) else Vector3(0., 0., center_z_dif)
 	)
@@ -188,4 +191,6 @@ func _on_proximity_detector_body_entered(body: Node3D) -> void:
 	if body is RoadworkTool: tools_in_proximity.push_back(body)
 
 func _on_proximity_detector_body_exited(body: Node3D) -> void:
-	if body is RoadworkTool: tools_in_proximity.erase(body)
+	if body is RoadworkTool:
+		if body == tool_selected_to_deploy: tool_selected_to_deploy
+		tools_in_proximity.erase(body)
