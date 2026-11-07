@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://dnqtesccg76t7"]
 
-[sub_resource type="Gradient" id="Gradient_lnrnj"]
+[sub_resource type="Gradient" id="Gradient_cnisq"]
 colors = PackedColorArray(0.66656864, 0.6665687, 0.66656864, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_5j0fq"]
-gradient = SubResource("Gradient_lnrnj")
+gradient = SubResource("Gradient_cnisq")
 width = 512
 height = 512
 fill = 1

@@ -3,8 +3,18 @@
 [ext_resource type="Script" uid="uid://bxhboogklaol5" path="res://UI/panels/level_complete_panel.gd" id="1_h5yh1"]
 [ext_resource type="Theme" uid="uid://cjbyaermnkf75" path="res://core/scenes/menus/title_style.tres" id="1_o4dpg"]
 [ext_resource type="Shader" uid="uid://cestwc0w0cjw1" path="res://UI/visual_elements/decorated_text.gdshader" id="2_6lrjc"]
-[ext_resource type="Theme" uid="uid://d1tgwdb3grjhr" path="res://core/scenes/menus/menu_button_style.tres" id="3_cqva8"]
 [ext_resource type="Script" uid="uid://cg84stsjvuo03" path="res://UI/visual_elements/decorated_text.gd" id="4_h5yh1"]
+
+[sub_resource type="Gradient" id="Gradient_lnrnj"]
+colors = PackedColorArray(0, 0, 0, 0.21568628, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_uv85n"]
+gradient = SubResource("Gradient_lnrnj")
+width = 512
+height = 512
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.94017094, 0.43589744)
 
 [sub_resource type="Gradient" id="Gradient_aqvre"]
 interpolation_mode = 1
@@ -26,7 +36,49 @@ shader_parameter/stripes_edge = 0.001
 [sub_resource type="LabelSettings" id="LabelSettings_8jg5c"]
 font_size = 75
 
-[node name="LevelCompletePanel" type="Control" unique_id=145193494]
+[sub_resource type="Gradient" id="Gradient_u287e"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.21603563, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.96213806, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_3oeo6"]
+gradient = SubResource("Gradient_u287e")
+width = 5
+height = 5
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Curve" id="Curve_4u52q"]
+_data = [Vector2(0.009280745, 0), 0.0, 0.11367057, 0, 0, Vector2(0.8863109, 0.6457143), 0.86924344, 0.86924344, 0, 0, Vector2(1, 1), 1.3215321, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_n5k03"]
+curve_y = SubResource("Curve_4u52q")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8jg5c"]
+particle_flag_disable_z = true
+direction = Vector3(0, 1, 0)
+spread = 180.0
+initial_velocity_min = 275.05
+initial_velocity_max = 652.45
+directional_velocity_min = 1500.0
+directional_velocity_max = 1500.0
+directional_velocity_curve = SubResource("CurveXYZTexture_n5k03")
+gravity = Vector3(0, 98, 0)
+hue_variation_min = -1.0
+hue_variation_max = 0.99999994
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_nvcrk"]
+color = Color(0.99607843, 0.3137255, 0, 1)
+thickness = 14
+vertical = true
+
+[sub_resource type="Theme" id="Theme_u287e"]
+default_font_size = 24
+Button/colors/font_hover_color = Color(1, 0.7411765, 0, 1)
+Button/styles/hover = SubResource("StyleBoxLine_nvcrk")
+
+[node name="LevelCompletePanel" type="Control" unique_id=145193494 node_paths=PackedStringArray("confetti_instances")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -34,6 +86,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_h5yh1")
+confetti_instances = [NodePath("CenterContainer/MarginContainer/VBoxContainer/RichTextLabel/Confetti"), NodePath("CenterContainer/MarginContainer/VBoxContainer/RichTextLabel/Confetti2"), NodePath("CenterContainer/MarginContainer/VBoxContainer/RichTextLabel/Confetti3"), NodePath("CenterContainer/MarginContainer/VBoxContainer/RichTextLabel/Confetti4"), NodePath("CenterContainer/MarginContainer/VBoxContainer/RichTextLabel/Confetti5")]
+confetti_delay_sec = 0.65
 
 [node name="Overlay" type="ColorRect" parent="." unique_id=2060406121]
 layout_mode = 1
@@ -42,7 +96,19 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.39607844)
+color = Color(0, 0, 0, 0.20784314)
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1289809931]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_uv85n")
+expand_mode = 2
+stretch_mode = 5
 
 [node name="CenterContainer" type="VBoxContainer" parent="." unique_id=606432793]
 propagate_maximum_size = false
@@ -53,20 +119,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
-
-[node name="MarginContainer2" type="MarginContainer" parent="CenterContainer" unique_id=1665424645]
-layout_mode = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_top = 30
-theme_override_constants/margin_right = 30
-theme_override_constants/margin_bottom = 30
-
-[node name="ProgressBar" type="ProgressBar" parent="CenterContainer/MarginContainer2" unique_id=1405936881]
-modulate = Color(0.8826667, 1, 0.36, 1)
-custom_minimum_size = Vector2(0, 75)
-layout_mode = 2
-value = 50.0
-show_percentage = false
 
 [node name="MarginContainer" type="MarginContainer" parent="CenterContainer" unique_id=2032865438]
 layout_mode = 2
@@ -93,18 +145,73 @@ horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("4_h5yh1")
 
+[node name="Confetti" type="GPUParticles2D" parent="CenterContainer/MarginContainer/VBoxContainer/RichTextLabel" unique_id=555892349]
+z_index = 50
+position = Vector2(300, 300)
+emitting = false
+amount = 64
+texture = SubResource("GradientTexture2D_3oeo6")
+one_shot = true
+explosiveness = 0.83
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_8jg5c")
+
+[node name="Confetti2" type="GPUParticles2D" parent="CenterContainer/MarginContainer/VBoxContainer/RichTextLabel" unique_id=1728174157]
+z_index = 50
+position = Vector2(300, 300)
+emitting = false
+amount = 64
+texture = SubResource("GradientTexture2D_3oeo6")
+one_shot = true
+explosiveness = 0.83
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_8jg5c")
+
+[node name="Confetti3" type="GPUParticles2D" parent="CenterContainer/MarginContainer/VBoxContainer/RichTextLabel" unique_id=1368083917]
+z_index = 50
+position = Vector2(300, 300)
+emitting = false
+amount = 64
+texture = SubResource("GradientTexture2D_3oeo6")
+one_shot = true
+explosiveness = 0.83
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_8jg5c")
+
+[node name="Confetti4" type="GPUParticles2D" parent="CenterContainer/MarginContainer/VBoxContainer/RichTextLabel" unique_id=1184643372]
+z_index = 50
+position = Vector2(300, 300)
+emitting = false
+amount = 64
+texture = SubResource("GradientTexture2D_3oeo6")
+one_shot = true
+explosiveness = 0.83
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_8jg5c")
+
+[node name="Confetti5" type="GPUParticles2D" parent="CenterContainer/MarginContainer/VBoxContainer/RichTextLabel" unique_id=254627935]
+z_index = 50
+position = Vector2(300, 300)
+emitting = false
+amount = 64
+texture = SubResource("GradientTexture2D_3oeo6")
+one_shot = true
+explosiveness = 0.83
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_8jg5c")
+
 [node name="StayButton" type="Button" parent="CenterContainer/MarginContainer/VBoxContainer" unique_id=65451995]
-custom_minimum_size = Vector2(0, 100)
+custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
-theme = ExtResource("3_cqva8")
+theme = SubResource("Theme_u287e")
 theme_override_font_sizes/font_size = 30
 text = "Stay
 "
 
 [node name="LevelSelectButton" type="Button" parent="CenterContainer/MarginContainer/VBoxContainer" unique_id=354698346]
-custom_minimum_size = Vector2(0, 100)
+custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
-theme = ExtResource("3_cqva8")
+theme = SubResource("Theme_u287e")
 theme_override_font_sizes/font_size = 30
 text = "Level Select"
 

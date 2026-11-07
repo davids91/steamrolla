@@ -55,6 +55,7 @@ func _on_objective_panel_objective_completed(objective_name: String) -> void:
 	if level_completed and not LevelStructure.level_attribute_present(base_dir, "shown_complete_screen"):
 		$Rating.show_rating()
 		$LevelCompletePanel.visible = true
+		$LevelCompletePanel.shoot_confetti()
 		create_tween().tween_property($LevelCompletePanel, "modulate", Color.WHITE, transition_time_sec)
 		LevelStructure.level_attribute_store(base_dir, "shown_complete_screen")
 
