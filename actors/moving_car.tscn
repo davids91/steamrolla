@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://bxbb6w08ba2kx" path="res://models/car_0.png" id="1_3iowy"]
 [ext_resource type="Script" uid="uid://ddu44pdciv1tv" path="res://actors/moving_car.gd" id="1_ujrer"]
+[ext_resource type="AudioStream" uid="uid://buopwf7b2rss6" path="res://audio/CarHorn.wav" id="3_4porn"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mdlkg"]
 resource_name = "car-material"
@@ -204,6 +205,11 @@ shadow_mesh = SubResource("ArrayMesh_nxri2")
 [sub_resource type="BoxShape3D" id="BoxShape3D_xonvl"]
 size = Vector3(1.7314453, 1.3309896, 4.97435)
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_8jg5c"]
+random_pitch = 1.0174797
+streams_count = 1
+stream_0/stream = ExtResource("3_4porn")
+
 [node name="MovingCar" type="RigidBody3D" unique_id=896635733]
 continuous_cd = true
 contact_monitor = true
@@ -233,5 +239,8 @@ mesh = SubResource("ArrayMesh_qhdhn")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=548532615]
 transform = Transform3D(1, 0, 0, 0, 1, 7.5497894e-08, 0, -7.5497894e-08, 1, 0.045930743, 0.73031616, -0.004936273)
 shape = SubResource("BoxShape3D_xonvl")
+
+[node name="HornSound" type="AudioStreamPlayer3D" parent="." unique_id=985493835]
+stream = SubResource("AudioStreamRandomizer_8jg5c")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

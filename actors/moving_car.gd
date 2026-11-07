@@ -1,6 +1,23 @@
 class_name MovingCar
 extends RigidBody3D
 
+@export var horn_interval_sec: float = 2.8
+@export_range(0., 1.) var horn_randomness_percentage: float = 0.2
+@export_range(0., 1.) var double_horn_chance: float = 0.3
+@export var double_horn_pitch: float = 1.4
+@onready var time_to_horn_sec: float = horn_interval_sec + randfn(0., horn_interval_sec * horn_randomness_percentage)
+func _process(delta: float) -> void:
+	if not crashed and not $HornSound.playing:
+		time_to_horn_sec -= delta
+		if 0. > time_to_horn_sec:
+			time_to_horn_sec = horn_interval_sec + randfn(0., horn_interval_sec * horn_randomness_percentage)
+			if randf() < double_horn_chance:
+				$HornSound.pitch_scale = double_horn_pitch
+				$HornSound.finished.connect($HornSound.play, CONNECT_ONE_SHOT)
+			else:
+				$HornSound.pitch_scale = 1.
+			$HornSound.play()
+
 @export var force_strength: float = 25.:
 	set(v):
 		force_strength = v
