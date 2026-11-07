@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dqycmm121dtol" path="res://UI/hud.gd" id="1_ygh00"]
 [ext_resource type="PackedScene" uid="uid://de7pi2unbrosp" path="res://UI/panels/objective_panel.tscn" id="3_ygh00"]
+[ext_resource type="AudioStream" uid="uid://5elnitd05rko" path="res://audio/gong.wav" id="5_md4fy"]
 [ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="5_ygh00"]
 [ext_resource type="AudioStream" uid="uid://dvhgxea4thtal" path="res://audio/botch.wav" id="6_k5p64"]
 [ext_resource type="AudioStream" uid="uid://dif8avwftb7wi" path="res://audio/success.wav" id="7_ej2ga"]
@@ -54,6 +55,11 @@ expand_mode = 3
 
 [node name="BotchLevel" type="AudioStreamPlayer" parent="." unique_id=1032426370]
 stream = ExtResource("6_k5p64")
+
+[node name="GONG" type="AudioStreamPlayer" parent="." unique_id=1960059409]
+stream = ExtResource("5_md4fy")
+volume_db = -80.0
+max_polyphony = 5
 
 [node name="SuccessLevel" type="AudioStreamPlayer" parent="." unique_id=295704303]
 stream = ExtResource("7_ej2ga")

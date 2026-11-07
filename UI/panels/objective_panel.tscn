@@ -7,6 +7,15 @@
 [ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="4_t62cb"]
 [ext_resource type="FontFile" uid="uid://df8mh6h3se6l3" path="res://UI/font/RubikSprayPaint-Regular.ttf" id="4_x132q"]
 [ext_resource type="FontFile" uid="uid://c5h6m001q5o7w" path="res://UI/font/CaveatBrush-Regular.ttf" id="5_wnyoo"]
+[ext_resource type="AudioStream" uid="uid://c8owa6cx5gci3" path="res://audio/plop-01.wav" id="8_eys6i"]
+[ext_resource type="AudioStream" uid="uid://ux1kvq46f7te" path="res://audio/plop-02.wav" id="9_y7n4l"]
+[ext_resource type="AudioStream" uid="uid://3ut1i2vkynb3" path="res://audio/plop-03.wav" id="10_gt6up"]
+[ext_resource type="AudioStream" uid="uid://bxlh5asrlj4g0" path="res://audio/plop-04.wav" id="11_i0ica"]
+[ext_resource type="AudioStream" uid="uid://cesvfh0d0lx24" path="res://audio/plop-05.wav" id="12_uak4e"]
+[ext_resource type="AudioStream" uid="uid://b8hki4u3emgcb" path="res://audio/plop-06.wav" id="13_cldx7"]
+[ext_resource type="AudioStream" uid="uid://ch73xrklrymwm" path="res://audio/plop-07.wav" id="14_rh6l0"]
+[ext_resource type="AudioStream" uid="uid://owno56eigwen" path="res://audio/plop-08.wav" id="15_c0cgy"]
+[ext_resource type="AudioStream" uid="uid://bmfqk3bi3qajg" path="res://audio/plop-09.wav" id="16_xymse"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_x132q"]
 atlas = ExtResource("4_t62cb")
@@ -128,6 +137,19 @@ _data = {
 &"RESET": SubResource("Animation_s24m1"),
 &"slide": SubResource("Animation_t62cb")
 }
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_8jg5c"]
+random_pitch = 1.0293022
+streams_count = 9
+stream_0/stream = ExtResource("8_eys6i")
+stream_1/stream = ExtResource("9_y7n4l")
+stream_2/stream = ExtResource("10_gt6up")
+stream_3/stream = ExtResource("11_i0ica")
+stream_4/stream = ExtResource("12_uak4e")
+stream_5/stream = ExtResource("13_cldx7")
+stream_6/stream = ExtResource("14_rh6l0")
+stream_7/stream = ExtResource("15_c0cgy")
+stream_8/stream = ExtResource("16_xymse")
 
 [node name="ObjectivePanel" type="Control" unique_id=1415146818]
 layout_mode = 3
@@ -400,6 +422,11 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 1, 1, 0)
 script = ExtResource("3_873li")
+
+[node name="Plop" type="AudioStreamPlayer" parent="." unique_id=661129097]
+stream = SubResource("AudioStreamRandomizer_8jg5c")
+volume_db = -80.0
+max_polyphony = 5
 
 [connection signal="pressed" from="Base/CheckBtn" to="." method="_on_check_btn_pressed"]
 [connection signal="toggled" from="Base/PanelButton" to="." method="_on_panel_button_toggled"]

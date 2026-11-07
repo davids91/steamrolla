@@ -20,10 +20,13 @@ func is_objective_completed(objective_name: String) -> bool:
 	return LevelStructure.level_attribute_present(base_dir, objective_name)
 
 func objective_complete(objective_name: String) -> void:
-	$ObjectivePanel.set_completed(objective_name) # This also triggers _on_objective_panel_objective_completed
 	LevelStructure.level_attribute_store(base_dir, objective_name)
+	$ObjectivePanel.set_completed(objective_name) # This also triggers _on_objective_panel_objective_completed
 
-func _ready() -> void: # Automatically wire the level down to the objective panel
+func _ready() -> void:
+	create_tween().tween_property($GONG, "volume_db", 10., 1.)
+
+	# Automatically wire the level down to the objective panel
 	if level: $ObjectivePanel.level = level
 	if road_chunk: $ObjectivePanel.road_chunk = road_chunk
 
@@ -43,6 +46,9 @@ func _on_objective_panel_objective_completed(objective_name: String) -> void:
 	if objective_name == "asphalt_done": $SuccessLevel.play()
 	var level_completion_percentage: float = LevelStructure.level_attribute_completion(base_dir)
 	$Rating.current_rating = round(GameDifficulty.instance.completion_to_rating.sample(level_completion_percentage))
+
+	if not level_completed and level_completion_percentage >= 1.:
+		$GONG.play()
 	level_completed = level_completion_percentage >= 1.
 
 	# Check if all objectives are complete to show completed dialouge

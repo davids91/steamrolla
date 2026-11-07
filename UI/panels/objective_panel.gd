@@ -1,3 +1,4 @@
+@tool
 extends Control
 
 signal panel_shown()
@@ -35,6 +36,11 @@ func set_field_photos(field_photos_array: Array[Texture]):
 
 func clicked_away() -> void:
 	_on_panel_button_toggled(false)
+
+func _ready() -> void:
+	if is_completed("traffic_ok"):
+		traffic_objective_complete = true
+	create_tween().tween_property($Plop, "volume_db", 10., 1.)
 
 func _on_panel_button_toggled(_toggled_on: bool) -> void:
 	if not $ClickAwayRect.visible:
@@ -77,6 +83,10 @@ func is_completed(objective_name: String) -> bool:
 	return objectives[objective_names.find(objective_name)].completed
 
 func set_completed(objective_name: String) -> void:
+	if(
+		not objectives[objective_names.find(objective_name)].completed
+		and LevelStructure.level_attribute_completion(used_base_dir) < 1.
+	): $Plop.play()
 	objectives[objective_names.find(objective_name)].completed = true
 	objective_completed.emit(objective_name)
 
@@ -85,10 +95,6 @@ func revert_completed(objective_name: String) -> void:
 
 func _on_check_btn_pressed() -> void:
 	if road_chunk: road_chunk.initiate_scan()
-
-func _ready() -> void:
-	if is_completed("traffic_ok"):
-		traffic_objective_complete = true
 
 @export var objective_check_interval_sec : float = 0.5
 var time_left_to_check_sec: float = objective_check_interval_sec
@@ -103,10 +109,7 @@ func _process(delta: float) -> void:
 			time_left_to_check_sec = objective_check_interval_sec
 
 			# Check for asphalt state objective completion
-			%AsphaltProgress.value = (
-				level.accepted_asphalt_deviation
-				/ max(road_chunk.get_deviation_from_target(), 0.001)
-			)
+			%AsphaltProgress.value = level.accepted_asphalt_deviation / max(road_chunk.get_deviation_from_target(), 0.001)
 			if road_chunk.is_state_in_target() and not is_completed("asphalt_done"):
 				set_completed("asphalt_done")
 				LevelStructure.level_attribute_store(used_base_dir, "asphalt_done")
