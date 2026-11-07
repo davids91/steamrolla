@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://bovn8yid5jfbo"]
+
+[ext_resource type="Shader" uid="uid://bhdcrtw4t8mq5" path="res://UI/visual_elements/select_circle.gdshader" id="1_o3uio"]
+[ext_resource type="Texture2D" uid="uid://yrgfasm8eqe3" path="res://textures/tire_track.png" id="2_m3k2d"]
+[ext_resource type="Script" uid="uid://bujukwnrm5f4e" path="res://UI/visual_elements/select_circle.gd" id="3_5x1cr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1e6ff"]
+render_priority = 0
+shader = ExtResource("1_o3uio")
+shader_parameter/ring_color = Color(1, 0.7411765, 0, 1)
+shader_parameter/alpha_texture = ExtResource("2_m3k2d")
+shader_parameter/texture_y_scale = 7.295
+shader_parameter/ring_sharpness = -0.01
+shader_parameter/ring_width = 0.0
+shader_parameter/ring_diameter = 0.36
+shader_parameter/ring_fadeout_width = 2.9250001389375
+shader_parameter/ring_fadeout_sharpness = 0.005
+shader_parameter/ring_fade_speed = 0.0
+shader_parameter/pixellize_size = 50.0
+shader_parameter/leading_corner = 0.3930000186675
+shader_parameter/leading_tip = 0.0
+
+[sub_resource type="Gradient" id="Gradient_1e6ff"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5j0fq"]
+gradient = SubResource("Gradient_1e6ff")
+width = 512
+height = 512
+
+[node name="Circle" type="Sprite3D" unique_id=1578718958]
+material_override = SubResource("ShaderMaterial_1e6ff")
+pixel_size = 0.5
+billboard = 1
+no_depth_test = true
+texture = SubResource("GradientTexture2D_5j0fq")
+script = ExtResource("3_5x1cr")

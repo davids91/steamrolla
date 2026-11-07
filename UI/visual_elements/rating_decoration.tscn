@@ -6,6 +6,14 @@
 [sub_resource type="ViewportTexture" id="ViewportTexture_8jg5c"]
 viewport_path = NodePath("SubViewport")
 
+[sub_resource type="Gradient" id="Gradient_hm68f"]
+colors = PackedColorArray(1, 1, 1, 0, 0.95, 0.95, 0, 0.7411765)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mbmry"]
+gradient = SubResource("Gradient_hm68f")
+fill_from = Vector2(0.5, 0.35)
+fill_to = Vector2(0.5, 1)
+
 [node name="RatingDecoration" type="Sprite3D" unique_id=2041423734]
 sorting_offset = -45.0
 pixel_size = 0.25
@@ -24,3 +32,19 @@ unique_name_in_owner = true
 z_index = -5
 offset_top = -62.104996
 offset_bottom = -22.104965
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1729426418]
+transform = Transform3D(100, 0, 0, 0, 96.592575, -25.881903, 0, 25.881903, 96.592575, 0, -7.5, 30.660889)
+texture = SubResource("GradientTexture2D_mbmry")
+
+[node name="Sprite3D2" type="Sprite3D" parent="." unique_id=1763791912]
+transform = Transform3D(100, 0, 0, 0, 96.592575, 25.881903, 0, -25.881903, 96.592575, 0, -7.5, -49.33911)
+texture = SubResource("GradientTexture2D_mbmry")
+
+[node name="Sprite3D3" type="Sprite3D" parent="." unique_id=1984988242]
+transform = Transform3D(-4.371139e-06, 25.881903, -96.592575, 0, 96.592575, 25.881903, 100, 1.1313339e-06, -4.2221955e-06, 40, -7.5, -9.339111)
+texture = SubResource("GradientTexture2D_mbmry")
+
+[node name="Sprite3D4" type="Sprite3D" parent="." unique_id=2013155469]
+transform = Transform3D(-4.371139e-06, -25.881903, -96.592575, 0, 96.592575, -25.881903, 100, -1.1313339e-06, -4.2221955e-06, -40, -7.5, -9.339111)
+texture = SubResource("GradientTexture2D_mbmry")

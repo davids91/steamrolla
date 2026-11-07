@@ -37,6 +37,7 @@ func _load_level_data() -> void:
 		var rating_decor: RatingDecoration = rating_decoration_template.instantiate()
 		rating_decor.current_completion_percentage = LevelStructure.level_attribute_completion(road_chunk.used_base_dir)
 		rating_decor.position = Vector3(0., non_highlighted_decoration_pos_y, 10.)
+		rating_decor.level_title = LevelStructure.name_from_dir_name(d)
 		road_chunk.add_child(rating_decor)
 		get_tree().create_timer(
 			rating_delay_sec + randf_range(-1., 1.) * rating_delay_randomness_ratio * rating_delay_sec
@@ -58,19 +59,22 @@ var highlighted_decoration: RatingDecoration = null:
 	set(v):
 		if v and v != highlighted_decoration:
 			create_tween().tween_property(v, "position:y", highlighted_decoration_pos_y, 0.3)
+			%LevelTitleLabel.text = v.level_title
 		if highlighted_decoration and v != highlighted_decoration:
 			create_tween().tween_property(highlighted_decoration, "position:y", non_highlighted_decoration_pos_y, 0.3)
 		highlighted_decoration = v
 var traveling_towards_selected_chunk: bool = false
 var selected_chunk: RoadChunk = null
+var mouse_moved_away_timer: SceneTreeTimer
 func _unhandled_input(event: InputEvent) -> void:
 	# Select road chunk on hover
 	if event is InputEventMouseButton or event is InputEventMouseMotion:
 		if $PlayerView.looking_at is RoadChunk:
+			if $Highlight.is_hidden: $Highlight.show_circle()
 			if scenes.has($PlayerView.looking_at): $Highlight.modulate = Color.WHITE
 			else: $Highlight.modulate = Color.RED
 			$Highlight.visible = true
-			$Highlight.global_position = $PlayerView.looking_at.global_position
+			$Highlight.target_position = $PlayerView.looking_at.global_position
 			highlighted_decoration = $PlayerView.looking_at.get_node("RatingDecoration")
 			if(
 				event is InputEventMouseButton and event.is_pressed()
@@ -87,8 +91,18 @@ func _unhandled_input(event: InputEvent) -> void:
 				create_tween().tween_property(%ScreenBlocker, "modulate", Color.WHITE, transition_time_sec)
 				ResourceLoader.load_threaded_request(scenes[selected_chunk])
 		else:
-			$Highlight.visible = false
 			highlighted_decoration = null
+			if not mouse_moved_away_timer:
+				mouse_moved_away_timer = get_tree().create_timer(1.)
+				mouse_moved_away_timer.timeout.connect(func():
+					if(
+						not $Highlight.is_hidden
+						and (not $PlayerView.looking_at or not $PlayerView.looking_at is RoadChunk)
+					):
+						%LevelTitleLabel.text = ""
+						$Highlight.hide_circle()
+					mouse_moved_away_timer = null
+				)
 		if not traveling_towards_selected_chunk:
 			selected_chunk = $PlayerView.looking_at
 

@@ -3,9 +3,9 @@
 [ext_resource type="Script" uid="uid://cjfp6pmui58nv" path="res://core/scenes/menus/level_select.gd" id="1_esh0k"]
 [ext_resource type="PackedScene" uid="uid://b371k1r87v2p7" path="res://core/tools/player_view.tscn" id="2_hm68f"]
 [ext_resource type="PackedScene" uid="uid://cvvnwqj8sfbtp" path="res://props/player_cursor.tscn" id="3_lnrnj"]
-[ext_resource type="Script" uid="uid://ccyo8n18hat0m" path="res://props/highlight.gd" id="4_ohvno"]
 [ext_resource type="PackedScene" uid="uid://biysx7wem6d8s" path="res://props/panorama_sphere.tscn" id="5_335hl"]
 [ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="5_rltma"]
+[ext_resource type="PackedScene" uid="uid://bovn8yid5jfbo" path="res://UI/visual_elements/select_circle.tscn" id="5_soppy"]
 [ext_resource type="PackedScene" uid="uid://dnqtesccg76t7" path="res://UI/visual_elements/screen_blocker.tscn" id="6_0pojg"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hm68f"]
@@ -17,14 +17,6 @@ sky_material = SubResource("ProceduralSkyMaterial_hm68f")
 background_mode = 2
 sky = SubResource("Sky_sntts")
 ambient_light_color = Color(0, 0.5882353, 0.5647059, 1)
-
-[sub_resource type="Gradient" id="Gradient_hm68f"]
-colors = PackedColorArray(1, 1, 1, 0, 0.95, 0.95, 0, 0.7411765)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_8jg5c"]
-gradient = SubResource("Gradient_hm68f")
-fill_from = Vector2(0.4059829, 0.26923078)
-fill_to = Vector2(0.3846154, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0pojg"]
 atlas = ExtResource("5_rltma")
@@ -40,6 +32,12 @@ region = Rect2(897.618, 125.676, 128, 128)
 atlas = ExtResource("5_rltma")
 region = Rect2(768.488, 122.233, 129.995, 138.655)
 margin = Rect2(25, 12.32, 54.195, 27.46)
+
+[sub_resource type="LabelSettings" id="LabelSettings_nwf26"]
+font_size = 35
+font_color = Color(1, 0.7411765, 0, 1)
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
 
 [node name="LevelSelect" type="Node3D" unique_id=2110132494]
 script = ExtResource("1_esh0k")
@@ -68,25 +66,10 @@ make_current_on_start = true
 
 [node name="Chunks" type="Node3D" parent="." unique_id=827268148]
 
-[node name="Highlight" type="Node3D" parent="." unique_id=624872012]
-visible = false
-script = ExtResource("4_ohvno")
-
-[node name="Sprite3D" type="Sprite3D" parent="Highlight" unique_id=85351597]
-transform = Transform3D(100, 0, 0, 0, 96.592575, -25.881903, 0, 25.881903, 96.592575, 0, 30, 40)
-texture = SubResource("GradientTexture2D_8jg5c")
-
-[node name="Sprite3D2" type="Sprite3D" parent="Highlight" unique_id=1355662758]
-transform = Transform3D(100, 0, 0, 0, 96.592575, 25.881903, 0, -25.881903, 96.592575, 0, 30, -40)
-texture = SubResource("GradientTexture2D_8jg5c")
-
-[node name="Sprite3D3" type="Sprite3D" parent="Highlight" unique_id=634255408]
-transform = Transform3D(-4.371139e-06, 25.881903, -96.592575, 0, 96.592575, 25.881903, 100, 1.1313339e-06, -4.2221955e-06, 40, 30, 0)
-texture = SubResource("GradientTexture2D_8jg5c")
-
-[node name="Sprite3D4" type="Sprite3D" parent="Highlight" unique_id=1032506278]
-transform = Transform3D(-4.371139e-06, -25.881903, -96.592575, 0, 96.592575, -25.881903, 100, -1.1313339e-06, -4.2221955e-06, -40, 30, 0)
-texture = SubResource("GradientTexture2D_8jg5c")
+[node name="Highlight" parent="." unique_id=1578718958 instance=ExtResource("5_soppy")]
+sorting_offset = 5000.0
+pixel_size = 0.125
+movement_responsiveness = null
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1403548672]
 
@@ -112,6 +95,24 @@ expand_mode = 3
 
 [node name="ScreenBlocker" parent="CanvasLayer" unique_id=991935671 instance=ExtResource("6_0pojg")]
 unique_name_in_owner = true
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer" unique_id=928528676]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -198.0
+offset_bottom = 49.0
+grow_horizontal = 0
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="LevelTitleLabel" type="Label" parent="CanvasLayer/MarginContainer2" unique_id=143790349]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Level Select"
+label_settings = SubResource("LabelSettings_nwf26")
 
 [node name="panorama_sphere" parent="." unique_id=298437647 instance=ExtResource("5_335hl")]
 transform = Transform3D(1000, 0, 0, 0, 1000, 0, 0, 0, 1000, 0, 0, 0)

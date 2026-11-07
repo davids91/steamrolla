@@ -4,10 +4,11 @@ extends Node
 #region level folder structure
 const LEVELS_FOLDER: String = "res://levels/"
 ## The folder for a level should start with the appropriate coordinates, separated by a single underline
-const LEVEL_FOLDER_NAME_REGEX: String = "^([0-9]*)_([0-9]*).*"
+const LEVEL_FOLDER_NAME_REGEX: String = "^([0-9]*)_([0-9]*)(.*)"
 static func complies_with_level_folder_name(dir_name: String) -> bool:
 	var level_folder_name_regex = RegEx.create_from_string(LEVEL_FOLDER_NAME_REGEX)
-	return null != level_folder_name_regex.search(dir_name)
+	var regex_result = level_folder_name_regex.search(dir_name)
+	return regex_result != null and 2 <= regex_result.get_group_count()
 
 static func base_dir_of(level_name: String) -> String:
 	return LEVELS_FOLDER + level_name + "/"
@@ -17,6 +18,11 @@ static func scene_path_in_dir(dir_path: String) -> String:
 
 static func resource_path_in_dir(dir_path: String) -> String:
 	return dir_path + "level_data.res"
+
+static func name_from_dir_name(dir_name: String) -> String:
+	assert(complies_with_level_folder_name(dir_name))
+	var level_folder_name_regex = RegEx.create_from_string(LEVEL_FOLDER_NAME_REGEX)
+	return level_folder_name_regex.search(dir_name).strings[3].replace("_", " ").capitalize()
 
 static func scene_path_in_levels(level_name: String) -> String:
 	return  LEVELS_FOLDER + level_name + "/level.scn"
