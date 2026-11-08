@@ -3,6 +3,13 @@
 [ext_resource type="Texture2D" uid="uid://bxbb6w08ba2kx" path="res://models/car_0.png" id="1_3iowy"]
 [ext_resource type="Script" uid="uid://ddu44pdciv1tv" path="res://actors/moving_car.gd" id="1_ujrer"]
 [ext_resource type="AudioStream" uid="uid://buopwf7b2rss6" path="res://audio/CarHorn.wav" id="3_4porn"]
+[ext_resource type="AudioStream" uid="uid://bl76csirtqdly" path="res://audio/eek_1.wav" id="4_4xq5i"]
+[ext_resource type="AudioStream" uid="uid://bkngup8ompqc" path="res://audio/eek_2.wav" id="5_hnu3i"]
+[ext_resource type="AudioStream" uid="uid://c05rdnie3ug6p" path="res://audio/boom_1.wav" id="6_ow73r"]
+[ext_resource type="AudioStream" uid="uid://date3xnhwfarg" path="res://audio/boom_2.wav" id="7_lxjqx"]
+[ext_resource type="AudioStream" uid="uid://bbqcksey68o0" path="res://audio/boom_3.wav" id="8_00vtg"]
+[ext_resource type="AudioStream" uid="uid://df8dx3y4rfvc4" path="res://audio/crunch_1.wav" id="9_k22rf"]
+[ext_resource type="AudioStream" uid="uid://chnxnwpdrjot8" path="res://audio/crunch_2.wav" id="10_jjtnp"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mdlkg"]
 resource_name = "car-material"
@@ -210,6 +217,25 @@ random_pitch = 1.0174797
 streams_count = 1
 stream_0/stream = ExtResource("3_4porn")
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_1e6ff"]
+random_pitch = 1.0301944
+streams_count = 2
+stream_0/stream = ExtResource("4_4xq5i")
+stream_1/stream = ExtResource("5_hnu3i")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_gnjih"]
+random_pitch = 1.0174797
+streams_count = 3
+stream_0/stream = ExtResource("6_ow73r")
+stream_1/stream = ExtResource("7_lxjqx")
+stream_2/stream = ExtResource("8_00vtg")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_4xq5i"]
+random_pitch = 1.0293022
+streams_count = 2
+stream_0/stream = ExtResource("9_k22rf")
+stream_1/stream = ExtResource("10_jjtnp")
+
 [node name="MovingCar" type="RigidBody3D" unique_id=896635733]
 continuous_cd = true
 contact_monitor = true
@@ -242,5 +268,20 @@ shape = SubResource("BoxShape3D_xonvl")
 
 [node name="HornSound" type="AudioStreamPlayer3D" parent="." unique_id=985493835]
 stream = SubResource("AudioStreamRandomizer_8jg5c")
+
+[node name="CrashSoundEek" type="AudioStreamPlayer3D" parent="." unique_id=963896863]
+stream = SubResource("AudioStreamRandomizer_1e6ff")
+volume_db = -10.0
+max_distance = 500.0
+
+[node name="CrashSoundBoom" type="AudioStreamPlayer3D" parent="." unique_id=1197756126]
+stream = SubResource("AudioStreamRandomizer_gnjih")
+volume_db = 30.0
+max_distance = 100.0
+
+[node name="CrashSoundCrunch" type="AudioStreamPlayer3D" parent="." unique_id=61193905]
+stream = SubResource("AudioStreamRandomizer_4xq5i")
+pitch_scale = 2.0
+max_distance = 100.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

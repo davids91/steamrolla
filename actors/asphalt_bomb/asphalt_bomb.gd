@@ -17,6 +17,7 @@ func _on_area_3d_area_entered(body: Node3D) -> void:
 	if body.is_in_group(ACTIVATE_GROUP):
 		await get_tree().create_timer(to_explode_time).timeout
 		asphalt_bomb_exploded.emit(global_position, exlode_radius, amount_to_add_asphalt)
+		$Boom.play()
 		if explosion_vfx_scene:
 			var vfx: Node3D = explosion_vfx_scene.instantiate()
 			get_tree().current_scene.add_child(vfx)

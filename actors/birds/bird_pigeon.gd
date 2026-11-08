@@ -23,6 +23,7 @@ func _on_flyaway_entered(body: Node3D) -> void:
 	if body == _active_threat:
 		if debug: print("Because of %s. %s has activated flyaway " %[body.name, name])
 		change_state(State.FLYING)
+		if has_node("Sound"): $Sound.play()
 
 func _asses_threat() -> void:
 	if not _active_threat: return
@@ -83,7 +84,6 @@ func _process_evade():
 		change_state(State.ONGROUND)
 			
 func _process_fly():
-	
 	if is_instance_valid(_active_threat):
 		_fly_direction = (global_position - _active_threat.global_position).normalized()
 		_fly_direction.y = 1.0 

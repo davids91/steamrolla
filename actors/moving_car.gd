@@ -53,6 +53,9 @@ func _physics_process(delta: float) -> void:
 	):
 		crashed = true
 		force_strength = 0.
+		if randf() < 0.5: $CrashSoundEek.play()
+		if randf() < 0.5: $CrashSoundCrunch.play()
+		$CrashSoundBoom.play()
 	previous_velocity = linear_velocity
 
 func _on_body_entered(body: Node) -> void:

@@ -3,6 +3,11 @@
 [ext_resource type="Script" uid="uid://g0y2dgq3xuej" path="res://actors/birds/bird_pigeon.gd" id="1_6nk52"]
 [ext_resource type="Resource" uid="uid://bagacfbcb1gka" path="res://actors/birds/bird_crow.tres" id="2_6nk52"]
 [ext_resource type="PackedScene" uid="uid://bjeb6q2li02ma" path="res://models/crow.fbx" id="3_6nk52"]
+[ext_resource type="AudioStream" uid="uid://dampwyriddeas" path="res://audio/caw_1.wav" id="4_knbeh"]
+[ext_resource type="AudioStream" uid="uid://bp6gyw4b7u6w0" path="res://audio/caw_2.wav" id="5_v8eb1"]
+[ext_resource type="AudioStream" uid="uid://cifisgef75pw6" path="res://audio/caw_3.wav" id="6_3kdje"]
+[ext_resource type="AudioStream" uid="uid://b4lofihavj8k0" path="res://audio/caw_4.wav" id="7_meq0y"]
+[ext_resource type="AudioStream" uid="uid://cyybdlwo8atlk" path="res://audio/caw_5.wav" id="8_pa8lr"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_uivoq"]
 
@@ -11,6 +16,15 @@ radius = 10.322266
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_k3ppl"]
 radius = 5.015625
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_8jg5c"]
+random_pitch = 1.0174797
+streams_count = 6
+stream_0/stream = ExtResource("4_knbeh")
+stream_1/stream = ExtResource("5_v8eb1")
+stream_2/stream = ExtResource("6_3kdje")
+stream_3/stream = ExtResource("7_meq0y")
+stream_4/stream = ExtResource("8_pa8lr")
 
 [node name="Crow" type="CharacterBody3D" unique_id=341161954 node_paths=PackedStringArray("caution_area", "flyaway_area")]
 script = ExtResource("1_6nk52")
@@ -35,3 +49,8 @@ shape = SubResource("CylinderShape3D_k3ppl")
 debug_color = Color(0.8942123, 0.26387596, 0.46660817, 0.41960785)
 
 [node name="crow" parent="." unique_id=895590682 instance=ExtResource("3_6nk52")]
+
+[node name="Sound" type="AudioStreamPlayer3D" parent="." unique_id=2098646314]
+stream = SubResource("AudioStreamRandomizer_8jg5c")
+volume_db = 5.0
+max_distance = 200.0
