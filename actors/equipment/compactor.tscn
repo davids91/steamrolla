@@ -238,7 +238,7 @@ random_pitch = 1.0609941
 streams_count = 1
 stream_0/stream = ExtResource("5_5lgew")
 
-[node name="Compactor" type="CharacterBody3D" unique_id=1602331192]
+[node name="Compactor" type="CharacterBody3D" unique_id=1602331192 groups=["RoadworkTool"]]
 collision_layer = 3
 collision_mask = 2
 script = ExtResource("1_1b380")

@@ -236,7 +236,7 @@ streams_count = 2
 stream_0/stream = ExtResource("9_k22rf")
 stream_1/stream = ExtResource("10_jjtnp")
 
-[node name="MovingCar" type="RigidBody3D" unique_id=896635733]
+[node name="MovingCar" type="RigidBody3D" unique_id=896635733 groups=["BirdReactable"]]
 continuous_cd = true
 contact_monitor = true
 max_contacts_reported = 3

@@ -73,7 +73,6 @@ void vertex() {
 }
 
 void fragment() {
-	//TODO: set shader values from RoadChunk object
 	if (VALUE_EPSILON > water_edge_modifier)discard;
 	ALBEDO = mix(texture(road_colormap, UV).rgb, water_color, 0.9);
 	NORMAL = water_normal;

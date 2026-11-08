@@ -73,7 +73,7 @@ size = Vector3(3, 0.345, 1.125)
 atlas = ExtResource("7_gqtbw")
 region = Rect2(255, 438, 110, 76)
 
-[node name="Roller" type="CharacterBody3D" unique_id=50967490]
+[node name="Roller" type="CharacterBody3D" unique_id=50967490 groups=["RoadworkTool"]]
 collision_layer = 3
 collision_mask = 2
 script = ExtResource("1_vq81g")
@@ -124,7 +124,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 0)
 target_position = Vector3(0, -100, 0)
 
 [node name="ForwardShapeCast" type="ShapeCast3D" parent="." unique_id=1327038590]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0.721)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6777513, 0.721)
 shape = SubResource("BoxShape3D_5j0fq")
 
 [node name="KeyPrompt" type="Sprite3D" parent="." unique_id=1478709250]

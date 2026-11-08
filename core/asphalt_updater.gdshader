@@ -1,7 +1,7 @@
 shader_type canvas_item;
 
-uniform sampler2D terrain;
-uniform sampler2D asphalt_state; // Basically asphalt quantity
+uniform sampler2D terrain; // r: height, g: cracks, b: water presence
+uniform sampler2D asphalt_state; // r: asphalt quantity, g: terrain temperature, b: unused
 uniform sampler2D asphalt_attributes; /// r: presence, g: editability, b: fluidity
 uniform float asphalt_minimum_quantity_for_display = 0.005;
 uniform float asphalt_delta = 0.; // Addition / removal of asphalt under brush
@@ -52,7 +52,7 @@ void fragment() {
 
 	// early exit through return; is not supported....
 	if(CONTROL_EPSILON < texture(asphalt_attributes, UV).g){ // Only run shader if the pixel is editable
-		vec2 roller_direction = vec2(cos(tool_angle + tool_angle_offset), sin(tool_angle + tool_angle_offset)); // Roller direction to set esact boundaries of the roller
+		vec2 roller_direction = vec2(cos(tool_angle + tool_angle_offset), sin(tool_angle + tool_angle_offset)); // Roller direction to set exact boundaries of the roller
 		vec2 roller_sideways_direction = vec2(-roller_direction.y, roller_direction.x);
 		vec2 roller_bl = tool_center - tool_size.x * 0.5 * roller_sideways_direction - tool_size.y * 0.5 * roller_direction;
 		vec2 roller_br = tool_center + tool_size.x * 0.5 * roller_sideways_direction - tool_size.y * 0.5 * roller_direction;
@@ -85,16 +85,22 @@ void fragment() {
 			);
 		}else if(used_tool == TOOL_COMPACTOR) {
 			if(distance_from_center < tool_radius){
+				// Calculate the average height near the radius of the tool
 				float avg_value = 0.;
 				float sample_count = 0.;
 				for(float x = UV.x - tool_radius; x < UV.x + tool_radius; x += (tool_radius / 5.)) {
 					for(float y = UV.y - tool_radius; y < UV.y + tool_radius; y += (tool_radius / 5.)) {
-						avg_value += texture(asphalt_state, vec2(x,y)).r;
-						sample_count += 1.;
+						if(0. < texture(asphalt_attributes, vec2(x,y)).r){ // Only count pixel if it's part of the road
+							avg_value += texture(asphalt_state, vec2(x,y)).r + texture(terrain, vec2(x,y)).r;
+							sample_count += 1.;
+						}
 					}
 				}
 				avg_value /= sample_count;
-				asphalt_delta_output = (avg_value - current_asphalt_level) * tool_strength * smoothstep(tool_radius, 0., distance_from_center);
+				asphalt_delta_output = ( // Calculate the value this px needs to change to set the average height
+					(avg_value - (current_asphalt_level + texture(terrain, UV).r))
+					* tool_strength * smoothstep(tool_radius, 0., distance_from_center)
+				);
 			}
 		}else if(used_tool == TOOL_ROLLER) {
 			vec2 prev_pixel_pos = UV - roller_direction * PIXEL_RADIUS;

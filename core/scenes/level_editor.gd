@@ -385,14 +385,9 @@ func _snap_asphalt_to_reference() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("debug"):
-		print("Saved level data!")
 		_save_level_data()
-	if event.is_action_pressed("debug_2"):
-		print("Snapping to target height!")
-		_snap_asphalt_to_reference()
-	if event.is_action_pressed("debug_3"):
-		print("Setting asphalt to given height!")
-		set_asphalt_to_reference_height.call()
+		#_snap_asphalt_to_reference()
+		#set_asphalt_to_reference_height.call()
 
 func _ready() -> void:
 	_load_level_data()

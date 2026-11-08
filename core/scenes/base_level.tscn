@@ -3,26 +3,40 @@
 [ext_resource type="Script" uid="uid://bekwbb18eupg3" path="res://core/scenes/base_level.gd" id="1_0iqqk"]
 [ext_resource type="PackedScene" uid="uid://b371k1r87v2p7" path="res://core/tools/player_view.tscn" id="1_0oa8v"]
 [ext_resource type="PackedScene" uid="uid://cvvnwqj8sfbtp" path="res://props/player_cursor.tscn" id="2_0iqqk"]
-[ext_resource type="PackedScene" uid="uid://dujcwqpeofpqp" path="res://props/panorama.tscn" id="2_dph8v"]
+[ext_resource type="Texture2D" uid="uid://dclalxtdsmbw6" path="res://textures/panorama.png" id="2_hyr4m"]
 [ext_resource type="Script" uid="uid://bclv735d06io5" path="res://core/tools/road_paint.gd" id="3_dph8v"]
 [ext_resource type="PackedScene" uid="uid://chrk1hugag81m" path="res://UI/HUD.tscn" id="4_onofa"]
 [ext_resource type="PackedScene" uid="uid://dnqtesccg76t7" path="res://UI/visual_elements/screen_blocker.tscn" id="5_g0uno"]
 [ext_resource type="PackedScene" uid="uid://b7143f1jor1qd" path="res://core/scenes/road_chunk.scn" id="6_rutvw"]
 [ext_resource type="PackedScene" uid="uid://btpepqma8jc6j" path="res://actors/equipment/tool_controller.tscn" id="7_gsihx"]
 [ext_resource type="PackedScene" uid="uid://c6umqesxiecbq" path="res://actors/equipment/tool_runway.tscn" id="8_8or7f"]
-[ext_resource type="PackedScene" uid="uid://de464tly5tid8" path="res://actors/equipment/asphalt_paver.tscn" id="9_eub5e"]
-[ext_resource type="PackedScene" uid="uid://csaxjq3vidpcx" path="res://actors/equipment/compactor.tscn" id="10_0qlnr"]
-[ext_resource type="PackedScene" uid="uid://dr7xbirpqj8e6" path="res://actors/equipment/roller.tscn" id="12_vgfd3"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_82otu"]
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_7rl55"]
+panorama = ExtResource("2_hyr4m")
 
 [sub_resource type="Sky" id="Sky_oi3di"]
-sky_material = SubResource("ProceduralSkyMaterial_82otu")
+sky_material = SubResource("PanoramaSkyMaterial_7rl55")
 
 [sub_resource type="Environment" id="Environment_puwdi"]
 background_mode = 2
 sky = SubResource("Sky_oi3di")
-ambient_light_color = Color(0, 0.5882353, 0.5647059, 1)
+sky_custom_fov = 112.5
+ambient_light_source = 3
+ambient_light_color = Color(0.5568628, 0.7607843, 0.84705883, 1)
+tonemap_mode = 4
+tonemap_exposure = 1.47
+tonemap_agx_white = 14.93
+tonemap_agx_contrast = 1.26
+ssao_enabled = true
+fog_density = 0.0001
+fog_aerial_perspective = 0.5
+fog_sky_affect = 0.718
+fog_height = 500.0
+fog_height_density = -320.715
+adjustment_enabled = true
+adjustment_brightness = 1.08
+adjustment_contrast = 1.165
+adjustment_saturation = 1.05
 
 [sub_resource type="Curve" id="Curve_gij5m"]
 _limits = [0.0, 1.25, 0.0, 1.0]
@@ -38,19 +52,17 @@ script = ExtResource("1_0iqqk")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1708251831]
 environment = SubResource("Environment_puwdi")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1828634084]
-transform = Transform3D(0.52001595, -0.28811294, -0.8040985, 0.8066554, -0.14391099, 0.57323366, -0.2808746, -0.946721, 0.15757184, 1.6042094, 12.744053, -0.8896208)
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1828634084]
+transform = Transform3D(0.5200159, -0.28811294, -0.80409855, 0.73987126, 0.62234676, 0.25548953, 0.42681825, -0.7277881, 0.53679675, 1.6042094, 12.744053, -0.8896208)
+light_color = Color(1, 1, 0.83137256, 1)
+light_energy = 0.5
 shadow_enabled = true
 shadow_bias = 0.0
 
-[node name="panorama" parent="." unique_id=1549718638 instance=ExtResource("2_dph8v")]
-transform = Transform3D(0.0017408282, 0, -0.99999845, 0, 1, 0, 0.99999845, 0, 0.0017408282, 13.073471, 0.87625206, -59.401245)
-
 [node name="PlayerView" parent="." unique_id=1504134869 node_paths=PackedStringArray("cursor") instance=ExtResource("1_0oa8v")]
-transform = Transform3D(0.11978244, 0.54834604, -0.8276284, -0.07854364, 0.8362515, 0.54269177, 0.98968834, 0, 0.14323734, -30.867188, 15.911701, 8.004426)
+transform = Transform3D(0.11978244, 0.54834604, -0.8276284, -0.07854364, 0.8362515, 0.54269177, 0.98968834, 0, 0.14323734, -30.867188, 27.401814, 8.004426)
 visible = true
 cursor = NodePath("PlayerCursor")
-make_current_on_start = false
 
 [node name="PlayerCursor" parent="PlayerView" unique_id=1630135012 instance=ExtResource("2_0iqqk")]
 transform = Transform3D(0.119782455, -0.07854363, 0.9896885, 0.54834616, 0.83625156, 0, -0.8276285, 0.54269177, 0.14323735, 0.65189743, 2.347288, -29.33795)
@@ -69,7 +81,7 @@ z_index = 500
 
 [node name="RoadChunk" parent="." unique_id=716876623 instance=ExtResource("6_rutvw")]
 unique_name_in_owner = true
-height_unit = 2.0
+height_unit = 5.0
 surface = 0
 asphalt_shyniness = 0.05
 deviation_threshold = 0.003
@@ -79,9 +91,9 @@ view = NodePath("../PlayerView")
 road_chunk = NodePath("../RoadChunk")
 runway = NodePath("Runway")
 tool_nodes = {
-0: NodePath("Roller"),
-1: NodePath("AsphaltPaver"),
-3: NodePath("Compactor")
+0: null,
+1: null,
+3: null
 }
 
 [node name="Runway" parent="ToolController" unique_id=328105869 node_paths=PackedStringArray("road_chunk", "player_view", "parking_spots", "parked_tools") instance=ExtResource("8_8or7f")]
@@ -93,20 +105,7 @@ parking_spots = {
 1: NodePath("PaverParkingSpot"),
 3: NodePath("CompactorParkingSport")
 }
-parked_tools = [NodePath("../AsphaltPaver"), NodePath("../Roller"), NodePath("../Compactor")]
-
-[node name="AsphaltPaver" parent="ToolController" unique_id=655459454 groups=["BirdReactable", "BombActivator", "RoadworkTool"] instance=ExtResource("9_eub5e")]
-transform = Transform3D(0.0017408282, 0, -0.99999845, 0, 1, 0, 0.99999845, 0, 0.0017408282, 13.073471, 0.87625206, -59.401245)
-
-[node name="Compactor" parent="ToolController" unique_id=2098416677 groups=["BirdReactable", "BombActivator", "RoadworkTool"] instance=ExtResource("10_0qlnr")]
-transform = Transform3D(0.0017408282, 0, -0.99999845, 0, 1, 0, 0.99999845, 0, 0.0017408282, 25.878357, 1.5274742, -56.18244)
-
-[node name="Roller" parent="ToolController" unique_id=1510864838 groups=["BirdReactable", "BombActivator", "RoadworkTool"] instance=ExtResource("12_vgfd3")]
-transform = Transform3D(0.0017408282, 0, -0.99999845, 0, 1, 0, 0.99999845, 0, 0.0017408282, 14.404985, 0.8762511, -50.341175)
-tool_strength = 0.75
-tool_radius = 0.3
-speed = 7.5
-turning_speed = 0.5
+parked_tools = [null, null, null]
 
 [node name="OutOfBoundsChecker" type="Area3D" parent="." unique_id=2079540405]
 

@@ -59,7 +59,7 @@ transform = Transform3D(-0.033853333, 0.6682737, -0.74314487, -0.037597883, 0.74
 visible = false
 
 [node name="PlayerView" parent="." unique_id=1504134869 node_paths=PackedStringArray("cursor") instance=ExtResource("2_hm68f")]
-transform = Transform3D(-0.033853333, 0.66827375, -0.74314475, -0.03759788, 0.74219304, 0.6691307, 0.99871933, 0.05059297, -3.248389e-08, -104.202, 167.417, 125.509)
+transform = Transform3D(-0.033853333, 0.66827375, -0.74314475, -0.03759788, 0.74219304, 0.6691307, 0.99871933, 0.05059297, -3.248389e-08, -123.09456, 167.417, 107.74689)
 visible = true
 cursor = NodePath("../PlayerCursor")
 make_current_on_start = true

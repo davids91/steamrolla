@@ -45,9 +45,9 @@ func handle_movement(delta: float) -> void:
 	if $FloorRaycast.get_collider() and $FloorRaycast.get_collider().get_parent() is RoadChunk:
 		if $FloorRaycast.get_collision_point().y < global_position.y:
 			velocity += gravity
-			tool_strength = max(0., tool_strength - delta * 10.)
+			if controlled_by != ControlMethods.DRAGGED: tool_strength = max(0., tool_strength - delta * 10.)
 		else:
-			tool_strength = lerp(tool_strength, original_tool_strength, 0.9)
+			if controlled_by != ControlMethods.DRAGGED: tool_strength = lerp(tool_strength, original_tool_strength, 0.9)
 			velocity.y = lerp(velocity.y, 0., 0.9)
 		global_position.y = max(global_position.y, $FloorRaycast.get_collision_point().y)
 		$SpinnyPart.look_at(basis.x.cross($FloorRaycast.get_collision_normal()))

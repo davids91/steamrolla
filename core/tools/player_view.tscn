@@ -5,3 +5,7 @@
 
 [node name="PlayerView" unique_id=1504134869 instance=ExtResource("1_f1u8a")]
 script = ExtResource("2_cos2a")
+make_current_on_start = false
+
+[node name="Camera3D" parent="CameraAnchor" parent_id_path=PackedInt32Array(1705148564) index="0" unique_id=976718994]
+fov = 50.0

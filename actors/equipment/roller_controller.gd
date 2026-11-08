@@ -55,7 +55,11 @@ func _process(delta: float) -> void:
 	skin.get_active_material(0).albedo_color = current_color
 
 @export var forward_collision_dampening: float = 0.95
+@onready var original_speed: float = speed
 func _physics_process(delta: float) -> void:
+	if Input.is_action_pressed("deploy_payload"): speed = original_speed / 2.
+	else: speed = original_speed
+
 	super(delta)
 	(func(): # Handle asphalt detection
 		if connected_chunk:

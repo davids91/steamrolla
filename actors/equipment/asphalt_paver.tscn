@@ -79,7 +79,7 @@ shader = ExtResource("5_b1e0e")
 shader_parameter/asphalt_texture = ExtResource("6_tqasd")
 shader_parameter/pile_noise = SubResource("NoiseTexture2D_tqasd")
 shader_parameter/opacity = 0.745
-shader_parameter/asphalt_pile_size = 2.26
+shader_parameter/asphalt_pile_size = 2.0
 shader_parameter/asphalt_pile_spread_min = -0.305
 shader_parameter/asphalt_pile_spread_max = 0.705
 shader_parameter/asphalt_tile_size_ratio = 1.675
@@ -96,14 +96,14 @@ subdivide_depth = 16
 atlas = ExtResource("7_vgkag")
 region = Rect2(382.025, 258, 128, 32)
 
-[node name="AsphaltPaver" type="CharacterBody3D" unique_id=1082380962]
+[node name="AsphaltPaver" type="CharacterBody3D" unique_id=1082380962 groups=["RoadworkTool"]]
 collision_layer = 3
 collision_mask = 2
 script = ExtResource("1_pogr6")
 tool_enum = 1
 normalized_size = Vector2(0.05, 0.01)
 tool_angle = 3.142
-tool_strength = 3.0
+tool_strength = 1.0
 has_payload = true
 
 [node name="ToolBubbleIndicator" parent="." unique_id=135928248 instance=ExtResource("2_llrrr")]
