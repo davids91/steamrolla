@@ -16,6 +16,7 @@ func level_description(level_title: String) -> String:
 		"Parking Lot": str = "Protect paradise by paving a perfect parking lot. Embrace simplicity and cover the entire level with asphalt, then roll it smooth, like a zen-master embracing nothingness."
 		"Suburbia": str = "A mega-project that will take years to complete, this entire residential area needs brand new roads. An epic job that will require patience."
 		"Traffic": str = "Somebody messed up the construction permits and the road closure never happened! Can you repair a giant pothole while oncoming traffic recklessly races though the construction site, or will the destruction be legendary?"
+		"Level 1 Smush": str = "Somebody messed up the construction permits and the road closure never happened! Can you repair a giant pothole while oncoming traffic recklessly races though the construction site, or will the destruction be legendary?"
 		"Switchback": str = "Zig-zag all the way up this precarious mountaintop and carve a curvy but climbable road to the top. Hope you aren't afraid of heights!"
 		"Maze": str = "There is only one true path from the entrance to the exit. Can you pave the correct route in this puzzling path of pavement?"
 		"Intersection": str = "A water pipe burst right in the middle of a busy four-way intersection. Help repair the pipe and fill in the crater caused by the spraying water before rush hour starts or traffic is going to be a nightmare."
