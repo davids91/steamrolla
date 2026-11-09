@@ -7,6 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="5_rltma"]
 [ext_resource type="PackedScene" uid="uid://bovn8yid5jfbo" path="res://UI/visual_elements/select_circle.tscn" id="5_soppy"]
 [ext_resource type="PackedScene" uid="uid://dnqtesccg76t7" path="res://UI/visual_elements/screen_blocker.tscn" id="6_0pojg"]
+[ext_resource type="Texture2D" uid="uid://blugq7cy8aigr" path="res://textures/objective_file.png" id="7_h5j6a"]
+[ext_resource type="LabelSettings" uid="uid://c8f3lpcpmywe4" path="res://UI/level_select_description_label_settings.tres" id="7_soppy"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hm68f"]
 
@@ -39,6 +41,12 @@ font_color = Color(1, 0.7411765, 0, 1)
 outline_size = 5
 outline_color = Color(0, 0, 0, 1)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kdu0b"]
+content_margin_left = 72.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
 [node name="LevelSelect" type="Node3D" unique_id=2110132494]
 script = ExtResource("1_esh0k")
 road_chunk_spacing = 100.0
@@ -59,7 +67,7 @@ transform = Transform3D(-0.033853333, 0.6682737, -0.74314487, -0.037597883, 0.74
 visible = false
 
 [node name="PlayerView" parent="." unique_id=1504134869 node_paths=PackedStringArray("cursor") instance=ExtResource("2_hm68f")]
-transform = Transform3D(-0.033853333, 0.66827375, -0.74314475, -0.03759788, 0.74219304, 0.6691307, 0.99871933, 0.05059297, -3.248389e-08, -123.09456, 167.417, 107.74689)
+transform = Transform3D(-4.371139e-08, 0.57357645, -0.81915206, 0, 0.81915206, 0.57357645, 1, 2.5071824e-08, -3.5806274e-08, -123.09456, 167.417, 107.74689)
 visible = true
 cursor = NodePath("../PlayerCursor")
 make_current_on_start = true
@@ -69,7 +77,6 @@ make_current_on_start = true
 [node name="Highlight" parent="." unique_id=1578718958 instance=ExtResource("5_soppy")]
 sorting_offset = 5000.0
 pixel_size = 0.125
-movement_responsiveness = null
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1403548672]
 
@@ -97,22 +104,47 @@ expand_mode = 3
 unique_name_in_owner = true
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer" unique_id=928528676]
+custom_minimum_size = Vector2(320, 0)
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -198.0
-offset_bottom = 49.0
+offset_left = -410.0
+offset_bottom = 410.0
 grow_horizontal = 0
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
+[node name="bg" type="TextureRect" parent="CanvasLayer/MarginContainer2" unique_id=615996743]
+custom_minimum_size = Vector2(360, 360)
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(32, -128)
+offset_transform_rotation = -1.5707964
+texture = ExtResource("7_h5j6a")
+expand_mode = 1
+
 [node name="LevelTitleLabel" type="Label" parent="CanvasLayer/MarginContainer2" unique_id=143790349]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 1
 text = "Level Select"
 label_settings = SubResource("LabelSettings_nwf26")
+horizontal_alignment = 2
+
+[node name="LevelDescription" type="Label" parent="CanvasLayer/MarginContainer2" unique_id=2142524348]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+size_flags_vertical = 1
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 54)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_kdu0b")
+text = "Level Description text goes here! Maybe even the entire text of the mission objectives and some quest lore extras for fun. Maybe looking like an RFP quotation request?"
+label_settings = ExtResource("7_soppy")
+horizontal_alignment = 2
+autowrap_mode = 2
 
 [node name="panorama_sphere" parent="." unique_id=298437647 instance=ExtResource("5_335hl")]
 transform = Transform3D(1000, 0, 0, 0, 1000, 0, 0, 0, 1000, 0, 0, 0)
