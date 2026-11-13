@@ -37,6 +37,7 @@ shape = SubResource("ConcavePolygonShape3D_m2co2")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 material_override = ExtResource("3_mrneq")
 cast_shadow = 0
+emitting = false
 amount = 16
 mesh = SubResource("QuadMesh_kdu0b")
 emission_shape = 3

@@ -10,13 +10,94 @@
 [ext_resource type="AudioStream" uid="uid://bbqcksey68o0" path="res://audio/boom_3.wav" id="8_00vtg"]
 [ext_resource type="AudioStream" uid="uid://df8dx3y4rfvc4" path="res://audio/crunch_1.wav" id="9_k22rf"]
 [ext_resource type="AudioStream" uid="uid://chnxnwpdrjot8" path="res://audio/crunch_2.wav" id="10_jjtnp"]
+[ext_resource type="Material" uid="uid://bowh8im433dol" path="res://materials/smoke-material.tres" id="11_lxjqx"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mdlkg"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_00vtg"]
+resource_local_to_scene = true
+
+[sub_resource type="Shader" id="Shader_ow73r"]
+resource_local_to_scene = true
+code = "// NOTE: Shader automatically converted from Godot Engine 4.7.stable's StandardMaterial3D.
+
+shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_burley, specular_schlick_ggx, depth_prepass_alpha;
+
+uniform vec4 albedo : source_color;
+uniform sampler2D texture_albedo : source_color, filter_linear_mipmap, repeat_enable;
+uniform ivec2 albedo_texture_size;
+uniform float point_size : hint_range(0.1, 128.0, 0.1);
+
+uniform float roughness : hint_range(0.0, 1.0);
+uniform sampler2D texture_metallic : hint_default_white, filter_linear_mipmap, repeat_enable;
+uniform vec4 metallic_texture_channel;
+uniform sampler2D texture_roughness : hint_roughness_r, filter_linear_mipmap, repeat_enable;
+
+uniform float specular : hint_range(0.0, 1.0, 0.01);
+uniform float metallic : hint_range(0.0, 1.0, 0.01);
+
+uniform sampler2D texture_emission : source_color, hint_default_black, filter_linear_mipmap, repeat_enable;
+uniform vec4 emission : source_color;
+uniform float emission_energy : hint_range(0.0, 100.0, 0.01);
+
+uniform vec3 uv1_scale;
+uniform vec3 uv1_offset;
+uniform vec3 uv2_scale;
+uniform vec3 uv2_offset;
+
+uniform float crash_amount: hint_range(0.0, 1.0) = 0.;
+uniform sampler2D crash_noise;
+
+void vertex() {
+	UV = UV * uv1_scale.xy + uv1_offset.xy;
+	VERTEX.x += (texture(crash_noise, UV).r - 0.5) * crash_amount;
+	VERTEX.y += (texture(crash_noise, -UV).r - 0.5) * crash_amount;
+}
+
+void fragment() {
+	vec2 base_uv = UV;
+
+	vec4 albedo_tex = texture(texture_albedo, base_uv);
+
+	// Vertex Color Use as Albedo: Enabled
+	albedo_tex *= COLOR;
+
+	ALBEDO = albedo.rgb * albedo_tex.rgb;
+
+	float metallic_tex = dot(texture(texture_metallic, base_uv), metallic_texture_channel);
+	METALLIC = metallic_tex * metallic;
+	SPECULAR = specular;
+
+	vec4 roughness_texture_channel = vec4(1.0, 0.0, 0.0, 0.0);
+	float roughness_tex = dot(texture(texture_roughness, base_uv), roughness_texture_channel);
+	ROUGHNESS = roughness_tex * roughness;
+
+	// Emission: Enabled
+	vec3 emission_tex = texture(texture_emission, base_uv).rgb;
+	// Emission Operator: Add
+	EMISSION = (emission.rgb + emission_tex) * emission_energy;
+	ALPHA *= albedo.a * albedo_tex.a;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lxjqx"]
 resource_name = "car-material"
-transparency = 4
-vertex_color_use_as_albedo = true
-albedo_texture = ExtResource("1_3iowy")
-emission_enabled = true
+render_priority = 0
+shader = SubResource("Shader_ow73r")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/texture_albedo = ExtResource("1_3iowy")
+shader_parameter/albedo_texture_size = Vector2i(512, 512)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 1.0
+shader_parameter/metallic_texture_channel = Vector4(1, 0, 0, 0)
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/emission = Color(0, 0, 0, 1)
+shader_parameter/emission_energy = 1.0
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/crash_amount = 0.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_ok6yn"]
 _surfaces = [{
@@ -34,6 +115,7 @@ _surfaces = [{
 blend_shape_mode = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_djuqu"]
+resource_local_to_scene = true
 resource_name = "car-passenger-base_001"
 _surfaces = [{
 "aabb": AABB(-0.54997253, 0.19902694, -2.3401208, 1.6000061, 1.2943867, 4.665209),
@@ -42,7 +124,7 @@ _surfaces = [{
 "index_count": 708,
 "index_data": PackedByteArray("lgAFAAcAlgAHAJcAlgCXAJgAmACZAJYAmgCbAJwAmwCaAJ0AnACeAJoAnACfAJ4ABgAEAKAAoAChAAYAogChAKAAogCjAKEApACJAKUApACIAIkApAClAIYAhgCHAKQApgCnAKgApwCmAKkAqACqAKYAqACrAKoArAABAAIArAACAK0ArACtAAMAAwAAAKwArgCvALAArwCxALAAsgAJAAoACQCzAAoAswC0AAoAsgANAAkADQCyALUAsgAIALUACAC2ALUAtgC3ALUADgC3ALYADgC2AA8ADwC4AA4ADwC5ALgAEAC6ABEAugC7ABEAggC8AIQAvAC9AIQAvgCFAL8AhQCDAL8AwADBAAwAwQALAAwAwgCMAI0AwgCNAMMAwgDDAIoAigCLAMIAxADFAMYAxQDHAMYAyADJAMoAyQDLAMoAEgATABQAEwAVABQAFgAXABgAFwAZABgAGgAbABwAGwAdABwAHgAfACAAHwAhACAAIgAjACQAIwAlACQAJgAnACgAJwApACgAKgArACwAKwAtACwALgAvADAALwAxADAAMgAzADQAMwA1ADQANgA3ADgANwA5ADgAOgA7ADwAOwA9ADwAPgA/AEAAPwBBAEAAzADNAM4AzADOAM8AzwDQAMwAzwDRANAA0gDTANQA1QDUANMA0gDUANYA0gDWANcA1wDYANIA1QDTANkA2QCTANUA2QCVAJMA2gCQAJEA2gCRANsA2gDbAI4AjgCPANoA3ADdAN4A3QDfAN4A3gCUANwAlACSANwA4ABDAEQA4ABEAOEA4ADhAEUARQBCAOAARgBHAEgARwBJAEgA4gBLAEwA4gBMAOMA4wBKAOIA4wBNAEoATgBPAFAAUABVAOQAUADlAOYA5wDoAOUA5wDpAOgA6gBlAOsA6wDsAOoA6wDtAOwAZQDuAOsA6wBfAO8AZwDuAGUA7gBnAGMAZwBiAGMAYgDwAGMA8QBiAGcA8QDwAGIA8gDzAOoA8wDyAPQA8wD0APUAUwD2AFEA9wD2AFMA9gD4AFEA+QD6AFEA+wD6APkA/AD6AF0A+gD9AP4A/wBaAP0AWwAAAVoAAQECAWEAaABpAGoAAwEEAYEAAwGBAAUBAwEFAYAAAwGAAAYBBgEHAQMBfAAHAX0AAwF8AHoAfQAIAXwACAF9AAkBfAAIAXUACgELAQkBCwF2AHUAdQB5AHoAdQB2AHkAegB5AHcAeQB2AHcADAFrAGwAawANAWwADgEPAQwBEAERAQ4BEgEQARMBEgFzABQBFQEWAQ8BFQEXARYBFgEYARkBGQEaARYBGgFtAA0BGgEbAW0AbQAbAWwAHAEdARsBGwEdAR4BGwEeAR8BIAFSACEBIgFWACMBJAElASYBJwFUACgBKQEqASsBLAFcAC0BLgEvATABMQEyATMBWAA0ATUBNgFXADcBOAE5AToBOwE8AT0BPgE/AUABQQFZAEIBQwFEAUUBRgFHAUgBSQFKAUsBTAFNAU4BTwFQAVEBUgFTAVQBVQFWAVcBZABYAVkBZABaAVsBXAFdAV4BXwFgAWEBYgFjAWQBZQFmAWcBaAFpAWoBawFeAGwBYABtAW4BbwFwAXEBcgFzAXQBdQF2AXcBZgB4AXkBegF7AXwBfQFwAH4BfwGAAYEBgQGAAYIBgQGDAYQBhQGGAYcBiAFuAIkBigGLAYwBjQGOAY8BkAFyAJEBkgGTAZQBlQGWAZcBlQFxAJYBmAGZAZoBmwGcAZ0BngGfAW8AoAGhAaIBowGkAaUBdACmAacBqAGpAaoBqwGsAa0BrgGvAbABsQGyAXgAsgGzAbQBtQG2AbcBfgB/ALgBuQG6AbsBvAG9Ab4BvwHAAcEBwgHDAcQBxQF7AMYBxwHIAckB"),
 "lods": [1.524095, PackedByteArray("AAABAAIAAAACAAMABAAFAAYABQAHAAYACAAJAAoACQALAAoACwAMAAoACAANAAkADgANAAgADgAIAA8ADwAQAA4ADwARABAAEgATABQAEwAVABQAFgAXABgAFwAZABgAGgAbABwAGwAdABwAHgAfACAAHwAhACAAIgAjACQAIwAlACQAJgAnACgAJwApACgAKgArACwAKwAtACwALgAvADAALwAxADAAMgAzADQAMwA1ADQANgA3ADgANwA5ADgAOgA7ADwAOwA9ADwAPgA/AEAAPwBBAEAAQgBDAEQAQgBEAEUARgBHAEgARwBJAEgASgBLAEwASgBMAE0ATgBPAFAATwBOAFEAUQBOAFIAUABSAE4AUwBPAFEAUABPAFMAUgBUAFEAUABVAFIAVQBUAFIAUABWAFUAUABXAFYAUwBXAFAAVQBWAFgAVgBXAFgAWABUAFUAUwBZAFcAVABYAFoAWwBaAFgAVABaAFwAVABcAF0AUwBeAFkAXwBgAF4AXgBTAGEAYQBTAGIAYgBTAGMAYQBkAF4AZQBeAGQAZQBkAGEAXgBlAF8AZgBjAF8AZQBmAF8AZwBiAGMAYQBiAGcAZgBnAGMAZwBlAGEAZwBmAGUAaABpAGoAaABrAGkAawBoAGwAbABoAG0AagBtAGgAbQBuAGwAagBuAG0AbwBrAGwAaQBrAG8AaQBwAGoAcQBuAGoAcQBqAHAAcQBwAGkAcQByAG4AcQBpAG8AbwBzAHEAbwB0AHMAdABvAHUAbwB2AHUAdgBvAHcAdAB1AHgAeQB2AHcAdQB2AHkAegB5AHcAdQB5AHoAegB3AHsAdQB6AHwAfAB4AHUAewB8AHoAeAB9AHQAfQB4AHwAewB9AHwAfgB9AHsAfgB/AH0AewCAAH4AewCBAIAAggCDAIQAggCFAIMAhgCHAIgAiACJAIYAigCLAIwAjACNAIoAjgCPAJAAkACRAI4AkgCTAJQAkwCSAJUA")],
-"material": SubResource("StandardMaterial3D_mdlkg"),
+"material": SubResource("ShaderMaterial_lxjqx"),
 "name": "car-material",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -51,6 +133,13 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ok6yn")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mdlkg"]
+resource_name = "car-material"
+transparency = 4
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_3iowy")
+emission_enabled = true
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_vkrcg"]
 _surfaces = [{
@@ -236,13 +325,24 @@ streams_count = 2
 stream_0/stream = ExtResource("9_k22rf")
 stream_1/stream = ExtResource("10_jjtnp")
 
+[sub_resource type="QuadMesh" id="QuadMesh_00vtg"]
+
+[sub_resource type="Curve" id="Curve_k22rf"]
+_data = [Vector2(0, 0), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_jjtnp"]
+offsets = PackedFloat32Array(0, 0.99678457)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
 [node name="MovingCar" type="RigidBody3D" unique_id=896635733 groups=["BirdReactable"]]
 continuous_cd = true
 contact_monitor = true
 max_contacts_reported = 3
 script = ExtResource("1_ujrer")
+crash_noise = SubResource("FastNoiseLite_00vtg")
 
-[node name="car-body" type="MeshInstance3D" parent="." unique_id=1723279456]
+[node name="CarBody" type="MeshInstance3D" parent="." unique_id=1723279456]
 transform = Transform3D(1, 0, 0, 0, 1, 7.5497894e-08, 0, -7.5497894e-08, 1, -0.20065129, -0.06771171, 0)
 mesh = SubResource("ArrayMesh_djuqu")
 
@@ -283,5 +383,26 @@ max_distance = 100.0
 stream = SubResource("AudioStreamRandomizer_4xq5i")
 pitch_scale = 2.0
 max_distance = 100.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1586966389]
+
+[node name="SmokeParticles" type="CPUParticles3D" parent="." unique_id=1614172083]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+material_override = ExtResource("11_lxjqx")
+cast_shadow = 0
+emitting = false
+amount = 16
+mesh = SubResource("QuadMesh_00vtg")
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 3)
+direction = Vector3(0, 1, 0)
+spread = 90.0
+gravity = Vector3(0, -4, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 3.0
+scale_amount_min = 2.0
+scale_amount_max = 8.0
+scale_amount_curve = SubResource("Curve_k22rf")
+color_ramp = SubResource("Gradient_jjtnp")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

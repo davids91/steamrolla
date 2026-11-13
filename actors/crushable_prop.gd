@@ -11,9 +11,6 @@ signal crushed(me: Crushable)
 
 const crushes_me = "../ToolController/Roller"
 
-func _ready() -> void:
-	pass
-
 var sent_crush_signal: bool = false
 var can_play_crush_sound: bool = true
 func _process(_delta: float) -> void:

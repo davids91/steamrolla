@@ -1,6 +1,10 @@
 class_name MovingCar
 extends RigidBody3D
 
+
+func _ready() -> void:
+	$CarBody.set_surface_override_material(0, $CarBody.get_active_material(0).duplicate())
+
 @export var horn_interval_sec: float = 2.8
 @export_range(0., 1.) var horn_randomness_percentage: float = 0.2
 @export_range(0., 1.) var double_horn_chance: float = 0.3
@@ -29,7 +33,21 @@ func _process(delta: float) -> void:
 @export var mid_velocity_dot_threshold_for_crash: float = 100.
 @export var velocity_standstill_epsilon: float = 0.1
 @export var velocity_standstill_threshold_sec: float = 1.
-@onready var crashed: bool = false
+@export var crash_sets_in_sec: float = 0.6
+@export var crash_noise: FastNoiseLite
+@onready var crashed: bool = false:
+	set(v):
+		$SmokeParticles.emitting = v
+		crashed = v
+		if crashed:
+			crash_noise.offset = Vector3(randf_range(-500., 500.), randf_range(-500., 500.), randf_range(-500., 500.))
+			var noise_texture: NoiseTexture2D = NoiseTexture2D.new()
+			noise_texture.noise = crash_noise
+			$CarBody.get_surface_override_material(0).set_shader_parameter("crash_noise", noise_texture)
+			create_tween().tween_method(
+				func(w: float): $CarBody.get_surface_override_material(0).set_shader_parameter("crash_amount", w),
+				0., 1., crash_sets_in_sec
+			)
 @onready var previous_velocity: Vector3 = linear_velocity
 @onready var standing_still_since: float = 0.
 func _physics_process(delta: float) -> void:
