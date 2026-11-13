@@ -57,7 +57,7 @@ shadow_mesh = SubResource("ArrayMesh_v4nxo")
 size = Vector3(3.3399048, 2.8430467, 6.4198313)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pogr6"]
-size = Vector3(15, 6.909, 15)
+size = Vector3(15, 15, 15)
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_8jg5c"]
 streams_count = 1
@@ -125,7 +125,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.34567142, 0.43688107)
 collision_layer = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CollisionDetector" unique_id=1865316412]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.29360962, 3.443943, -2.190321)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.29360962, 1.5657243, -2.190321)
 shape = SubResource("BoxShape3D_pogr6")
 debug_color = Color(0, 0.6885001, 0.81, 0.9372549)
 

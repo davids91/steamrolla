@@ -78,6 +78,8 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 		return
 
 	if tool_nodes.has(tool): # Configure tool for level and runway
+		if not runway.tool_selected_to_deploy:
+			$ToolSelectedSound.play()
 		var ready_to_deploy = true
 		if runway:
 			ready_to_deploy = runway.ready_to_deploy()
@@ -169,7 +171,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 			# Handel Shovel UI
 			if active_tool == ToolPanel.Tools.SHOVEL:
-				$ShovelSound.play()
 				dig_shovel_into(view.cursor.global_position)
 		elif(
 			event.button_index == MOUSE_BUTTON_LEFT
@@ -214,9 +215,9 @@ func _physics_process(delta: float) -> void:
 			if (tool_nodes[active_tool].payload_triggered or not tool_nodes[active_tool].has_payload):
 				road_chunk.asphalt_delta = asphalt_delta * delta
 				road_chunk.update_asphalt()
-			tool_nodes[active_tool].work_at_cursor(view.cursor.global_position)
 			road_chunk.set_update_brush_center(tool_nodes[active_tool].global_position)
 			road_chunk.tool_angle = Vector2(-tool_nodes[active_tool].basis.z.x, -tool_nodes[active_tool].basis.z.z).angle()
+			tool_nodes[active_tool].work_at_cursor(view.cursor.global_position)
 		else:
 			asphalt_delta *= (1. - tool_nodes[active_tool].tool_responsiveness)
 			if abs(asphalt_delta) < VALUE_EPSILON: asphalt_delta = 0.

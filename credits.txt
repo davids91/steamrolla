@@ -6,7 +6,7 @@ David:
 - Runway follow and deployment behavior with parking positions, draggable default position and automatic out of bounds detection for parked tools
 - Base scene for levels and level specific asphalt deviation threshold
 - Level select scene with transition animations(populated automatically from available levels)
-- Level Objective and attribute backend system with automated completion check
+- Level Objective and attribute backend system with automated completion check and sounds
 - User data storage(objective completion, level attributes and tool positions)
 - Automatic detection of asphalt reaching target level
 - Ashpalt deviation from target marker system(unfinished areas glow red)
@@ -14,17 +14,22 @@ David:
 - Unfinished parts of asphalt flashing red
 - Busy traffic system
 - Title screen scene(design, but not the animation or artwork)
+- Level selection screen
+- Level complete screen with confetti
 - Level Editor(level data structure, template generation, packing data in compact form)
 - Roadwork tool control system (generic control with mouse drag, keyboard or drawn trajectory)
 - Roadwork tools configurable base with physical body(base for roller, compactor, asphalt paver and dumptruck)
 - Compactor control scheme and responsive model logic
 - Paver with asphalt storage and release trigger; behavior, sounds and UI key prompt for control
 - Roller with frontal collision detection and UI key prompts for control
-- Dynamic stream of cars with automated crash detection
+- Dynamic stream of cars with horns, crash sounds and automated crash detection
 - Drawn Trajectory System
 - Smooth camera transitions betwen level overview and tools with sound
 - Camera shake on impact
-- Broken pipe objective in intersection level
+- Camera transition sounds
+- Crow sounds
+- Objective complete sounds
+- Unfinished road tool sound
 - Scenery museum with automated camera walkthrough
 - Traffic level with fountain
 - Parking lot starting state image
@@ -42,9 +47,9 @@ David:
 - Sky texture ( cloudy sky )
 - Water Spurt Particle system
 - Soda/beer breaking out of cans
-- Car alarm getting worse wheile car is crushed
+- Broken pipe objective in intersection level
+- Car alarm getting worse while car is crushed
 - Roller Squeeze sound
-- Unfinished road tool sound
 - Conversion from raw images to level designs for various levels
 - Integrated UI elements into HUD
 - Minor updates in levels
@@ -77,6 +82,7 @@ Christer:
 - Farmer field level terrain
 - Parking lot level terrain
 - Imported Ratrick model
+- Warning messages
 
 Demi:
 ===
@@ -134,6 +140,7 @@ Adgemon:
 - Hydrant water erupting sound
 - Car alarm sound
 - Car horn sounds
+- Roadwork tool selection sound
 
 Hunter:
 ===
@@ -146,3 +153,7 @@ Mo Shah:
 Roei:
 ===
  - Color palette guidance
+
+Tanner:
+===
+- Pre-playtest playtest

@@ -12,7 +12,7 @@
 size = Vector3(1.0430298, 3.0577972, 2.5981522)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7imx7"]
-size = Vector3(6.1, 6, 6.027)
+size = Vector3(6.1, 12, 6.027)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rfa05"]
 resource_name = "Material"
@@ -267,7 +267,7 @@ shape = SubResource("BoxShape3D_5lgew")
 collision_layer = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SelectableArea" unique_id=1162582284]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0730896, 3.097823, -0.28852367)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0730896, 1.1923053, -0.28852367)
 shape = SubResource("BoxShape3D_7imx7")
 
 [node name="SpinnyPart" type="Node3D" parent="." unique_id=1481064053]
@@ -277,7 +277,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.092113495, 0)
 unique_name_in_owner = true
 transform = Transform3D(-0.5, 0, -7.54979e-08, 0, 0.5, 0, 7.54979e-08, 0, -0.5, 0, 0, 0)
 
-[node name="Skeleton3D" parent="SpinnyPart/Compactor/rig" parent_id_path=PackedInt32Array(1133186004, 920630493) index="0" unique_id=1253331845]
+[node name="Skeleton3D" parent="SpinnyPart/Compactor/rig" parent_id_path=PackedInt32Array(1133186004, 1325178343) index="0" unique_id=2096294291]
 bones/2/rotation = Quaternion(0, 4.627107, 0.707107, 0)
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="SpinnyPart/Compactor/rig/Skeleton3D" index="1" unique_id=392415176]

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://fs2nb7yohxvp" path="res://actors/equipment/tool_controller.gd" id="1_mu5et"]
 [ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="2_y1sw8"]
-[ext_resource type="AudioStream" uid="uid://c2wni3e7h2oig" path="res://audio/asphalt.wav" id="3_5dlyw"]
+[ext_resource type="AudioStream" uid="uid://kwlh1x2t4jw4" path="res://audio/select.wav" id="3_y1sw8"]
 
 [sub_resource type="Curve" id="Curve_aicyk"]
 _limits = [-1.0, 1.0, 0.0, 1.0]
@@ -18,10 +18,10 @@ point_count = 4
 atlas = ExtResource("2_y1sw8")
 region = Rect2(516, 10, 128, 128)
 
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_5pxul"]
-random_pitch = 1.3348398
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_8jg5c"]
+random_pitch = 1.0204226
 streams_count = 1
-stream_0/stream = ExtResource("3_5dlyw")
+stream_0/stream = ExtResource("3_y1sw8")
 
 [node name="ToolController" type="Node3D" unique_id=129265235]
 script = ExtResource("1_mu5et")
@@ -33,5 +33,6 @@ transform = Transform3D(-0.017602984, 0.7189509, -0.6948379, 0.012131715, 0.6950
 modulate = Color(1, 1, 1, 0)
 texture = SubResource("AtlasTexture_xtagh")
 
-[node name="ShovelSound" type="AudioStreamPlayer3D" parent="." unique_id=1951448107]
-stream = SubResource("AudioStreamRandomizer_5pxul")
+[node name="ToolSelectedSound" type="AudioStreamPlayer" parent="." unique_id=211061944]
+stream = SubResource("AudioStreamRandomizer_8jg5c")
+volume_db = -5.0

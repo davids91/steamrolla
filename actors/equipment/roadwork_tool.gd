@@ -37,6 +37,8 @@ func start_working() -> void:
 
 func stop_working() -> void:
 	is_working = false
+	is_highlighted = false
+	_set_highlight(is_highlighted)
 
 @export var min_distance_to_move: float = 0.25
 ## Interface for Roadwork tools dragged by the mouse

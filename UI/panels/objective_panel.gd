@@ -111,11 +111,11 @@ func _process(delta: float) -> void:
 			# Check for asphalt state objective completion
 			%AsphaltProgress.value = level.accepted_asphalt_deviation / max(road_chunk.get_deviation_from_target(), 0.001)
 			if road_chunk.is_state_in_target() and not is_completed("asphalt_done"):
-				set_completed("asphalt_done")
 				LevelStructure.level_attribute_store(used_base_dir, "asphalt_done")
+				set_completed("asphalt_done")
 
 		# Check for crashes in traffic
-		if not traffic_objective_complete and time_to_check_traffic_objective_sec < 0.:
+		if objective_names.has("traffic_ok") and not traffic_objective_complete and time_to_check_traffic_objective_sec < 0.:
 			time_to_check_traffic_objective_sec = objective_check_interval_sec * 1.1
 			var crashed_car_count: int = 0
 			for car in level.contained_traffic: if car.crashed: crashed_car_count += 1
