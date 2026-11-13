@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://cqn4cg82bckgs"]
+
+[ext_resource type="PackedScene" uid="uid://djk7mhgpyu3a" path="res://models/suburban-house.fbx" id="1_kyym4"]
+[ext_resource type="Material" uid="uid://o7whn2385w7g" path="res://materials/suburban-house-material.tres" id="2_lu3vl"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kdu0b"]
+size = Vector3(2, 2, 2)
+
+[node name="suburban-house" unique_id=314419192 instance=ExtResource("1_kyym4")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="0" unique_id=2027368238]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0" unique_id=1755902018]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_kdu0b")
+
+[node name="flat" parent="." index="1" unique_id=1766566476]
+material_override = ExtResource("2_lu3vl")
+
+[node name="flat_001" parent="." index="2" unique_id=385692486]
+material_override = ExtResource("2_lu3vl")
+
+[node name="sloped" parent="." index="3" unique_id=377586563]
+material_override = ExtResource("2_lu3vl")
+
+[node name="sloped_001" parent="." index="4" unique_id=505205945]
+material_override = ExtResource("2_lu3vl")
