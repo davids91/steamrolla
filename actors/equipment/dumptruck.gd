@@ -51,6 +51,7 @@ func handle_movement(delta: float) -> void:
 var is_pouring: bool = false
 func _process(delta: float) -> void:
 	super(delta)
+	$EmptyIndicator.visible = asphalt_remaining <= 0.
 	if 0. >= asphalt_remaining: payload_triggered = false
 	$SmokeParticles.emitting = is_working and payload_triggered
 	if is_working and payload_triggered:

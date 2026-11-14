@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://beqryjun1lkjn" path="res://textures/asphalt_tile_seamless_normal.png" id="7_l3glr"]
 [ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="7_vgkag"]
 [ext_resource type="Script" uid="uid://m7cns5r4uxhp" path="res://UI/user_guidance/key_prompt.gd" id="8_f1fbw"]
+[ext_resource type="Script" uid="uid://c6xgcwp5vvv3w" path="res://UI/visual_elements/empty_indicator.gd" id="11_n1ttm"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_srf32"]
 resource_name = "palette"
@@ -99,6 +100,10 @@ subdivide_depth = 16
 atlas = ExtResource("7_vgkag")
 region = Rect2(382.025, 258, 128, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_jnjti"]
+atlas = ExtResource("7_vgkag")
+region = Rect2(253.827, 255.325, 133.757, 70.689)
+
 [node name="AsphaltPaver" type="CharacterBody3D" unique_id=1082380962 groups=["RoadworkTool"]]
 collision_layer = 3
 collision_mask = 2
@@ -148,6 +153,14 @@ billboard = 1
 texture = SubResource("AtlasTexture_8jg5c")
 script = ExtResource("8_f1fbw")
 frame_delta = Vector2(0, 34)
+
+[node name="EmptyIndicator" type="Sprite3D" parent="." unique_id=1133371615]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.088378906, 3.032898, -3.1795552)
+modulate = Color(1, 1, 1, 0.53333336)
+pixel_size = 0.035
+billboard = 1
+texture = SubResource("AtlasTexture_jnjti")
+script = ExtResource("11_n1ttm")
 
 [connection signal="area_entered" from="CollisionDetector" to="." method="_on_body_representation_area_entered"]
 [connection signal="area_exited" from="CollisionDetector" to="." method="_on_body_representation_area_exited"]

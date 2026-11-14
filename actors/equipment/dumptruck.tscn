@@ -10,6 +10,7 @@
 [ext_resource type="Shader" uid="uid://trnxwrt5vs7p" path="res://actors/equipment/asphalt_pile.gdshader" id="8_x7m7s"]
 [ext_resource type="Texture2D" uid="uid://tghqcuq3u1me" path="res://textures/gravel-seamless.png" id="9_x7m7s"]
 [ext_resource type="Material" uid="uid://bowh8im433dol" path="res://materials/smoke-material.tres" id="11_3buat"]
+[ext_resource type="Script" uid="uid://c6xgcwp5vvv3w" path="res://UI/visual_elements/empty_indicator.gd" id="11_brqia"]
 
 [sub_resource type="Gradient" id="Gradient_f1fbw"]
 
@@ -69,6 +70,10 @@ region = Rect2(255, 438, 110, 76)
 [sub_resource type="AtlasTexture" id="AtlasTexture_3buat"]
 atlas = ExtResource("7_if0w6")
 region = Rect2(382.025, 258, 128, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yv87x"]
+atlas = ExtResource("7_if0w6")
+region = Rect2(253.827, 255.325, 133.757, 70.689)
 
 [node name="Dumptruck" type="CharacterBody3D" unique_id=50967490 groups=["BombActivator", "RoadworkTool"]]
 collision_layer = 3
@@ -162,6 +167,14 @@ billboard = 1
 texture = SubResource("AtlasTexture_3buat")
 script = ExtResource("8_tiei4")
 frame_delta = Vector2(0, 34)
+
+[node name="EmptyIndicator" type="Sprite3D" parent="." unique_id=1048326232]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.088378906, 4.134057, 2.1731186)
+modulate = Color(1, 1, 1, 0.53333336)
+pixel_size = 0.035
+billboard = 1
+texture = SubResource("AtlasTexture_yv87x")
+script = ExtResource("11_brqia")
 
 [connection signal="area_entered" from="SelectableArea" to="." method="_on_body_representation_area_entered"]
 [connection signal="area_exited" from="SelectableArea" to="." method="_on_body_representation_area_exited"]

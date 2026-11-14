@@ -43,6 +43,7 @@ func _on_body_representation_body_exited(body: Node3D) -> void:
 
 func _process(delta: float) -> void:
 	super(delta)
+	$EmptyIndicator.visible = asphalt_remaining <= 0.
 	if 0. >= asphalt_remaining: payload_triggered = false
 	if is_working and payload_triggered:
 		if asphalt_remaining == asphalt_capacity: $ActiveSound.play()
