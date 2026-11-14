@@ -11,6 +11,10 @@ extends Node3D
 @onready var base_dir: String = LevelStructure.get_base_dir_for_scene(self)
 @onready var deployed_tools: Array[ToolPanel.Tools] = []
 func _ready() -> void:
+	# Configure tools to level
+	if $ToolController.tool_nodes.has(ToolPanel.Tools.DUMPTRUCK):
+		$ToolController.tool_nodes[ToolPanel.Tools.DUMPTRUCK].payload_type = %RoadChunk.surface
+
 	# Handle permanent object positional storage
 	var car_transform_readouts = LevelStructure.level_attribute_data_read(base_dir, "contained_cars")
 	if car_transform_readouts is Array[Transform3D]:

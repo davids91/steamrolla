@@ -1,12 +1,15 @@
 shader_type canvas_item;
+render_mode unshaded;
 
 uniform sampler2D terrain; // r: height, g: cracks, b: water presence
 uniform sampler2D asphalt_state; // r: asphalt quantity, g: terrain temperature, b: unused
 uniform sampler2D asphalt_attributes; /// r: presence, g: editability, b: fluidity
 uniform float asphalt_minimum_quantity_for_display = 0.005;
 uniform float asphalt_delta = 0.; // Addition / removal of asphalt under brush
-uniform float paver_overflow_min: hint_range(0.0, 1.) = 0.1;
+uniform float paver_overflow_min: hint_range(-1.0, 1.) = 0.1;
 uniform float paver_overflow_max: hint_range(0.0, 1.) = 0.1;
+uniform float dumptruck_overflow_min: hint_range(-1.0, 1.) = 0.1;
+uniform float dumptruck_overflow_max: hint_range(0.0, 1.) = 0.1;
 
 uniform float tool_current_normalized_height = 0.;
 uniform vec2 tool_center = vec2(0.5); 
@@ -49,27 +52,35 @@ float sdSegment( in vec2 p, in vec2 a, in vec2 b )
 void fragment() {
 	float asphalt_delta_output = 0.0;
 	float current_asphalt_level = texture(asphalt_state, UV).r;
-	float terrain_height = texture(terrain, UV).r;
+	float distance_from_center = length(UV - tool_center);
 
 	// early exit through return; is not supported....
-	if(CONTROL_EPSILON < texture(asphalt_attributes, UV).g){ // Only run shader if the pixel is editable
-		float distance_from_center = length(UV - tool_center);
-		vec2 roller_direction = vec2(cos(tool_angle + tool_angle_offset), sin(tool_angle + tool_angle_offset)); // Roller direction to set exact boundaries of the roller
+	// Only run shader if the pixel is editable
+	if(CONTROL_EPSILON < texture(asphalt_attributes, UV).g){
+		float terrain_height = texture(terrain, UV).r;
+		vec2 roller_direction = vec2(cos(tool_angle + tool_angle_offset), sin(tool_angle + tool_angle_offset));
 		vec2 roller_sideways_direction = vec2(-roller_direction.y, roller_direction.x);
 		vec2 roller_bl = tool_center - tool_size.x * 0.5 * roller_sideways_direction - tool_size.y * 0.5 * roller_direction;
 		vec2 roller_br = tool_center + tool_size.x * 0.5 * roller_sideways_direction - tool_size.y * 0.5 * roller_direction;
 		vec2 roller_tr = tool_center + tool_size.x * 0.5 * roller_sideways_direction + tool_size.y * 0.5 * roller_direction;
 		vec2 roller_tl = tool_center - tool_size.x * 0.5 * roller_sideways_direction + tool_size.y * 0.5 * roller_direction;
 
-		/// DEBUG: to see roller angle
+		//// DEBUG: to see roller angle
 		//if(point_in_triangle(roller_bl, roller_tl, roller_tr, UV) || point_in_triangle(roller_bl, roller_tr, roller_br, UV)){
 				//asphalt_delta_output = 0.8;
-				//if(0.05 < length(UV - roller_bl)) asphalt_delta_output -= 0.3;
-				//if(0.05 < length(UV - roller_br)) asphalt_delta_output += 0.3;
-		//} else
+				//if(0.05 < length(tool_center - roller_bl)) asphalt_delta_output -= 0.3;
+				//if(0.05 < length(tool_center - roller_br)) asphalt_delta_output += 0.3;
+		//} else asphalt_delta_output = -0.5;
+		//if( true ){ } else
 		if (used_tool == TOOL_SHOVEL){
 			asphalt_delta_output = asphalt_delta * (1. - smoothstep(0., tool_radius, distance_from_center));
-		}else if (used_tool == TOOL_PAVER || used_tool == TOOL_DUMPTRUCK){
+		}else if(used_tool == TOOL_DUMPTRUCK){
+			asphalt_delta_output = (
+				tool_strength * (1. - smoothstep(
+					dumptruck_overflow_min, dumptruck_overflow_max, sdSegment(UV, roller_tl, roller_tr)
+				))
+			);
+		}else if (used_tool == TOOL_PAVER){
 			float paver_range = 1. - smoothstep(
 				paver_overflow_min, paver_overflow_max,
 				min(
@@ -82,23 +93,21 @@ void fragment() {
 				0.
 			);
 		}else if(used_tool == TOOL_COMPACTOR) {
-			if(distance_from_center < tool_radius){ // Calculate the average height near the radius of the tool
-				float avg_value = 0.;
-				float sample_count = 0.;
-				for(float x = UV.x - tool_radius; x < UV.x + tool_radius; x += (tool_radius / 5.)) {
-					for(float y = UV.y - tool_radius; y < UV.y + tool_radius; y += (tool_radius / 5.)) {
-						if(0. < texture(asphalt_attributes, vec2(x,y)).r){ // Only count pixel if it's part of the road
-							avg_value += texture(asphalt_state, vec2(x,y)).r + texture(terrain, vec2(x,y)).r;
-							sample_count += 1.;
-						}
+			float avg_value = 0.;
+			float sample_count = 0.;
+			for(float x = UV.x - tool_radius; x < UV.x + tool_radius; x += (tool_radius / 5.)) {
+				for(float y = UV.y - tool_radius; y < UV.y + tool_radius; y += (tool_radius / 5.)) {
+					if(0. < texture(asphalt_attributes, vec2(x,y)).r){ // Only count pixel if it's part of the road
+						avg_value += texture(asphalt_state, vec2(x,y)).r + texture(terrain, vec2(x,y)).r;
+						sample_count += 1.;
 					}
 				}
-				avg_value /= sample_count;
-				asphalt_delta_output = ( // Calculate the value this px needs to change to set the average height
-					(avg_value - (current_asphalt_level + terrain_height))
-					* tool_strength * smoothstep(tool_radius, 0., distance_from_center)
-				);
 			}
+			avg_value /= sample_count;
+			asphalt_delta_output = ( // Calculate the value this px needs to change to set the average height
+				(avg_value - (current_asphalt_level + terrain_height))
+				* tool_strength * smoothstep(tool_radius, 0., distance_from_center)
+			);
 		}else if(used_tool == TOOL_ROLLER) {
 			if(
 				(terrain_height + current_asphalt_level) > tool_current_normalized_height

@@ -1,0 +1,169 @@
+[gd_scene format=3 uid="uid://dktlrcvydo7f4"]
+
+[ext_resource type="Script" uid="uid://g3koc70nujlg" path="res://actors/equipment/dumptruck.gd" id="1_28r5m"]
+[ext_resource type="PackedScene" uid="uid://l00v8wyjwjmc" path="res://UI/user_guidance/tool_bubble_indicator_billboard.tscn" id="2_x7m7s"]
+[ext_resource type="PackedScene" uid="uid://bcfvi261sp483" path="res://models/truck.fbx" id="3_lhpk6"]
+[ext_resource type="PackedScene" uid="uid://bb24gus88qx5r" path="res://core/tools/orbit_camera_3d.tscn" id="3_yv87x"]
+[ext_resource type="Texture2D" uid="uid://c4ecx65vhomv1" path="res://textures/gravel-seamless-normal.png" id="6_yv87x"]
+[ext_resource type="Texture2D" uid="uid://jh0gkjsfeip8" path="res://textures/ui_atlas.png" id="7_if0w6"]
+[ext_resource type="Script" uid="uid://m7cns5r4uxhp" path="res://UI/user_guidance/key_prompt.gd" id="8_tiei4"]
+[ext_resource type="Shader" uid="uid://trnxwrt5vs7p" path="res://actors/equipment/asphalt_pile.gdshader" id="8_x7m7s"]
+[ext_resource type="Texture2D" uid="uid://tghqcuq3u1me" path="res://textures/gravel-seamless.png" id="9_x7m7s"]
+[ext_resource type="Material" uid="uid://bowh8im433dol" path="res://materials/smoke-material.tres" id="11_3buat"]
+
+[sub_resource type="Gradient" id="Gradient_f1fbw"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vgkag"]
+noise_type = 2
+frequency = 0.0129
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3buat"]
+noise = SubResource("FastNoiseLite_vgkag")
+color_ramp = SubResource("Gradient_f1fbw")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ww7qr"]
+render_priority = 0
+shader = ExtResource("8_x7m7s")
+shader_parameter/asphalt_texture = ExtResource("9_x7m7s")
+shader_parameter/asphalt_normal = ExtResource("6_yv87x")
+shader_parameter/pile_noise = SubResource("NoiseTexture2D_3buat")
+shader_parameter/opacity = 1.0
+shader_parameter/asphalt_pile_size = 0.47
+shader_parameter/asphalt_pile_spread_min = -0.1
+shader_parameter/asphalt_pile_spread_max = 0.25
+shader_parameter/asphalt_noise_dominanace = 0.3130000148675
+shader_parameter/asphalt_tile_size_ratio = 1.615
+shader_parameter/asphalt_shiny = 0.366000017385
+shader_parameter/asphalt_spread = 372.54801769603
+shader_parameter/edge_transition = 0.041
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_brqia"]
+material = SubResource("ShaderMaterial_ww7qr")
+size = Vector2(0.5, 0.3)
+subdivide_width = 16
+subdivide_depth = 16
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ojn7k"]
+size = Vector3(3.1845703, 3.6546855, 8.228287)
+
+[sub_resource type="QuadMesh" id="QuadMesh_brqia"]
+
+[sub_resource type="Curve" id="Curve_1jgau"]
+_data = [Vector2(0, 0), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_if0w6"]
+offsets = PackedFloat32Array(0, 0.99678457)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c7bb5"]
+size = Vector3(15, 7.5, 15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5j0fq"]
+size = Vector3(2, 25, 3)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xljjs"]
+atlas = ExtResource("7_if0w6")
+region = Rect2(255, 438, 110, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3buat"]
+atlas = ExtResource("7_if0w6")
+region = Rect2(382.025, 258, 128, 32)
+
+[node name="Dumptruck" type="CharacterBody3D" unique_id=50967490 groups=["BombActivator", "RoadworkTool"]]
+collision_layer = 3
+collision_mask = 2
+script = ExtResource("1_28r5m")
+asphalt_height_for_quantity = 0.75
+tool_enum = 2
+normalized_size = Vector2(0.055, 0.02)
+tool_angle = 2.4
+tool_strength = 0.3000000000000007
+controlled_by = 2
+has_payload = true
+
+[node name="ToolBubbleIndicator" parent="." unique_id=135928248 instance=ExtResource("2_x7m7s")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.9528966, 5.243889)
+
+[node name="OrbitCamera" parent="." unique_id=1504134869 instance=ExtResource("3_yv87x")]
+transform = Transform3D(-0.9089847, 0, 0.41682938, 0, 1, 0, -0.41682938, 0, -0.9089847, 3.2651744, 4.8342853, -6.400869)
+
+[node name="Truck" parent="." unique_id=1606638326 instance=ExtResource("3_lhpk6")]
+transform = Transform3D(-0.99982464, 0, -0.018725341, 0, 1, 0, 0.018725341, 0, -0.99982464, 0, 0, 3.9395456)
+
+[node name="Cube_039" parent="Truck" index="15" unique_id=1606561228]
+transform = Transform3D(100, 0, 0, 0, -4.371139e-06, 100, 0, -100, -4.371139e-06, 0.04413247, 1.5530187, 3.115664)
+
+[node name="GravelPile" type="MeshInstance3D" parent="Truck/Cube_039" index="0" unique_id=1672172442]
+unique_name_in_owner = true
+transform = Transform3D(0.0001394107, -3.4904108e-09, -0.07999986, -0.07499988, -3.496905e-09, -0.00014870473, -3.2722605e-09, 0.08, -3.496905e-09, -0.0003589106, 0.01697797, 0.008762634)
+mesh = SubResource("PlaneMesh_brqia")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1136952344]
+transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, -0.040283203, 1.777756, 3.8615093)
+shape = SubResource("BoxShape3D_ojn7k")
+
+[node name="SmokeParticles" type="CPUParticles3D" parent="." unique_id=158499558]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9985695, 1.0221114, -6.4901457)
+material_override = ExtResource("11_3buat")
+cast_shadow = 0
+emitting = false
+amount = 16
+mesh = SubResource("QuadMesh_brqia")
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+direction = Vector3(0, 1, 0)
+spread = 90.0
+gravity = Vector3(0, -4, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 3.0
+scale_amount_min = 2.0
+scale_amount_max = 8.0
+scale_amount_curve = SubResource("Curve_1jgau")
+color_ramp = SubResource("Gradient_if0w6")
+
+[node name="SelectableArea" type="Area3D" parent="." unique_id=581004782 groups=["BirdReactable", "BombActivator"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.9395456)
+collision_layer = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SelectableArea" unique_id=1931688132]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.014925003, 3.7303581, -1.7147236)
+shape = SubResource("BoxShape3D_c7bb5")
+
+[node name="FloorShapecastFront" type="ShapeCast3D" parent="." unique_id=1564281692]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.6351929, 5.885)
+shape = SubResource("BoxShape3D_5j0fq")
+target_position = Vector3(0, 0, 0)
+debug_shape_custom_color = Color(0.93333334, 0, 1, 1)
+
+[node name="FloorShapecastBack" type="ShapeCast3D" parent="." unique_id=1170531597]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.6351929, 1.4740374)
+shape = SubResource("BoxShape3D_5j0fq")
+target_position = Vector3(0, 0, 0)
+debug_shape_custom_color = Color(0.93333334, 0, 1, 1)
+
+[node name="KeyPrompt" type="Sprite3D" parent="." unique_id=1478709250]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.2696705, 5.243889)
+modulate = Color(1, 1, 1, 0.53333336)
+pixel_size = 0.05
+billboard = 1
+texture = SubResource("AtlasTexture_xljjs")
+script = ExtResource("8_tiei4")
+actions = Array[String](["move_left", "move_right", "move_forward", "move_backwards"])
+time_to_switch_frame_sec = 0.3
+frame_delta = Vector2(128, 0)
+frame_count = 4
+
+[node name="KeyPromptPayload" type="Sprite3D" parent="." unique_id=1661915457]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.7721143, 5.243889)
+modulate = Color(1, 1, 1, 0.53333336)
+pixel_size = 0.05
+billboard = 1
+texture = SubResource("AtlasTexture_3buat")
+script = ExtResource("8_tiei4")
+frame_delta = Vector2(0, 34)
+
+[connection signal="area_entered" from="SelectableArea" to="." method="_on_body_representation_area_entered"]
+[connection signal="area_exited" from="SelectableArea" to="." method="_on_body_representation_area_exited"]
+
+[editable path="Truck"]

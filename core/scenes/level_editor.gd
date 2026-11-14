@@ -292,6 +292,24 @@ func _save_level_data() -> void:
 	)
 
 @export_category("Asphalt updates")
+@export var configure_tool_in_editor: RoadworkTool:
+	set(v):
+		configure_tool_in_editor = v
+		$RoadChunk.configure_to(v)
+@export var configured_tool_angle: float = 0.:
+	set(v):
+		configured_tool_angle = v
+		configure_tool_in_editor_button.call()
+
+@export_tool_button("Configure tool", "Save") var configure_tool_in_editor_button: Callable = func():
+	$RoadChunk.configure_to(configure_tool_in_editor)
+	$RoadChunk.set_update_brush_center(configure_tool_in_editor.global_position)
+	configure_tool_in_editor.rotation.y = configured_tool_angle
+	$RoadChunk.tool_angle = atan2(
+		configure_tool_in_editor.basis.z.z,
+		configure_tool_in_editor.basis.z.x
+	)
+
 @export var noise: FastNoiseLite = FastNoiseLite.new()
 @export var starting_asphalt_level_normalized: float = 0.2
 @export var starting_asphalt_distribution_normalized: float = 0.05

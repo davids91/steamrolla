@@ -2,11 +2,13 @@ shader_type spatial;
 render_mode depth_prepass_alpha;
 
 uniform sampler2D asphalt_texture;
+uniform sampler2D asphalt_normal;
 uniform sampler2D pile_noise;
 uniform float opacity = 1.;
 uniform float asphalt_pile_size = 1.;
 uniform float asphalt_pile_spread_min = 1.;
 uniform float asphalt_pile_spread_max = 1.;
+uniform float asphalt_noise_dominanace: hint_range(0.0, 1.0) = 1.;
 uniform float asphalt_tile_size_ratio = 1.;
 uniform float asphalt_shiny: hint_range(0.0, 1.0) = 0.2;
 uniform float asphalt_spread: hint_range(0.0, 500.0) = 10.;
@@ -17,7 +19,8 @@ void vertex() {
 	VERTEX.y += (
 		smoothstep(asphalt_pile_spread_min, asphalt_pile_spread_max ,(1. - length(pos))) * asphalt_pile_size
 		- texture(pile_noise, UV).r * asphalt_pile_spread_max
-	);
+	) * asphalt_noise_dominanace;
+	VERTEX.y = max(0., VERTEX.y);
 
 	// Do not set mesh height from samples from the other side of the level ( texture sampling wrap-around )
 	float distance_from_edge = min(min(1. - UV.x, UV.x), min(1. - UV.y, UV.y));
@@ -28,7 +31,7 @@ void fragment() {
 	ALBEDO = texture(asphalt_texture, UV * asphalt_tile_size_ratio).rgb;
 	ALPHA = opacity;
 	vec2 pos = (UV - 0.5) * 2.;
-	NORMAL = normalize(vec3(-pos.x, texture(pile_noise, UV).r, -pos.y));
+	NORMAL = texture(asphalt_normal, UV * asphalt_tile_size_ratio).rgb;
 }
 
 // Recreation of the default godot light shader from

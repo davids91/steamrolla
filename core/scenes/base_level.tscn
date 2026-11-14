@@ -23,11 +23,8 @@ sky = SubResource("Sky_oi3di")
 sky_custom_fov = 112.5
 ambient_light_source = 3
 ambient_light_color = Color(0.5568628, 0.7607843, 0.84705883, 1)
-tonemap_mode = 4
-tonemap_exposure = 1.47
 tonemap_agx_white = 14.93
 tonemap_agx_contrast = 1.26
-ssao_enabled = true
 adjustment_brightness = 1.08
 adjustment_contrast = 1.165
 adjustment_saturation = 1.05
@@ -97,7 +94,8 @@ player_view = NodePath("../../PlayerView")
 parking_spots = {
 0: NodePath("RollerParkingSpot"),
 1: NodePath("PaverParkingSpot"),
-3: NodePath("CompactorParkingSport")
+2: NodePath("DumptruckParkingSpot"),
+3: NodePath("CompactorParkingSpot")
 }
 parked_tools = [null, null, null]
 

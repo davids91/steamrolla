@@ -101,7 +101,8 @@ script = ExtResource("1_731n0")
 parking_spots = {
 0: NodePath("RollerParkingSpot"),
 1: NodePath("PaverParkingSpot"),
-3: NodePath("CompactorParkingSport")
+2: NodePath("DumptruckParkingSpot"),
+3: NodePath("CompactorParkingSpot")
 }
 
 [node name="Shape" type="CollisionShape3D" parent="." unique_id=1370689810]
@@ -129,7 +130,10 @@ transform = Transform3D(0.66913056, 0.2541705, 0.6983277, 0, 0.9396926, -0.34202
 [node name="PaverParkingSpot" type="Marker3D" parent="." unique_id=1497323168]
 transform = Transform3D(0.6819984, -0.30908343, -0.66283154, 0, 0.90630776, -0.42261827, 0.7313537, 0.28822497, 0.6181004, 4.939, 0.848, -5.487)
 
-[node name="CompactorParkingSport" type="Marker3D" parent="." unique_id=1404410924]
+[node name="DumptruckParkingSpot" type="Marker3D" parent="." unique_id=801419187]
+transform = Transform3D(0.6819984, -0.3090834, -0.66283154, 0, 0.9063077, -0.42261827, 0.7313537, 0.28822494, 0.6181004, 8.119712, 3.094962, -7.6116667)
+
+[node name="CompactorParkingSpot" type="Marker3D" parent="." unique_id=1404410924]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.44239, 0, 3.9678001)
 
 [node name="ParkingRamp1" type="MeshInstance3D" parent="." unique_id=564314695]
