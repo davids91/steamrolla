@@ -2,21 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://5xc8158i1q0f"
-path.s3tc="res://.godot/imported/asphalt_attributes.png-44eed930298c444b4f03cfcca129452f.s3tc.ctex"
+uid="uid://ft7sluv3e3a1"
+path="res://.godot/imported/bomb_objective_image.png-289d2d3b9cd527d54fcfe7a4c817c8e4.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
-source_file="res://levels/1_1level_1_smush/asphalt_attributes.png"
-dest_files=["res://.godot/imported/asphalt_attributes.png-44eed930298c444b4f03cfcca129452f.s3tc.ctex"]
+source_file="res://levels/1_1boom/bomb_objective_image.png"
+dest_files=["res://.godot/imported/bomb_objective_image.png-289d2d3b9cd527d54fcfe7a4c817c8e4.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -24,7 +23,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -38,4 +37,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1

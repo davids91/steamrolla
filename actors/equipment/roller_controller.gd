@@ -42,6 +42,11 @@ var moving_transparency_modifier: float = 0.
 func _process(delta: float) -> void:
 	super(delta)
 
+	# Handle positioning of Floor raycast
+	$FloorRaycast.global_position.x = global_position.x
+	$FloorRaycast.global_position.y = global_position.y + 30.
+	$FloorRaycast.global_position.z = global_position.z
+
 	# Handle transparency setting when the pilot camera is active
 	var movement_direction: Vector3 = (basis.z * -movement_intent.y).normalized()
 	var camera_direction: Vector3 = ($OrbitCamera.get_view_origin() - global_position)

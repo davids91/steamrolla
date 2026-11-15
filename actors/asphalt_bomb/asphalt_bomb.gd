@@ -3,8 +3,8 @@ extends Node3D
 const ACTIVATE_GROUP = "BombActivator"
 
 @export_category("Bomb parameters")
-@export var exlode_radius: float = 10.0
-@export var amount_to_add_asphalt: float = 20.0
+@export var explode_radius: float = 22.
+@export var amount_to_add_asphalt: float = 0.07
 
 @export var to_explode: bool = false
 
@@ -15,7 +15,7 @@ signal asphalt_bomb_exploded(blast_pos: Vector3, explode_radius: float, amount_t
 func _on_area_3d_area_entered(body: Node3D) -> void:
 	if body.is_in_group(ACTIVATE_GROUP) and not $Boom.playing:
 		visible = false
-		asphalt_bomb_exploded.emit(global_position, exlode_radius, amount_to_add_asphalt)
+		asphalt_bomb_exploded.emit(global_position, explode_radius, amount_to_add_asphalt)
 		if explosion_vfx_scene:
 			var vfx: Node3D = explosion_vfx_scene.instantiate()
 			get_tree().current_scene.add_child(vfx)

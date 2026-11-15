@@ -2,7 +2,7 @@
 class_name ToolPanel
 extends MarginContainer
 
-enum Tools{ ROLLER, PAVER, DUMPTRUCK, COMPACTOR, SHOVEL, UNKNOWN }
+enum Tools{ ROLLER, PAVER, DUMPTRUCK, COMPACTOR, SHOVEL, BOMB, UNKNOWN }
 
 signal selected_tool(tool: Tools)
 

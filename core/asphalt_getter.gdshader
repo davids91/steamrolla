@@ -1,4 +1,5 @@
 shader_type canvas_item;
+render_mode unshaded;
 
 uniform sampler2D asphalt_state;
 uniform sampler2D asphalt_attributes; /// r: presence, g: editability, b: fluidity

@@ -1,4 +1,5 @@
 shader_type canvas_item;
+render_mode unshaded;
 
 uniform sampler2D terrain;
 uniform sampler2D asphalt_state; /// Red channel: asphalt quantity

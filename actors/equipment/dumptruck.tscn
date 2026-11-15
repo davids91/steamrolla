@@ -60,9 +60,6 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 [sub_resource type="BoxShape3D" id="BoxShape3D_c7bb5"]
 size = Vector3(15, 7.5, 15)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_5j0fq"]
-size = Vector3(2, 25, 3)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_xljjs"]
 atlas = ExtResource("7_if0w6")
 region = Rect2(255, 438, 110, 76)
@@ -86,6 +83,7 @@ tool_angle = 2.4
 tool_strength = 0.3000000000000007
 controlled_by = 2
 has_payload = true
+inv_turn_responsiveness = 0.1
 
 [node name="ToolBubbleIndicator" parent="." unique_id=135928248 instance=ExtResource("2_x7m7s")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.9528966, 5.243889)
@@ -135,16 +133,22 @@ collision_layer = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.014925003, 3.7303581, -1.7147236)
 shape = SubResource("BoxShape3D_c7bb5")
 
-[node name="FloorShapecastFront" type="ShapeCast3D" parent="." unique_id=1564281692]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.6351929, 5.885)
-shape = SubResource("BoxShape3D_5j0fq")
-target_position = Vector3(0, 0, 0)
+[node name="FloorRaycastFront" type="RayCast3D" parent="." unique_id=1855255327]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 30, 5.885)
+top_level = true
+target_position = Vector3(0, -60, 0)
 debug_shape_custom_color = Color(0.93333334, 0, 1, 1)
 
-[node name="FloorShapecastBack" type="ShapeCast3D" parent="." unique_id=1170531597]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.6351929, 1.4740374)
-shape = SubResource("BoxShape3D_5j0fq")
-target_position = Vector3(0, 0, 0)
+[node name="FloorRaycastMiddle" type="RayCast3D" parent="." unique_id=1542349568]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 30, 3.7394428)
+top_level = true
+target_position = Vector3(0, -60, 0)
+debug_shape_custom_color = Color(0.93333334, 0, 1, 1)
+
+[node name="FloorRaycastBack" type="RayCast3D" parent="." unique_id=858354863]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 30, 1.4740374)
+top_level = true
+target_position = Vector3(0, -60, 0)
 debug_shape_custom_color = Color(0.93333334, 0, 1, 1)
 
 [node name="KeyPrompt" type="Sprite3D" parent="." unique_id=1478709250]

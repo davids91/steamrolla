@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cwxviiknxyjkm"
-path.s3tc="res://.godot/imported/terrain_albedo_image_minified.png-693494a0c137d2272e2f712adbc970c8.s3tc.ctex"
+uid="uid://gf306ip3eehn"
+path.s3tc="res://.godot/imported/target_asphalt_state.png-af2d295f9749563bf3f6cbcf45f59ab6.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://levels/1_1level_1_smush/terrain_albedo_image_minified.png"
-dest_files=["res://.godot/imported/terrain_albedo_image_minified.png-693494a0c137d2272e2f712adbc970c8.s3tc.ctex"]
+source_file="res://levels/1_1boom/target_asphalt_state.png"
+dest_files=["res://.godot/imported/target_asphalt_state.png-af2d295f9749563bf3f6cbcf45f59ab6.s3tc.ctex"]
 
 [params]
 

@@ -28,6 +28,7 @@ extends RoadworkTool
 		%GravelPile.get_active_material(0).set_shader_parameter("asphalt_pile_size", v * asphalt_height_for_quantity)
 
 func prepare_for_runway() -> void:
+	velocity = Vector3.ZERO
 	asphalt_remaining = asphalt_capacity
 	$ToolBubbleIndicator.visible = false
 
@@ -51,9 +52,24 @@ func handle_movement(delta: float) -> void:
 var is_pouring: bool = false
 func _process(delta: float) -> void:
 	super(delta)
+
+	# Handle positioning of Floor raycast
+	$FloorRaycastFront.global_position.x = global_position.x
+	$FloorRaycastFront.global_position.y = global_position.y + 30.
+	$FloorRaycastFront.global_position.z = global_position.z
+	$FloorRaycastBack.global_position.x = global_position.x
+	$FloorRaycastBack.global_position.y = global_position.y + 30.
+	$FloorRaycastBack.global_position.z = global_position.z
+	$FloorRaycastMiddle.global_position.x = global_position.x
+	$FloorRaycastMiddle.global_position.y = global_position.y + 30.
+	$FloorRaycastMiddle.global_position.z = global_position.z
+
+	# Handle visuals
 	$EmptyIndicator.visible = asphalt_remaining <= 0.
 	if 0. >= asphalt_remaining: payload_triggered = false
 	$SmokeParticles.emitting = is_working and payload_triggered
+
+	# Handle payload container
 	if is_working and payload_triggered:
 		if not is_pouring:
 			is_pouring = true
@@ -76,13 +92,20 @@ func _physics_process(delta: float) -> void:
 	# Stick to the ground
 	if is_working:
 		var floor_raycast_point: Vector3
-		if $FloorShapecastBack.is_colliding(): floor_raycast_point = $FloorShapecastBack.get_collision_point(0)
+		if $FloorRaycastBack.is_colliding(): floor_raycast_point = $FloorRaycastBack.get_collision_point()
 		if(
-			$FloorShapecastFront.is_colliding()
+			$FloorRaycastFront.is_colliding()
 			and (
 				null == floor_raycast_point
-				or $FloorShapecastFront.get_collision_point(0).y > floor_raycast_point.y
+				or $FloorRaycastFront.get_collision_point().y > floor_raycast_point.y
 			)
-		): floor_raycast_point = $FloorShapecastFront.get_collision_point(0)
+		): floor_raycast_point = $FloorRaycastFront.get_collision_point()
+		if(
+			$FloorRaycastMiddle.is_colliding()
+			and (
+				null == floor_raycast_point
+				or $FloorRaycastMiddle.get_collision_point().y > floor_raycast_point.y
+			)
+		): floor_raycast_point = $FloorRaycastMiddle.get_collision_point()
 		if floor_raycast_point != null:
 			global_position.y = lerp(global_position.y, floor_raycast_point.y, inv_turn_responsiveness)

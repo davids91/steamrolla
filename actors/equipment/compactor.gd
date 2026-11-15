@@ -7,6 +7,14 @@ func set_color(color: Color) -> void:
 	create_tween().tween_property($SpinnyPart/Bloke/metarig/Skeleton3D/hat.get_active_material(0), "albedo_color", color, 0.5)
 	create_tween().tween_property($SpinnyPart/compactor/Cube_001.get_active_material(0), "albedo_color", color, 0.5)
 
+@onready var bloke_starting_position: Vector3 = %Bloke.position
+func stop_working() -> void:
+	super()
+	# Reset moving part positions positions
+	%Compactor.position = Vector3.ZERO
+	%Compactor/rig/Skeleton3D.set_bone_pose_position(skidplate_bone_id, Vector3.ZERO)
+	%Bloke.position = bloke_starting_position
+
 @export var start_velo: float = 4.45
 func start_working() -> void:
 	super()
@@ -18,12 +26,14 @@ func start_working() -> void:
 	).set_delay(0.15)
 
 func prepare_for_runway() -> void:
+	tool_strength = original_tool_strength
 	$SpinnyPart.rotation = Vector3.ZERO
 	velocity = Vector3.ZERO
 	previous_velocity = Vector3.ZERO
 	$ToolBubbleIndicator.visible = false
 
 @export var velo_epsilon: float = 0.1
+@export var ground_diff_epsilon: float = 0.05
 @export var throttle_strength: float = 3.
 @export var minimum_velo_length: float = 5.0
 @export var max_velocity_length_for_jitter: float = 5.05
@@ -43,7 +53,7 @@ func handle_movement(delta: float) -> void:
 
 	# Add gravity while in the air, and jump to obstacle above tool
 	if $FloorRaycast.get_collider() and $FloorRaycast.get_collider().get_parent() is RoadChunk:
-		if $FloorRaycast.get_collision_point().y < global_position.y:
+		if (global_position.y - $FloorRaycast.get_collision_point().y) > ground_diff_epsilon:
 			velocity += gravity
 			if controlled_by != ControlMethods.DRAGGED: tool_strength = max(0., tool_strength - delta * 10.)
 		else:
@@ -94,9 +104,16 @@ var elapsed_time = 0.
 func _process(delta: float) -> void:
 	super(delta)
 	elapsed_time += delta
+
+	# Handle positioning of floor raycast
+	$FloorRaycast.global_position.x = global_position.x
+	$FloorRaycast.global_position.y = global_position.y + 15.
+	$FloorRaycast.global_position.z = global_position.z
+
+	# Handle setting moving parts based on vibration
 	var vibration_y_delta: float = sin(elapsed_time * vibration_speed) * vibration_extent
-	%Compactor.position += %Compactor.basis.y * vibration_y_delta * 0.3
 	var bone_position: Vector3 = %Compactor/rig/Skeleton3D.get_bone_pose_position(skidplate_bone_id)
+	%Compactor.position += %Compactor.basis.y * vibration_y_delta * 0.3
 	bone_position += %Compactor.basis.y * vibration_y_delta * 0.7
 	%Compactor/rig/Skeleton3D.set_bone_pose_position(skidplate_bone_id, bone_position)
 	%Bloke.position += %Bloke.basis.y * vibration_y_delta

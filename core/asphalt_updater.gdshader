@@ -24,6 +24,7 @@ const int TOOL_PAVER = 1;
 const int TOOL_DUMPTRUCK = 2;
 const int TOOL_COMPACTOR = 3;
 const int TOOL_SHOVEL = 4;
+const int TOOL_BOMB = 5;
 
 const float CONTROL_EPSILON = 0.005;
 const float VALUE_EPSILON = 0.001;
@@ -72,8 +73,8 @@ void fragment() {
 				//if(0.05 < length(tool_center - roller_br)) asphalt_delta_output += 0.3;
 		//} else asphalt_delta_output = -0.5;
 		//if( true ){ } else
-		if (used_tool == TOOL_SHOVEL){
-			asphalt_delta_output = asphalt_delta * (1. - smoothstep(0., tool_radius, distance_from_center));
+		if (used_tool == TOOL_SHOVEL || used_tool == TOOL_BOMB){
+			asphalt_delta_output = asphalt_delta * tool_strength * (1. - smoothstep(0., tool_radius, distance_from_center));
 		}else if(used_tool == TOOL_DUMPTRUCK){
 			asphalt_delta_output = (
 				tool_strength * (1. - smoothstep(

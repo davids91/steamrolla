@@ -72,9 +72,11 @@ var victory_tween: Tween:
 @export var snap_easing: float = 1.0
 func _on_hud_objective_completed(objective_name: String) -> void:
 	if objective_name == "asphalt_done":
-		victory_tween = create_tween()
+		%RoadChunk.asphalt_delta = 0.
+		%RoadChunk.tool_strength = 0.
 
 		# Start asphalt snapping to reference and lighting up the road
+		victory_tween = create_tween()
 		victory_tween.tween_callback(func():
 			var snap_tween: Tween = create_tween()
 			snap_tween.tween_method(func(w: float):
@@ -132,10 +134,17 @@ func _on_runway_payload_left(tool: RoadworkTool) -> void:
 	if not deployed_tools.has(tool.tool_enum): deployed_tools.push_back(tool.tool_enum)
 
 func _on_runway_payload_entered(tool: RoadworkTool) -> void:
-	$ToolController/Runway.may_be_outside_bounds(tool)
-	if( # Camera transition from piloted camera to player view if the tool camera is active
-		tool.get_node_or_null("OrbitCamera") and tool.get_node("OrbitCamera").get_current()
-		and tool.controlled_by == RoadworkTool.ControlMethods.PILOTED
-	): tool.get_node("OrbitCamera").transition_to($PlayerView)
-	deployed_tools.erase(tool.tool_enum)
-	$ToolController.select_tool(ToolPanel.Tools.UNKNOWN)
+	if(
+		deployed_tools.has(tool.tool_enum)
+		and(
+			not $ToolController.tool_nodes.has($ToolController.active_tool)
+			or not $ToolController.tool_nodes[$ToolController.active_tool].is_working
+		)
+	):
+		$ToolController/Runway.may_be_outside_bounds(tool)
+		if( # Camera transition from piloted camera to player view if the tool camera is active
+			tool.get_node_or_null("OrbitCamera") and tool.get_node("OrbitCamera").get_current()
+			and tool.controlled_by == RoadworkTool.ControlMethods.PILOTED
+		): tool.get_node("OrbitCamera").transition_to($PlayerView)
+		deployed_tools.erase(tool.tool_enum)
+		$ToolController.select_tool(ToolPanel.Tools.UNKNOWN)

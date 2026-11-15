@@ -7,7 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://bboun1bk4w1hq" path="res://audio/alert.wav" id="5_x153q"]
 
 [sub_resource type="Curve" id="Curve_x153q"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.6056338, 0.87317073), 0.0, 0.0, 0, 0, Vector2(0.7263582, 0.26829267), 0.0, 0.0, 0, 0, Vector2(0.91549295, 0.17073172), 0.0, 0.0, 0, 0, Vector2(0.9215292, 0), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.6056338, 0.87317073), 0.0, 0.0, 0, 0, Vector2(0.7226891, 0.50561804), 0.0, 0.0, 0, 0, Vector2(0.96974796, 0.10112369), 0.0, 0.0, 0, 0, Vector2(0.99159664, 0), 0.0, 0.0, 0, 0]
 point_count = 5
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_m2co2"]
@@ -26,6 +26,7 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 [node name="car" unique_id=813375980 instance=ExtResource("1_ivf8e")]
 script = ExtResource("2_x153q")
 alarm_pitch_for_crush_progress = SubResource("Curve_x153q")
+crushed_scale_threshold = 0.2
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." index="1" unique_id=1944380491]
 

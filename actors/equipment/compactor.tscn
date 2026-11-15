@@ -246,7 +246,7 @@ start_velo = 15.0
 max_velocity_length_for_jitter = 25.0
 tool_enum = 3
 normalized_size = Vector2(0.12, 0.12)
-tool_strength = 0.0600000000000005
+tool_strength = 0.15000000000000036
 tool_radius = 0.12
 controlled_by = 2
 speed = 2.0
@@ -562,8 +562,9 @@ volume_db = -5.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.827988, 0)
 
 [node name="FloorRaycast" type="RayCast3D" parent="." unique_id=1485868472]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 0)
-target_position = Vector3(0, -100, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15, 0)
+top_level = true
+target_position = Vector3(0, -30, 0)
 
 [connection signal="area_entered" from="SelectableArea" to="." method="_on_body_representation_area_entered"]
 [connection signal="area_exited" from="SelectableArea" to="." method="_on_body_representation_area_exited"]

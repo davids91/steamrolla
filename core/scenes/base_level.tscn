@@ -76,6 +76,7 @@ height_unit = 5.0
 surface = 0
 asphalt_shyniness = 0.05
 deviation_threshold = 0.003
+bomb_scattered_ratio = 0.25
 
 [node name="ToolController" parent="." unique_id=129265235 node_paths=PackedStringArray("view", "road_chunk", "runway", "tool_nodes") instance=ExtResource("7_gsihx")]
 view = NodePath("../PlayerView")

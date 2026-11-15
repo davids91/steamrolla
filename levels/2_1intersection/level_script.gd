@@ -7,7 +7,7 @@ func _ready() -> void:
 
 func periodic_objective_check() -> void:
 	(func():
-		var asphalt_height: float = await %RoadChunk.get_asphalt_quantity_at($Pipe.global_position)
+		var asphalt_height: float = await %RoadChunk.get_asphalt_quantity_at($Pipe/WaterSpurt.global_position)
 		if asphalt_height > 0.16:
 			$HUD.objective_complete("pipe_covered")
 			$Pipe/WaterSpurt.emitting = false

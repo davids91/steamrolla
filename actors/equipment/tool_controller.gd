@@ -73,7 +73,7 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 	# Early exit if no tools are selected
 	if tool == ToolPanel.Tools.UNKNOWN:
 		active_tool = ToolPanel.Tools.UNKNOWN
-		view.cursor.visible = true
+		if view: view.cursor.visible = true
 		if runway: runway.following = null
 		return
 
@@ -208,15 +208,17 @@ func _process(_delta: float) -> void:
 		highlighted_tool.get_node("ToolBubbleIndicator").show_tooltip(true)
 
 const VALUE_EPSILON: float = 0.001;
-# Configure the level to be updated based on the active tool, move tool to cursor
+var update_tools: bool = true
 func _physics_process(delta: float) -> void:
-	if tool_nodes.has(active_tool):
+	# Configure the level to be updated based on the active tool, move tool to cursor
+	if update_tools and tool_nodes.has(active_tool):
 		if tool_nodes[active_tool].is_working:
+			if view: view.cursor.visible = false
 			if (tool_nodes[active_tool].payload_triggered or not tool_nodes[active_tool].has_payload):
 				road_chunk.asphalt_delta = asphalt_delta * delta
 				road_chunk.update_asphalt()
 			road_chunk.set_update_brush_center(tool_nodes[active_tool].global_position)
-			road_chunk.tool_angle = Vector2(-tool_nodes[active_tool].basis.z.x, -tool_nodes[active_tool].basis.z.z).angle()
+			road_chunk.tool_angle = atan2(tool_nodes[active_tool].basis.z.z, tool_nodes[active_tool].basis.z.x)
 			tool_nodes[active_tool].work_at_cursor(view.cursor.global_position)
 		else:
 			asphalt_delta *= (1. - tool_nodes[active_tool].tool_responsiveness)
@@ -229,3 +231,7 @@ func _on_hud_exit_tool() -> void:
 
 func _on_runway_payload_reset(tool_enum: ToolPanel.Tools) -> void:
 	if active_tool == tool_enum: select_tool(ToolPanel.Tools.UNKNOWN)
+
+func _on_asphalt_bomb_asphalt_bomb_exploded(_blast_pos: Vector3, _explode_radius: float, _amount_to_add_asphalt: float) -> void:
+	update_tools = false
+	get_tree().create_timer(0.7).timeout.connect(func(): update_tools = true)

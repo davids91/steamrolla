@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpsaf0n7e5coq"
-path.s3tc="res://.godot/imported/terrain_heightmap.png-fd911bdc346abeb66533efd1b2c68138.s3tc.ctex"
+uid="uid://nmsprarm0nyh"
+path.s3tc="res://.godot/imported/asphalt_attributes_minified.png-8c678136e0b21239d3612bb9c91262ea.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://levels/1_1level_1_smush/terrain_heightmap.png"
-dest_files=["res://.godot/imported/terrain_heightmap.png-fd911bdc346abeb66533efd1b2c68138.s3tc.ctex"]
+source_file="res://levels/1_1boom/asphalt_attributes_minified.png"
+dest_files=["res://.godot/imported/asphalt_attributes_minified.png-8c678136e0b21239d3612bb9c91262ea.s3tc.ctex"]
 
 [params]
 

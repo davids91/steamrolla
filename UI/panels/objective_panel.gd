@@ -121,8 +121,8 @@ func _process(delta: float) -> void:
 			for car in level.contained_traffic: if car.crashed: crashed_car_count += 1
 			if level.accepted_crashed_cars >= crashed_car_count:
 				traffic_objective_complete = true
-				set_completed("traffic_ok")
 				LevelStructure.level_attribute_store(used_base_dir, "traffic_ok")
+				set_completed("traffic_ok")
 
 		if time_to_check_traffic_objective_sec < 0.:
 			time_to_check_traffic_objective_sec = objective_check_interval_sec * 0.6

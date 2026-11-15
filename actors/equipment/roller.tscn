@@ -120,8 +120,9 @@ stream = SubResource("AudioStreamRandomizer_qrjta")
 volume_db = -7.5
 
 [node name="FloorRaycast" type="RayCast3D" parent="." unique_id=1081311701]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 0)
-target_position = Vector3(0, -100, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
+top_level = true
+target_position = Vector3(0, -60, 0)
 
 [node name="ForwardShapeCast" type="ShapeCast3D" parent="." unique_id=1327038590]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6777513, 0.721)

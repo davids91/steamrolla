@@ -354,39 +354,6 @@ func _save_level_data() -> void:
 @export_tool_button("Snap to Reference", "CollapseTree") var start_snapping_to_ref: Callable = func():
 	_snap_asphalt_to_reference()
 
-var crazify_tween: Tween
-@export var crazify: bool = false:
-	set(v):
-		crazify = v
-		if not %RoadChunk: return
-		if crazify_tween: crazify_tween.kill()
-		if not crazify:
-			var _crazify_amount: float = crazify_amount
-			create_tween().tween_method(func(w: float): crazify_amount = w, _crazify_amount, 0., 0.7)
-		else:
-			crazify_tween = create_tween()
-			crazify_tween.tween_method(func(w: float): crazify_amount = w * crazify_amount, 0., 1., 0.45)
-			crazify_tween.tween_method(func(w: float): crazify_amount = w * crazify_amount, 1., 0., 0.45)
-			crazify_tween.set_loops(-1)
-
-@export var crazify_amount: float = 0:
-	set(v):
-		crazify_amount = v
-		if not %RoadChunk: return
-		%RoadChunk.set_crazify_amount(crazify_amount)
-
-@export var crazify_scale: float = 0:
-	set(v):
-		crazify_scale = v
-		if get_node_or_null("%RoadChunk"):
-			%RoadChunk.set_crazify_scale(crazify_scale)
-
-@export var crazify_speed: float = 0:
-	set(v):
-		crazify_speed = v
-		if get_node_or_null("%RoadChunk"):
-			%RoadChunk.set_crazify_speed(crazify_speed)
-
 @export_category("Level Completion(Misc)")
 @export_tool_button("Scan Level", "ColorTrackVu") var scan_for_height: Callable = func():
 	if not %RoadChunk: return

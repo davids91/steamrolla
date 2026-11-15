@@ -109,7 +109,7 @@ func get_asphalt_quantity_at(global_pos: Vector3) -> float:
 
 	await RenderingServer.frame_post_draw
 	var getter_texture: Texture = %AsphaltStateGetterViewport.get_texture()
-	var asphalt_pixel:float = getter_texture.get_image().get_pixel(0, 0).get_luminance()
+	var asphalt_pixel: float = getter_texture.get_image().get_pixel(0, 0).get_luminance()
 	asphalt_pixel = clamp(asphalt_pixel, 0., 1.) # Checking for out of bounds
 	return asphalt_pixel
 
@@ -157,15 +157,6 @@ func configure_to(tool: RoadworkTool) -> void:
 	tool_size = tool.normalized_size
 	tool_strength = tool.tool_strength
 	tool_radius = tool.tool_radius
-
-func set_crazify_amount(amount: float):
-	$Ground.get_active_material(0).set_shader_parameter("crazify_amount", amount)
-
-func set_crazify_scale(amount: float):
-	$Ground.get_active_material(0).set_shader_parameter("crazify_scale", amount)
-
-func set_crazify_speed(amount: float):
-	$Ground.get_active_material(0).set_shader_parameter("crazify_speed", amount)
 
 ## The tool identifier used to udpate the level
 var used_tool: ToolPanel.Tools = ToolPanel.Tools.UNKNOWN:
@@ -423,7 +414,7 @@ func _initialize(data: RoadChunkData, data_path: String = "") -> void:
 	_initialize_state()
 
 func initialize(data_path: String) -> void:
-	if not FileAccess.file_exists(data_path): print("level_select.initialize: missing file: "+data_path)
+	if not FileAccess.file_exists(data_path): push_warning("road_chunk.initialize: missing file: " + data_path)
 	level_data = ResourceLoader.load(data_path)
 	_initialize(level_data, data_path)
 
@@ -443,17 +434,34 @@ func reset_user_data(base_dir: String = used_base_dir) -> void:
 	if FileAccess.file_exists(mini_user_data_path): DirAccess.remove_absolute(mini_user_data_path)
 	initialize(LevelStructure.resource_path_in_dir(base_dir))
 
-func _on_asphalt_bomb_explode(explosion_pos: Vector3, explode_radius: float, amount_of_asphalt_to_add: float):
+@export var bomb_scattered_ratio: float = 0.25
+func _on_asphalt_bomb_asphalt_bomb_exploded(blast_pos: Vector3, explode_radius: float, amount_to_add_asphalt: float) -> void:
 	push_config()
-	set_update_brush_center(explosion_pos)
-	tool_radius = explode_radius / $Ground.mesh.size.x
-	asphalt_delta = amount_of_asphalt_to_add
-	used_tool = ToolPanel.Tools.SHOVEL #TechDebt: Bomb as a tool should be configured instead
-	update_asphalt()
-	(func():
-		await get_tree().process_frame
+	used_tool = ToolPanel.Tools.BOMB
+	var level_dimensions: Vector3 = get_size()
+	var level_size_estimation: float = Vector3(level_dimensions.x, 0., level_dimensions.z).length()
+	create_tween().tween_method(
+		func(w: float):
+			set_update_brush_center(blast_pos + Vector3(
+				randfn(-bomb_scattered_ratio, bomb_scattered_ratio),
+				randfn(-bomb_scattered_ratio, bomb_scattered_ratio),
+				randfn(-bomb_scattered_ratio, bomb_scattered_ratio)
+			) * explode_radius / 2.)
+			tool_radius = max(
+				0.,
+				(explode_radius + explode_radius * randfn(-bomb_scattered_ratio, bomb_scattered_ratio))
+				/ level_size_estimation
+			)
+			print(tool_radius)
+			asphalt_delta = amount_to_add_asphalt
+			tool_strength = w
+			update_asphalt(),
+		1., 0.3, 0.7
+	).finished.connect(func():
+		await RenderingServer.frame_post_draw
 		pop_config()
-	).call_deferred()
+		save_user_data()
+	)
 #endregion
 
 func _ready() -> void:
