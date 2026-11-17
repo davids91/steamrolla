@@ -1,0 +1,109 @@
+[gd_scene format=3 uid="uid://dnblvnyfnd5a6"]
+
+[ext_resource type="PackedScene" uid="uid://djk7mhgpyu3a" path="res://models/suburban-house.fbx" id="1_q4e2j"]
+[ext_resource type="Material" uid="uid://dsc01bqoqvnk7" path="res://materials/house-siding-1.tres" id="2_3o3wn"]
+[ext_resource type="Material" uid="uid://dqynnyj18mj43" path="res://materials/house-door-1.tres" id="3_701aw"]
+[ext_resource type="Material" uid="uid://vtaurra3bfgh" path="res://materials/house-roof-1.tres" id="4_py5rt"]
+[ext_resource type="Material" uid="uid://ckcyalnf8rsaw" path="res://materials/house-window-1.tres" id="5_hnwi2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kdu0b"]
+size = Vector3(2, 2, 2)
+
+[node name="suburban-extension" unique_id=314419192 instance=ExtResource("1_q4e2j")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="0" unique_id=2027368238]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0" unique_id=1755902018]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_kdu0b")
+
+[node name="back-wall" parent="." index="1" unique_id=1064962794]
+transform = Transform3D(-100, -1.509958e-05, -6.6002363e-13, 0, -4.371139e-06, 100, -1.509958e-05, 100, 4.371139e-06, 0, 0, 0)
+material_override = ExtResource("2_3o3wn")
+
+[node name="door" parent="." index="2" unique_id=784260372]
+transform = Transform3D(100, 0, 0, 0, -4.3711384e-06, 99.99999, 0, -99.99999, -4.3711384e-06, 0.01, 0, 0)
+visible = false
+material_override = ExtResource("3_701aw")
+
+[node name="front-wall" parent="." index="3" unique_id=1821804047]
+transform = Transform3D(100, 0, 0, 0, -4.3711384e-06, 99.99999, 0, -99.99999, -4.3711384e-06, 0, 0, 0)
+material_override = ExtResource("2_3o3wn")
+
+[node name="roof-back" parent="." index="4" unique_id=61697435]
+transform = Transform3D(-100, 1.509958e-05, 3.3001182e-13, 0, -4.371139e-06, 50, 1.509958e-05, 100, 2.1855694e-06, 0, 0.5, 0)
+material_override = ExtResource("4_py5rt")
+
+[node name="roof-front" parent="." index="5" unique_id=2039720329]
+transform = Transform3D(100, 0, 0, 0, -4.3711384e-06, 50, 0, -99.99999, -2.1855694e-06, 0, 0.5, 0)
+material_override = ExtResource("4_py5rt")
+
+[node name="roof-side-left" parent="." index="6" unique_id=332966114]
+transform = Transform3D(-4.371139e-06, 100, 2.1855694e-06, 0, -4.371139e-06, 50, 100, 4.371139e-06, 9.553427e-14, 0, 0.5, 0)
+material_override = ExtResource("2_3o3wn")
+
+[node name="roof-side-right" parent="." index="7" unique_id=1683973538]
+transform = Transform3D(-4.371139e-06, -100, -2.1855694e-06, 0, -4.371139e-06, 50, -100, 4.371139e-06, 9.553427e-14, 0, 0.5, 0)
+material_override = ExtResource("2_3o3wn")
+
+[node name="side-wall-left" parent="." index="8" unique_id=1661923525]
+transform = Transform3D(-4.371139e-06, 100, 4.371139e-06, 0, -4.371139e-06, 100, 100, 4.371139e-06, 1.9106854e-13, 0, 0, 0)
+material_override = ExtResource("2_3o3wn")
+
+[node name="side-wall-right" parent="." index="9" unique_id=1347201292]
+transform = Transform3D(-4.371139e-06, -100, -4.371139e-06, 0, -4.371139e-06, 100, -100, 4.371139e-06, 1.9106854e-13, 0, 0, 0)
+material_override = ExtResource("2_3o3wn")
+
+[node name="window_000" parent="." index="10" unique_id=1301551211]
+transform = Transform3D(100, 0, 0, 0, -4.3711384e-06, 99.99999, 0, -99.99999, -4.3711384e-06, 0.01, 0.0625, -0.625)
+visible = false
+material_override = ExtResource("5_hnwi2")
+
+[node name="window_001" parent="." index="11" unique_id=994841077]
+transform = Transform3D(100, 0, 0, 0, -4.3711384e-06, 99.99999, 0, -99.99999, -4.3711384e-06, 0.01, 0.0625, 0.625)
+visible = false
+material_override = ExtResource("5_hnwi2")
+
+[node name="window_002" parent="." index="12" unique_id=592151358]
+transform = Transform3D(100, 0, 0, 0, -4.3711384e-06, 99.99999, 0, -99.99999, -4.3711384e-06, 0.01, 0.5, -0.625)
+visible = false
+material_override = ExtResource("5_hnwi2")
+
+[node name="window_003" parent="." index="13" unique_id=528749914]
+transform = Transform3D(100, 0, 0, 0, -4.3711384e-06, 99.99999, 0, -99.99999, -4.3711384e-06, 0.01, 0.5, 0)
+material_override = ExtResource("5_hnwi2")
+
+[node name="window_004" parent="." index="14" unique_id=188085907]
+transform = Transform3D(100, 0, 0, 0, -4.3711384e-06, 99.99999, 0, -99.99999, -4.3711384e-06, 0.01, 0.5, 0.625)
+visible = false
+material_override = ExtResource("5_hnwi2")
+
+[node name="window_005" parent="." index="15" unique_id=683887198]
+transform = Transform3D(-100, 1.509958e-05, 6.6002363e-13, 0, -4.371139e-06, 100, 1.509958e-05, 100, 4.371139e-06, -0.009999945, 0.0625, 0.625)
+visible = false
+material_override = ExtResource("5_hnwi2")
+
+[node name="window_006" parent="." index="16" unique_id=219267602]
+transform = Transform3D(-100, 1.509958e-05, 6.6002363e-13, 0, -4.371139e-06, 100, 1.509958e-05, 100, 4.371139e-06, -0.010000055, 0.0625, -0.625)
+visible = false
+material_override = ExtResource("5_hnwi2")
+
+[node name="window_008" parent="." index="17" unique_id=484053058]
+transform = Transform3D(-100, 1.509958e-05, 6.6002363e-13, 0, -4.371139e-06, 100, 1.509958e-05, 100, 4.371139e-06, -0.01, 0.5, 8.7422775e-10)
+material_override = ExtResource("5_hnwi2")
+
+[node name="window_010" parent="." index="18" unique_id=95930374]
+transform = Transform3D(-4.371139e-06, -100, -4.371139e-06, 0, -4.371139e-06, 100, -100, 4.371139e-06, 1.9106854e-13, -0.625, 0.0625, -0.009999973)
+material_override = ExtResource("5_hnwi2")
+
+[node name="window_011" parent="." index="19" unique_id=44576405]
+transform = Transform3D(-4.371139e-06, -100, -4.371139e-06, 0, -4.371139e-06, 100, -100, 4.371139e-06, 1.9106854e-13, 0.625, 0.0625, -0.010000026)
+material_override = ExtResource("5_hnwi2")
+
+[node name="window_017" parent="." index="20" unique_id=129827059]
+transform = Transform3D(-4.371139e-06, 100, 4.371139e-06, 0, -4.371139e-06, 100, 100, 4.371139e-06, 1.9106854e-13, 0.625, 0.5, 0.010000026)
+material_override = ExtResource("5_hnwi2")
+
+[node name="window_019" parent="." index="21" unique_id=1101511593]
+transform = Transform3D(-4.371139e-06, 100, 4.371139e-06, 0, -4.371139e-06, 100, 100, 4.371139e-06, 1.9106854e-13, -0.625, 0.5, 0.009999973)
+material_override = ExtResource("5_hnwi2")

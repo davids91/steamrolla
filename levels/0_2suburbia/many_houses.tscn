@@ -1,0 +1,205 @@
+[gd_scene format=3 uid="uid://c3ywldhnguv3j"]
+
+[ext_resource type="PackedScene" uid="uid://cqn4cg82bckgs" path="res://props/suburban_house.tscn" id="1_bpsx7"]
+[ext_resource type="PackedScene" uid="uid://dab5p3msg6rd" path="res://props/suburban_garage.tscn" id="2_b4dkr"]
+[ext_resource type="PackedScene" uid="uid://dnblvnyfnd5a6" path="res://props/suburban_extension.tscn" id="3_kv6de"]
+
+[node name="ManyHouses" type="Node3D" unique_id=294928012]
+
+[node name="suburban-house" parent="." unique_id=314419192 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, -46, 0, 59)
+
+[node name="suburban-house10" parent="." unique_id=1125406950 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, -94, 0, 59)
+
+[node name="suburban-house11" parent="." unique_id=2114950743 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, -94, 0, 94)
+
+[node name="suburban-house12" parent="." unique_id=611039525 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, -94, 0, 29)
+
+[node name="suburban-house13" parent="." unique_id=1244653126 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, -94, 0, -4)
+
+[node name="suburban-house14" parent="." unique_id=250667874 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, -94, 0, -51)
+
+[node name="suburban-house15" parent="." unique_id=716075530 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, -94, 0, -98)
+
+[node name="suburban-house2" parent="." unique_id=2058742105 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(-3.496911e-07, 0, 8, 0, 8, 0, -8, 0, -3.496911e-07, -59, 0, 94)
+
+[node name="suburban-house3" parent="." unique_id=979731247 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(-3.496911e-07, 0, 8, 0, 8, 0, -8, 0, -3.496911e-07, -32, 0, 94)
+
+[node name="suburban-house4" parent="." unique_id=1146378598 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, -14, 0, 94)
+
+[node name="suburban-house5" parent="." unique_id=1685119882 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 36, 0, 94)
+
+[node name="suburban-house6" parent="." unique_id=349608134 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(-8, 0, 6.993822e-07, 0, 8, 0, -6.993822e-07, 0, -8, 18, 0, 94)
+
+[node name="suburban-house16" parent="." unique_id=1321904679 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(-8, 0, 6.993822e-07, 0, 8, 0, -6.993822e-07, 0, -8, 21, 0, 60)
+
+[node name="suburban-house17" parent="." unique_id=740453806 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(1.0490733e-06, 0, 8, 0, 8, 0, -8, 0, 1.0490733e-06, 21, 0, 29)
+
+[node name="suburban-house18" parent="." unique_id=312899364 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(-8, 0, 6.993822e-07, 0, 8, 0, -6.993822e-07, 0, -8, 21, 0, -7)
+
+[node name="suburban-house19" parent="." unique_id=1575492972 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(-8, 0, 6.993822e-07, 0, 8, 0, -6.993822e-07, 0, -8, 21, 0, -73)
+
+[node name="suburban-house20" parent="." unique_id=2062551222 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(8, 0, -1.3987644e-06, 0, 8, 0, 1.3987644e-06, 0, 8, -14, 0, -46)
+
+[node name="suburban-house21" parent="." unique_id=1518594887 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(8, 0, -1.3987644e-06, 0, 8, 0, 1.3987644e-06, 0, 8, -15, 0, -88)
+
+[node name="suburban-house22" parent="." unique_id=891164608 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(8, 0, -1.3987644e-06, 0, 8, 0, 1.3987644e-06, 0, 8, 34, 0, -43)
+
+[node name="suburban-house23" parent="." unique_id=1841267506 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(8, 0, -1.3987644e-06, 0, 8, 0, 1.3987644e-06, 0, 8, 89, 0, -7)
+
+[node name="suburban-house24" parent="." unique_id=1394877973 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(8, 0, -1.3987644e-06, 0, 8, 0, 1.3987644e-06, 0, 8, 89, 0, 39)
+
+[node name="suburban-house25" parent="." unique_id=1288430366 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(8, 0, -1.3987644e-06, 0, 8, 0, 1.3987644e-06, 0, 8, 89, 0, -79)
+
+[node name="suburban-house26" parent="." unique_id=554559062 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(-1.7484556e-06, 0, -8, 0, 8, 0, 8, 0, -1.7484556e-06, 70, 0, -96)
+
+[node name="suburban-house27" parent="." unique_id=1608451737 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(-1.7484556e-06, 0, -8, 0, 8, 0, 8, 0, -1.7484556e-06, 90, 0, 60)
+
+[node name="suburban-house28" parent="." unique_id=504019861 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(-1.7484556e-06, 0, -8, 0, 8, 0, 8, 0, -1.7484556e-06, -48, 0, -31)
+
+[node name="suburban-house29" parent="." unique_id=487844024 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(2.4478377e-06, 0, 8, 0, 8, 0, -8, 0, 2.4478377e-06, -57, 0, -99)
+
+[node name="suburban-house30" parent="." unique_id=256241714 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(2.4478377e-06, 0, 8, 0, 8, 0, -8, 0, 2.4478377e-06, 23, 0, -99)
+
+[node name="suburban-house31" parent="." unique_id=577925120 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(-8, 0, 2.0981465e-06, 0, 8, 0, -2.0981465e-06, 0, -8, -57, 0, -65)
+
+[node name="suburban-house32" parent="." unique_id=1102832738 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(-8, 0, 2.0981465e-06, 0, 8, 0, -2.0981465e-06, 0, -8, 70, 0, -42)
+
+[node name="suburban-house33" parent="." unique_id=1282335677 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(-8, 0, 2.0981465e-06, 0, 8, 0, -2.0981465e-06, 0, -8, 70, 0, 39)
+
+[node name="suburban-house7" parent="." unique_id=914056301 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(-8, 0, 6.993822e-07, 0, 8, 0, -6.993822e-07, 0, -8, 69, 0, 114)
+
+[node name="suburban-house8" parent="." unique_id=2076311541 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(1.0490733e-06, 0, 8, 0, 8, 0, -8, 0, 1.0490733e-06, 69, 0, 93)
+
+[node name="suburban-house9" parent="." unique_id=1115776394 instance=ExtResource("1_bpsx7")]
+transform = Transform3D(1.0490733e-06, 0, 8, 0, 8, 0, -8, 0, 1.0490733e-06, 116, 0, 93)
+
+[node name="suburban-garage" parent="." unique_id=177869502 instance=ExtResource("2_b4dkr")]
+transform = Transform3D(8, 0, -4.4509017e-07, 0, 8, 0, 4.4509017e-07, 0, 8, -45, 0, 45)
+
+[node name="suburban-garage17" parent="." unique_id=1367070668 instance=ExtResource("2_b4dkr")]
+transform = Transform3D(-8, 0, -2.5429205e-07, 0, 8, 0, 2.5429205e-07, 0, -8, 21, 0, 45)
+
+[node name="suburban-garage11" parent="." unique_id=1416954530 instance=ExtResource("2_b4dkr")]
+transform = Transform3D(-8, 0, 1.1444724e-06, 0, 8, 0, -1.1444724e-06, 0, -8, 17, 0, 108)
+
+[node name="suburban-garage12" parent="." unique_id=1062308130 instance=ExtResource("2_b4dkr")]
+transform = Transform3D(8, 0, -4.4509022e-07, 0, 8, 0, 4.4509022e-07, 0, 8, -13, 0, 108)
+
+[node name="suburban-garage13" parent="." unique_id=190490872 instance=ExtResource("2_b4dkr")]
+transform = Transform3D(8, 0, -4.4509022e-07, 0, 8, 0, 4.4509022e-07, 0, 8, -13, 0, 120)
+
+[node name="suburban-garage14" parent="." unique_id=1884935285 instance=ExtResource("2_b4dkr")]
+transform = Transform3D(-8, 0, 1.1444724e-06, 0, 8, 0, -1.1444724e-06, 0, -8, 69, 0, -16)
+
+[node name="suburban-garage2" parent="." unique_id=1098384339 instance=ExtResource("2_b4dkr")]
+transform = Transform3D(8, 0, -4.4509017e-07, 0, 8, 0, 4.4509017e-07, 0, 8, -62, 0, 29)
+
+[node name="suburban-garage3" parent="." unique_id=1806642648 instance=ExtResource("2_b4dkr")]
+transform = Transform3D(8, 0, -4.4509017e-07, 0, 8, 0, 4.4509017e-07, 0, 8, -62, 0, -29)
+
+[node name="suburban-garage4" parent="." unique_id=1349919728 instance=ExtResource("2_b4dkr")]
+transform = Transform3D(8, 0, -4.4509017e-07, 0, 8, 0, 4.4509017e-07, 0, 8, -33, 0, 112)
+
+[node name="suburban-garage15" parent="." unique_id=1883414096 instance=ExtResource("2_b4dkr")]
+transform = Transform3D(8, 0, -4.4509017e-07, 0, 8, 0, 4.4509017e-07, 0, 8, -93, 0, 117)
+
+[node name="suburban-garage5" parent="." unique_id=1943903825 instance=ExtResource("2_b4dkr")]
+transform = Transform3D(8, 0, -4.4509017e-07, 0, 8, 0, 4.4509017e-07, 0, 8, -109, 0, -61)
+
+[node name="suburban-garage6" parent="." unique_id=450263041 instance=ExtResource("2_b4dkr")]
+transform = Transform3D(8, 0, -4.4509017e-07, 0, 8, 0, 4.4509017e-07, 0, 8, -109, 0, -97)
+
+[node name="suburban-garage7" parent="." unique_id=325911265 instance=ExtResource("2_b4dkr")]
+transform = Transform3D(8, 0, -4.4509017e-07, 0, 8, 0, 4.4509017e-07, 0, 8, -109, 0, -3)
+
+[node name="suburban-garage8" parent="." unique_id=1486457945 instance=ExtResource("2_b4dkr")]
+transform = Transform3D(8, 0, -4.4509017e-07, 0, 8, 0, 4.4509017e-07, 0, 8, -109, 0, 93)
+
+[node name="suburban-garage9" parent="." unique_id=1381524702 instance=ExtResource("2_b4dkr")]
+transform = Transform3D(8, 0, -4.4509017e-07, 0, 8, 0, 4.4509017e-07, 0, 8, 30, 0, -29)
+
+[node name="suburban-garage16" parent="." unique_id=2011560793 instance=ExtResource("2_b4dkr")]
+transform = Transform3D(8, 0, -4.4509017e-07, 0, 8, 0, 4.4509017e-07, 0, 8, 21, 0, -29)
+
+[node name="suburban-garage10" parent="." unique_id=1949246716 instance=ExtResource("2_b4dkr")]
+transform = Transform3D(-8, 0, 1.1444724e-06, 0, 8, 0, -1.1444724e-06, 0, -8, 69, 0, -28)
+
+[node name="suburban-extension" parent="." unique_id=942318535 instance=ExtResource("3_kv6de")]
+transform = Transform3D(-8, 0, 6.993822e-07, 0, 8, 0, -6.993822e-07, 0, -8, -46, 0, 31)
+
+[node name="suburban-extension2" parent="." unique_id=2049765241 instance=ExtResource("3_kv6de")]
+transform = Transform3D(-8, 0, 6.993822e-07, 0, 8, 0, -6.993822e-07, 0, -8, -57, 0, -43)
+
+[node name="suburban-extension3" parent="." unique_id=1038175233 instance=ExtResource("3_kv6de")]
+transform = Transform3D(-8, 0, 6.993822e-07, 0, 8, 0, -6.993822e-07, 0, -8, -30, 0, -46)
+
+[node name="suburban-extension16" parent="." unique_id=448007056 instance=ExtResource("3_kv6de")]
+transform = Transform3D(-8, 0, 6.993822e-07, 0, 8, 0, -6.993822e-07, 0, -8, -15, 0, -62)
+
+[node name="suburban-extension15" parent="." unique_id=800687875 instance=ExtResource("3_kv6de")]
+transform = Transform3D(-8, 0, 6.993822e-07, 0, 8, 0, -6.993822e-07, 0, -8, 20, 0, -43)
+
+[node name="suburban-extension13" parent="." unique_id=1514123410 instance=ExtResource("3_kv6de")]
+transform = Transform3D(-8, 0, 6.993822e-07, 0, 8, 0, -6.993822e-07, 0, -8, -101, 0, 39)
+
+[node name="suburban-extension14" parent="." unique_id=1535833733 instance=ExtResource("3_kv6de")]
+transform = Transform3D(-8, 0, 6.993822e-07, 0, 8, 0, -6.993822e-07, 0, -8, -110, 0, 30)
+
+[node name="suburban-extension4" parent="." unique_id=1085097472 instance=ExtResource("3_kv6de")]
+transform = Transform3D(-8, 0, 6.993822e-07, 0, 8, 0, -6.993822e-07, 0, -8, 88, 0, -42)
+
+[node name="suburban-extension5" parent="." unique_id=95640745 instance=ExtResource("3_kv6de")]
+transform = Transform3D(-8, 0, 6.993822e-07, 0, 8, 0, -6.993822e-07, 0, -8, 104, 0, 109)
+
+[node name="suburban-extension6" parent="." unique_id=1722261714 instance=ExtResource("3_kv6de")]
+transform = Transform3D(-8, 0, 6.993822e-07, 0, 8, 0, -6.993822e-07, 0, -8, -32, 0, -93)
+
+[node name="suburban-extension7" parent="." unique_id=846834228 instance=ExtResource("3_kv6de")]
+transform = Transform3D(-8, 0, 6.993822e-07, 0, 8, 0, -6.993822e-07, 0, -8, -110, 0, -21)
+
+[node name="suburban-extension8" parent="." unique_id=1611230389 instance=ExtResource("3_kv6de")]
+transform = Transform3D(-8, 0, 6.993822e-07, 0, 8, 0, -6.993822e-07, 0, -8, -113, 0, 61)
+
+[node name="suburban-extension9" parent="." unique_id=1214827136 instance=ExtResource("3_kv6de")]
+transform = Transform3D(-8, 0, 6.993822e-07, 0, 8, 0, -6.993822e-07, 0, -8, -58, 0, 112)
+
+[node name="suburban-extension10" parent="." unique_id=903392247 instance=ExtResource("3_kv6de")]
+transform = Transform3D(-8, 0, 6.993822e-07, 0, 8, 0, -6.993822e-07, 0, -8, 36, 0, 51)
+
+[node name="suburban-extension11" parent="." unique_id=673180957 instance=ExtResource("3_kv6de")]
+transform = Transform3D(-8, 0, 6.993822e-07, 0, 8, 0, -6.993822e-07, 0, -8, 36, 0, -7)
+
+[node name="suburban-extension12" parent="." unique_id=1980411984 instance=ExtResource("3_kv6de")]
+transform = Transform3D(-8, 0, 6.993822e-07, 0, 8, 0, -6.993822e-07, 0, -8, 70, 0, -2)
