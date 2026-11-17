@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://b5cgfx5r6ipex"]
+
+[ext_resource type="PackedScene" uid="uid://b012qenwda0pn" path="res://models/bush.fbx" id="1_s4ahi"]
+[ext_resource type="Material" uid="uid://lxfqrxh2new4" path="res://materials/bush.tres" id="2_8215a"]
+
+[node name="bush" unique_id=472981758 instance=ExtResource("1_s4ahi")]
+
+[node name="Cube" parent="." index="0" unique_id=1053129882]
+material_override = ExtResource("2_8215a")

@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://lxfqrxh2new4"]
+
+[ext_resource type="Texture2D" uid="uid://3quo2ww73wj4" path="res://textures/bush.png" id="1_eoxft"]
+
+[resource]
+albedo_color = Color(0.224576, 0.4165421, 0.21332693, 1)
+albedo_texture = ExtResource("1_eoxft")
+uv1_scale = Vector3(20, 20, 20)
+uv1_triplanar = true
