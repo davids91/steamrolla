@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dy6g6hlj1gcpv"]
+
+[ext_resource type="PackedScene" uid="uid://cbd5g3ncc7g1a" path="res://models/white-picket-fence.fbx" id="1_urfkh"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kdu0b"]
+size = Vector3(0.5, 2, 10)
+
+[node name="white-picket-fence" unique_id=1157424648 instance=ExtResource("1_urfkh")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="1" unique_id=131636228]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0" unique_id=1611095694]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 4.75)
+shape = SubResource("BoxShape3D_kdu0b")

@@ -1,0 +1,176 @@
+[gd_scene format=3 uid="uid://bbulptrqbe8bh"]
+
+[ext_resource type="PackedScene" uid="uid://dy6g6hlj1gcpv" path="res://props/white_picket_fence.tscn" id="1_6jeds"]
+
+[node name="Fences-aplenty" type="Node3D" unique_id=1629248214]
+
+[node name="white-picket-fence" parent="." unique_id=1157424648 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70, 0.35, -58)
+
+[node name="white-picket-fence2" parent="." unique_id=1438387685 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70, 0.35, -48.2)
+
+[node name="white-picket-fence3" parent="." unique_id=979310389 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70, 0.35, -38.4)
+
+[node name="white-picket-fence4" parent="." unique_id=1310428743 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70, 0.35, -28.599998)
+
+[node name="white-picket-fence5" parent="." unique_id=1253301947 instance=ExtResource("1_6jeds")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -70, 0.35, -18.9)
+
+[node name="white-picket-fence6" parent="." unique_id=1117323004 instance=ExtResource("1_6jeds")]
+transform = Transform3D(4.371139e-08, 0, -1, 0, 1, 0, -1, 0, -4.371139e-08, -50.7, 0.35, -18.9)
+
+[node name="white-picket-fence28" parent="." unique_id=1197990003 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0.35, -4.5999985)
+
+[node name="white-picket-fence37" parent="." unique_id=288527350 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, -1, 11, 0.35, -9.599998)
+
+[node name="white-picket-fence38" parent="." unique_id=424997436 instance=ExtResource("1_6jeds")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, 1, 0, 4.371139e-08, 11.1, 0.35, -19.3)
+
+[node name="white-picket-fence29" parent="." unique_id=1680028213 instance=ExtResource("1_6jeds")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11, 0.35, 5.1000004)
+
+[node name="white-picket-fence39" parent="." unique_id=1566286228 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0.35, -70.6)
+
+[node name="white-picket-fence40" parent="." unique_id=967316078 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, -1, 11, 0.35, -75.6)
+
+[node name="white-picket-fence41" parent="." unique_id=1587222181 instance=ExtResource("1_6jeds")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, 1, 0, 4.371139e-08, 11.1, 0.35, -85.3)
+
+[node name="white-picket-fence42" parent="." unique_id=1667324044 instance=ExtResource("1_6jeds")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11, 0.35, -60.9)
+
+[node name="white-picket-fence43" parent="." unique_id=1127471140 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.35, 41.4)
+
+[node name="white-picket-fence44" parent="." unique_id=556385099 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, -1, 60, 0.35, 36.4)
+
+[node name="white-picket-fence45" parent="." unique_id=863162489 instance=ExtResource("1_6jeds")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, 1, 0, 4.371139e-08, 60.1, 0.35, 26.699997)
+
+[node name="white-picket-fence46" parent="." unique_id=1051468320 instance=ExtResource("1_6jeds")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 60, 0.35, 51.1)
+
+[node name="white-picket-fence47" parent="." unique_id=31661173 instance=ExtResource("1_6jeds")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -83.95, 0.35, -9.599998)
+
+[node name="white-picket-fence48" parent="." unique_id=1477196569 instance=ExtResource("1_6jeds")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, -8.742278e-08, 0, 1, -83.95, 0.35, -4.5999985)
+
+[node name="white-picket-fence49" parent="." unique_id=1803652703 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, -1, 0, -1.3113416e-07, -84.049995, 0.35, 5.100006)
+
+[node name="white-picket-fence50" parent="." unique_id=841227710 instance=ExtResource("1_6jeds")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -83.95, 0.35, -19.299995)
+
+[node name="white-picket-fence51" parent="." unique_id=1904393131 instance=ExtResource("1_6jeds")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -83.95, 0.35, 93.4)
+
+[node name="white-picket-fence52" parent="." unique_id=791728776 instance=ExtResource("1_6jeds")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, -8.742278e-08, 0, 1, -83.95, 0.35, 98.4)
+
+[node name="white-picket-fence53" parent="." unique_id=1817770659 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, -1, 0, -1.3113416e-07, -84.049995, 0.35, 108.100006)
+
+[node name="white-picket-fence54" parent="." unique_id=375459247 instance=ExtResource("1_6jeds")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -83.95, 0.35, 83.700005)
+
+[node name="white-picket-fence55" parent="." unique_id=311858198 instance=ExtResource("1_6jeds")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -60.475, 0.35, 83.875015)
+
+[node name="white-picket-fence56" parent="." unique_id=1001798112 instance=ExtResource("1_6jeds")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, 1, 0, 4.371139e-08, -55.475, 0.35, 83.875015)
+
+[node name="white-picket-fence57" parent="." unique_id=2078514969 instance=ExtResource("1_6jeds")]
+transform = Transform3D(-1, 0, -8.742277e-08, 0, 1, 0, -8.742277e-08, 0, 1, -45.774994, 0.35, 83.97501)
+
+[node name="white-picket-fence58" parent="." unique_id=1512973939 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70.174995, 0.35, 83.875015)
+
+[node name="white-picket-fence60" parent="." unique_id=1882713022 instance=ExtResource("1_6jeds")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, 1, 0, 4.371139e-08, -12.474998, 0.35, 83.875015)
+
+[node name="white-picket-fence61" parent="." unique_id=1019502142 instance=ExtResource("1_6jeds")]
+transform = Transform3D(-1, 0, -8.742277e-08, 0, 1, 0, -8.742277e-08, 0, 1, -2.774994, 0.35, 83.97501)
+
+[node name="white-picket-fence30" parent="." unique_id=170238548 instance=ExtResource("1_6jeds")]
+transform = Transform3D(4.371139e-08, 0, -1, 0, 1, 0, -1, 0, -4.371139e-08, 30.3, 0.35, 5.1000004)
+
+[node name="white-picket-fence31" parent="." unique_id=1417106101 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.35, -107)
+
+[node name="white-picket-fence32" parent="." unique_id=581895434 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.35, -97.2)
+
+[node name="white-picket-fence33" parent="." unique_id=412593690 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.35, -87.4)
+
+[node name="white-picket-fence34" parent="." unique_id=328085762 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.35, -77.6)
+
+[node name="white-picket-fence35" parent="." unique_id=1426628215 instance=ExtResource("1_6jeds")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 60, 0.35, -67.9)
+
+[node name="white-picket-fence36" parent="." unique_id=620393103 instance=ExtResource("1_6jeds")]
+transform = Transform3D(4.371139e-08, 0, -1, 0, 1, 0, -1, 0, -4.371139e-08, 79.3, 0.35, -67.9)
+
+[node name="white-picket-fence7" parent="." unique_id=214386776 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70, 0.35, 31)
+
+[node name="white-picket-fence8" parent="." unique_id=457493460 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70, 0.35, 40.8)
+
+[node name="white-picket-fence9" parent="." unique_id=343281387 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70, 0.35, 50.6)
+
+[node name="white-picket-fence10" parent="." unique_id=857771969 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70, 0.35, 60.4)
+
+[node name="white-picket-fence11" parent="." unique_id=1012528878 instance=ExtResource("1_6jeds")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -70, 0.35, 70.1)
+
+[node name="white-picket-fence12" parent="." unique_id=1309259110 instance=ExtResource("1_6jeds")]
+transform = Transform3D(4.371139e-08, 0, -1, 0, 1, 0, -1, 0, -4.371139e-08, -50.7, 0.35, 70.1)
+
+[node name="white-picket-fence13" parent="." unique_id=1712693661 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0.35, 31)
+
+[node name="white-picket-fence14" parent="." unique_id=1432067913 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0.35, 40.8)
+
+[node name="white-picket-fence15" parent="." unique_id=1282997277 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0.35, 50.6)
+
+[node name="white-picket-fence16" parent="." unique_id=711393738 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0.35, 60.4)
+
+[node name="white-picket-fence17" parent="." unique_id=724728140 instance=ExtResource("1_6jeds")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11, 0.35, 70.1)
+
+[node name="white-picket-fence18" parent="." unique_id=519978097 instance=ExtResource("1_6jeds")]
+transform = Transform3D(4.371139e-08, 0, -1, 0, 1, 0, -1, 0, -4.371139e-08, 30.3, 0.35, 70.1)
+
+[node name="white-picket-fence19" parent="." unique_id=1361197012 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.35, -34)
+
+[node name="white-picket-fence20" parent="." unique_id=1045069622 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.35, -24.2)
+
+[node name="white-picket-fence21" parent="." unique_id=331590965 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.35, -14.400002)
+
+[node name="white-picket-fence22" parent="." unique_id=1821311147 instance=ExtResource("1_6jeds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.35, -4.5999985)
+
+[node name="white-picket-fence23" parent="." unique_id=2026683046 instance=ExtResource("1_6jeds")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 60, 0.35, 5.0999985)
+
+[node name="white-picket-fence24" parent="." unique_id=1745020980 instance=ExtResource("1_6jeds")]
+transform = Transform3D(4.371139e-08, 0, -1, 0, 1, 0, -1, 0, -4.371139e-08, 79.3, 0.35, 5.0999985)
