@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dqynnyj18mj43"]
+
+[ext_resource type="Texture2D" uid="uid://buosqumk2ev1w" path="res://models/suburban-house_0.png" id="1_1o7pw"]
+[ext_resource type="Texture2D" uid="uid://dqlu4o2kanrxw" path="res://models/suburban-house-normal.png" id="2_v4jw0"]
+
+[resource]
+albedo_color = Color(0.8, 0.18431373, 0.25882354, 1)
+albedo_texture = ExtResource("1_1o7pw")
+normal_enabled = true
+normal_texture = ExtResource("2_v4jw0")

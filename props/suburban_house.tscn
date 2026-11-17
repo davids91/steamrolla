@@ -1,7 +1,10 @@
 [gd_scene format=3 uid="uid://cqn4cg82bckgs"]
 
 [ext_resource type="PackedScene" uid="uid://djk7mhgpyu3a" path="res://models/suburban-house.fbx" id="1_kyym4"]
-[ext_resource type="Material" uid="uid://o7whn2385w7g" path="res://materials/suburban-house-material.tres" id="2_lu3vl"]
+[ext_resource type="Material" uid="uid://dsc01bqoqvnk7" path="res://materials/house-siding-1.tres" id="2_4mvwa"]
+[ext_resource type="Material" uid="uid://dqynnyj18mj43" path="res://materials/house-door-1.tres" id="3_tgbak"]
+[ext_resource type="Material" uid="uid://vtaurra3bfgh" path="res://materials/house-roof-1.tres" id="4_iawy6"]
+[ext_resource type="Material" uid="uid://ckcyalnf8rsaw" path="res://materials/house-window-1.tres" id="5_tgbak"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kdu0b"]
 size = Vector3(2, 2, 2)
@@ -14,14 +17,65 @@ size = Vector3(2, 2, 2)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("BoxShape3D_kdu0b")
 
-[node name="flat" parent="." index="1" unique_id=1766566476]
-material_override = ExtResource("2_lu3vl")
+[node name="back-wall" parent="." index="1" unique_id=1064962794]
+material_override = ExtResource("2_4mvwa")
 
-[node name="flat_001" parent="." index="2" unique_id=385692486]
-material_override = ExtResource("2_lu3vl")
+[node name="door" parent="." index="2" unique_id=784260372]
+material_override = ExtResource("3_tgbak")
 
-[node name="sloped" parent="." index="3" unique_id=377586563]
-material_override = ExtResource("2_lu3vl")
+[node name="front-wall" parent="." index="3" unique_id=1821804047]
+material_override = ExtResource("2_4mvwa")
 
-[node name="sloped_001" parent="." index="4" unique_id=505205945]
-material_override = ExtResource("2_lu3vl")
+[node name="roof-back" parent="." index="4" unique_id=61697435]
+material_override = ExtResource("4_iawy6")
+
+[node name="roof-front" parent="." index="5" unique_id=2039720329]
+material_override = ExtResource("4_iawy6")
+
+[node name="roof-side-left" parent="." index="6" unique_id=332966114]
+material_override = ExtResource("2_4mvwa")
+
+[node name="roof-side-right" parent="." index="7" unique_id=1683973538]
+material_override = ExtResource("2_4mvwa")
+
+[node name="side-wall-left" parent="." index="8" unique_id=1661923525]
+material_override = ExtResource("2_4mvwa")
+
+[node name="side-wall-right" parent="." index="9" unique_id=1347201292]
+material_override = ExtResource("2_4mvwa")
+
+[node name="window_000" parent="." index="10" unique_id=1301551211]
+material_override = ExtResource("5_tgbak")
+
+[node name="window_001" parent="." index="11" unique_id=994841077]
+material_override = ExtResource("5_tgbak")
+
+[node name="window_002" parent="." index="12" unique_id=592151358]
+material_override = ExtResource("5_tgbak")
+
+[node name="window_003" parent="." index="13" unique_id=528749914]
+material_override = ExtResource("5_tgbak")
+
+[node name="window_004" parent="." index="14" unique_id=188085907]
+material_override = ExtResource("5_tgbak")
+
+[node name="window_005" parent="." index="15" unique_id=683887198]
+material_override = ExtResource("5_tgbak")
+
+[node name="window_006" parent="." index="16" unique_id=219267602]
+material_override = ExtResource("5_tgbak")
+
+[node name="window_008" parent="." index="17" unique_id=484053058]
+material_override = ExtResource("5_tgbak")
+
+[node name="window_010" parent="." index="18" unique_id=95930374]
+material_override = ExtResource("5_tgbak")
+
+[node name="window_011" parent="." index="19" unique_id=44576405]
+material_override = ExtResource("5_tgbak")
+
+[node name="window_017" parent="." index="20" unique_id=129827059]
+material_override = ExtResource("5_tgbak")
+
+[node name="window_019" parent="." index="21" unique_id=1101511593]
+material_override = ExtResource("5_tgbak")
