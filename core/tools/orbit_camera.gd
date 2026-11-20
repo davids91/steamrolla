@@ -20,7 +20,8 @@ var transition_tween: Tween:
 ## Moves the current camera into the place of the given one before it makes it the current
 func transition_to(other: OrbitCamera3D, transition_duration_sec: float = 1.) -> Tween:
 	$TransitionSound.play()
-	camera_transform_before_transition = camera_anchor.transform
+	if not transition_tween:
+		camera_transform_before_transition = camera_anchor.transform
 	transition_tween = create_tween()
 	transition_tween.tween_property(camera_anchor, "global_transform", other.camera_anchor.global_transform, transition_duration_sec)
 	transition_tween.tween_callback(func():

@@ -70,7 +70,10 @@ func set_objectives(objectives_to_do: Dictionary[String, String], base_dir: Stri
 
 	# Set the level specific objectives
 	for objective in objectives_to_do.keys():
-		if objective == "asphalt_done": continue # Asphalt Done Task is already present within the list
+		if objective == "asphalt_done":
+			# Asphalt Done Task is already present within the list, only set the text for it
+			%AsphaltDoneTaskItem.set_objective(objectives_to_do[objective])
+			continue
 		var objective_item: ObjectiveItemv2 = task_item_scn.instantiate()
 		objective_names.push_back(objective)
 		objective_paths.push_back(LevelStructure.level_attribute_path(base_dir, objective))

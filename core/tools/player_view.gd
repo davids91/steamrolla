@@ -6,8 +6,8 @@ extends OrbitCamera3D
 
 @onready var camera: Camera3D = %Camera3D
 @onready var camera_transform: Transform3D:
-	get(): return camera.global_transform
-	set(v): camera.global_transform = v
+	get(): return camera_anchor.global_transform
+	set(v): camera_anchor.global_transform = v
 
 var lock_requests: Array[Node] = [] # Each request is stored based on the requester
 func lock_view(request_source: Node, request_to_be_locked: bool = true) -> void:

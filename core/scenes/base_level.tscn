@@ -51,7 +51,7 @@ shadow_enabled = true
 shadow_bias = 0.0
 
 [node name="PlayerView" parent="." unique_id=1504134869 node_paths=PackedStringArray("cursor") instance=ExtResource("1_0oa8v")]
-transform = Transform3D(0.11978244, 0.54834604, -0.8276284, -0.07854364, 0.8362515, 0.54269177, 0.98968834, 0, 0.14323734, -30.867188, 27.401814, 8.004426)
+transform = Transform3D(0.11978244, 0.54834604, -0.8276284, -0.07854364, 0.8362515, 0.54269177, 0.98968834, 0, 0.14323734, 0, 0, 0)
 visible = true
 cursor = NodePath("PlayerCursor")
 

@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bkfo7ufjsn6bg"
-path.s3tc="res://.godot/imported/start_asphalt_state.png-639b5d4875f7a49c46b47aee46c6b227.s3tc.ctex"
+path.s3tc="res://.godot/imported/start_asphalt_state.png-d482e4d33ed5c9595e1a061e13c2451a.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://levels/2_2garden/start_asphalt_state.png"
-dest_files=["res://.godot/imported/start_asphalt_state.png-639b5d4875f7a49c46b47aee46c6b227.s3tc.ctex"]
+source_file="res://levels/2_2field/start_asphalt_state.png"
+dest_files=["res://.godot/imported/start_asphalt_state.png-d482e4d33ed5c9595e1a061e13c2451a.s3tc.ctex"]
 
 [params]
 

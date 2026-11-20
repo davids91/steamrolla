@@ -2,21 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bvnkmrgh5lxfn"
-path.s3tc="res://.godot/imported/terrain_heightmap.png-eaeca234266ef84b1a5062a545696773.s3tc.ctex"
+uid="uid://bj02mduklvila"
+path="res://.godot/imported/start_asphalt_state_minified.png-30ad1a671311371c8bc7b5ae01cc4f59.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
-source_file="res://levels/2_2garden/terrain_heightmap.png"
-dest_files=["res://.godot/imported/terrain_heightmap.png-eaeca234266ef84b1a5062a545696773.s3tc.ctex"]
+source_file="res://levels/2_2field/start_asphalt_state_minified.png"
+dest_files=["res://.godot/imported/start_asphalt_state_minified.png-30ad1a671311371c8bc7b5ae01cc4f59.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -24,7 +23,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -38,4 +37,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1

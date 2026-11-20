@@ -119,8 +119,12 @@ func _physics_process(_delta: float) -> void:
 			current_distance_to_target = x_bound_max_distance_to_target
 
 		# Set Vertical trajectory of the runway
+		var y_to_follow: float = 0.
+		if following.get_parent() is PlayerView and following.get_parent().looking_at is RoadChunk:
+			y_to_follow = following.global_position.y
 		target_global_position.y = (
-			runway_height
+			y_to_follow
+			+ runway_height
 			- (
 				Vector2(global_position.x, global_position.z)
 				- Vector2(target_global_position.x, target_global_position.z)
@@ -192,5 +196,5 @@ func _on_proximity_detector_body_entered(body: Node3D) -> void:
 
 func _on_proximity_detector_body_exited(body: Node3D) -> void:
 	if body is RoadworkTool:
-		if body == tool_selected_to_deploy: tool_selected_to_deploy
+		if body == tool_selected_to_deploy: tool_selected_to_deploy = null
 		tools_in_proximity.erase(body)

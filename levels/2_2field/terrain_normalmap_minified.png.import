@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b586bkygxo24x"
-path.s3tc="res://.godot/imported/terrain_normalmap.png-bca32f353d706448cc283217f23ae37e.s3tc.ctex"
+uid="uid://dr2ejos327ukp"
+path.s3tc="res://.godot/imported/terrain_normalmap_minified.png-e6dff1585974d40a15cfc9b40433a4e6.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://levels/2_2garden/terrain_normalmap.png"
-dest_files=["res://.godot/imported/terrain_normalmap.png-bca32f353d706448cc283217f23ae37e.s3tc.ctex"]
+source_file="res://levels/2_2field/terrain_normalmap_minified.png"
+dest_files=["res://.godot/imported/terrain_normalmap_minified.png-e6dff1585974d40a15cfc9b40433a4e6.s3tc.ctex"]
 
 [params]
 

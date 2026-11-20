@@ -102,8 +102,8 @@ void fragment() {
 		),
 		step(
 			level_tool_tolerance,
-			abs(target_asphalt_quantity - asphalt_in_pixel) * asphalt_presence
-		) * level_tool_strength
+			abs(target_asphalt_quantity - asphalt_in_pixel) * asphalt_presence * level_tool_strength * texture(asphalt_attributes, UV).g
+		)
 	);
 
 	// Make Asphalt glow red when hot

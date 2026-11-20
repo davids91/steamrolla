@@ -8,7 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://coj3u22e41byx" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0001.png" id="4_j1khx"]
 [ext_resource type="PackedScene" uid="uid://xehtklcspjew" path="res://props/pipe.tscn" id="5_5fdls"]
 [ext_resource type="Texture2D" uid="uid://w5ooms1fjfnk" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0002.png" id="5_b4f7l"]
-[ext_resource type="Resource" uid="uid://b2dbwi2ryh3oc" path="res://levels/2_1intersection/level_data.res" id="6_658y6"]
 [ext_resource type="Texture2D" uid="uid://dsphf4qxk7x3r" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0003.png" id="6_ijohm"]
 [ext_resource type="PackedScene" uid="uid://yiyute5quljt" path="res://props/dumpster.tscn" id="7_7qqah"]
 [ext_resource type="Texture2D" uid="uid://cdfif0u7n6nv0" path="res://textures/map_overview_concept/areas/cityscape_anim/cityscape0004.png" id="7_cfgtw"]
@@ -528,7 +527,6 @@ shadow_mesh = SubResource("ArrayMesh_tglvp")
 script = ExtResource("1_58eve")
 
 [node name="MainMenu" parent="." unique_id=767521340 instance=ExtResource("1_r0kk5")]
-anchors_preset = 2
 
 [node name="MainTitleEnvironment" type="Node3D" parent="." unique_id=1286330709]
 
@@ -572,7 +570,6 @@ mesh = SubResource("QuadMesh_8jg5c")
 
 [node name="Intersection" parent="MainTitleEnvironment" unique_id=716876623 instance=ExtResource("2_58eve")]
 unique_name_in_owner = true
-level_data = ExtResource("6_658y6")
 is_stub = true
 height_unit = 2.0
 surface = 0
@@ -779,6 +776,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.064819, 0.65415335, -11.0
 [node name="car" parent="MainTitleEnvironment/Intersection" unique_id=813375980 instance=ExtResource("9_2fu0v")]
 transform = Transform3D(0.6652312, 0, 0.7466374, 0, 1, 0, -0.7466374, 0, 0.6652312, 10.832033, 1.8035339, -12.696323)
 
+[node name="smoke-particles" parent="MainTitleEnvironment/Intersection/car" index="6" unique_id=390044450]
+emitting = true
+
 [node name="OfficeBuilding" parent="MainTitleEnvironment/Intersection" unique_id=1960340363 instance=ExtResource("11_feaqs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0.5, -23)
 
@@ -803,7 +803,7 @@ transform = Transform3D(0.7145506, 0, 0.6995839, 0, 1, 0, -0.6995839, 0, 0.71455
 [node name="roller" parent="MainTitleEnvironment/Intersection" unique_id=1075544632 instance=ExtResource("13_58eve")]
 transform = Transform3D(-0.75467116, 0.1694368, -0.63384736, 0.2846864, 0.9549615, -0.08367783, 0.59112185, -0.243597, -0.7689183, 10.618, 3.642, -13.695)
 
-[node name="Roller" parent="MainTitleEnvironment/Intersection/roller" index="0" unique_id=1261025651]
+[node name="Roller" parent="MainTitleEnvironment/Intersection/roller" index="0" unique_id=762409311]
 mesh = SubResource("ArrayMesh_658y6")
 
 [node name="ratrick2" parent="MainTitleEnvironment/Intersection" unique_id=87839735 instance=ExtResource("16_cw08j")]
@@ -812,4 +812,5 @@ transform = Transform3D(-0.15592712, 2.951325, 5.2216253, -0.12758811, 5.2205753
 [node name="trash-can" parent="MainTitleEnvironment/Intersection" unique_id=193315065 instance=ExtResource("18_oixyc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.901562, 1.9154782, -9.61082)
 
+[editable path="MainTitleEnvironment/Intersection/car"]
 [editable path="MainTitleEnvironment/Intersection/roller"]
