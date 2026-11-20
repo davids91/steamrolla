@@ -4,7 +4,7 @@ extends Node
 #region level folder structure
 const LEVELS_FOLDER: String = "res://levels/"
 ## The folder for a level should start with the appropriate coordinates, separated by a single underline
-const LEVEL_FOLDER_NAME_REGEX: String = "^([0-9]*)_([0-9]*)(.*)"
+const LEVEL_FOLDER_NAME_REGEX: String = "^(-?[0-9]*)_([0-9]*)(.*)"
 static func complies_with_level_folder_name(dir_name: String) -> bool:
 	var level_folder_name_regex = RegEx.create_from_string(LEVEL_FOLDER_NAME_REGEX)
 	var regex_result = level_folder_name_regex.search(dir_name)

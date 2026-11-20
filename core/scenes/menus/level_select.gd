@@ -23,11 +23,15 @@ func level_description(level_title: String) -> String:
 		"Garden": str = "Enbrace your dream of becoming a farmer and help plow the field. These muddy rows of freshly harvested corn are now ready to be flattened in time for the next planting season. Who needs a tractor?"
 	return str
 
-func _position_from_dir_name(dir_name: String) -> Vector3:
+func _position_from_dir_name(dir_name: String, span: float = 1.) -> Vector3:
 	var level_coordinate: Vector2 = LevelStructure.level_position_from_dir_name(dir_name)
-	return Vector3(level_coordinate.x * road_chunk_spacing, 0., level_coordinate.y * road_chunk_spacing)
+	return Vector3(level_coordinate.x + span / 2., 0., level_coordinate.y + span / 2.) * road_chunk_spacing
 
 @export var rating_delay_sec: float = 0.7
+@export var scale_bump_modifier: float = 1.35:
+	set(v):
+		scale_bump_modifier = v
+		if Engine.is_editor_hint(): _load_level_data()
 @export var rating_delay_randomness_ratio: float = 0.75
 @export_tool_button("Load Level Data", "CheckBox") var create_level_data: Callable = _load_level_data
 const road_chunk_template: PackedScene = preload("res://core/scenes/road_chunk.scn")
@@ -42,8 +46,9 @@ func _load_level_data() -> void:
 		road_chunk.is_stub = true
 		$Chunks.add_child(road_chunk)
 		road_chunk.used_base_dir = LevelStructure.base_dir_of(d)
-		road_chunk.global_position = _position_from_dir_name(d)
 		road_chunk.initialize(LevelStructure.resource_path_in_dir(road_chunk.used_base_dir))
+		road_chunk.global_position = _position_from_dir_name(d, road_chunk.level_data.stub_span)
+		road_chunk.scale = Vector3.ONE * (1. + max(0., road_chunk.level_data.stub_span - 1.) * scale_bump_modifier)
 		if FileAccess.file_exists(LevelStructure.scene_path_in_levels(d)):
 			scenes[road_chunk] = LevelStructure.scene_path_in_levels(d)
 

@@ -85,7 +85,11 @@ func snap_to_reference(amount: float) -> void:
 
 #endregion Asphalt setters
 @export var play_area_height: float = 32.
-func get_size() -> Vector3: return Vector3($Ground.mesh.size.x, height_unit * play_area_height, $Ground.mesh.size.y)
+func get_size() -> Vector3:
+	return(
+		Vector3($Ground.mesh.size.x, height_unit * play_area_height, $Ground.mesh.size.y)
+		* scale
+	)
 
 func is_within_bounds(pos: Vector3) -> bool:
 	return(

@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://8x0l2wuhliq"
-path.s3tc="res://.godot/imported/terrain_normalmap_minified.png-6395a0327728cbd726347d0dd6c2b0ee.s3tc.ctex"
+uid="uid://d4humjvss8lv6"
+path.s3tc="res://.godot/imported/terrain_heightmap_minified.png-a81840063f6ab0afbbb9a4e687585037.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://levels/0_2suburbia/terrain_normalmap_minified.png"
-dest_files=["res://.godot/imported/terrain_normalmap_minified.png-6395a0327728cbd726347d0dd6c2b0ee.s3tc.ctex"]
+source_file="res://levels/-1_2suburbia/terrain_heightmap_minified.png"
+dest_files=["res://.godot/imported/terrain_heightmap_minified.png-a81840063f6ab0afbbb9a4e687585037.s3tc.ctex"]
 
 [params]
 

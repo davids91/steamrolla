@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c7lcy4w28aqed"
-path.s3tc="res://.godot/imported/terrain_normalmap.png-9515cc1623be17a742d38c1848e40388.s3tc.ctex"
+uid="uid://bxdsv63pfi6bi"
+path.s3tc="res://.godot/imported/terrain_albedo_image.png-99cb71037f2993f7290265176a8309d7.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://levels/0_2suburbia/terrain_normalmap.png"
-dest_files=["res://.godot/imported/terrain_normalmap.png-9515cc1623be17a742d38c1848e40388.s3tc.ctex"]
+source_file="res://levels/-1_2suburbia/terrain_albedo_image.png"
+dest_files=["res://.godot/imported/terrain_albedo_image.png-99cb71037f2993f7290265176a8309d7.s3tc.ctex"]
 
 [params]
 

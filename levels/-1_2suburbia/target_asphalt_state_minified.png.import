@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://do8344j4epda"
-path.s3tc="res://.godot/imported/terrain_albedo_image_minified.png-ac50f3a818d309b2d8d7d42437679422.s3tc.ctex"
+uid="uid://tb7m2o50lp2e"
+path.s3tc="res://.godot/imported/target_asphalt_state_minified.png-8a6236a8cf041f94c52b6781f01b30db.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://levels/0_2suburbia/terrain_albedo_image_minified.png"
-dest_files=["res://.godot/imported/terrain_albedo_image_minified.png-ac50f3a818d309b2d8d7d42437679422.s3tc.ctex"]
+source_file="res://levels/-1_2suburbia/target_asphalt_state_minified.png"
+dest_files=["res://.godot/imported/target_asphalt_state_minified.png-8a6236a8cf041f94c52b6781f01b30db.s3tc.ctex"]
 
 [params]
 
