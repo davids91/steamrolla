@@ -72,9 +72,12 @@ region = Rect2(382.025, 258, 128, 32)
 atlas = ExtResource("7_if0w6")
 region = Rect2(253.827, 255.325, 133.757, 70.689)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_5j0fq"]
+size = Vector3(3, 0.345, 1.125)
+
 [node name="Dumptruck" type="CharacterBody3D" unique_id=50967490 groups=["BombActivator", "RoadworkTool"]]
 collision_layer = 3
-collision_mask = 2
+collision_mask = 3
 script = ExtResource("1_28r5m")
 asphalt_height_for_quantity = 0.75
 tool_enum = 2
@@ -83,6 +86,7 @@ tool_angle = 2.4
 tool_strength = 0.3000000000000007
 controlled_by = 2
 has_payload = true
+speed = 20.0
 inv_turn_responsiveness = 0.1
 
 [node name="ToolBubbleIndicator" parent="." unique_id=135928248 instance=ExtResource("2_x7m7s")]
@@ -92,7 +96,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.9528966, 5.243889)
 transform = Transform3D(-0.9089847, 0, 0.41682938, 0, 1, 0, -0.41682938, 0, -0.9089847, 3.2651744, 4.8342853, -6.400869)
 
 [node name="Truck" parent="." unique_id=1606638326 instance=ExtResource("3_lhpk6")]
-transform = Transform3D(-0.99982464, 0, -0.018725341, 0, 1, 0, 0.018725341, 0, -0.99982464, 0, 0, 3.9395456)
+transform = Transform3D(-0.99982464, 0, -0.018725405, 0, 1, 0, 0.018725405, 0, -0.99982464, 0, 0, 3.9395456)
 
 [node name="Cube_039" parent="Truck" index="15" unique_id=1606561228]
 transform = Transform3D(100, 0, 0, 0, -4.371139e-06, 100, 0, -100, -4.371139e-06, 0.04413247, 1.5530187, 3.115664)
@@ -134,19 +138,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.014925003, 3.7303581, -1.7
 shape = SubResource("BoxShape3D_c7bb5")
 
 [node name="FloorRaycastFront" type="RayCast3D" parent="." unique_id=1855255327]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 30, 5.885)
-top_level = true
-target_position = Vector3(0, -60, 0)
-debug_shape_custom_color = Color(0.93333334, 0, 1, 1)
-
-[node name="FloorRaycastMiddle" type="RayCast3D" parent="." unique_id=1542349568]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 30, 3.7394428)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 30, 8)
 top_level = true
 target_position = Vector3(0, -60, 0)
 debug_shape_custom_color = Color(0.93333334, 0, 1, 1)
 
 [node name="FloorRaycastBack" type="RayCast3D" parent="." unique_id=858354863]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 30, 1.4740374)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 30, 0)
 top_level = true
 target_position = Vector3(0, -60, 0)
 debug_shape_custom_color = Color(0.93333334, 0, 1, 1)
@@ -179,6 +177,10 @@ pixel_size = 0.035
 billboard = 1
 texture = SubResource("AtlasTexture_yv87x")
 script = ExtResource("11_brqia")
+
+[node name="ForwardShapeCast" type="ShapeCast3D" parent="." unique_id=684105413]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6777513, 7.636658)
+shape = SubResource("BoxShape3D_5j0fq")
 
 [connection signal="area_entered" from="SelectableArea" to="." method="_on_body_representation_area_entered"]
 [connection signal="area_exited" from="SelectableArea" to="." method="_on_body_representation_area_exited"]

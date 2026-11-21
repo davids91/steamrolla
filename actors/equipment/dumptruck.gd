@@ -50,19 +50,14 @@ func handle_movement(delta: float) -> void:
 	velocity = velocity.limit_length(speed)
 
 var is_pouring: bool = false
+@onready var front_raycast_original_position: Vector3 = $FloorRaycastFront.position
+@onready var back_raycast_original_position: Vector3 = $FloorRaycastBack.position
 func _process(delta: float) -> void:
 	super(delta)
 
 	# Handle positioning of Floor raycast
-	$FloorRaycastFront.global_position.x = global_position.x
-	$FloorRaycastFront.global_position.y = global_position.y + 30.
-	$FloorRaycastFront.global_position.z = global_position.z
-	$FloorRaycastBack.global_position.x = global_position.x
-	$FloorRaycastBack.global_position.y = global_position.y + 30.
-	$FloorRaycastBack.global_position.z = global_position.z
-	$FloorRaycastMiddle.global_position.x = global_position.x
-	$FloorRaycastMiddle.global_position.y = global_position.y + 30.
-	$FloorRaycastMiddle.global_position.z = global_position.z
+	$FloorRaycastFront.global_position = global_position + basis.x * front_raycast_original_position.x + Vector3.UP * front_raycast_original_position.y + basis.z * front_raycast_original_position.z
+	$FloorRaycastBack.global_position = global_position + basis.x * back_raycast_original_position.x + Vector3.UP * back_raycast_original_position.y + basis.z * back_raycast_original_position.z
 
 	# Handle visuals
 	$EmptyIndicator.visible = asphalt_remaining <= 0.
@@ -83,29 +78,32 @@ func _process(delta: float) -> void:
 		#$ActiveSound.stop()
 
 @export var forward_collision_dampening: float = 0.95
+@export var velocity_bump: float = 0.95
 @onready var original_speed: float = speed
 func _physics_process(delta: float) -> void:
 	super(delta)
 	if Input.is_action_pressed("deploy_payload"): speed = original_speed / 2.
 	else: speed = original_speed
 
-	# Stick to the ground
-	if is_working:
-		var floor_raycast_point: Vector3
-		if $FloorRaycastBack.is_colliding(): floor_raycast_point = $FloorRaycastBack.get_collision_point()
-		if(
-			$FloorRaycastFront.is_colliding()
-			and (
-				null == floor_raycast_point
-				or $FloorRaycastFront.get_collision_point().y > floor_raycast_point.y
-			)
-		): floor_raycast_point = $FloorRaycastFront.get_collision_point()
-		if(
-			$FloorRaycastMiddle.is_colliding()
-			and (
-				null == floor_raycast_point
-				or $FloorRaycastMiddle.get_collision_point().y > floor_raycast_point.y
-			)
-		): floor_raycast_point = $FloorRaycastMiddle.get_collision_point()
-		if floor_raycast_point != null:
-			global_position.y = lerp(global_position.y, floor_raycast_point.y, inv_turn_responsiveness)
+	if not is_working: return
+
+	# Bump front when something is in front
+	if $ForwardShapeCast.is_colliding() and not is_reversing:
+		velocity.y += velocity_bump
+
+	# Set truck angle based on inclination
+	var floor_raycast_point: Vector3
+	if $FloorRaycastBack.is_colliding():
+		floor_raycast_point = $FloorRaycastBack.get_collision_point()
+		if $FloorRaycastFront.is_colliding():
+			$Truck.look_at(global_position + ($FloorRaycastFront.get_collision_point() - $FloorRaycastBack.get_collision_point()) * 5.)
+
+	if( # Stick to the ground
+		$FloorRaycastFront.is_colliding()
+		and (
+			null == floor_raycast_point
+			or $FloorRaycastFront.get_collision_point().y > floor_raycast_point.y
+		)
+	): floor_raycast_point = $FloorRaycastFront.get_collision_point()
+	if floor_raycast_point != null:
+		global_position.y = lerp(global_position.y, floor_raycast_point.y, inv_turn_responsiveness)
