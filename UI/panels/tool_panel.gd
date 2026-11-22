@@ -2,25 +2,22 @@
 class_name ToolPanel
 extends MarginContainer
 
-enum Tools{ ROLLER, PAVER, DUMPTRUCK, COMPACTOR, SHOVEL, BOMB, UNKNOWN }
+enum Tools{ ROLLER, PAVER, DUMPTRUCK, COMPACTOR, SHOVEL, BOMB, TRAJECTORY, CAMERA, UNKNOWN }
 
 signal selected_tool(tool: Tools)
 
 @export var available_tools: Array[Tools]
-@export var default_selected_tool: Tools = Tools.UNKNOWN
+@export var default_selected_tool: Tools = Tools.CAMERA
 @export_tool_button("Reload Buttons", "Button") var refresh_buttons_button: Callable = _refresh_buttons
 
 func select(tool: Tools) -> void:
 	for c in $Tools.get_children() as Array[ToolButton]:
-		if c.get_tool_enum() != tool: c.unselect()
+		if c.tool_enum != tool: c.unselect()
 		else: c.select()
 	selected_tool.emit(tool)
 	create_tween().tween_property(
 		$SelectedTool, "position",
-		Vector2(
-			get_theme_constant("margin_left") + tool_buttons[tool].position.x,
-			get_theme_constant("margin_top")
-		),
+		Vector2(get_theme_constant("margin_left") + tool_buttons[tool].position.x, get_theme_constant("margin_top")),
 		0.1
 	).set_ease(Tween.EASE_IN_OUT)
 
@@ -38,8 +35,8 @@ func _refresh_buttons() -> void:
 	for t in available_tools:
 		var button: ToolButton = TOOL_BUTTON_TEMPLATE.instantiate()
 		button.selected.connect(select)
-		button.tool_index = t
-		button.tool_number = i
+		button.tool_index = i
+		button.tool_enum = t
 		tool_buttons[t] = button
 		$Tools.add_child(button)
 		i += 1

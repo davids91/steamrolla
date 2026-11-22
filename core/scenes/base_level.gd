@@ -19,7 +19,7 @@ func _ready() -> void:
 	var car_transform_readouts = LevelStructure.level_attribute_data_read(base_dir, "contained_cars")
 	if car_transform_readouts is Array[Transform3D]:
 		for t in car_transform_readouts:
-			var car: MovingCar = preload("res://actors/moving_car.tscn").instantiate()
+			var car: MovingCar = preload("res://actors/cars/moving_car.tscn").instantiate()
 			add_child(car)
 			car.global_transform = t
 			car.crashed = true

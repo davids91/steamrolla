@@ -17,6 +17,7 @@ resource_local_to_scene = true
 shader = ExtResource("2_pmmbx")
 shader_parameter/color_gradient = SubResource("GradientTexture1D_k5p64")
 shader_parameter/stripes_angle = -1.305
+shader_parameter/vibration_angle = 0.0
 shader_parameter/stripes_spread = 75.0
 shader_parameter/stripes_edge = 0.001
 
@@ -26,15 +27,22 @@ font_size = 50
 [sub_resource type="AtlasTexture" id="AtlasTexture_8jg5c"]
 resource_local_to_scene = true
 atlas = ExtResource("2_0jvag")
-region = Rect2(768, 0, 128, 128)
+region = Rect2(900.437, 526.495, 119.63, 112.005)
 
 [node name="ToolButton" type="Panel" unique_id=456187996]
 modulate = Color(0.25, 0.25, 0.25, 1)
 z_index = -10
 custom_minimum_size = Vector2(100, 100)
 script = ExtResource("1_krd3q")
-tool_icon_regions = Array[Rect2]([Rect2(256, 0, 256, 256), Rect2(0, 256, 256, 256), Rect2(0, 0, 256, 256), Rect2(0, 512, 256, 256), Rect2(512, 0, 128, 128), Rect2(768, 0, 128, 128)])
-tool_enums = Array[int]([0, 1, 2, 3, 4, 5])
+tool_icon_regions = Dictionary[int, Rect2]({
+0: Rect2(256, 0, 256, 256),
+1: Rect2(0, 256, 256, 256),
+2: Rect2(0, 0, 256, 256),
+3: Rect2(0, 512, 256, 256),
+6: Rect2(900.437, 526.495, 119.63, 112.005),
+7: Rect2(768, 0, 128, 128)
+})
+tool_enum = 6
 tool_index = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=2007253671]

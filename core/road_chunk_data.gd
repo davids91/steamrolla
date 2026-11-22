@@ -44,3 +44,4 @@ extends Resource
 @export_category("Misc")
 @export var stub_angle: float = 0.
 @export var stub_span: float = 1.
+@export var trajectories: Array[TrajectoryData] = []

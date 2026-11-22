@@ -1,7 +1,6 @@
 class_name MovingCar
 extends RigidBody3D
 
-
 func _ready() -> void:
 	$CarBody.set_surface_override_material(0, $CarBody.get_active_material(0).duplicate())
 

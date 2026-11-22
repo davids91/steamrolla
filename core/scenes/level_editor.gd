@@ -299,7 +299,7 @@ func _save_level_data() -> void:
 @export var configured_tool_angle: float = 0.:
 	set(v):
 		configured_tool_angle = v
-		configure_tool_in_editor_button.call()
+		if Engine.is_editor_hint(): configure_tool_in_editor_button.call()
 
 @export_tool_button("Configure tool", "Save") var configure_tool_in_editor_button: Callable = func():
 	$RoadChunk.configure_to(configure_tool_in_editor)
@@ -376,5 +376,23 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _ready() -> void:
 	_load_level_data()
-	%ToolPanel.call_deferred("select", ToolPanel.Tools.PAVER)
+	%ToolPanel.call_deferred("select", ToolPanel.Tools.CAMERA)
 	get_tree().create_timer(0.5).timeout.connect(func(): %RoadChunk.rotation = Vector3.ZERO) # The chunk is a stub so it might rotate on ready
+	$RoadChunk.rotation.y = $RoadChunk.level_data.stub_angle
+
+func _process(_delta: float) -> void:
+	$RoadChunk.rotation.y = $RoadChunk.level_data.stub_angle
+
+func _on_trajectory_brush_trajectory_drawn(_follower: PathFollow3D, data: TrajectoryData, call_when_done: Callable) -> void:
+	$RoadChunk.level_data.trajectories.push_back(data)
+	ResourceSaver.save($RoadChunk.level_data)
+	call_when_done.call()
+
+func _on_tool_panel_selected_tool(tool: ToolPanel.Tools) -> void:
+	$PlayerView.lock_view(self, tool != ToolPanel.Tools.CAMERA)
+	var selected_tool: RoadworkTool
+	if $ToolController.tool_nodes.has(tool): selected_tool = $ToolController.tool_nodes[tool]
+	$TrajectoryBrush.is_enabled = (
+		tool == ToolPanel.Tools.TRAJECTORY
+		or (selected_tool != null and selected_tool.controlled_by == RoadworkTool.ControlMethods.DRAWN)
+	)

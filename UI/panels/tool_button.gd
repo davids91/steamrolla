@@ -4,18 +4,17 @@ extends Panel
 
 signal selected(tool: ToolPanel.Tools)
 
-@export var tool_icon_regions: Array[Rect2]
-@export var tool_enums: Array[ToolPanel.Tools]
-@export var tool_number: int = 0: ## aligns to ToolPanel.tools
+@export var tool_icon_regions: Dictionary[ToolPanel.Tools, Rect2]
+@export var tool_enum: ToolPanel.Tools = ToolPanel.Tools.UNKNOWN:
 	set(v):
-		tool_number = v
-		if get_node_or_null("%ToolNumber"): %ToolNumber.text = str(v + 1)
+		tool_enum = v
+		if get_node_or_null("%ToolImage"):
+			%ToolImage.texture.region = tool_icon_regions[v]
 
 @export var tool_index: int = 0: ## aligns to ToolPanel.tools
 	set(v):
 		tool_index = v
-		if get_node_or_null("%ToolImage") and abs(v) < tool_icon_regions.size():
-			%ToolImage.texture.region = tool_icon_regions[v]
+		if get_node_or_null("%ToolNumber"): %ToolNumber.text = str(v + 1)
 
 @export var deployed: bool:
 	set(v):
@@ -23,8 +22,6 @@ signal selected(tool: ToolPanel.Tools)
 			if v: create_tween().tween_property(%ToolImage, "custom_minimum_size", Vector2(132, 132), 0.3)
 			else: create_tween().tween_property(%ToolImage, "custom_minimum_size", Vector2(100, 100), 0.3)
 		deployed = v
-
-func get_tool_enum() -> ToolPanel.Tools: return tool_enums[tool_index]
 
 func select() -> void:
 	is_selected = true
@@ -63,6 +60,6 @@ func _on_mouse_exited() -> void:
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and is_in_focus:
 		if event.pressed:
-			selected.emit(get_tool_enum())
+			selected.emit(tool_enum)
 			is_selected = true
 			modulate = clicked_modulate

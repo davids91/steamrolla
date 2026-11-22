@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://cx1a0oansrmst"]
 
 [ext_resource type="Texture2D" uid="uid://bxbb6w08ba2kx" path="res://models/car_0.png" id="1_3iowy"]
-[ext_resource type="Script" uid="uid://ddu44pdciv1tv" path="res://actors/moving_car.gd" id="1_ujrer"]
+[ext_resource type="Script" uid="uid://ddu44pdciv1tv" path="res://actors/cars/moving_car.gd" id="1_ujrer"]
 [ext_resource type="AudioStream" uid="uid://buopwf7b2rss6" path="res://audio/CarHorn.wav" id="3_4porn"]
 [ext_resource type="AudioStream" uid="uid://bl76csirtqdly" path="res://audio/eek_1.wav" id="4_4xq5i"]
 [ext_resource type="AudioStream" uid="uid://bkngup8ompqc" path="res://audio/eek_2.wav" id="5_hnu3i"]
@@ -383,8 +383,6 @@ max_distance = 100.0
 stream = SubResource("AudioStreamRandomizer_4xq5i")
 pitch_scale = 2.0
 max_distance = 100.0
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1586966389]
 
 [node name="SmokeParticles" type="CPUParticles3D" parent="." unique_id=1614172083]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
