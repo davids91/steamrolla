@@ -5,7 +5,7 @@ David:
 - Model of Runway with parking ramps
 - Runway follow and deployment behavior with parking positions, draggable default position and automatic out of bounds detection for parked tools
 - Base scene for levels and level specific asphalt deviation threshold
-- Level select scene with transition animations(populated automatically from available levels)
+- Level select scene with procedurally animated cursor, transition animations(populated automatically from available levels) and variable tile sizes
 - Level Objective and attribute backend system with automated completion check and sounds
 - User data storage(objective completion, level attributes and tool positions)
 - Automatic detection of asphalt reaching target level
@@ -20,10 +20,14 @@ David:
 - Roadwork tool control system (generic control with mouse drag, keyboard or drawn trajectory)
 - Roadwork tools configurable base with physical body(base for roller, compactor, asphalt paver and dumptruck)
 - Compactor control scheme and responsive model logic
+- Dumptruck control scheme with inclination detection
 - Paver with asphalt storage and release trigger; behavior, sounds and UI key prompt for control
 - Roller with frontal collision detection and UI key prompts for control
-- Dynamic stream of cars with horns, crash sounds and automated crash detection
-- Drawn Trajectory System
+- Breakable car with horns, crash sounds, procedural crash animation and automated crash detection
+- Unstoppable car controlled with trajectory
+- Dynamic stream of cars( traffic ) advancing in straight lines
+- Empty container indicator for Asphalt Paver and Dumptruck
+- Trajectory recording system for editor(automated edge-of-level detection and stored timing)
 - Smooth camera transitions betwen level overview and tools with sound
 - Camera shake on impact
 - Camera transition sounds
@@ -57,13 +61,16 @@ David:
 - various bugfixes, polishing and improvements
 - adjustments to inner systems(orbit camera usage with roller, using gravel and dirt textures)
 - Gravel road, River and Pond test scenes
+- Raw pidgeon sound
 
-Christer:
+McFunkyPants:
 ===
 - Title music
+- Level selection screen level description decoration
 - Compactor sound
 - Sky-dome with clouds
 - Asphalt paver model
+- Modular Suburban House with variable window and door placement
 - Seamless gravel and dirt textures(albedo and normal)
 - Main Menu button decoration
 - Intersection level (and polish)
@@ -71,6 +78,8 @@ Christer:
 - Open/Closable Dumpster model
 - Skeleton
 - Crushable Soda cans
+- Picket fence model
+- Suburban bush model
 - Street light with wires and volumetric light beam
 - Trash can
 - Car model with crushed animation and particle effects
@@ -78,7 +87,7 @@ Christer:
 - Maze level terrain and design
 - Roundabout level terrain
 - Switchback level terrain
-- Suburbia level terrain
+- Suburbia level design and terrain
 - Farmer field level terrain
 - Parking lot level terrain
 - Imported Ratrick model
@@ -141,6 +150,9 @@ Adgemon:
 - Car alarm sound
 - Car horn sounds
 - Roadwork tool selection sound
+- Sound to select crew members
+- Sparrow sound
+- Pidgeon sound post processing
 
 Hunter:
 ===
