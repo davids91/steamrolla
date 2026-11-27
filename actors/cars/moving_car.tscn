@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://bxbb6w08ba2kx" path="res://models/car_0.png" id="1_3iowy"]
 [ext_resource type="Script" uid="uid://ddu44pdciv1tv" path="res://actors/cars/moving_car.gd" id="1_ujrer"]
 [ext_resource type="AudioStream" uid="uid://buopwf7b2rss6" path="res://audio/CarHorn.wav" id="3_4porn"]
+[ext_resource type="Script" uid="uid://dar43i4sl111a" path="res://actors/cars/car_paint.gd" id="3_68en1"]
 [ext_resource type="AudioStream" uid="uid://bl76csirtqdly" path="res://audio/eek_1.wav" id="4_4xq5i"]
 [ext_resource type="AudioStream" uid="uid://bkngup8ompqc" path="res://audio/eek_2.wav" id="5_hnu3i"]
 [ext_resource type="AudioStream" uid="uid://c05rdnie3ug6p" path="res://audio/boom_1.wav" id="6_ow73r"]
@@ -345,6 +346,7 @@ crash_noise = SubResource("FastNoiseLite_00vtg")
 [node name="CarBody" type="MeshInstance3D" parent="." unique_id=1723279456]
 transform = Transform3D(1, 0, 0, 0, 1, 7.5497894e-08, 0, -7.5497894e-08, 1, -0.20065129, -0.06771171, 0)
 mesh = SubResource("ArrayMesh_djuqu")
+script = ExtResource("3_68en1")
 
 [node name="tire" type="MeshInstance3D" parent="." unique_id=1401502037]
 transform = Transform3D(0, -1.0430813e-06, 5, -35, 0, -1.4901161e-07, 1.0430813e-06, -35, 0, 0.8393487, 0.39228824, 1.57)

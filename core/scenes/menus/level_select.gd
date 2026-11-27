@@ -47,8 +47,13 @@ func _load_level_data() -> void:
 		$Chunks.add_child(road_chunk)
 		road_chunk.used_base_dir = LevelStructure.base_dir_of(d)
 		road_chunk.initialize(LevelStructure.resource_path_in_dir(road_chunk.used_base_dir))
-		road_chunk.global_position = _position_from_dir_name(d, road_chunk.level_data.stub_span)
-		road_chunk.scale = Vector3.ONE * (1. + max(0., road_chunk.level_data.stub_span - 1.) * scale_bump_modifier)
+		
+		if road_chunk.level_data: 
+			road_chunk.global_position = _position_from_dir_name(d, road_chunk.level_data.stub_span)
+			road_chunk.scale = Vector3.ONE * (1. + max(0., road_chunk.level_data.stub_span - 1.) * scale_bump_modifier)
+		else: # might be null
+			print("ERROR: missing road chunk level_data")
+		
 		if FileAccess.file_exists(LevelStructure.scene_path_in_levels(d)):
 			scenes[road_chunk] = LevelStructure.scene_path_in_levels(d)
 
