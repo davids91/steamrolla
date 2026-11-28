@@ -10,18 +10,18 @@ extends Node3D
 var is_scene_changing: bool = false
 
 func level_description(level_title: String) -> String:
-	var str = "Use your steamroller to flatten the asphalt. Build a beautiful road."
+	var _str = "Use your steamroller to flatten the asphalt. Build a beautiful road."
 	match level_title:
-		"Roundabout": str = "Repair a massive sinkhole that formed in this circular section of road. The drivers are already confused enough."
-		"Parking Lot": str = "Protect paradise by paving a perfect parking lot. Embrace simplicity and cover the entire level with asphalt, then roll it smooth, like a zen-master embracing nothingness."
-		"Suburbia": str = "A mega-project that will take years to complete, this entire residential area needs brand new roads. An epic job that will require patience."
-		"Traffic": str = "Somebody messed up the construction permits and the road closure never happened! Can you repair a giant pothole while oncoming traffic recklessly races though the construction site, or will the destruction be legendary?"
-		"Level 1 Smush": str = "Somebody messed up the construction permits and the road closure never happened! Can you repair a giant pothole while oncoming traffic recklessly races though the construction site, or will the destruction be legendary?"
-		"Switchback": str = "Zig-zag all the way up this precarious mountaintop and carve a curvy but climbable road to the top. Hope you aren't afraid of heights!"
-		"Maze": str = "There is only one true path from the entrance to the exit. Can you pave the correct route in this puzzling path of pavement?"
-		"Intersection": str = "A water pipe burst right in the middle of a busy four-way intersection. Help repair the pipe and fill in the crater caused by the spraying water before rush hour starts or traffic is going to be a nightmare."
-		"Garden": str = "Enbrace your dream of becoming a farmer and help plow the field. These muddy rows of freshly harvested corn are now ready to be flattened in time for the next planting season. Who needs a tractor?"
-	return str
+		"Roundabout": _str = "Repair a massive sinkhole that formed in this circular section of road. The drivers are already confused enough."
+		"Parking Lot": _str = "Protect paradise by paving a perfect parking lot. Embrace simplicity and cover the entire level with asphalt, then roll it smooth, like a zen-master embracing nothingness."
+		"Suburbia": _str = "A mega-project that will take years to complete, this entire residential area needs brand new roads. An epic job that will require patience."
+		"Traffic": _str = "Somebody messed up the construction permits and the road closure never happened! Can you repair a giant pothole while oncoming traffic recklessly races though the construction site, or will the destruction be legendary?"
+		"Level 1 Smush": _str = "Somebody messed up the construction permits and the road closure never happened! Can you repair a giant pothole while oncoming traffic recklessly races though the construction site, or will the destruction be legendary?"
+		"Switchback": _str = "Zig-zag all the way up this precarious mountaintop and carve a curvy but climbable road to the top. Hope you aren't afraid of heights!"
+		"Maze": _str = "There is only one true path from the entrance to the exit. Can you pave the correct route in this puzzling path of pavement?"
+		"Intersection": _str = "A water pipe burst right in the middle of a busy four-way intersection. Help repair the pipe and fill in the crater caused by the spraying water before rush hour starts or traffic is going to be a nightmare."
+		"Garden": _str = "Enbrace your dream of becoming a farmer and help plow the field. These muddy rows of freshly harvested corn are now ready to be flattened in time for the next planting season. Who needs a tractor?"
+	return _str
 
 func _position_from_dir_name(dir_name: String, span: float = 1.) -> Vector3:
 	var level_coordinate: Vector2 = LevelStructure.level_position_from_dir_name(dir_name)
@@ -79,15 +79,19 @@ func _load_level_data() -> void:
 
 @export var highlighted_decoration_pos_y: float = 35.
 @export var non_highlighted_decoration_pos_y: float = 25.
-var highlighted_decoration: RatingDecoration = null:
+var highlighted_chunk: RoadChunk = null:
 	set(v):
-		if v and v != highlighted_decoration:
-			create_tween().tween_property(v, "position:y", highlighted_decoration_pos_y, 0.3)
-			%LevelTitleLabel.text = v.level_title
-			%LevelDescription.text = level_description(v.level_title)
-		if highlighted_decoration and v != highlighted_decoration:
-			create_tween().tween_property(highlighted_decoration, "position:y", non_highlighted_decoration_pos_y, 0.3)
-		highlighted_decoration = v
+		if v and v != highlighted_chunk:
+			var decoration: RatingDecoration = v.get_node("RatingDecoration")
+			create_tween().tween_property(decoration, "position:y", highlighted_decoration_pos_y, 0.3)
+			%LevelTitleLabel.text = decoration.level_title
+			%LevelDescription.text = level_description(decoration.level_title)
+		if highlighted_chunk and v != highlighted_chunk:
+			create_tween().tween_property(
+				highlighted_chunk.get_node("RatingDecoration"), "position:y",
+				non_highlighted_decoration_pos_y, 0.3
+			)
+		highlighted_chunk = v
 var traveling_towards_selected_chunk: bool = false
 var selected_chunk: RoadChunk = null
 var mouse_moved_away_timer: SceneTreeTimer
@@ -100,7 +104,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			else: $Highlight.modulate = Color.RED
 			$Highlight.visible = true
 			$Highlight.target_position = $PlayerView.looking_at.global_position
-			highlighted_decoration = $PlayerView.looking_at.get_node("RatingDecoration")
+			highlighted_chunk = $PlayerView.looking_at
 			if(
 				event is InputEventMouseButton and event.is_pressed()
 				and selected_chunk == $PlayerView.looking_at and scenes.has(selected_chunk)
@@ -116,7 +120,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				create_tween().tween_property(%ScreenBlocker, "modulate", Color.WHITE, transition_time_sec)
 				ResourceLoader.load_threaded_request(scenes[selected_chunk])
 		else:
-			highlighted_decoration = null
+			highlighted_chunk = null
 			if not mouse_moved_away_timer:
 				mouse_moved_away_timer = get_tree().create_timer(1.)
 				mouse_moved_away_timer.timeout.connect(func():

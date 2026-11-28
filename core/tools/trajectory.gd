@@ -33,21 +33,25 @@ signal trajectory_drawn(follower: PathFollow3D, data: TrajectoryData, call_when_
 		trajectory_data = road_chunk.level_data.trajectories[-1]
 
 @export_category("Trajectory Brush Parameters")
+@export var cursor_in_place_distance_threshold: float = 0.45
+@export var cursor_follow_responsiveness: float = 0.3
 @export var curve_distance_threshold: float = 1.
 @export var flat_distance_threshold: float = 10.
 @export var stopping_distance_threshold: float = 3.
-@export var stopping_time_threshold_sec: float = 0.75
+@export var stopping_time_threshold_sec: float = 1.35
+@export var segment_min_time_sec: float = 0.15
 @export_range(0.01, 1.) var normalized_dot_diff_threshold: float = 0.95
 func _cleanup()-> void:
 	trajectory_data = TrajectoryData.new()
 
 const MICROSEC_TO_SEC_MULTIPLIER: float = 0.000001
-func _add_new_segment(to: Vector3) -> void:
+func _add_point_to_curve(to: Vector3) -> void:
 	curve.add_point(to)
-	curve.set_point_position(curve.point_count - 1, to)
 	trajectory_data.curves = curve
 	trajectory_data.stop_durations_sec.push_back(0.)
-	trajectory_data.segment_durations_sec.push_back(float(Time.get_ticks_usec() - segment_start_us) * MICROSEC_TO_SEC_MULTIPLIER)
+	if trajectory_data.segment_durations_sec.size() > 1:
+		trajectory_data.segment_durations_sec[-1] = float(Time.get_ticks_usec() - segment_start_us) * MICROSEC_TO_SEC_MULTIPLIER
+	trajectory_data.segment_durations_sec.push_back(segment_min_time_sec)
 	segment_start_us = Time.get_ticks_usec()
 
 func _calculate_normalized_trajectory_data() -> void:
@@ -70,14 +74,24 @@ var trajectory_start_us: int = 0
 func _unhandled_input(event: InputEvent) -> void:
 	if is_enabled and event is InputEventMouseButton:
 		if not is_drawing and event.is_pressed():
+			cursor_slow_pos = player_view.cursor.global_position
+			cursor_time_spent_in_place_sec = 0.
+			cursor_last_pos = player_view.cursor.global_position
 			trajectory_start_us = Time.get_ticks_usec()
 			segment_start_us = Time.get_ticks_usec()
 			# Check which positions on the level edge would be closer to the current cursor
 			# And start the trajectory from there
-			_add_new_segment(_get_nearest_at_level_edge_to(player_view.cursor.global_position))
+			_add_point_to_curve(_get_nearest_at_level_edge_to(player_view.cursor.global_position))
+			_add_point_to_curve(player_view.cursor.global_position)
 		if is_drawing and not event.is_pressed(): # When the mouse is released
 			# Extend the curve with a point at the edge of the level
-			_add_new_segment(_get_nearest_at_level_edge_to(curve.get_point_position(curve.point_count - 1)))
+			_add_point_to_curve(_get_nearest_at_level_edge_to(curve.get_point_position(curve.point_count - 1)))
+
+			# The last duration and stop time interval points are invalid
+			trajectory_data.segment_durations_sec.pop_back()
+			trajectory_data.stop_durations_sec.pop_back()
+
+			# Finalize trajectory
 			trajectory_data.trajectory_duration_sec = float(Time.get_ticks_usec() - trajectory_start_us) * MICROSEC_TO_SEC_MULTIPLIER
 			_calculate_normalized_trajectory_data()
 			if trajectory_drawn.has_connections(): trajectory_drawn.emit($TrajectoryControl, trajectory_data, _cleanup)
@@ -114,19 +128,16 @@ func _get_nearest_at_level_edge_to(p: Vector3) -> Vector3:
 	return result
 
 @export var level: RoadChunk
-func _physics_process(_delta: float) -> void:
+@onready var cursor_slow_pos: Vector3 = player_view.cursor.global_position
+@onready var cursor_last_pos: Vector3 = player_view.cursor.global_position
+@onready var cursor_time_spent_in_place_sec: float = 0.
+func _physics_process(delta: float) -> void:
 	if not is_drawing: return
 	if curve.point_count < 1: return # Only extend a trajectory that already has a point
 	var last_segment_direction = (curve.get_point_position(curve.point_count - 1) - curve.get_point_position(curve.point_count - 2)).normalized()
 	var to_cursor: Vector3 = player_view.cursor.global_position - curve.get_point_position(curve.point_count - 1)
 	var cursor_distance = to_cursor.length()
-	var elapsed_time_in_segment_sec = float(Time.get_ticks_usec() - segment_start_us) * MICROSEC_TO_SEC_MULTIPLIER
 	to_cursor = to_cursor.normalized()
-
-	if( # Update the stop time if current point is close to segment start, and have been waiting for enough time
-		cursor_distance < stopping_distance_threshold
-		and elapsed_time_in_segment_sec >= stopping_time_threshold_sec
-	): trajectory_data.stop_durations_sec[-1] = elapsed_time_in_segment_sec
 
 	if( # Add a new point if the current point is far enough from the previous one
 		cursor_distance > flat_distance_threshold
@@ -134,8 +145,28 @@ func _physics_process(_delta: float) -> void:
 			abs(last_segment_direction.dot(to_cursor)) < normalized_dot_diff_threshold
 			and cursor_distance > curve_distance_threshold
 		)
-	): _add_new_segment(player_view.cursor.global_position)
+	): _add_point_to_curve(player_view.cursor.global_position)
 	elif abs(last_segment_direction.dot(to_cursor)) > normalized_dot_diff_threshold:
 		# The latest segment can be updated if it's close enough to the intended curve
 		curve.set_point_position(curve.point_count - 1, player_view.cursor.global_position)
 		trajectory_data.curves.set_point_position(curve.point_count - 1, player_view.cursor.global_position)
+
+	# Keep track of time spent in one place
+	cursor_slow_pos = lerp(cursor_slow_pos, player_view.cursor.global_position, cursor_follow_responsiveness)
+	var cursor_in_place: bool = (
+		(cursor_slow_pos - player_view.cursor.global_position).length() < cursor_in_place_distance_threshold
+		and (cursor_last_pos - player_view.cursor.global_position).length() < cursor_in_place_distance_threshold
+	)
+	if cursor_in_place: cursor_time_spent_in_place_sec += delta
+	else:
+		cursor_last_pos = player_view.cursor.global_position
+		cursor_time_spent_in_place_sec = 0.
+
+	if cursor_time_spent_in_place_sec >= stopping_time_threshold_sec:
+		if ( # Add the new segment for the stop if current position is far enough from the segment position
+			(
+				trajectory_data.curves.get_point_position(trajectory_data.curves.point_count - 2)
+				- player_view.cursor.global_position
+			).length() >= cursor_in_place_distance_threshold
+		): _add_point_to_curve(player_view.cursor.global_position)
+		trajectory_data.stop_durations_sec[-1] = cursor_time_spent_in_place_sec

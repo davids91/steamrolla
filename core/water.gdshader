@@ -22,6 +22,7 @@ uniform float water_shiny = 40;
 uniform float water_directionality_angle = 0.;
 uniform float water_direction_dominance: hint_range(0.0, 1.0) = 0.;
 uniform float water_edge_calculation_range = 0.006;
+uniform float alpha_value: hint_range(0., 1.) = 1.;
 
 const float VALUE_EPSILON = 0.001;
 const float PIXEL_RADIUS = 0.002; // 1. / 512. because asphalt quantity texture is of resolution 512x512
@@ -76,7 +77,7 @@ void fragment() {
 	if (VALUE_EPSILON > water_edge_modifier)discard;
 	ALBEDO = mix(texture(road_colormap, UV).rgb, water_color, 0.9);
 	NORMAL = water_normal;
-	ALPHA = water_transparency;
+	ALPHA = water_transparency * alpha_value;
 }
 
 const float WATER_SHINY_MAX = 200.;

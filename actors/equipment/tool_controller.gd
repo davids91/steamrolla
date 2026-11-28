@@ -78,7 +78,7 @@ func select_tool(tool: ToolPanel.Tools) -> void:
 		return
 
 	if tool_nodes.has(tool): # Configure tool for level and runway
-		if not runway.tool_selected_to_deploy:
+		if not runway or not runway.tool_selected_to_deploy:
 			$ToolSelectedSound.play()
 		var ready_to_deploy = true
 		if runway:

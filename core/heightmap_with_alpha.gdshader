@@ -26,6 +26,7 @@ uniform float level_edge_transition = 0.001;
 uniform float asphalt_shiny: hint_range(0.0, 1.0) = 0.2;
 uniform float asphalt_spread: hint_range(0.0, 500.0) = 10.;
 uniform vec3 asphalt_hot_color: source_color = vec3(0.1,0.,0.);
+uniform float alpha_value: hint_range(0., 1.) = 1.;
 
 const float VALUE_EPSILON = 0.001;
 
@@ -113,7 +114,7 @@ void fragment() {
 	// https://github.com/godotengine/godot/issues/98217
 	// Writing to alpha also puts the mesh into the same transparent pipeline
 	// as the thumbs up rating on the level overview scene, so it can be hidden behind the chunks
-	ALPHA = texture(road_colormap, UV).a;
+	ALPHA = texture(road_colormap, UV).a * alpha_value;
 }
 
 // Recreation of the default godot light shader from

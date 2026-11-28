@@ -107,7 +107,6 @@ func handle_movement(delta: float) -> void:
 		var rotate_amount: float = signf(direction.z) * steering_angle * movement_intent.x * turning_speed * delta
 		rotate(Vector3.UP, rotate_amount)
 		velocity = velocity.rotated(Vector3.UP, rotate_amount)
-	move_and_slide()
 
 func _physics_process(delta: float) -> void:
 	if controlled_by != ControlMethods.PILOTED and not is_working: return

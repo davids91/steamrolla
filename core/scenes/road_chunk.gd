@@ -86,21 +86,18 @@ func snap_to_reference(amount: float) -> void:
 #endregion Asphalt setters
 @export var play_area_height: float = 32.
 func get_size() -> Vector3:
-	return(
-		Vector3($Ground.mesh.size.x, height_unit * play_area_height, $Ground.mesh.size.y)
-		* scale
-	)
+	return Vector3($Ground.mesh.size.x, height_unit * play_area_height, $Ground.mesh.size.y) * scale
 
 func is_within_bounds(pos: Vector3) -> bool:
 	return(
-		pos.x >= global_position.x - $Ground.mesh.size.x / 2.
-		and pos.x <= global_position.x + $Ground.mesh.size.x / 2.
-		and pos.z >= global_position.z - $Ground.mesh.size.y / 2.
-		and pos.z <= global_position.z + $Ground.mesh.size.y / 2.
+		pos.x >= global_position.x - $Ground.mesh.size.x * scale.x / 2.
+		and pos.x <= global_position.x + $Ground.mesh.size.x * scale.x / 2.
+		and pos.z >= global_position.z - $Ground.mesh.size.y * scale.z / 2.
+		and pos.z <= global_position.z + $Ground.mesh.size.y * scale.z / 2.
 	)
 
 func get_tex_position_from(pos: Vector3) -> Vector2:
-	var flat_chunk_size: Vector2 = Vector2($Ground.mesh.size.x, $Ground.mesh.size.y)
+	var flat_chunk_size: Vector2 = Vector2($Ground.mesh.size.x * scale.x, $Ground.mesh.size.y * scale.z)
 	return (
 		Vector2(pos.x, pos.z) - Vector2(global_position.x, global_position.z) + flat_chunk_size * 0.5
 	) / flat_chunk_size
@@ -156,11 +153,12 @@ func pop_config() -> void:
 	update_config_stack.pop_back()
 
 func configure_to(tool: RoadworkTool) -> void:
+	var scale_modifier: float = 1. / scale.length()
 	tool_angle_offset = tool.tool_angle
 	used_tool = tool.tool_enum
-	tool_size = tool.normalized_size
+	tool_size = tool.normalized_size * scale_modifier
 	tool_strength = tool.tool_strength
-	tool_radius = tool.tool_radius
+	tool_radius = tool.tool_radius * scale_modifier
 
 ## The tool identifier used to udpate the level
 var used_tool: ToolPanel.Tools = ToolPanel.Tools.UNKNOWN:
@@ -307,6 +305,7 @@ func update_materials() -> void:
 	mat.set_shader_parameter("asphalt_tile_size_ratio", asphalt_tile_size_ratio)
 	mat.set_shader_parameter("asphalt_physics_state", asphalt_physics_state)
 	mat.set_shader_parameter("asphalt_shiny", asphalt_shiny)
+	mat.set_shader_parameter("alpha_value", alpha)
 
 	var water_mat: Material = $Ground.get_active_material(0).next_pass
 	water_mat.set_shader_parameter("height_unit",  height_unit)
@@ -325,6 +324,7 @@ func update_materials() -> void:
 	water_mat.set_shader_parameter("water_height", level_data.water_height)
 	water_mat.set_shader_parameter("water_color", level_data.water_color)
 	water_mat.set_shader_parameter("water_transparency", level_data.water_transparency)
+	water_mat.set_shader_parameter("alpha_value", alpha)
 
 ## Set node state based on loaded level data
 func _initialize_state() -> void:
@@ -345,6 +345,14 @@ func _initialize_state() -> void:
 	# Initial update for materials and physics
 	update_materials()
 	update_physics()
+
+## The alpha value of the display, in case it is available
+@export var alpha: float = 1.:
+	set(v):
+		alpha = v
+		if is_minified: #TechDebt: Only the minified shader uses the alpha value
+			$Ground.get_active_material(0).set_shader_parameter("alpha_value", v)
+			$Ground.get_active_material(0).next_pass.set_shader_parameter("alpha_value", v)
 
 ## Loads the minified version of the roadchunk, level data is expected to be in packaged format!
 func _initialize_minified(data_path: String = "") -> void:

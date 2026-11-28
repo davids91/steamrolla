@@ -19,7 +19,7 @@ radius = 5.015625
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_8jg5c"]
 random_pitch = 1.0174797
-streams_count = 6
+streams_count = 5
 stream_0/stream = ExtResource("4_knbeh")
 stream_1/stream = ExtResource("5_v8eb1")
 stream_2/stream = ExtResource("6_3kdje")

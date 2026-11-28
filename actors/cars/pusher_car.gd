@@ -41,6 +41,10 @@ func _physics_process(delta: float) -> void:
 	time_left_for_segment_sec -= delta
 	var time_spent_in_current_segment = trajectory.segment_durations_sec[segment_progress] - time_left_for_segment_sec
 
+	# In case segment progress is out of bounds, increase pivot progress gradually
+	if abs(segment_progress) >= trajectory.segment_durations_sec.size():
+		pivot.progress_ratio += delta
+
 	# Handle increasing progress of the pivot based on the trajectory data
 	if(time_spent_in_current_segment >= trajectory.stop_durations_sec[segment_progress]):
 		var progress_to_increase: float = progress_left_for_segment * delta / time_left_for_segment_sec
@@ -54,7 +58,7 @@ func _physics_process(delta: float) -> void:
 			else:
 				finished.emit()
 				queue_free()
-		if 1. <= pivot.progress_ratio:queue_free()
-	
+	if 1. <= pivot.progress_ratio:queue_free()
+
 	# Set transform based on pivot
 	global_transform = pivot.global_transform
