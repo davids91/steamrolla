@@ -364,7 +364,7 @@ mesh = SubResource("ArrayMesh_xfs4u")
 transform = Transform3D(4.172325e-06, -5.2154064e-06, -5, -35, 0, -2.9802322e-07, -1.0430813e-06, 34.999996, -5.9604645e-07, -0.7482165, 0.39228824, -1.4106785)
 mesh = SubResource("ArrayMesh_qhdhn")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=548532615]
+[node name="BodyShape" type="CollisionShape3D" parent="." unique_id=548532615]
 transform = Transform3D(1, 0, 0, 0, 1, 7.5497894e-08, 0, -7.5497894e-08, 1, 0.045930743, 0.73031616, -0.004936273)
 shape = SubResource("BoxShape3D_xonvl")
 

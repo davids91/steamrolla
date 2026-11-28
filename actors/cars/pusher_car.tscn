@@ -268,9 +268,12 @@ point_count = 2
 offsets = PackedFloat32Array(0, 0.99678457)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_8jg5c"]
+size = Vector3(2.324829, 3.1121826, 2.1898804)
+
 [node name="PusherCar" type="AnimatableBody3D" unique_id=1369033090 groups=["BirdReactable"]]
-collision_layer = 3
-collision_mask = 0
+collision_layer = 7
+collision_mask = 4
 script = ExtResource("1_d262v")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1460571922]
@@ -278,27 +281,27 @@ transform = Transform3D(-3.6061895e-08, 0, -0.825, 0, 0.825, 0, 0.825, 0, -3.606
 shape = SubResource("ConvexPolygonShape3D_ofx5m")
 
 [node name="CarBody" type="MeshInstance3D" parent="." unique_id=1681056419]
-transform = Transform3D(0.0013417664, 0, 0.8249989, 0, 0.825, 0, -0.8249989, 0, 0.0013417664, 0.0053905062, 0.78179467, 0.04537192)
+transform = Transform3D(-0.0035757497, 0, -0.8249921, 0, 0.825, 0, 0.8249921, 0, -0.0035757497, 0.0017917294, 0.78179467, -0.781425)
 mesh = SubResource("ArrayMesh_3up7d")
 
 [node name="CarWindow" type="MeshInstance3D" parent="." unique_id=650621613]
-transform = Transform3D(0.0013417664, 0, 0.8249989, 0, 0.825, 0, -0.8249989, 0, 0.0013417664, 0.0069296425, 0.78179467, -0.90098155)
+transform = Transform3D(-0.0035757497, 0, -0.8249921, 0, 0.825, 0, 0.8249921, 0, -0.0035757497, -0.0023100462, 0.78179467, 0.1649208)
 mesh = SubResource("ArrayMesh_0guju")
 
 [node name="tire" type="MeshInstance3D" parent="." unique_id=1401502037]
-transform = Transform3D(3.5544276e-09, -0.08131481, -24.999968, -50, -2.1855694e-06, -2.220446e-14, -2.1855665e-06, 49.999935, -0.040657405, -1.0464964, 0.39228824, -2.0229788)
+transform = Transform3D(-9.472771e-09, 0.21671128, 24.999765, -50.000008, -2.1855694e-06, -2.1167767e-14, 2.1855492e-06, -49.99953, 0.10835564, 1.0480739, 0.39228824, 1.2897664)
 mesh = SubResource("ArrayMesh_lrb4y")
 
 [node name="tire_001" type="MeshInstance3D" parent="." unique_id=378963027]
-transform = Transform3D(3.5544276e-09, -0.08131481, -24.999968, -50, -2.1855694e-06, -2.220446e-14, -2.1855665e-06, 49.999935, -0.040657405, -1.0519656, 0.39228824, 1.3399186)
+transform = Transform3D(-9.472771e-09, 0.21671128, 24.999765, -50.000008, -2.1855694e-06, -2.1167767e-14, 2.1855492e-06, -49.99953, 0.10835564, 1.0626494, 0.39228824, -2.0731037)
 mesh = SubResource("ArrayMesh_ahf0b")
 
 [node name="tire_002" type="MeshInstance3D" parent="." unique_id=1190827891]
-transform = Transform3D(-5.9640124e-06, 0.081325136, 24.999968, -50, -2.1855694e-06, -2.9802327e-06, 2.175872e-06, -49.999935, 0.040662568, 1.0548997, 0.39228824, -2.016186)
+transform = Transform3D(5.969883e-06, -0.21671796, -24.999762, -50.000008, -2.1855697e-06, -2.9802331e-06, -2.1597145e-06, 49.999523, -0.10835898, -1.0532962, 0.39228824, 1.2772833)
 mesh = SubResource("ArrayMesh_xfs4u")
 
 [node name="tire_003" type="MeshInstance3D" parent="." unique_id=1941818935]
-transform = Transform3D(-5.9640124e-06, 0.081325136, 24.999968, -50, -2.1855694e-06, -2.9802327e-06, 2.175872e-06, -49.999935, 0.040662568, 1.0494305, 0.39228824, 1.346711)
+transform = Transform3D(5.969883e-06, -0.21671796, -24.999762, -50.000008, -2.1855697e-06, -2.9802331e-06, -2.1597145e-06, 49.999523, -0.10835898, -1.0387205, 0.39228824, -2.0855865)
 mesh = SubResource("ArrayMesh_qhdhn")
 
 [node name="HornSound" type="AudioStreamPlayer3D" parent="." unique_id=985493835]
@@ -322,3 +325,16 @@ scale_amount_min = 2.0
 scale_amount_max = 8.0
 scale_amount_curve = SubResource("Curve_k22rf")
 color_ramp = SubResource("Gradient_jjtnp")
+
+[node name="FriendDetector" type="Area3D" parent="." unique_id=1509008035]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FriendDetector" unique_id=592512528]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.015075684, 1.0560913, 2.0143127)
+shape = SubResource("BoxShape3D_8jg5c")
+
+[node name="FloorRaycast" type="RayCast3D" parent="." unique_id=1236132643]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
+target_position = Vector3(0, -20, 0)
+
+[connection signal="body_entered" from="FriendDetector" to="." method="_on_friend_detector_body_entered"]
+[connection signal="body_exited" from="FriendDetector" to="." method="_on_friend_detector_body_exited"]
